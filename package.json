@@ -18,12 +18,14 @@
     "gulp-handlebars": "^3.0.1",
     "gulp-load-plugins": "^0.7.1",
     "gulp-plumber": "^0.6.6",
+    "gulp-rename": "^1.2.0",
     "gulp-sourcemaps": "^1.2.8",
     "gulp-webserver": "^0.8.7"
   },
   "dependencies": {
     "backbone": "^1.1.2",
     "handlebars": "^2.0.0",
+    "jquery": "^2.1.1",
     "lodash": "^2.4.1"
   }
 }
