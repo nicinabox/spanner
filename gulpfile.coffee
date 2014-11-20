@@ -42,7 +42,7 @@ gulp.task 'styles', ->
   .pipe($.compass(
     css: config.paths.www.assets
     sass: config.base(config.paths.client.styles)
-    import_path: ['node_modules']
+    import_path: ['node_modules', 'bower_components']
   ))
 
 gulp.task 'templates', ->
@@ -50,7 +50,7 @@ gulp.task 'templates', ->
     .pipe($.handlebars())
     .pipe($.defineModule('plain'))
     .pipe($.declare({
-      namespace: 'JST'
+      namespace: 'Handlebars.templates'
     }))
     .pipe($.concat('templates.js'))
     .pipe(gulp.dest(config.paths.www.assets))
