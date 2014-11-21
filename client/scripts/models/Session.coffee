@@ -9,10 +9,11 @@ class App.Session extends Thorax.Model
       token: @newToken()
 
   logout: ->
+    @destroy()
     @clear()
 
   authorize: ->
-    @fetch()
+    @fetch().done => @onChangeToken()
 
   isAuthorized: ->
     !!@get 'token'
