@@ -33,6 +33,7 @@ config =
         'node_modules/handlebars/dist/handlebars.runtime.js'
         'node_modules/backbone/backbone.js'
         'bower_components/thorax/thorax.js'
+        'node_modules/backbone.localstorage/backbone.localStorage.js'
         'bower_components/bootstrap-sass/dist/js/bootstrap.js'
       ]
 
