@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="content">
+    <div class="row">
+      {{#collection}}
+        <a href="#vehicles/{{id}}" class="vehicle col-md-3">
+          <span>{{name}}</span>
+        </a>
+      {{else}}
+        <h2>You don't have any vehicles yet</h2>
+        <br>
+      {{/collection}}
+    </div>
+
+    <form class="form-inline">
+      <label for="">Add a vehicle</label>
+      <div class="form-group">
+        <input type="text" name="name" class="form-control" placeholder="E.g., 2015 Mini Cooper">
+      </div>
+      <button class="btn btn-primary">Save</button>
+    </form>
+  </div>
+</div>

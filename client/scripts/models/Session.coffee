@@ -1,5 +1,5 @@
 class App.Session extends Thorax.Model
-  localStorage: new Backbone.LocalStorage("Session")
+  localStorage: new Backbone.LocalStorage("session")
 
   initialize: ->
     @on 'change:token', @onChangeToken

@@ -25,3 +25,4 @@ class App.ApplicationRouter extends Backbone.Router
     name = _.capitalize(method)
     view = new App[name + 'View']
     App.layout.setView view
+    App.currentView = view

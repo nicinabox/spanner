@@ -1,0 +1,28 @@
+#vehicles {
+  .vehicle {
+    padding: 20px;
+    background: $gray-lighter;
+    color: #444;
+    @include clearfix;
+    @include border-radius(3px);
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    // width: 300px;
+    font-weight: bold;
+
+    &:hover {
+      background: darken($gray-lighter, 2%);
+    }
+
+    span {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+  }
+
+  form {
+    margin: 40px 0;
+  }
+
+}
