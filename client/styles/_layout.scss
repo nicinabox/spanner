@@ -38,3 +38,12 @@
   @extend .text-muted;
   padding: 0 ($grid-gutter-width / 2);
 }
+
+
+.action-bar {
+  margin-top: 60px;
+
+  ~ #main {
+    margin-top: 40px;
+  }
+}

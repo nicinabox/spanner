@@ -32,10 +32,26 @@
   </nav>
 </div>
 
+<div class="container action-bar">
+  <div class="row">
+    <div class="col-sm-12">
+      <nav>
+        <a href="#" class="btn btn-primary">+ Add Service</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
 <div id="main">
   <div class="container">
-    <h3>2014</h3>
-    <h3>2013</h3>
-    <h3>2012</h3>
+    <table class="table">
+      {{#collection tag="tbody"}}
+        <tr>
+          <td>{{formatDate 'MMM DD' date}}</td>
+          <td>{{mileage}}</td>
+          <td>{{notes}}</td>
+        </tr>
+      {{/collection}}
+    </table>
   </div>
 </div>

@@ -7,21 +7,22 @@ class App.VehicleView extends Thorax.View
     'click #header .vehicles': 'showVehiclesPopover'
 
   initialize: (id) ->
-    @collection = new App.Vehicles
+    @vehicles = new App.Vehicles
 
-    @listenTo @collection, 'sync', ->
-      @setModel @collection.get(id)
+    @listenTo @vehicles, 'sync', ->
+      @setModel @vehicles.get(id)
+      @setCollection new App.Records
 
       @listenTo @model, 'change', @render
 
-    @collection.fetch()
+    @vehicles.fetch()
 
   showVehiclesPopover: (e) ->
     e.preventDefault()
     view = new App.UIPopoverView
       name: 'vehicles_list'
       target: e.currentTarget
-      collection: @collection
+      collection: @vehicles
     view.attach()
 
   showChangeNamePopover: (e) ->
