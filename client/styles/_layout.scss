@@ -34,3 +34,7 @@
   }
 }
 
+.row-heading {
+  @extend .text-muted;
+  padding: 0 ($grid-gutter-width / 2);
+}
