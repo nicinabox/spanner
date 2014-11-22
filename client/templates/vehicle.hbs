@@ -44,14 +44,18 @@
 
 <div id="main">
   <div class="container">
-    <table class="table">
-      {{#collection tag="tbody"}}
-        <tr>
-          <td>{{formatDate 'MMM DD' date}}</td>
-          <td>{{mileage}}</td>
-          <td>{{notes}}</td>
-        </tr>
-      {{/collection}}
-    </table>
+    {{#collection id="records"}}
+      <h3>{{year}}</h3>
+
+      <table class="table table-striped">
+        {{#each records}}
+          <tr>
+            <td>{{formatDate 'MMM DD' date}}</td>
+            <td>{{mileage}}</td>
+            <td>{{notes}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/collection}}
   </div>
 </div>
