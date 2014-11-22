@@ -1,3 +1,7 @@
+Handlebars.registerHelpers = (methods) ->
+  _.each methods, (fn, name) ->
+    Handlebars.registerHelper name, fn
+
 App =
   start: ->
     @session = new App.Session
