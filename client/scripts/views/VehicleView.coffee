@@ -4,6 +4,7 @@ class App.VehicleView extends Thorax.View
 
   events:
     'click #header .name': 'showChangeNamePopover'
+    'click #header .vehicles': 'showVehiclesPopover'
 
   initialize: (id) ->
     @collection = new App.Vehicles
@@ -15,12 +16,19 @@ class App.VehicleView extends Thorax.View
 
     @collection.fetch()
 
+  showVehiclesPopover: (e) ->
+    e.preventDefault()
+    view = new App.UIPopoverView
+      name: 'vehicles_list'
+      target: e.currentTarget
+      collection: @collection
+    view.attach()
+
   showChangeNamePopover: (e) ->
     e.preventDefault()
     view = new App.UIPopoverView
-      title: 'Rename vehicle'
       name: 'rename_vehicle'
       target: e.currentTarget
       value: @model.get('name')
       model: @model
-    view.render()
+    view.attach()
