@@ -5,24 +5,35 @@
     color: #444;
     @include clearfix;
     @include border-radius(3px);
-    display: inline-block;
-    margin-right: 10px;
+    display: block;
     margin-bottom: 10px;
-    // width: 300px;
     font-weight: bold;
 
     &:hover {
-      background: darken($gray-lighter, 2%);
+      background-color: darken($gray-lighter, 2%);
     }
 
     span {
       display: inline-block;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    &.add-vehicle {
+      background-color: lighten($gray-lighter, 2%);
+      color: $gray-light;
+      text-align: center;
+      font-weight: normal;
+
+      &:hover {
+        background-color: $gray-lighter;
+      }
     }
   }
+}
 
-  form {
-    margin: 40px 0;
+#vehicle {
+  .name {
+    font-weight: bold;
+    color: #444;
   }
-
 }

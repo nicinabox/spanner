@@ -7,9 +7,12 @@ class App.WelcomeView extends Thorax.View
 
   initialize: ->
     @placeholder = 'E.g., ' + @randomEmail()
+    @listenTo App.session, 'auth:resolve', ->
+      App.router.redirectTo 'vehicles'
 
   login: (e) ->
     e.preventDefault()
+
     App.session.login()
 
   randomEmail: ->

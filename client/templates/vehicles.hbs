@@ -1,22 +1,31 @@
-<div class="container">
-  <div class="content">
+<div id="main">
+  <div class="container">
     <div class="row">
       {{#collection}}
-        <a href="#vehicles/{{id}}" class="vehicle col-md-3">
-          <span>{{name}}</span>
-        </a>
-      {{else}}
-        <h2>You don't have any vehicles yet</h2>
-        <br>
+        <div class="col-md-3">
+          <a href="#vehicles/{{id}}" class="vehicle">
+            <span>{{name}}</span>
+          </a>
+        </div>
       {{/collection}}
+
+      <form class="col-md-3">
+        <a href="#" class="vehicle add-vehicle">
+          <span>Add a vehicle...</span>
+        </a>
+      </form>
     </div>
 
-    <form class="form-inline">
-      <label for="">Add a vehicle</label>
+    <form>
+{{!--       <div class="vehicle col-md-3">
+        Add vehicle...
+      </div>
+
+ --}}      {{!-- <label for="">Add a vehicle</label>
       <div class="form-group">
         <input type="text" name="name" class="form-control" placeholder="E.g., 2015 Mini Cooper">
       </div>
-      <button class="btn btn-primary">Save</button>
+      <button class="btn btn-primary">Save</button> --}}
     </form>
   </div>
 </div>

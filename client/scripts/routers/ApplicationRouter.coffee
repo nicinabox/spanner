@@ -2,6 +2,7 @@ class App.ApplicationRouter extends Backbone.Router
   routes:
     '': 'welcome'
     'vehicles': 'vehicles'
+    'vehicles/:id': 'vehicle'
 
   constructor: ->
     _.each @routes, (method, route) ->
@@ -12,17 +13,14 @@ class App.ApplicationRouter extends Backbone.Router
 
     super
 
-    @listenTo App.session, 'auth:resolve', ->
-      @redirectTo 'vehicles'
-
     @listenTo App.session, 'auth:reject', ->
       @redirectTo ''
 
   redirectTo: (path) ->
     @navigate path, trigger: true
 
-  render: (method) ->
+  render: (method, options...) ->
     name = _.capitalize(method)
-    view = new App[name + 'View']
+    view = new App[name + 'View'](options...)
     App.layout.setView view
     App.currentView = view
