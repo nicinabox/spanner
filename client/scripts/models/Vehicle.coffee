@@ -1,6 +1,9 @@
 class App.Vehicle extends Thorax.Model
   validatePresence: ['name']
 
+  defaults:
+    settings: {}
+
   validate: (attrs) ->
     errors = _.map attrs, (v, k) =>
       if _.contains(@validatePresence, k) and _.isEmpty(v)

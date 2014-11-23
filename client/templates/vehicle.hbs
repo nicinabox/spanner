@@ -48,12 +48,16 @@
     <div id="records">
       {{#each records}}
         <h3>{{year}}</h3>
-
         <table class="table table-striped">
           {{#each records}}
             <tr data-id="{{id}}">
               <td class="date">{{formatDate 'MMM DD' date}}</td>
               <td class="mileage">{{formatNumber '000,000' mileage}}</td>
+
+              {{#if ../../settings.enable_cost}}
+                <td class="cost">{{formatNumber '$0' cost}}</td>
+              {{/if}}
+
               <td class="notes">{{notes}}</td>
               <td class="actions text-right">
                 <a href="#" class="remove-record" data-record-id="{{id}}">

@@ -1,5 +1,21 @@
 <ul class="nav nav-pills nav-stacked">
   <li>
-    <a href="#" class="text-danger remove-vehicle">Remove vehicle</a>
+    <a href="#" class="enable-cost" data-method="enableCost">
+      Enable Cost
+
+      {{#if settings.enable_cost}}
+        <i class="fa fa-check pull-right"></i>
+      {{/if}}
+    </a>
+  </li>
+  <li>
+    <a href="#" data-method="retireVehicle">
+      Retire
+    </a>
+  </li>
+  <li>
+    <a href="#" class="text-danger" data-method="removeVehicle">
+      Remove
+    </a>
   </li>
 </ul>
