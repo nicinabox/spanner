@@ -63,6 +63,7 @@ class App.PopOverView extends Thorax.LayoutView
       offset.left = offset.left - @width + $(elem).outerWidth()
 
     @$el.css offset
+    @$el.css width: @width
 
   back: (e) ->
     e.preventDefault()
