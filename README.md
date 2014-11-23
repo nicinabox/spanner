@@ -1,5 +1,10 @@
 # Architecture
 
+## Setup
+
+* `npm install && bower install`
+* `gulp`
+
 ## Client
 
 * backbone
