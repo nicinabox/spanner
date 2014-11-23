@@ -5,6 +5,7 @@ class App.VehicleView extends Thorax.View
   events:
     'click #header .name': 'showChangeNamePopover'
     'click #header .vehicles': 'showVehiclesPopover'
+    'keyup #filter': 'filterRecords'
 
   initialize: (id) ->
     @vehicles = new App.Vehicles
@@ -16,6 +17,20 @@ class App.VehicleView extends Thorax.View
       @listenTo @model, 'change', @render
 
     @vehicles.fetch()
+
+  filterRecords: _.debounce (e) ->
+    val = e.currentTarget.value
+    re = new RegExp val, 'i'
+
+    @$('#records tr').each ->
+      $this = $(this)
+      html  = $this.html()
+
+      $this.show()
+      unless re.test(html)
+        $this.hide()
+
+  , 300
 
   showVehiclesPopover: (e) ->
     e.preventDefault()
