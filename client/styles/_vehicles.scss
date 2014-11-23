@@ -19,13 +19,13 @@
     }
 
     &.add-vehicle {
-      background-color: lighten($gray-lighter, 2%);
+      background-color: lighten($gray-light, 30%);
       color: $gray-light;
       text-align: center;
       font-weight: normal;
 
       &:hover {
-        background-color: $gray-lighter;
+        background-color: lighten($gray-light, 25%);
       }
     }
   }

@@ -1,3 +1,9 @@
+.fa.pull-right { line-height: inherit; }
+
+body {
+  background: #f7f7f7;
+}
+
 #root {
   @include clearfix;
 }
@@ -14,6 +20,12 @@
 
     input {
       border: none;
+      background-color: tint($navbar-default-btn-bg, 80%);
+      @include transition(background-color 200ms ease-out);
+
+      &:focus {
+        background: #fff;
+      }
     }
   }
 
@@ -48,5 +60,15 @@
 
   ~ #main {
     margin-top: 40px;
+  }
+}
+
+.nav {
+  a {
+    color: $gray;
+
+    &.text-danger {
+      @extend .text-danger;
+    }
   }
 }
