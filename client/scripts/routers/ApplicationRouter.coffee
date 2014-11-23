@@ -16,6 +16,9 @@ class App.ApplicationRouter extends Backbone.Router
     @listenTo App.session, 'auth:reject', ->
       @redirectTo ''
 
+    @on 'route', ->
+      App.layout.$('.pop-over').remove()
+
   redirectTo: (path) ->
     @navigate path, trigger: true
 

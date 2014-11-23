@@ -5,6 +5,7 @@ class App.VehicleView extends Thorax.View
   events:
     'click #header .name': 'showChangeNamePopover'
     'click #header .vehicles': 'showVehiclesPopover'
+    'click #header .settings': 'showSettingsPopover'
     'click .add-service': 'showAddServicePopover'
     'keyup #filter': 'filterRecords'
     'submit #header form': (e) -> e.preventDefault()
@@ -37,32 +38,36 @@ class App.VehicleView extends Thorax.View
 
   showAddServicePopover: (e) ->
     e.preventDefault()
-    view = new App.UIPopoverView
-      name: 'add_service'
-      target: e.currentTarget
-      collection: @collection
-      vehicle_id: @model.id
-      submit: (e) ->
-        e.preventDefault()
-        data = @serialize()
-        @collection.create data
-        @remove()
-
+    view = new App.PopOverView
+      title: 'Add Service'
+      elem: e.currentTarget
+      child: new App.AddServiceView
+        collection: @collection
+        model: @model
     view.attach()
 
   showVehiclesPopover: (e) ->
     e.preventDefault()
-    view = new App.UIPopoverView
-      name: 'vehicles_list'
-      target: e.currentTarget
-      collection: @vehicles
+    view = new App.PopOverView
+      elem: e.currentTarget
+      child: new App.VehiclesMenu
+        collection: @vehicles
     view.attach()
 
   showChangeNamePopover: (e) ->
     e.preventDefault()
-    view = new App.UIPopoverView
-      name: 'rename_vehicle'
-      target: e.currentTarget
-      value: @model.get('name')
-      model: @model
+    view = new App.PopOverView
+      elem: e.currentTarget
+      title: 'Rename Vehicle'
+      child: new App.RenameVehicleView
+        model: @model
+    view.attach()
+
+  showSettingsPopover: (e) ->
+    e.preventDefault()
+    view = new App.PopOverView
+      elem: e.currentTarget
+      title: 'Vehicle Settings'
+      child: new App.VehicleSettingsView
+        model: @model
     view.attach()

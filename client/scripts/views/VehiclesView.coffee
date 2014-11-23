@@ -16,13 +16,9 @@ class App.VehiclesView extends Thorax.View
 
   showAddVehiclePopover: (e) ->
     e.preventDefault()
-    view = new App.UIPopoverView
-      name: 'add_vehicle'
-      target: e.currentTarget
-      collection: @collection
-      submit: (e) ->
-        e.preventDefault()
-        @collection.create @serialize()
-        @remove()
-
+    view = new App.PopOverView
+      elem: e.currentTarget
+      title: 'Add Vehicle'
+      child: new App.AddVehicleView
+        collection: @collection
     view.attach()

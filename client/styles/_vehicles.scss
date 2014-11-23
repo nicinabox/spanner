@@ -1,16 +1,16 @@
 #vehicles {
   .vehicle {
     padding: 20px;
-    background: $gray-lighter;
-    color: #444;
+    background: $brand-primary;
+    color: #fff;
     @include clearfix;
     @include border-radius(3px);
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     font-weight: bold;
 
     &:hover {
-      background-color: darken($gray-lighter, 2%);
+      background-color: darken($brand-primary, 4%);
     }
 
     span {
