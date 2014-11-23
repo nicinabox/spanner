@@ -22,14 +22,25 @@
       margin-bottom: 15px;
     }
 
-    .close {
+    .close, .back {
       position: absolute;
-      padding: 10px 15px;
       right: 0;
       top: 0;
+      padding: 10px 15px;
       font-size: 18px;
       font-weight: bold;
+      line-height: 1;
       color: #444;
+      opacity: 0.2;
+
+      &:hover {
+        opacity: 0.5
+      }
+    }
+
+    .back {
+      left: 0;
+      right: auto;
     }
   }
 

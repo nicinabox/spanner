@@ -7,4 +7,4 @@ class App.RenameVehicleView extends Thorax.View
   saveVehicle: (e) ->
     e.preventDefault()
     @model.save @serialize()
-    @parent.remove()
+    @parent.close()

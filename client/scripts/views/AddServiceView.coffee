@@ -7,4 +7,4 @@ class App.AddServiceView extends Thorax.View
   createService: (e) ->
     e.preventDefault()
     @collection.create @serialize()
-    @parent.remove()
+    @parent.close()

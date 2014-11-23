@@ -7,6 +7,9 @@ App =
     @session = new App.Session
     @layout  = new App.RootView
     @router  = new App.ApplicationRouter
+    @popover = new App.PopOverView
+
+    @vehicles = new App.Vehicles
 
     Backbone.history.start()
     @session.authorize()

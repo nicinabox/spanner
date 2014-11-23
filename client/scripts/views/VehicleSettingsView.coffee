@@ -6,6 +6,7 @@ class App.VehicleSettingsView extends Thorax.View
 
   removeVehicle: (e) ->
     e.preventDefault()
-    if confirm 'Are you sure you want to remove this vehicle?'
-      @model.destroy()
-      App.router.redirectTo 'vehicles'
+    App.popover.pushView
+      title: 'Remove Vehicle'
+      view: new App.RemoveVehicleConfirmationView
+        model: @model

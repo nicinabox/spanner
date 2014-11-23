@@ -24,6 +24,7 @@ config =
         'client/scripts/collections/*'
         'client/scripts/views/*'
         'client/scripts/routers/*'
+        'client/scripts/*.coffee'
         'client/scripts/start.coffee'
       ]
 

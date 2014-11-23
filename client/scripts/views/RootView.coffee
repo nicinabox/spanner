@@ -12,7 +12,7 @@ class App.RootView extends Thorax.LayoutView
     return if e.originalEvent.defaultPrevented
     inPopover = $(e.target).closest('.pop-over').length
     unless inPopover
-      $('.pop-over').remove()
+      App.popover.close()
 
   logout: (e) ->
     e.preventDefault()

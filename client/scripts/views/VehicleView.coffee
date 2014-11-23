@@ -11,7 +11,7 @@ class App.VehicleView extends Thorax.View
     'submit #header form': (e) -> e.preventDefault()
 
   initialize: (id) ->
-    @vehicles = new App.Vehicles
+    @vehicles = App.vehicles
 
     @listenTo @vehicles, 'sync', ->
       @setModel @vehicles.get(id)
@@ -38,36 +38,32 @@ class App.VehicleView extends Thorax.View
 
   showAddServicePopover: (e) ->
     e.preventDefault()
-    view = new App.PopOverView
+    App.popover.toggle
       title: 'Add Service'
       elem: e.currentTarget
-      child: new App.AddServiceView
+      view: new App.AddServiceView
         collection: @collection
         model: @model
-    view.attach()
 
   showVehiclesPopover: (e) ->
     e.preventDefault()
-    view = new App.PopOverView
+    App.popover.toggle
       elem: e.currentTarget
-      child: new App.VehiclesMenu
+      view: new App.VehiclesMenu
         collection: @vehicles
-    view.attach()
 
   showChangeNamePopover: (e) ->
     e.preventDefault()
-    view = new App.PopOverView
+    App.popover.toggle
       elem: e.currentTarget
       title: 'Rename Vehicle'
-      child: new App.RenameVehicleView
+      view: new App.RenameVehicleView
         model: @model
-    view.attach()
 
   showSettingsPopover: (e) ->
     e.preventDefault()
-    view = new App.PopOverView
+    App.popover.toggle
       elem: e.currentTarget
       title: 'Vehicle Settings'
-      child: new App.VehicleSettingsView
+      view: new App.VehicleSettingsView
         model: @model
-    view.attach()

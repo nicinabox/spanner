@@ -7,4 +7,4 @@ class App.AddVehicleView extends Thorax.View
   createVehicle: (e) ->
     e.preventDefault()
     @collection.create @serialize()
-    @parent.remove()
+    @parent.close()
