@@ -51,7 +51,7 @@
         {{#each records}}
           <tr>
             <td>{{formatDate 'MMM DD' date}}</td>
-            <td>{{mileage}}</td>
+            <td>{{formatNumber '000,000' mileage}}</td>
             <td>{{notes}}</td>
           </tr>
         {{/each}}
