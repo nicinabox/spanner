@@ -7,6 +7,7 @@ class App.VehicleView extends Thorax.View
     'click #header .vehicles': 'showVehiclesPopover'
     'click .add-service': 'showAddServicePopover'
     'keyup #filter': 'filterRecords'
+    'submit #header form': (e) -> e.preventDefault()
 
   initialize: (id) ->
     @vehicles = new App.Vehicles
@@ -23,13 +24,16 @@ class App.VehicleView extends Thorax.View
 
     @vehicles.fetch()
 
-  filterRecords: _.debounce (e) ->
+  filterRecords: (e) ->
     val = e.currentTarget.value
-    re = new RegExp val, 'i'
+    re  = new RegExp val, 'i'
 
     @$('#records tr').each ->
-      $this = $(this)
-      html  = $this.html()
+      $this   = $(this)
+      content = $this.text()
+
+      $this.hide()
+      $this.show() if re.test(content)
 
   showAddServicePopover: (e) ->
     e.preventDefault()
