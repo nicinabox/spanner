@@ -1,0 +1,27 @@
+<header>
+  <h4>Add Service</h4>
+  <a href="#" class="close">&times;</a>
+</header>
+
+<form action="">
+  <input type="hidden" name="vehicle_id" value={{vehicle_id}}>
+
+  <div class="form-group">
+    <label for="date">Date</label>
+    <input type="date" name="date" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="mileage">Mileage</label>
+    <input type="mileage" name="mileage" class="form-control"
+      placeholder="E.g., 13,500">
+  </div>
+
+  <div class="form-group">
+    <label for="notes">Notes</label>
+    <textarea name="notes" class="form-control"
+      placeholder="E.g., Change oil, oil filter"></textarea>
+  </div>
+
+  <button class="btn btn-success">Save</button>
+</form>
