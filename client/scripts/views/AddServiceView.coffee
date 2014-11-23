@@ -4,6 +4,9 @@ class App.AddServiceView extends Thorax.View
   events:
     'submit form': 'createRecord'
 
+  initialize: ->
+    @today = moment().format('YYYY-MM-DD')
+
   createRecord: (e) ->
     e.preventDefault()
     model = new App.Record @serialize()
@@ -11,6 +14,7 @@ class App.AddServiceView extends Thorax.View
     if model.isValid()
       @collection.create model
       @parent.close()
+      e.target.reset()
     else
       _.each model.validationError, (error) =>
         @$("[name=#{error.name}]").closest('.form-group')
