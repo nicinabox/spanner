@@ -7,13 +7,14 @@
 }
 
 #header {
-  .navbar {
-    min-height: 38px;
-  }
 
   .navbar-form {
     margin-top: 3px;
     margin-bottom: 3px;
+
+    input {
+      border: none;
+    }
   }
 
   .btn {
@@ -21,17 +22,18 @@
     border: none !important;
 
     &.btn-default {
-      background: $gray-lighter;
+      background: $navbar-default-btn-bg;
+      color: #fff;
 
       &:hover {
-        background: darken($gray-lighter, 2%);
+        background: tint($navbar-default-btn-bg, 20%);
       }
     }
   }
 
   .back {
     float: left;
-    color: $gray-dark;
+    color: #fff;
   }
 }
 
