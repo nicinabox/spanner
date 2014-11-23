@@ -40,3 +40,4 @@ class App.UIPopoverView extends Thorax.View
   submit: (e) ->
     e.preventDefault()
     @model.save @serialize()
+    @remove()
