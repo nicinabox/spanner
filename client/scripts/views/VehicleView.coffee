@@ -7,6 +7,7 @@ class App.VehicleView extends Thorax.View
     'click #header .vehicles': 'showVehiclesPopover'
     'click #header .settings': 'showSettingsPopover'
     'click .add-service': 'showAddServicePopover'
+    'click .remove-record': 'removeRecord'
     'keyup #filter': 'filterRecords'
     'submit #header form': (e) -> e.preventDefault()
 
@@ -18,7 +19,7 @@ class App.VehicleView extends Thorax.View
       @setCollection new App.Records vehicle_id: id
 
       @listenTo @model, 'change', @render
-      @listenTo @collection, 'sync change', ->
+      @listenTo @collection, 'sync change destroy', ->
         @model.set records: @collection.groupByYear()
 
       @collection.fetch()
@@ -35,6 +36,13 @@ class App.VehicleView extends Thorax.View
 
       $this.hide()
       $this.show() if re.test(content)
+
+  removeRecord: (e) ->
+    e.preventDefault()
+    id = $(e.currentTarget).data('record-id')
+    if confirm 'Really delete record?'
+      record = @collection.get(id)
+      record.destroy()
 
   showAddServicePopover: (e) ->
     e.preventDefault()
