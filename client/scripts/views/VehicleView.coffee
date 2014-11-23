@@ -5,6 +5,7 @@ class App.VehicleView extends Thorax.View
   events:
     'click #header .name': 'showChangeNamePopover'
     'click #header .vehicles': 'showVehiclesPopover'
+    'click .add-service': 'showAddServicePopover'
     'keyup #filter': 'filterRecords'
 
   initialize: (id) ->
@@ -12,9 +13,13 @@ class App.VehicleView extends Thorax.View
 
     @listenTo @vehicles, 'sync', ->
       @setModel @vehicles.get(id)
-      @setCollection new App.Records
+      @setCollection new App.Records vehicle_id: id
 
       @listenTo @model, 'change', @render
+      @listenTo @collection, 'sync change', ->
+        @model.set records: @collection.groupByYear()
+
+      @collection.fetch()
 
     @vehicles.fetch()
 
@@ -26,11 +31,20 @@ class App.VehicleView extends Thorax.View
       $this = $(this)
       html  = $this.html()
 
-      $this.show()
-      unless re.test(html)
-        $this.hide()
+  showAddServicePopover: (e) ->
+    e.preventDefault()
+    view = new App.UIPopoverView
+      name: 'add_service'
+      target: e.currentTarget
+      collection: @collection
+      vehicle_id: @model.id
+      submit: (e) ->
+        e.preventDefault()
+        data = @serialize()
+        @collection.create data
+        @remove()
 
-  , 300
+    view.attach()
 
   showVehiclesPopover: (e) ->
     e.preventDefault()

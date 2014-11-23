@@ -1,23 +1,21 @@
 class App.Records extends Thorax.Collection
-  url: 'https://www.kimonolabs.com/api/8mnhn4ye?apikey=83b22741069a1bc1503c47d81f7452e7'
+  model: App.Record
+  localStorage: new Backbone.LocalStorage("records")
 
-  sync: (method, collection, options) ->
-    options.dataType = "jsonp"
-    Backbone.sync(method, collection, options)
+  initialize: (options) ->
+    @vehicle_id = options.vehicle_id
 
-  comparator: (m) ->
-    -m.get('year')
-
-  parse: (data) ->
-    return unless data
-    r = data.results.records
-    grouped = _(r)
+  groupByYear: ->
+    _(@toJSON())
       .groupBy((r) -> +moment(r.date).year())
       .pairs()
       .map((r) ->
         r[0] = +r[0]
+        r[1] = _.sortBy(r[1], (record) -> -moment(record.date))
         _.zipObject(['year', 'records'], r)
       )
+      .sortBy((r) -> -r.year)
       .value()
 
-    grouped
+  parse: (data) ->
+    _(data).filter(vehicle_id: @vehicle_id).value()

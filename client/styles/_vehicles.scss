@@ -36,4 +36,10 @@
     font-weight: bold;
     color: #444;
   }
+
+  table {
+    .date, .mileage {
+      width: 100px;
+    }
+  }
 }

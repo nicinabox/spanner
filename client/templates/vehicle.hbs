@@ -36,7 +36,7 @@
   <div class="row">
     <div class="col-sm-12">
       <nav>
-        <a href="#" class="btn btn-primary">+ Add Service</a>
+        <a href="#" class="add-service btn btn-default">+ Add Service</a>
       </nav>
     </div>
   </div>
@@ -44,18 +44,29 @@
 
 <div id="main">
   <div class="container">
-    {{#collection id="records"}}
-      <h3>{{year}}</h3>
+    <div id="records">
+      {{#each records}}
+        <h3>{{year}}</h3>
 
-      <table class="table table-striped">
-        {{#each records}}
-          <tr>
-            <td>{{formatDate 'MMM DD' date}}</td>
-            <td>{{formatNumber '000,000' mileage}}</td>
-            <td>{{notes}}</td>
-          </tr>
-        {{/each}}
-      </table>
-    {{/collection}}
+        <table class="table table-striped">
+          {{#each records}}
+            <tr data-id="{{id}}">
+              <td class="date">{{formatDate 'MMM DD' date}}</td>
+              <td class="mileage">{{formatNumber '000,000' mileage}}</td>
+              <td class="notes">{{notes}}</td>
+              <td class="actions text-right">
+                <a href="#" class="remove-record" data-record-id="{{id}}">
+                  <i class="fa fa-trash-o"></i>
+                </a>
+              </td>
+            </tr>
+          {{/each}}
+        </table>
+      {{else}}
+        <h3 class="text-center text-muted">
+          You don't have any records yet
+        </h3>
+      {{/each}}
+    </div>
   </div>
 </div>
