@@ -2,9 +2,16 @@ class App.AddServiceView extends Thorax.View
   name: 'add_service'
 
   events:
-    'submit form': 'createService'
+    'submit form': 'createRecord'
 
-  createService: (e) ->
+  createRecord: (e) ->
     e.preventDefault()
-    @collection.create @serialize()
-    @parent.close()
+    model = new App.Record @serialize()
+
+    if model.isValid()
+      @collection.create model
+      @parent.close()
+    else
+      _.each model.validationError, (error) =>
+        @$("[name=#{error.name}]").closest('.form-group')
+          .addClass('has-error')

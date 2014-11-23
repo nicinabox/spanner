@@ -14,3 +14,6 @@ class App.RemoveVehicleConfirmationView extends Thorax.View
     if data.confirmation == @confirmation_word
       @model.destroy()
       App.router.redirectTo 'vehicles'
+    else
+      @$("[name=confirmation]").closest('.form-group')
+        .addClass('has-error')

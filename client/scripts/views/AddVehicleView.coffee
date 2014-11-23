@@ -6,5 +6,13 @@ class App.AddVehicleView extends Thorax.View
 
   createVehicle: (e) ->
     e.preventDefault()
-    @collection.create @serialize()
-    @parent.close()
+    model = new App.Vehicle @serialize()
+
+    if model.isValid()
+      @collection.create model
+      @parent.close()
+      App.router.redirectTo "vehicles/#{model.id}"
+    else
+      _.each model.validationError, (error) =>
+        @$("[name=#{error.name}]").closest('.form-group')
+          .addClass('has-error')
