@@ -76,3 +76,4 @@ class App.VehicleView extends Thorax.View
       title: 'Vehicle Settings'
       view: new App.VehicleSettingsView
         model: @model
+        collection: @collection

@@ -15,8 +15,15 @@ class App.VehicleSettingsView extends Thorax.View
       settings:
         enableCost: !settings.enableCost
 
+  importRecords: ->
+    App.popover.pushView
+      title: 'Import Records'
+      view: new App.ImportRecordsView
+        model: @model
+        collection: @collection
+
   retireVehicle: ->
-    alert 'I should probably implement this feature...'
+    alert 'Not yet implemented'
 
   removeVehicle: ->
     App.popover.pushView

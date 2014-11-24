@@ -16,4 +16,5 @@ class App.Records extends Thorax.Collection
         _.zipObject(['year', 'records'], r)
       )
       .sortBy((r) -> -r.year)
+      .compact()
       .value()

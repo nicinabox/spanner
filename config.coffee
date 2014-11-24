@@ -29,6 +29,7 @@ config =
       ]
 
       vendor: [
+        'node_modules/papaparse/papaparse.js'
         'node_modules/lodash/dist/lodash.js'
         'node_modules/jquery/dist/jquery.js'
         'node_modules/handlebars/dist/handlebars.runtime.js'
