@@ -17,24 +17,29 @@ class App.PopOverView extends Thorax.LayoutView
     @render()
     options.view.retain()
 
+    options.view.populate({}, {
+      children: false
+    })
+
     @stack.push options
     @setView options.view
+
     @appendTo App.layout.$el
     @setPosition(options)
 
-    @$('input:first').select()
+    @selectInput()
 
   pushView: (options) ->
     @title      = options.title
     @stackEmpty = false
 
     @render()
-    options.view.retain()
+    options.view.retain(this)
     @stack.push options
     @setView options.view
 
     @delegateEvents()
-    @$('input:first').select()
+    @selectInput()
 
   popView: ->
     current     = @stack.pop()
@@ -48,7 +53,11 @@ class App.PopOverView extends Thorax.LayoutView
     @setView previous.view
     previous.view.delegateEvents()
 
-    @$('input:first').select()
+    @selectInput()
+
+  selectInput: ->
+    selector = @focus || 'input, textarea'
+    @$(selector).first().select()
 
   isLastInStack: (view) ->
     @stack[0] == view
@@ -96,5 +105,9 @@ class App.PopOverView extends Thorax.LayoutView
 
   close: (e) ->
     e.preventDefault() if e
-    @remove()
+
+    view = @getView()
+    view.release() if view
+    @release()
+
     App.popover = new @constructor
