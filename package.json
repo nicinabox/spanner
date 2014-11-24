@@ -25,11 +25,17 @@
   "dependencies": {
     "backbone": "^1.1.2",
     "backbone.localstorage": "^1.1.14",
+    "body-parser": "^1.9.3",
+    "emailjs": "^0.3.12",
+    "express": "^4.10.2",
     "handlebars": "^2.0.0",
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
     "moment": "^2.8.4",
+    "mongoose": "^3.8.19",
     "numeral": "^1.5.3",
+    "passwordless": "^1.0.7",
+    "passwordless-mongostore": "^0.1.0",
     "thorax": "^2.2.1"
   }
 }
