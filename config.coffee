@@ -38,6 +38,7 @@ config =
         'node_modules/numeral/numeral.js'
         'node_modules/backbone.localstorage/backbone.localStorage.js'
         'bower_components/bootstrap-sass/dist/js/bootstrap.js'
+        'bower_components/jquery-ui-sortable/jquery-ui-sortable.js'
       ]
 
 module.exports = config

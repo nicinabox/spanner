@@ -11,10 +11,11 @@
 
     &:hover {
       background-color: darken($brand-primary, 4%);
+      text-decoration: none;
     }
 
     span {
-      display: inline-block;
+      display: block;
       margin-bottom: 30px;
     }
 
