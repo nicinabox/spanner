@@ -79,6 +79,7 @@ class App.VehicleView extends Thorax.View
     App.popover.toggle
       elem: e.currentTarget
       title: 'Rename Vehicle'
+      populate: true
       view: new App.RenameVehicleView
         model: @model
 
