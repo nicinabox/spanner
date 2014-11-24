@@ -21,9 +21,11 @@ class App.VehicleView extends Thorax.View
     @listenTo @vehicles, 'sync', ->
       @setModel @vehicles.get(id)
 
-    @collection.fetch().done (c) =>
-      @records = @collection.groupByYear(c)
+    @listenTo @collection, 'add sync remove', ->
+      @records = @collection.groupByYear()
       @render()
+
+    @collection.fetch()
 
   filterRecords: (e) ->
     val = e.currentTarget.value
