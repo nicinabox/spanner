@@ -2,20 +2,55 @@ class App.ImportRecordsView extends Thorax.View
   name: 'import_records'
 
   events:
-    'submit form': 'importRecords'
+    'click a': 'runMethod'
+    'submit form': 'previewImport'
 
-  importRecords: (e) ->
+  initialize: ->
+    @records = []
+
+  runMethod: (e) ->
+    e.preventDefault()
+    method = $(e.currentTarget).data('method')
+    this[method]()
+
+  previewImport: (e) ->
     e.preventDefault()
     file = @$('input[type=file]')[0].files[0]
+    @preview = true
+    @render()
 
     @parseFile file, (results) =>
       data   = results.data
       labels = data.shift()
 
-      _.each data, (r) ->
-        @collection.create _.zipObject(labels, r)
+      @records = _.map data, (r) ->
+        _.zipObject(labels, r)
+
+      @collection.reset()
+      @collection.add @records
+
+  importRecords: ->
+    @importing = true
+    @render()
+
+    _.defer =>
+      @collection.reset()
+
+      # REVIEW: Probably don't do this.
+      _.each @records, (r) ->
+        @collection.create(r)
       , this
 
-  parseFile: (file, done) ->
-    Papa.parse file, done
+    @doneImporting()
 
+  doneImporting: ->
+    @doneImporting = true
+    @render()
+
+  cancelImport: ->
+    @preview = @importing = undefined
+    @render()
+
+  parseFile: (file, done) ->
+    Papa.parse file,
+      complete: done

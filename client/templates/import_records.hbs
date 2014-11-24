@@ -1,12 +1,40 @@
-<form action="" multipart="true">
+{{#if doneImporting}}
   <p class="help-block">
-    Upload a CSV with date, mileage, notes, and (optionally) cost fields.
+    All done! It's safe to navigate away.
   </p>
+{{else}}
+  {{#if preview}}
+    {{#if importing}}
+      <p class="help-block">
+        Sit tight for a second...
+      </p>
+    {{else}}
+      <p class="help-block">
+        Take a second to look over the records. They aren't saved yet.
+      </p>
 
-  <div class="form-group">
-    <label for="" class="control-label">Upload CSV</label>
-    <input type="file" name="records" class="form-control">
-  </div>
+      <nav>
+        <a href="#" class="btn btn-success" data-method="importRecords">
+          Looks good, import
+        </a>
+        <a href="#" class="btn btn-secondary pull-right" data-method="cancelImport">
+          Cancel
+        </a>
+      </nav>
+    {{/if}}
+  {{else}}
+    <form action="" multipart="true">
+      <p class="help-block">
+        Upload a CSV with date, mileage, notes, and (optionally) cost fields.
+      </p>
 
-  <button class="btn btn-success">Import</button>
-</form>
+      <div class="form-group">
+        <label for="" class="control-label">Upload CSV</label>
+        <input type="file" name="records" class="form-control" required>
+      </div>
+
+      <button class="btn btn-success">Preview</button>
+    </form>
+  {{/if}}
+{{/if}}
+
