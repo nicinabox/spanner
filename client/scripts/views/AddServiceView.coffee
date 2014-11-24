@@ -6,6 +6,7 @@ class App.AddServiceView extends Thorax.View
 
   initialize: ->
     @today = moment().format('YYYY-MM-DD')
+    @currentEstimatedMileage = @collection.currentEstimatedMileage()
 
   createRecord: (e) ->
     e.preventDefault()

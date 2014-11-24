@@ -8,7 +8,35 @@ class App.Records extends Thorax.Collection
 
   comparator: 'date'
 
+  currentEstimatedMileage: ->
+    mpd = @milesPerDay()
+    return unless mpd
+
+    last = @last().toJSON()
+    diffToday = moment(moment()).diff(last.date, 'days')
+
+    mileage = last.mileage + (diffToday * mpd)
+    Math.floor(mileage / 10) * 10
+
   milesPerYear: ->
+    mpd = @milesPerDay()
+    return unless mpd
+
+    last  = @last().toJSON()
+    first  = @first().toJSON()
+
+    diffToday = moment(moment()).diff(last.date, 'days')
+    diffDays = moment(last.date).diff(first.date, 'days') + diffToday
+
+    if diffDays < 365
+      diffEOY = 365 - moment().dayOfYear()
+      mpy = mpd * (diffDays + diffEOY)
+    else
+      mpy = mpd * 365
+
+    Math.floor(mpy / 10) * 10
+
+  milesPerDay: ->
     first = @first()
     last  = @last()
     return unless first
@@ -20,16 +48,7 @@ class App.Records extends Thorax.Collection
     diffDays  = moment(last.date).diff(first.date, 'days') + diffToday
 
     diffMileage = last.mileage - first.mileage
-
-    mpd = diffMileage / diffDays
-
-    if diffDays < 365
-      diffEOY = 365 - moment().dayOfYear()
-      mpy = mpd * (diffDays + diffEOY)
-    else
-      mpy = mpd * 365
-
-    mpy
+    +(diffMileage / diffDays).toFixed(2)
 
   groupByYear: (data) ->
     _(data or @toJSON())
