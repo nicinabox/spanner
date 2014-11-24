@@ -1,3 +1,5 @@
 class App.Vehicles extends Thorax.Collection
   model: App.Vehicle
-  localStorage: new Backbone.LocalStorage("vehicles")
+  url: '/api/vehicles'
+
+  comparator: 'position'

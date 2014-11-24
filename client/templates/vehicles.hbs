@@ -5,11 +5,11 @@
         <span class="fa fa-car fa-fw"></span>
         All Vehicles
       </h5>
-      {{#collection}}
+      {{#collection id="vehicles-menu"}}
         <div class="col-md-3">
-          <a href="#vehicles/{{id}}" class="vehicle">
+          {{#link "vehicles/{{_id}}" class="vehicle" expand-tokens=true}}
             <span>{{name}}</span>
-          </a>
+          {{/link}}
         </div>
       {{/collection}}
 
@@ -20,16 +20,5 @@
       </form>
     </div>
 
-    <form>
-{{!--       <div class="vehicle col-md-3">
-        Add vehicle...
-      </div>
-
- --}}      {{!-- <label for="">Add a vehicle</label>
-      <div class="form-group">
-        <input type="text" name="name" class="form-control" placeholder="E.g., 2015 Mini Cooper">
-      </div>
-      <button class="btn btn-primary">Save</button> --}}
-    </form>
   </div>
 </div>

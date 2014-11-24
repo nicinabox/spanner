@@ -1,13 +1,12 @@
 class App.VehiclesView extends Thorax.View
   name: 'vehicles'
   id: 'vehicles'
-  collection: new App.Vehicles
 
   events:
     'click .add-vehicle': 'showAddVehiclePopover'
 
   initialize: ->
-    @collection.fetch()
+    @collection = App.vehicles
 
   saveVehicle: (e) ->
     e.preventDefault()

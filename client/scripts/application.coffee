@@ -10,6 +10,7 @@ App =
     @popover = new App.PopOverView
 
     @vehicles = new App.Vehicles
+    @vehicles.fetch()
 
     Backbone.history.start()
     @session.authorize()

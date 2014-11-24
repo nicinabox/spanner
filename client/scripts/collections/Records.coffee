@@ -1,12 +1,13 @@
 class App.Records extends Thorax.Collection
   model: App.Record
-  localStorage: new Backbone.LocalStorage("records")
+  url: ->
+    "/api/vehicles/#{@vehicleId}/records"
 
-  initialize: (options) ->
-    @vehicle_id = options.vehicle_id
+  initialize: (models, options) ->
+    @vehicleId = options.vehicleId
 
-  groupByYear: ->
-    _(@toJSON())
+  groupByYear: (data) ->
+    _(data or @toJSON())
       .groupBy((r) -> +moment(r.date).year())
       .pairs()
       .map((r) ->
@@ -16,6 +17,3 @@ class App.Records extends Thorax.Collection
       )
       .sortBy((r) -> -r.year)
       .value()
-
-  parse: (data) ->
-    _(data).filter(vehicle_id: @vehicle_id).value()

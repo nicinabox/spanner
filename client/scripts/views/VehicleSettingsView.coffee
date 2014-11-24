@@ -10,10 +10,10 @@ class App.VehicleSettingsView extends Thorax.View
     this[method]()
 
   enableCost: ->
-    settings = @model.get('settings')
+    settings = @model.settings()
     @model.save
       settings:
-        enable_cost: !settings.enable_cost
+        enableCost: !settings.enableCost
 
   retireVehicle: ->
     alert 'I should probably implement this feature...'

@@ -1,8 +1,9 @@
 class App.Vehicle extends Thorax.Model
+  idAttribute: '_id'
   validatePresence: ['name']
 
-  defaults:
-    settings: {}
+  settings: ->
+    @get('settings') || {}
 
   validate: (attrs) ->
     errors = _.map attrs, (v, k) =>

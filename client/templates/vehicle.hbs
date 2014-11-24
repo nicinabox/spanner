@@ -50,17 +50,17 @@
         <h3>{{year}}</h3>
         <table class="table table-striped">
           {{#each records}}
-            <tr data-id="{{id}}">
+            <tr data-id="{{_id}}">
               <td class="date">{{formatDate 'MMM DD' date}}</td>
               <td class="mileage">{{formatNumber '000,000' mileage}}</td>
 
-              {{#if ../../settings.enable_cost}}
+              {{#if ../../settings.enableCost}}
                 <td class="cost">{{formatNumber '$0' cost}}</td>
               {{/if}}
 
               <td class="notes">{{notes}}</td>
               <td class="actions text-right">
-                <a href="#" class="remove-record" data-record-id="{{id}}">
+                <a href="#" class="remove-record" data-record-id="{{_id}}">
                   <i class="fa fa-trash-o text-muted"></i>
                 </a>
               </td>

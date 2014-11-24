@@ -13,18 +13,17 @@ class App.VehicleView extends Thorax.View
 
   initialize: (id) ->
     @vehicles = App.vehicles
+    @model    =  @vehicles.get(id)
+
+    @collection = new App.Records [], vehicleId: id
+    @records    = @collection.groupByYear()
 
     @listenTo @vehicles, 'sync', ->
       @setModel @vehicles.get(id)
-      @setCollection new App.Records vehicle_id: id
 
-      @listenTo @model, 'change', @render
-      @listenTo @collection, 'sync change destroy', ->
-        @model.set records: @collection.groupByYear()
-
-      @collection.fetch()
-
-    @vehicles.fetch()
+    @collection.fetch().done (c) =>
+      @records = @collection.groupByYear(c)
+      @render()
 
   filterRecords: (e) ->
     val = e.currentTarget.value
