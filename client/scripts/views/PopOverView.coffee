@@ -10,6 +10,7 @@ class App.PopOverView extends Thorax.LayoutView
   stack: []
 
   toggle: (options) ->
+    @stack = []
     @stackEmpty = true
     @title      = options.title
 
