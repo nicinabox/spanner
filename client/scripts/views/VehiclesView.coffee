@@ -30,5 +30,6 @@ class App.VehiclesView extends Thorax.View
     App.popover.toggle
       elem: e.currentTarget
       title: 'Add Vehicle'
+      top: -5
       view: new App.AddVehicleView
         collection: @collection

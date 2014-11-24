@@ -10,7 +10,6 @@ class App.PopOverView extends Thorax.LayoutView
   stack: []
 
   toggle: (options) ->
-    @setPosition(options.elem)
     @stackEmpty = true
     @title      = options.title
 
@@ -20,6 +19,7 @@ class App.PopOverView extends Thorax.LayoutView
     @stack.push options
     @setView options.view
     @appendTo App.layout.$el
+    @setPosition(options)
 
     @$('input:first').select()
 
@@ -52,18 +52,42 @@ class App.PopOverView extends Thorax.LayoutView
   isLastInStack: (view) ->
     @stack[0] == view
 
-  setPosition: (elem) ->
+  setPosition: (options) ->
+    elem     = options.elem
+    top      = options.top
+    height   = @$el.outerHeight(true)
+    offset   = $(elem).offset()
+    position = offset
+    bounds   =
+      top: 0
+      left: 0
+      right: $(window).width()
+      bottom: $(window).height()
 
-    # Left offset is easy
-    offset     = $(elem).offset()
-    offset.top = $(elem).outerHeight() + offset.top
+    position.right = offset.left + @width
 
-    # Right offset is awkward
-    if offset.left + @width > $(window).width()
-      offset.left = offset.left - @width + $(elem).outerWidth()
+    # Normal top
+    if _.isNumber(top)
+      position.top = offset.top + top
+    else
+      position.top = offset.top + $(elem).outerHeight()
 
-    @$el.css offset
-    @$el.css width: @width
+    position.bottom = position.top + height
+
+    # Right bound
+    if position.right > bounds.right
+      position.left = offset.left - @width + $(elem).outerWidth()
+
+    # Bottom bound
+    if position.bottom > bounds.bottom
+      position.top = (bounds.bottom - height)
+      if position.top < 0
+        position.top = 10
+
+    @$el.css
+      left: position.left
+      top: position.top
+      width: @width
 
   back: (e) ->
     e.preventDefault()
