@@ -28,6 +28,7 @@ class App.VehicleView extends Thorax.View
       @render()
 
     @collection.fetch()
+    @reminders.fetch()
 
   filterRecords: (e) ->
     val = e.currentTarget.value

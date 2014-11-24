@@ -14,8 +14,9 @@ app.use(express.static('public'));
 var port   = process.env.PORT || 8080;
 var router = express.Router();
 
-var Vehicle = require('./app/models/vehicle');
-var Record  = require('./app/models/record');
+var Vehicle  = require('./app/models/vehicle');
+var Record   = require('./app/models/record');
+var Reminder = require('./app/models/reminder');
 
 router.get('/', function(req, res) {
   res.json({ message: 'hooray! welcome to our api!' });
@@ -97,6 +98,24 @@ router.route('/vehicles/:vehicleId/records/:id')
     }, function(err, record) {
       if (err) res.send(err);
       res.json(record);
+    });
+  });
+
+router.route('/vehicles/:vehicleId/reminders')
+  .get(function(req, res) {
+    Reminder.find({ vehicleId: req.params.vehicleId }, function(err, reminders) {
+      if (err) res.send(err);
+      res.json(reminders);
+    });
+  })
+
+  .post(function(req, res) {
+    var reminder = new Reminder();
+    _.merge(reminder, req.body, req.params);
+
+    reminder.save(function(err, rec) {
+      if (err) res.send(err);
+      res.json(rec);
     });
   });
 
