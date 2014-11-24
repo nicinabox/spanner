@@ -59,10 +59,12 @@
               {{/if}}
 
               <td class="notes">{{notes}}</td>
-              <td class="actions text-right">
-                <a href="#" class="remove-record" data-record-id="{{_id}}">
-                  <i class="fa fa-trash-o text-muted"></i>
-                </a>
+              <td class="text-right">
+                <nav class="actions pull-right">
+                  <a href="#" class="remove-record" data-record-id="{{_id}}">
+                    <i class="fa fa-trash-o"></i>
+                  </a>
+                </nav>
               </td>
             </tr>
           {{/each}}
