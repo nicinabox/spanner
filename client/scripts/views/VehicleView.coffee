@@ -24,7 +24,8 @@ class App.VehicleView extends Thorax.View
       @setModel @vehicles.get(id)
 
     @listenTo @collection, 'add sync remove', ->
-      @records = @collection.groupByYear()
+      @records      = @collection.groupByYear()
+      @milesPerYear = @collection.milesPerYear()
       @render()
 
     @collection.fetch()

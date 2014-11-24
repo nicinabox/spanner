@@ -35,7 +35,7 @@
 
 <div class="container action-bar">
   <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-4">
       <nav>
         <a href="#" class="add-service btn btn-secondary">
           + Add Service
@@ -44,6 +44,14 @@
           + Add Reminder
         </a>
       </nav>
+    </div>
+
+    <div class="col-sm-4 pull-right">
+      {{#if milesPerYear}}
+        <p class="text-muted text-right">
+          You drive about {{formatNumber '0,000' milesPerYear}} miles a year
+        </p>
+      {{/if}}
     </div>
   </div>
 </div>
