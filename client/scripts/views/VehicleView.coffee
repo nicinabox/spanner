@@ -7,6 +7,7 @@ class App.VehicleView extends Thorax.View
     'click #header .vehicles': 'showVehiclesPopover'
     'click #header .settings': 'showSettingsPopover'
     'click .add-service': 'showAddServicePopover'
+    'click .add-reminder': 'showAddReminderPopover'
     'click .remove-record': 'removeRecord'
     'keyup #filter': 'filterRecords'
     'submit #header form': (e) -> e.preventDefault()
@@ -15,6 +16,7 @@ class App.VehicleView extends Thorax.View
     @vehicles = App.vehicles
     @model    =  @vehicles.get(id)
 
+    @reminders  = new App.Reminders [], vehicleId: id
     @collection = new App.Records [], vehicleId: id
     @records    = @collection.groupByYear()
 
@@ -53,6 +55,15 @@ class App.VehicleView extends Thorax.View
       view: new App.AddServiceView
         collection: @collection
         model: @model
+
+  showAddReminderPopover: (e) ->
+    e.preventDefault()
+    App.popover.toggle
+      title: 'Add Reminder'
+      elem: e.currentTarget
+      view: new App.AddReminderView
+        model: @model
+        collection: @reminders
 
   showVehiclesPopover: (e) ->
     e.preventDefault()

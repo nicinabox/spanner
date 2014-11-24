@@ -37,7 +37,12 @@
   <div class="row">
     <div class="col-sm-12">
       <nav>
-        <a href="#" class="add-service btn btn-default">+ Add Service</a>
+        <a href="#" class="add-service btn btn-secondary">
+          + Add Service
+        </a>
+        <a href="#" class="add-reminder btn btn-secondary">
+          + Add Reminder
+        </a>
       </nav>
     </div>
   </div>
@@ -45,6 +50,20 @@
 
 <div id="main">
   <div class="container">
+    {{#empty reminders}}
+    {{else}}
+      <div id="reminders">
+        <h5 class="text-muted">
+          <span class="fa fa-clock-o fa-fw"></span>
+          Reminders
+        </h5>
+
+        {{#collection reminders tag="ul" class="list-unstyled"}}
+          <li>{{reminder}}</li>
+        {{/collection}}
+      </div>
+    {{/empty}}
+
     <div id="records">
       {{#each records}}
         <h3>{{year}}</h3>
