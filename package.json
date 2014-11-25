@@ -28,6 +28,7 @@
     "body-parser": "^1.9.3",
     "emailjs": "^0.3.12",
     "express": "^4.10.2",
+    "express-session": "^1.9.2",
     "handlebars": "^2.0.0",
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
