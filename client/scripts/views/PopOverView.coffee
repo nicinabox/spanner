@@ -99,6 +99,14 @@ class App.PopOverView extends Thorax.LayoutView
       left: position.left
       top: position.top
       width: @width
+      zIndex: @zIndex(elem)
+
+  zIndex: (elem) ->
+    z = window.document.defaultView.getComputedStyle(elem)
+          .getPropertyValue('z-index')
+    if (isNaN(z))
+      return @zIndex(elem.parentNode)
+    z
 
   back: (e) ->
     e.preventDefault()
