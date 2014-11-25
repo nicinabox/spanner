@@ -12,3 +12,9 @@ class App.Record extends Thorax.Model
 
     errors = _.compact(errors)
     errors unless _.isEmpty(errors)
+
+  set: (data) ->
+    data.date    = moment(data.date).format('YYYY-MM-DD')
+    data.mileage = numeral(data.mileage).value()
+
+    super(data)
