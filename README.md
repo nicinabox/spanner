@@ -16,15 +16,10 @@ A simple tracking application to keep up with your vehicles.
 * `npm install && bower install`
 * `gulp`
 
-# Architecture
+## Todo
 
-## Client
-
-* backbone
-* thorax
-
-## Server
-
-* rails-api
-* postgres
-* passwordless auth?
+* [] Removing reminder
+* [] Editing record
+* [] Timezone bug in record date?
+* [x] Authentication
+* [] Deploy
