@@ -7,18 +7,19 @@ class App.WelcomeView extends Thorax.View
 
   initialize: ->
     @placeholder = 'E.g., ' + @randomEmail()
-    @listenTo App.session, 'auth:resolve', ->
-      App.router.redirectTo 'vehicles'
 
   login: (e) ->
     e.preventDefault()
-
-    App.session.login()
+    @authenticating = true
+    App.session.login(@serialize())
+    @render()
 
   randomEmail: ->
     emails = [
-      'lando@cloudcity.com'
-      'robertpaulson@loustavern.com'
+      'lando@cloudci.ty'
+      'robertpaulson@loustave.rn'
+      'drspaceman@rockefellerpla.ce'
+      'mal@firef.ly'
     ]
 
     _.sample(emails)
