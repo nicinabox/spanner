@@ -29,7 +29,6 @@ passwordless.init(new MongoStore(mongoDbPath), {
 });
 passwordless.addDelivery(
   function(tokenToSend, uidToSend, recipient, callback) {
-      // Send out token
       smtpServer.send({
          text: 'Hello '+ recipient +'!\nYou can now access your vehicles here: ' +
               host + '#login/' +
@@ -42,7 +41,9 @@ passwordless.addDelivery(
           if (err) console.log(err);
           callback(err);
       });
-  }, { ttl: 1000*60*10 });
+  }, {
+    ttl: 1000 * 60 * 1440 * 30 // 30 days
+  });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

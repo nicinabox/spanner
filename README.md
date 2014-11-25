@@ -22,6 +22,6 @@ A simple tracking application to keep up with your vehicles.
 
 * [ ] Removing reminder
 * [ ] Editing record
-* [ ] Timezone bug in record date?
+* [x] Timezone bug in record date?
 * [x] Authentication
 * [ ] Deploy
