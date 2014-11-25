@@ -42,7 +42,7 @@ passwordless.addDelivery(
           if (err) console.log(err);
           callback(err);
       });
-  });
+  }, { ttl: 1000*60*10 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
