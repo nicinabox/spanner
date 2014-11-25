@@ -1,8 +1,5 @@
 class App.RootView extends Thorax.LayoutView
-  el: '#root'
-
-  events:
-    'click .logout': 'logout'
+  el: '#app'
 
   initialize: ->
     _.bindAll this, 'closePopovers'
@@ -13,7 +10,3 @@ class App.RootView extends Thorax.LayoutView
     inPopover = $(e.target).closest('.pop-over').length
     unless inPopover
       App.popover.close()
-
-  logout: (e) ->
-    e.preventDefault()
-    # App.session.logout()
