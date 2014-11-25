@@ -2,6 +2,8 @@
 
 A simple tracking application to keep up with your vehicles.
 
+![](http://cl.ly/image/0v1A2s2N2W1m/Screen%20Shot%202014-11-25%20at%2010.56.18%20AM.png)
+
 ## Features
 
 * Keep records for as many vehicles as you want
@@ -18,8 +20,8 @@ A simple tracking application to keep up with your vehicles.
 
 ## Todo
 
-* [] Removing reminder
-* [] Editing record
-* [] Timezone bug in record date?
+* [ ] Removing reminder
+* [ ] Editing record
+* [ ] Timezone bug in record date?
 * [x] Authentication
-* [] Deploy
+* [ ] Deploy
