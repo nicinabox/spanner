@@ -10,10 +10,22 @@ App =
     @popover = new App.PopOverView
 
     @vehicles = new App.Vehicles
-    @vehicles.fetch()
 
-    Backbone.history.start()
-    @session.authorize()
+    $.when(@session.authorize())
+      .then( =>
+        @session.on 'auth:resolve', =>
+          fragment = Backbone.history.fragment
+          if !fragment or /login/.test(fragment)
+            App.router.redirectTo 'vehicles'
+
+        @session.on 'auth:reject', ->
+          App.router.redirectTo ''
+
+        Backbone.history.start()
+
+        if @session.isAuthorized()
+          @session.trigger 'auth:resolve'
+      )
 
 _.bindAll App
 window.App = App

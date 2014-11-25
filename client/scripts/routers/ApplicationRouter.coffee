@@ -3,6 +3,7 @@ class App.ApplicationRouter extends Backbone.Router
     '': 'welcome'
     'vehicles': 'vehicles'
     'vehicles/:id': 'vehicle'
+    'login/:uid/:token': 'login'
 
   constructor: ->
     _.each @routes, (method, route) ->
@@ -12,9 +13,6 @@ class App.ApplicationRouter extends Backbone.Router
     , this
 
     super
-
-    @listenTo App.session, 'auth:reject', ->
-      @redirectTo ''
 
     @on 'route', ->
       App.layout.$('.pop-over').remove()
@@ -27,3 +25,9 @@ class App.ApplicationRouter extends Backbone.Router
     view = new App[name + 'View'](options...)
     App.layout.setView view
     App.currentView = view
+
+  login: (uid, token) ->
+    App.session.authorize({
+      uid: uid
+      token: token
+    })

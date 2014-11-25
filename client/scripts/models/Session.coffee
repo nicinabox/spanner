@@ -1,31 +1,37 @@
 class App.Session extends Thorax.Model
-  localStorage: new Backbone.LocalStorage("session")
+  urlRoot: '/session'
+  idAttribute: 'uid'
 
   initialize: ->
     @on 'change:token', @onChangeToken
 
-  login: ->
-    @save
-      token: @newToken()
+  toRequestJSON: ->
+    _.pick(@toJSON(), 'uid', 'token')
+
+  login: (data) ->
+    @save(data)
 
   logout: ->
     @destroy()
     @clear()
+    localStorage.clear()
 
-  authorize: ->
-    @fetch().done => @onChangeToken()
+  authorize: (data) ->
+    if data
+      @set(data)
+      localStorage.setItem 'session', JSON.stringify(@toJSON())
+    else
+      data = JSON.parse(localStorage.getItem('session'))
+      @set(data)
+
+  unauthorize: ->
+    @logout()
 
   isAuthorized: ->
     !!@get 'token'
-
-  newToken: ->
-    Math.random().toString(36).substring(7)
 
   onChangeToken: ->
     if @isAuthorized()
       @trigger 'auth:resolve'
     else
       @trigger 'auth:reject'
-
-  parse: (data) ->
-    data[0] if data
