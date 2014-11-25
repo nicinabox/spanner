@@ -12,13 +12,15 @@
             <h4 class="text-success">
               <i class="fa fa-check"></i>
               Check your email for a link.
+
+              <a href="#" class="try-again">Try again.</a>
             </h4>
 
           {{else}}
             <form class="form-inline">
               <div class="form-group">
                 <input id="user" name="user" type="email" class="form-control"
-                  placeholder="{{placeholder}}" autofocus>
+                  value="{{user.user}}" placeholder="{{placeholder}}" autofocus>
               </div>
 
               <button class="btn btn-primary">Sign In</button>
