@@ -110,4 +110,14 @@ router.route('/vehicles/:vehicleId/reminders')
     });
   });
 
+router.route('/vehicles/:vehicleId/reminders/:id')
+  .delete(function(req, res) {
+    Reminder.remove({
+      _id: req.params.id
+    }, function(err, record) {
+      if (err) res.send(err);
+      res.json(record);
+    });
+  });
+
 module.exports = router;
