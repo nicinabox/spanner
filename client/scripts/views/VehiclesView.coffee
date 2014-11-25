@@ -4,7 +4,7 @@ class App.VehiclesView extends Thorax.View
 
   events:
     'click .add-vehicle': 'showAddVehiclePopover'
-    'ready': 'sortable'
+    'rendered': 'sortable'
 
   sortable: ->
     _.defer =>
@@ -19,6 +19,7 @@ class App.VehiclesView extends Thorax.View
 
   initialize: ->
     @collection = App.vehicles
+    @sessionView = new App.SessionView
 
   saveVehicle: (e) ->
     e.preventDefault()
