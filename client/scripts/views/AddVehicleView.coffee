@@ -8,9 +8,6 @@ class App.AddVehicleView extends Thorax.View
     e.preventDefault()
     model = new App.Vehicle @serialize()
 
-    @listenToOnce model, 'sync', ->
-      App.router.redirectTo "vehicles/#{model.id}"
-
     if model.isValid()
       @collection.create model
       @parent.close()

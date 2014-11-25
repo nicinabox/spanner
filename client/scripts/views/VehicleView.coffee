@@ -9,6 +9,7 @@ class App.VehicleView extends Thorax.View
     'click .add-service': 'showAddServicePopover'
     'click .add-reminder': 'showAddReminderPopover'
     'click .remove-record': 'removeRecord'
+
     'keyup #filter': 'filterRecords'
     'submit #header form': (e) -> e.preventDefault()
 
@@ -28,6 +29,9 @@ class App.VehicleView extends Thorax.View
       @milesPerYear = @collection.milesPerYear()
       @render()
 
+    @sessionView = new App.SessionView
+
+    @vehicles.fetch()
     @collection.fetch()
     @reminders.fetch()
 

@@ -25,6 +25,8 @@
             <a href="#" class="vehicles btn btn-default">
               Vehicles
             </a>
+
+            {{view sessionView}}
           </nav>
         </div>
       </div>
@@ -74,28 +76,30 @@
 
     <div id="records">
       {{#each records}}
-        <h3>{{year}}</h3>
-        <table class="table table-striped">
-          {{#each records}}
-            <tr data-id="{{_id}}">
-              <td class="date">{{formatDate 'MMM DD' date}}</td>
-              <td class="mileage">{{formatNumber '000,000' mileage}}</td>
+        <div class="record-year">
+          <h3>{{year}}</h3>
+          <table class="table table-striped">
+            {{#each records}}
+              <tr data-id="{{_id}}">
+                <td class="date">{{formatDate 'MMM DD' date}}</td>
+                <td class="mileage">{{formatNumber '000,000' mileage}}</td>
 
-              {{#if ../../settings.enableCost}}
-                <td class="cost">{{formatNumber '$0' cost}}</td>
-              {{/if}}
+                {{#if ../../settings.enableCost}}
+                  <td class="cost">{{formatNumber '$0' cost}}</td>
+                {{/if}}
 
-              <td class="notes">{{notes}}</td>
-              <td class="text-right">
-                <nav class="actions pull-right">
-                  <a href="#" class="remove-record" data-record-id="{{_id}}">
-                    <i class="fa fa-trash-o"></i>
-                  </a>
-                </nav>
-              </td>
-            </tr>
-          {{/each}}
-        </table>
+                <td class="notes">{{notes}}</td>
+                <td class="text-right">
+                  <nav class="actions pull-right">
+                    <a href="#" class="remove-record" data-record-id="{{_id}}">
+                      <i class="fa fa-trash-o"></i>
+                    </a>
+                  </nav>
+                </td>
+              </tr>
+            {{/each}}
+          </table>
+        </div>
       {{else}}
         <h3 class="text-center text-muted">
           You don't have any records yet
