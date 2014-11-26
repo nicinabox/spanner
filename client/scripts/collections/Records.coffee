@@ -12,43 +12,38 @@ class App.Records extends Thorax.Collection
     mpd = @milesPerDay()
     return unless mpd
 
-    last = @last().toJSON()
-    diffToday = moment(moment()).diff(last.date, 'days')
+    last        = @last().toJSON()
+    elapsedDays = moment().diff(last.date, 'days')
 
-    mileage = last.mileage + (diffToday * mpd)
-    Math.floor(mileage / 10) * 10
+    currentMileage = last.mileage + (elapsedDays * mpd)
+    Math.floor(currentMileage / 10) * 10
 
   milesPerYear: ->
+    ONE_YEAR = 365
     mpd = @milesPerDay()
     return unless mpd
 
-    last  = @last().toJSON()
-    first  = @first().toJSON()
+    first       = @first().toJSON()
+    elapsedDays = moment().diff(first.date, 'days')
 
-    diffToday = moment(moment()).diff(last.date, 'days')
-    diffDays = moment(last.date).diff(first.date, 'days') + diffToday
-
-    if diffDays < 365
-      diffEOY = 365 - moment().dayOfYear()
-      mpy = mpd * (diffDays + diffEOY)
+    if elapsedDays < ONE_YEAR
+      remainingDays = ONE_YEAR - moment().dayOfYear()
+      mpy = mpd * (elapsedDays + remainingDays)
     else
-      mpy = mpd * 365
+      mpy = mpd * ONE_YEAR
 
     Math.floor(mpy / 10) * 10
 
   milesPerDay: ->
-    first = @first()
-    last  = @last()
-    return unless first
+    return unless @length
 
-    first = first.toJSON()
-    last  = last.toJSON()
+    first = @first().toJSON()
+    last  = @last().toJSON()
 
-    diffToday = moment(moment()).diff(last.date, 'days')
-    diffDays  = moment(last.date).diff(first.date, 'days') + diffToday
+    elapsedDays    = moment(last.date).diff(first.date, 'days')
+    elapsedMileage = last.mileage - first.mileage
 
-    diffMileage = last.mileage - first.mileage
-    +(diffMileage / diffDays).toFixed(2)
+    +(elapsedMileage / elapsedDays).toFixed(2)
 
   groupByYear: (data) ->
     _(data or @toJSON())
