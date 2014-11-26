@@ -1,16 +1,17 @@
 <form action="">
   <div class="form-group">
     <label class="control-label" for="date">Date</label>
-    <input type="date" name="date" class="form-control" value="{{today}}">
+    <input type="text" name="date" class="form-control"
+      value="{{formatDate 'MM-DD-YYYY' today}}">
   </div>
 
   <div class="form-group">
     <label class="control-label" for="mileage">Mileage</label>
     <input type="text" name="mileage" class="form-control"
-      value="{{currentEstimatedMileage}}" placeholder="E.g., 13500">
+      value="{{formatNumber '0,0' currentEstimatedMileage}}" placeholder="E.g., 13,500">
     {{#if currentEstimatedMileage}}
       <small class="help-block">
-        We tried to estimate your current mileage.
+        Your current mileage (we estimated)
       </small>
     {{/if}}
   </div>
