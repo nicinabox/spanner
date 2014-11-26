@@ -2,12 +2,11 @@ class App.VehicleSettingsView extends Thorax.View
   name: 'vehicle_settings'
 
   events:
-    'click a': 'callMethod'
-
-  callMethod: (e) ->
-    e.preventDefault()
-    method = $(e.currentTarget).data('method')
-    this[method]()
+    'click a[class*=js-]': (e) -> e.preventDefault()
+    'click .js-enable-cost': 'enableCost'
+    'click .js-import-records': 'importRecords'
+    'click .js-retire-vehicle': 'retireVehicle'
+    'click .js-remove-vehicle': 'removeVehicle'
 
   enableCost: ->
     settings = @model.settings()

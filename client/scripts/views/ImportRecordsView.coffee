@@ -2,16 +2,13 @@ class App.ImportRecordsView extends Thorax.View
   name: 'import_records'
 
   events:
-    'click a': 'runMethod'
+    'click a[class*=js-]': (e) -> e.preventDefault()
+    'click .js-import-records': 'importRecords'
+    'click .js-cancel-import': 'cancelImport'
     'submit form': 'previewImport'
 
   initialize: ->
     @records = []
-
-  runMethod: (e) ->
-    e.preventDefault()
-    method = $(e.currentTarget).data('method')
-    this[method]()
 
   previewImport: (e) ->
     e.preventDefault()

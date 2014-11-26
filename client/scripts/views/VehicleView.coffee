@@ -3,15 +3,18 @@ class App.VehicleView extends Thorax.View
   id: 'vehicle'
 
   events:
-    'click #header .name': 'showChangeNamePopover'
-    'click #header .vehicles': 'showVehiclesPopover'
-    'click #header .settings': 'showSettingsPopover'
-    'click .add-service': 'showAddServicePopover'
-    'click .add-reminder': 'showAddReminderPopover'
-    'click .remove-record': 'removeRecord'
+    'click .js-name': 'showChangeNamePopover'
+    'click .js-vehicles': 'showVehiclesPopover'
+    'click .js-settings': 'showSettingsPopover'
+
+    'click .js-add-service': 'showAddServicePopover'
+    'click .js-add-reminder': 'showAddReminderPopover'
+    'click .js-remove-record': 'removeRecord'
+    'click .js-reminder': 'showEditReminderPopover'
 
     'keyup #filter': 'filterRecords'
     'submit #header form': (e) -> e.preventDefault()
+    'click a[class*=js-]': (e) -> e.preventDefault()
 
   initialize: (id) ->
     @vehicles = App.vehicles
@@ -47,14 +50,12 @@ class App.VehicleView extends Thorax.View
       $this.show() if re.test(content)
 
   removeRecord: (e) ->
-    e.preventDefault()
     id = $(e.currentTarget).data('record-id')
     if confirm 'Really delete record?'
       record = @collection.get(id)
       record.destroy()
 
   showAddServicePopover: (e) ->
-    e.preventDefault()
     App.popover.toggle
       title: 'Add Service'
       elem: e.currentTarget
@@ -63,7 +64,6 @@ class App.VehicleView extends Thorax.View
         model: @model
 
   showAddReminderPopover: (e) ->
-    e.preventDefault()
     App.popover.toggle
       title: 'Add Reminder'
       elem: e.currentTarget
@@ -72,14 +72,12 @@ class App.VehicleView extends Thorax.View
         collection: @reminders
 
   showVehiclesPopover: (e) ->
-    e.preventDefault()
     App.popover.toggle
       elem: e.currentTarget
       view: new App.VehiclesMenu
         collection: @vehicles
 
   showChangeNamePopover: (e) ->
-    e.preventDefault()
     App.popover.toggle
       elem: e.currentTarget
       title: 'Rename Vehicle'
@@ -88,10 +86,17 @@ class App.VehicleView extends Thorax.View
         model: @model
 
   showSettingsPopover: (e) ->
-    e.preventDefault()
     App.popover.toggle
       elem: e.currentTarget
       title: 'Vehicle Settings'
       view: new App.VehicleSettingsView
         model: @model
         collection: @collection
+
+  showEditReminderPopover: (e) ->
+    App.popover.toggle
+      elem: e.currentTarget
+      title: 'Edit Reminder'
+      view: new App.AddReminderView
+        model: $(e.currentTarget).model()
+        collection: @reminders

@@ -7,22 +7,22 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <a href="#" class="name btn btn-default">
+          <a href="#" class="js-name btn btn-default">
             {{name}}
           </a>
-          <a href="#" class="settings btn btn-default">
+          <a href="#" class="js-settings btn btn-default">
             Settings
           </a>
         </div>
         <div class="col-md-4">
           <form class="navbar-form">
             <input type="search" name="filter" id="filter" class="form-control text-center"
-              placeholder="Filter">
+              placeholder="Search">
           </form>
         </div>
         <div class="col-md-4">
           <nav class="pull-right">
-            <a href="#" class="vehicles btn btn-default">
+            <a href="#" class="js-vehicles btn btn-default">
               Vehicles
             </a>
 
@@ -39,10 +39,10 @@
   <div class="row">
     <div class="col-sm-4">
       <nav>
-        <a href="#" class="add-service btn btn-secondary">
+        <a href="#" class="js-add-service btn btn-secondary">
           + Add Service
         </a>
-        <a href="#" class="add-reminder btn btn-secondary">
+        <a href="#" class="js-add-reminder btn btn-secondary">
           + Add Reminder
         </a>
       </nav>
@@ -91,7 +91,7 @@
                 <td class="notes">{{notes}}</td>
                 <td class="text-right">
                   <nav class="actions pull-right">
-                    <a href="#" class="remove-record" data-record-id="{{_id}}">
+                    <a href="#" class="js-remove-record" data-record-id="{{_id}}">
                       <i class="fa fa-trash-o"></i>
                     </a>
                   </nav>
