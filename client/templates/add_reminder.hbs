@@ -7,4 +7,10 @@
 
   <input type="hidden" name="vehicle_id" value={{_id}}>
   <button class="btn btn-success">Save</button>
+
+  {{#if model}}
+    <a href="#" class="btn btn-danger pull-right" data-destroy>
+      Remove
+    </a>
+  {{/if}}
 </form>

@@ -111,6 +111,19 @@ router.route('/vehicles/:vehicleId/reminders')
   });
 
 router.route('/vehicles/:vehicleId/reminders/:id')
+  .put(function(req, res) {
+    Reminder.findById(req.params.id, function(err, reminder) {
+      if (err) res.send(err);
+      _.merge(reminder, req.body);
+
+      reminder.save(function(err) {
+        if (err) res.send(err);
+        res.json(reminder);
+      });
+
+    });
+  })
+
   .delete(function(req, res) {
     Reminder.remove({
       _id: req.params.id

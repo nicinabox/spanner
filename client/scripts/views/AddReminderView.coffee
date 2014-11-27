@@ -2,17 +2,27 @@ class App.AddReminderView extends Thorax.View
   name: 'add_reminder'
 
   events:
-    'submit form': 'createRecord'
+    'submit form': 'createOrUpdateRecord'
+    'click [data-destroy]': 'destroyRecord'
 
-  createRecord: (e) ->
+  destroyRecord: (e) ->
     e.preventDefault()
-    m = new App.Reminder @serialize()
+    @model.destroy()
+    @parent.close()
 
-    if m.isValid()
-      e.target.reset()
-      @collection.create m
+  createOrUpdateRecord: (e) ->
+    e.preventDefault()
+
+    if @model
+      @model.save @serialize()
       @parent.close()
     else
-      _.each m.validationError, (error) =>
-        @$("[name=#{error.name}]").closest('.form-group')
-          .addClass('has-error')
+      m = new App.Reminder @serialize()
+
+      if m.isValid()
+        @collection.create m
+        @parent.close()
+      else
+        _.each m.validationError, (error) =>
+          @$("[name=#{error.name}]").closest('.form-group')
+            .addClass('has-error')

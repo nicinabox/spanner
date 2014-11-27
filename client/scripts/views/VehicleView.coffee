@@ -10,7 +10,6 @@ class App.VehicleView extends Thorax.View
     'click .js-add-service': 'showAddServicePopover'
     'click .js-add-reminder': 'showAddReminderPopover'
     'click .js-remove-record': 'removeRecord'
-    'click .js-reminder': 'showEditReminderPopover'
 
     'keyup #filter': 'filterRecords'
     'submit #header form': (e) -> e.preventDefault()
@@ -33,6 +32,9 @@ class App.VehicleView extends Thorax.View
       @render()
 
     @sessionView = new App.SessionView
+    @remindersView = new App.RemindersView
+      vehicleId: id
+      collection: @reminders
 
     @vehicles.fetch()
     @collection.fetch()
@@ -68,7 +70,7 @@ class App.VehicleView extends Thorax.View
       title: 'Add Reminder'
       elem: e.currentTarget
       view: new App.AddReminderView
-        model: @model
+        vehicle: @model
         collection: @reminders
 
   showVehiclesPopover: (e) ->
@@ -92,11 +94,3 @@ class App.VehicleView extends Thorax.View
       view: new App.VehicleSettingsView
         model: @model
         collection: @collection
-
-  showEditReminderPopover: (e) ->
-    App.popover.toggle
-      elem: e.currentTarget
-      title: 'Edit Reminder'
-      view: new App.AddReminderView
-        model: $(e.currentTarget).model()
-        collection: @reminders

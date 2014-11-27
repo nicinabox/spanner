@@ -1,0 +1,18 @@
+{{#empty collection}}
+{{else}}
+  <div id="reminders">
+    <h5 class="text-muted">
+      <span class="fa fa-clock-o fa-fw"></span>
+      Reminders
+    </h5>
+
+    {{#collection tag="ul" class="list-unstyled"}}
+      <li>
+        <a href="#" class="js-reminder">
+          {{reminder}}
+        </a>
+      </li>
+    {{/collection}}
+  </div>
+{{/empty}}
+

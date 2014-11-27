@@ -60,19 +60,7 @@
 
 <div id="main">
   <div class="container">
-    {{#empty reminders}}
-    {{else}}
-      <div id="reminders">
-        <h5 class="text-muted">
-          <span class="fa fa-clock-o fa-fw"></span>
-          Reminders
-        </h5>
-
-        {{#collection reminders tag="ul" class="list-unstyled"}}
-          <li>{{reminder}}</li>
-        {{/collection}}
-      </div>
-    {{/empty}}
+    {{view remindersView}}
 
     <div id="records">
       {{#each records}}
