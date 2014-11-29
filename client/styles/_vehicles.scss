@@ -58,9 +58,13 @@
     margin-bottom: 40px;
   }
 
-  tr:hover {
-    .actions {
-      opacity: 0.5;
+  tr {
+    cursor: pointer;
+
+    &:hover {
+      .actions {
+        opacity: 0.5;
+      }
     }
   }
 

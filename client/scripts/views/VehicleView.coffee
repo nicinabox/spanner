@@ -21,17 +21,18 @@ class App.VehicleView extends Thorax.View
 
     @reminders  = new App.Reminders [], vehicleId: id
     @collection = new App.Records [], vehicleId: id
-    @records    = @collection.groupByYear()
 
     @listenTo @vehicles, 'sync', ->
       @setModel @vehicles.get(id)
 
     @listenTo @collection, 'add sync remove', ->
-      @records      = @collection.groupByYear()
       @milesPerYear = @collection.milesPerYear()
       @render()
 
     @sessionView = new App.SessionView
+    @recordsView = new App.RecordsView
+      collection: @collection
+
     @remindersView = new App.RemindersView
       vehicleId: id
       collection: @reminders
