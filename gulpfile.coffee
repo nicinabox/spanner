@@ -47,6 +47,7 @@ gulp.task 'styles', ->
 
 gulp.task 'templates', ->
   gulp.src(config.paths.client.templates)
+    .pipe($.plumber())
     .pipe($.handlebars())
     .pipe($.defineModule('plain'))
     .pipe($.declare({
