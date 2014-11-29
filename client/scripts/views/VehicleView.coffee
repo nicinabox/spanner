@@ -64,7 +64,6 @@ class App.VehicleView extends Thorax.View
       elem: e.currentTarget
       view: new App.AddServiceView
         collection: @collection
-        model: @model
 
   showAddReminderPopover: (e) ->
     App.popover.toggle

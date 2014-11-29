@@ -17,12 +17,12 @@ class App.AddReminderView extends Thorax.View
       @model.save @serialize()
       @parent.close()
     else
-      m = new App.Reminder @serialize()
+      model = new App.Reminder @serialize()
 
-      if m.isValid()
-        @collection.create m
+      if model.isValid()
+        @collection.create model
         @parent.close()
       else
-        _.each m.validationError, (error) =>
+        _.each model.validationError, (error) =>
           @$("[name=#{error.name}]").closest('.form-group')
             .addClass('has-error')

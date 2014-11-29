@@ -9,6 +9,7 @@
     <label class="control-label" for="mileage">Mileage</label>
     <input type="text" name="mileage" class="form-control"
       value="{{formatNumber '0,0' currentEstimatedMileage}}" placeholder="E.g., 13,500">
+
     {{#if currentEstimatedMileage}}
       <small class="help-block">
         Your current mileage (we estimated)
@@ -32,4 +33,10 @@
 
   <input type="hidden" name="vehicle_id" value={{_id}}>
   <button class="btn btn-success">Save</button>
+
+  {{#if model}}
+    <a href="#" class="btn btn-danger pull-right" data-destroy>
+      Remove
+    </a>
+  {{/if}}
 </form>

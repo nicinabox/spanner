@@ -60,30 +60,8 @@
 
   tr {
     cursor: pointer;
-
-    &:hover {
-      .actions {
-        opacity: 0.5;
-      }
-    }
   }
 
-  .actions {
-    opacity: 0;
-    @include transition(opacity 200ms ease-out);
-
-    a {
-      @extend .text-muted;
-    }
-
-    &:hover {
-      opacity: 1 !important;
-
-      .remove-record {
-        @extend .text-danger;
-      }
-    }
-  }
 }
 
 #reminders {

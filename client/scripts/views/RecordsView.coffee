@@ -12,11 +12,12 @@ class App.RecordsView extends Thorax.View
 
   showEditServicePopover: (e) ->
     e.preventDefault()
-    model = @collection.get $(e.currentTarget).data('id')
+
     App.popover.toggle
       title: 'Edit Service'
       elem: e.currentTarget
       populate: true
+      top: -80
       view: new App.AddServiceView
         collection: @collection
-        model: model
+        model: @collection.get($(e.currentTarget).data('id'))

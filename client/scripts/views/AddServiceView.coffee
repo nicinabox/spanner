@@ -2,21 +2,33 @@ class App.AddServiceView extends Thorax.View
   name: 'add_service'
 
   events:
-    'submit form': 'createRecord'
+    'submit form': 'createOrUpdateRecord'
+    'click [data-destroy]': 'destroyRecord'
 
   initialize: ->
     @today = moment().format('YYYY-MM-DD')
-    @currentEstimatedMileage = @collection.currentEstimatedMileage()
+    unless @model
+      @currentEstimatedMileage = @collection.currentEstimatedMileage()
 
-  createRecord: (e) ->
+  destroyRecord: (e) ->
     e.preventDefault()
-    model = new App.Record @serialize()
+    @model.destroy()
+    @parent.close()
 
-    if model.isValid()
-      @collection.create model
+  createOrUpdateRecord: (e) ->
+    e.preventDefault()
+
+    if @model
+      @model.save @serialize()
       @parent.close()
-      e.target.reset()
     else
-      _.each model.validationError, (error) =>
-        @$("[name=#{error.name}]").closest('.form-group')
-          .addClass('has-error')
+      model = new App.Record @serialize()
+
+      if model.isValid()
+        @collection.create model
+        @parent.close()
+        e.target.reset()
+      else
+        _.each model.validationError, (error) =>
+          @$("[name=#{error.name}]").closest('.form-group')
+            .addClass('has-error')
