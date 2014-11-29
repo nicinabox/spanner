@@ -10,7 +10,7 @@ class App.PopOverView extends Thorax.LayoutView
   stack: []
 
   toggle: (options) ->
-    @stack = []
+    @stack      = []
     @stackEmpty = true
     @title      = options.title
 
@@ -74,6 +74,7 @@ class App.PopOverView extends Thorax.LayoutView
       left: 0
       right: $(window).width()
       bottom: $(window).height()
+      scrollTop: $(window).scrollTop()
 
     position.right = offset.left + @width
 
@@ -90,10 +91,9 @@ class App.PopOverView extends Thorax.LayoutView
       position.left = offset.left - @width + $(elem).outerWidth()
 
     # Bottom bound
-    if position.bottom > bounds.bottom
-      position.top = (bounds.bottom - height)
-      if position.top < 0
-        position.top = 10
+    if position.bottom > bounds.bottom + bounds.scrollTop
+      position.top = bounds.bottom - height + bounds.scrollTop
+      position.top = 10 if position.top - bounds.scrollTop < 0
 
     @$el.css
       left: position.left
