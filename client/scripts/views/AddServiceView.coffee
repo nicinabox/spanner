@@ -4,6 +4,8 @@ class App.AddServiceView extends Thorax.View
   events:
     'submit form': 'createOrUpdateRecord'
     'click [data-destroy]': 'destroyRecord'
+    'rendered': ->
+      @$('textarea').autosize()
 
   initialize: ->
     @today = moment().format('YYYY-MM-DD')
