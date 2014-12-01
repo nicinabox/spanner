@@ -11,6 +11,23 @@ body {
   @include clearfix;
 }
 
+#logo {
+  display: inline-block;
+  text-align: center;
+  padding: 10px 0;
+  opacity: 0.3;
+  width: 80px;
+  @include transition(opacity 200ms ease-out);
+
+  img {
+    max-width: 100%;
+  }
+
+  &:hover {
+    opacity: 0.4;
+  }
+}
+
 #main {
   margin-top: 100px;
   margin-bottom: 60px;

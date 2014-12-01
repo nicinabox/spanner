@@ -14,6 +14,7 @@ config =
       html: 'client/*.html'
       scripts: 'client/scripts/**/*'
       styles: 'client/styles/**/*'
+      images: 'client/images/*'
       templates: 'client/templates/**/*'
 
       app: [
