@@ -14,7 +14,7 @@ class App.Record extends Thorax.Model
     errors unless _.isEmpty(errors)
 
   set: (data) ->
-    data.date    = moment(data.date).format('YYYY-MM-DD')
+    data.date    = moment(data.date).utc().format('YYYY-MM-DD')
     data.mileage = numeral(data.mileage).value()
 
     super(data)
