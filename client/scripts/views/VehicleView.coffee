@@ -17,13 +17,14 @@ class App.VehicleView extends Thorax.View
 
   initialize: (id) ->
     @vehicles = App.vehicles
-    @model    =  @vehicles.get(id)
+    @model    = @vehicles.get(id)
 
     @reminders  = new App.Reminders [], vehicleId: id
     @collection = new App.Records [], vehicleId: id
 
     @listenTo @vehicles, 'sync', ->
       @setModel @vehicles.get(id)
+      @recordsView.setModel @model
 
     @listenTo @collection, 'add sync remove', ->
       @milesPerYear = @collection.milesPerYear()
@@ -34,7 +35,6 @@ class App.VehicleView extends Thorax.View
       collection: @collection
 
     @remindersView = new App.RemindersView
-      vehicleId: id
       collection: @reminders
 
     @vehicles.fetch()
@@ -64,6 +64,7 @@ class App.VehicleView extends Thorax.View
       elem: e.currentTarget
       view: new App.AddServiceView
         collection: @collection
+        vehicle: @model.toJSON()
 
   showAddReminderPopover: (e) ->
     App.popover.toggle

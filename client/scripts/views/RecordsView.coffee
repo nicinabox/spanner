@@ -21,3 +21,4 @@ class App.RecordsView extends Thorax.View
       view: new App.AddServiceView
         collection: @collection
         model: @collection.get($(e.currentTarget).data('id'))
+        vehicle: @model.toJSON()
