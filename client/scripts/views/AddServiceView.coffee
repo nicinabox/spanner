@@ -8,7 +8,7 @@ class App.AddServiceView extends Thorax.View
       @$('textarea').autosize()
 
   initialize: ->
-    @today = moment().format('YYYY-MM-DD')
+    @date = moment().format('MM-DD-YYYY')
     unless @model
       @currentEstimatedMileage = @collection.currentEstimatedMileage()
 
