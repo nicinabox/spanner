@@ -27,3 +27,4 @@ A simple tracking application to keep up with your vehicles.
 * [ ] Editing record date, mileage formatting
 * [ ] Export as csv
 * [ ] Deploy
+* [ ] Track more than just road vehicles (boats, planes, houses, etc)
