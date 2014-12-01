@@ -28,7 +28,7 @@ class App.PopOverView extends Thorax.LayoutView
     @appendTo App.layout.$el
     @setPosition(options)
 
-    @selectInput()
+    @selectInput(options)
 
   pushView: (options) ->
     @title      = options.title
@@ -40,7 +40,7 @@ class App.PopOverView extends Thorax.LayoutView
     @setView options.view
 
     @delegateEvents()
-    @selectInput()
+    @selectInput(options)
 
   popView: ->
     current     = @stack.pop()
@@ -54,10 +54,10 @@ class App.PopOverView extends Thorax.LayoutView
     @setView previous.view
     previous.view.delegateEvents()
 
-    @selectInput()
+    @selectInput(options)
 
-  selectInput: ->
-    selector = @focus || 'input, textarea'
+  selectInput: (options = {}) ->
+    selector = options.focus || 'input, textarea'
     @$(selector).first().select()
 
   isLastInStack: (view) ->

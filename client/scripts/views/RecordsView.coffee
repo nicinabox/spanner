@@ -17,6 +17,7 @@ class App.RecordsView extends Thorax.View
       title: 'Edit Service'
       elem: e.currentTarget
       populate: true
+      focus: '[name=mileage]'
       top: -80
       view: new App.AddServiceView
         collection: @collection

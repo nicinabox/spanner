@@ -6,6 +6,9 @@ class App.AddServiceView extends Thorax.View
     'click [data-destroy]': 'destroyRecord'
     'rendered': ->
       @$('textarea').autosize()
+      @$('input[name=date]').datepicker({
+        autoclose: true
+      })
 
   initialize: ->
     @date = moment().format('MM-DD-YYYY')

@@ -62,6 +62,7 @@ class App.VehicleView extends Thorax.View
     App.popover.toggle
       title: 'Add Service'
       elem: e.currentTarget
+      focus: '[name=mileage]'
       view: new App.AddServiceView
         collection: @collection
         vehicle: @model.toJSON()
