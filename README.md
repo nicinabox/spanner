@@ -20,8 +20,10 @@ A simple tracking application to keep up with your vehicles.
 
 ## Todo
 
-* [ ] Removing reminder
-* [ ] Editing record
-* [ ] Timezone bug in record date?
+* [x] Removing reminder
+* [x] Editing record
+* [x] Timezone bug in record date?
 * [x] Authentication
+* [ ] Editing record date, mileage formatting
+* [ ] Export as csv
 * [ ] Deploy
