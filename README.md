@@ -2,7 +2,7 @@
 
 A simple tracking application to keep up with your vehicles.
 
-![](http://cl.ly/image/0v1A2s2N2W1m/Screen%20Shot%202014-11-25%20at%2010.56.18%20AM.png)
+![](http://cl.ly/image/0J2J28263b0t/Screen%20Shot%202014-12-01%20at%2010.54.56%20AM.png)
 
 ## Features
 
