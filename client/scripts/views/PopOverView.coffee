@@ -70,11 +70,10 @@ class App.PopOverView extends Thorax.LayoutView
     offset   = $(elem).offset()
     position = offset
     bounds   =
-      top: 0
+      top: $(window).scrollTop()
       left: 0
       right: $(window).width()
       bottom: $(window).height()
-      scrollTop: $(window).scrollTop()
 
     position.right = offset.left + @width
 
@@ -91,9 +90,11 @@ class App.PopOverView extends Thorax.LayoutView
       position.left = offset.left - @width + $(elem).outerWidth()
 
     # Bottom bound
-    if position.bottom > bounds.bottom + bounds.scrollTop
-      position.top = bounds.bottom - height + bounds.scrollTop
-      position.top = 10 if position.top - bounds.scrollTop < 0
+    if position.bottom > bounds.bottom + bounds.top
+      position.top = bounds.bottom - height + bounds.top
+
+    if position.top < bounds.top
+      position.top = bounds.top if position.top - bounds.top < 10
 
     @$el.css
       left: position.left
