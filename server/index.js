@@ -5,7 +5,16 @@ var expressSession = require('express-session');
 var mongoose       = require('mongoose');
 var passwordless   = require('passwordless');
 var MongoStore     = require('passwordless-mongostore');
-var sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
+
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD
+    }
+});
 
 var vehicleRoutes = require('./app/routes/vehicle');
 var sessionRoutes = require('./app/routes/session');
@@ -21,13 +30,13 @@ passwordless.init(new MongoStore(mongoDbPath), {
 });
 passwordless.addDelivery(
   function(tokenToSend, uidToSend, recipient, callback) {
-    sendgrid.send({
+    transporter.sendMail({
       text: 'Hello '+ recipient +'!\nYou can now access your vehicles here: ' +
         'http://' + host + '/#login/' +
         encodeURIComponent(uidToSend) + '/' +
         tokenToSend,
-      from:    'spanner@spanner.nicinabox.com',
-      to:      recipient,
+      from: 'spanner@spanner.nicinabox.com',
+      to: recipient,
       subject: 'Login to Spanner'
     }, function(err, message) {
       if (err) console.log(err);
