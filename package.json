@@ -4,7 +4,7 @@
   "description": "Track your vehicle service easily",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm install && gulp precompile"
+    "postinstall": "npm install && bower install && gulp precompile"
   },
   "author": "Nic Aitch",
   "devDependencies": {
