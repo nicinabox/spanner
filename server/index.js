@@ -5,7 +5,7 @@ var expressSession = require('express-session');
 var mongoose       = require('mongoose');
 var passwordless   = require('passwordless');
 var MongoStore     = require('passwordless-mongostore');
-var email          = require("emailjs");
+var email          = require('emailjs');
 
 var vehicleRoutes = require('./app/routes/vehicle');
 var sessionRoutes = require('./app/routes/session');
@@ -22,7 +22,7 @@ var smtpServer = email.server.connect(smtpOptions);
 var mongoDbPath = process.env.MONGOLAB_URI || 'mongodb://localhost/service-records';
 mongoose.connect(mongoDbPath);
 
-var host = process.env.DELIVERY_HOST || 'http://localhost:8080/';
+var host = process.env.DELIVERY_HOST || 'localhost:8080';
 
 passwordless.init(new MongoStore(mongoDbPath), {
   allowTokenReuse: true
@@ -31,12 +31,12 @@ passwordless.addDelivery(
   function(tokenToSend, uidToSend, recipient, callback) {
       smtpServer.send({
          text: 'Hello '+ recipient +'!\nYou can now access your vehicles here: ' +
-              host + '#login/' +
+              'http://' + host + '/#login/' +
               encodeURIComponent(uidToSend) + '/' +
               tokenToSend,
          from:    smtpOptions.user,
          to:      recipient,
-         subject: 'Login to ' + host
+         subject: 'Login to Spanner'
       }, function(err, message) {
           if (err) console.log(err);
           callback(err);
