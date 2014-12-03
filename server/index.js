@@ -12,9 +12,9 @@ var sessionRoutes = require('./app/routes/session');
 var app           = express();
 
 var smtpOptions = {
-  user: process.env.SMTP_EMAIL,
-  password: process.env.SMTP_PASSWORD,
-  host: 'smtp.gmail.com',
+  user: process.env.SMTP_EMAIL || process.env.SENDGRID_USERNAME,
+  password: process.env.SMTP_PASSWORD || process.env.SENDGRID_PASSWORD,
+  host: process.env.SMTP_HOST || process.env.SENDGRID_HOST,
   ssl: true
 };
 var smtpServer = email.server.connect(smtpOptions);
