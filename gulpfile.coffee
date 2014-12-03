@@ -1,6 +1,7 @@
-gulp   = require 'gulp'
-config = require './config'
-$      = require('gulp-load-plugins')()
+gulp    = require 'gulp'
+process = require 'child_process'
+config  = require './config'
+$       = require('gulp-load-plugins')()
 
 gulp.task 'default', [
   'precompile'
@@ -78,3 +79,9 @@ gulp.task 'server', ->
       livereload: true
       open: true
     }))
+
+gulp.task 'deploy', ['precompile'], (done) ->
+  proc = process.spawn 'git', ['push', 'heroku', 'heroku:master'],
+    stdout: 'inherit'
+  proc.on 'close', ->
+    done()
