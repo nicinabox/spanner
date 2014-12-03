@@ -19,7 +19,7 @@ var smtpOptions = {
 };
 var smtpServer = email.server.connect(smtpOptions);
 
-var mongoDbPath = 'mongodb://localhost/service-records';
+var mongoDbPath = process.env.MONGOLAB_URI || 'mongodb://localhost/service-records';
 mongoose.connect(mongoDbPath);
 
 var host = process.env.DELIVERY_HOST || 'http://localhost:8080/';
