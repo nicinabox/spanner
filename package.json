@@ -16,6 +16,7 @@
     "gulp-define-module": "^0.1.1",
     "gulp-handlebars": "^3.0.1",
     "gulp-load-plugins": "^0.7.1",
+    "gulp-nodemon": "^1.0.4",
     "gulp-plumber": "^0.6.6",
     "gulp-rename": "^1.2.0",
     "gulp-sourcemaps": "^1.2.8",

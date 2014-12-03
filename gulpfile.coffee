@@ -5,7 +5,7 @@ $      = require('gulp-load-plugins')()
 gulp.task 'default', [
   'precompile'
   'watch'
-  'server'
+  'nodemon'
 ]
 
 gulp.task 'watch', ->
@@ -65,6 +65,11 @@ gulp.task 'copy:images', ->
 gulp.task 'copy:html', ->
   gulp.src(config.paths.client.html)
     .pipe(gulp.dest(config.paths.www.root))
+
+gulp.task 'nodemon', ->
+  $.nodemon({
+    script: config.paths.server.main
+  })
 
 gulp.task 'server', ->
   gulp.src(config.paths.www.root)

@@ -9,6 +9,10 @@ config =
       root: 'public'
       assets: 'public/assets'
 
+    server:
+      root: 'server'
+      main: 'server/index.js'
+
     client:
       root: 'client'
       html: 'client/*.html'
