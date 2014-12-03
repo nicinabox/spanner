@@ -25,6 +25,8 @@ App =
 
         if @session.isAuthorized()
           @session.trigger 'auth:resolve'
+        else
+          @session.trigger 'auth:reject'
       )
 
 _.bindAll App

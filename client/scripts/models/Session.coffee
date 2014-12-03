@@ -13,8 +13,9 @@ class App.Session extends Thorax.Model
 
   logout: ->
     @destroy()
-    @clear()
     localStorage.clear()
+    @clear()
+    App.session = new @constructor
 
   authorize: (data) ->
     if data
@@ -22,7 +23,7 @@ class App.Session extends Thorax.Model
       localStorage.setItem 'session', JSON.stringify(@toJSON())
     else
       data = JSON.parse(localStorage.getItem('session'))
-      @set(data)
+      @set(data) if data
 
   unauthorize: ->
     @logout()

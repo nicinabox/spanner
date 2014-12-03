@@ -9,6 +9,7 @@ class App.WelcomeView extends Thorax.View
   initialize: ->
     @placeholder = 'E.g., ' + @randomEmail()
     @user = {}
+    console.log App.session.toJSON()
 
   login: (e) ->
     e.preventDefault()
