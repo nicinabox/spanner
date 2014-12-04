@@ -23,13 +23,13 @@ passwordless.init(new MongoStore(mongoDbPath), {
 passwordless.addDelivery(
   function(tokenToSend, uidToSend, recipient, callback) {
     postmark.send({
-      text: 'Hello '+ recipient +'!\nYou can now access your vehicles here: ' +
+      "TextBody": 'Hello '+ recipient +'!\nYou can now access your vehicles here: ' +
         'http://' + host + '/#login/' +
         encodeURIComponent(uidToSend) + '/' +
         tokenToSend,
-      from: 'spanner@spanner.nicinabox.com',
-      to: recipient,
-      subject: 'Login to Spanner'
+      "From": 'spanner@spanner.nicinabox.com',
+      "To": recipient,
+      "Subject": 'Login to Spanner'
     }, function(err, message) {
       if (err) console.log(err);
       callback(err);
