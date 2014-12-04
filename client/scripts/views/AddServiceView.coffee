@@ -5,11 +5,12 @@ class App.AddServiceView extends Thorax.View
     'submit form': 'createOrUpdateRecord'
     'click [data-destroy]': 'destroyRecord'
     'rendered': ->
-      @$('textarea').autosize()
-      @$('input[name=date]').datepicker({
-        format: 'mm-dd-yyyy'
-        autoclose: true
-      })
+      _.delay =>
+        @$('textarea').autosize()
+        @$('input[name=date]').datepicker({
+          format: 'mm-dd-yyyy'
+          autoclose: true
+        })
 
   initialize: ->
     unless @model
