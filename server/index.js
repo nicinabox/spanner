@@ -27,7 +27,7 @@ passwordless.addDelivery(
         'http://' + host + '/#login/' +
         encodeURIComponent(uidToSend) + '/' +
         tokenToSend,
-      "From": 'spanner@spanner.nicinabox.com',
+      "From": 'spanner@nicinabox.com',
       "To": recipient,
       "Subject": 'Login to Spanner'
     }, function(err, message) {
