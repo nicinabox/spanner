@@ -25,7 +25,7 @@ class App.RecordsView extends Thorax.View
         context: ->
           attrs = @model.attributes
           {
-            date: moment(new Date(attrs.date)).format('MM-DD-YYYY')
+            date: moment(new Date(attrs.date)).utc().format('MM-DD-YYYY')
             mileage: numeral(attrs.mileage).format('0,0')
             cost: attrs.cost
             notes: attrs.notes
