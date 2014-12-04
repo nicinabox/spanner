@@ -3,7 +3,7 @@
 
     <div class="container-fluid">
       <div class="">
-        <div class="col-sm-4">
+        <div class="col-md-4">
           <a href="#vehicles" class="back btn">
             <i class="fa fa-chevron-left"></i>
           </a>
@@ -20,7 +20,7 @@
               placeholder="Search">
           </form>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 hidden-sm hidden-xs">
           <nav class="pull-right">
             <a href="#" class="js-vehicles btn btn-default">
               Vehicles
@@ -37,7 +37,7 @@
 
 <div class="container action-bar">
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-6">
       <nav>
         <a href="#" class="js-add-service btn btn-secondary">
           + Add Service
@@ -48,7 +48,7 @@
       </nav>
     </div>
 
-    <div class="col-sm-4 pull-right">
+    <div class="col-sm-6">
       {{#if milesPerYear}}
         <p class="text-muted text-right">
           You drive about {{formatNumber '0,000' milesPerYear}} miles a year

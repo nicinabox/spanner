@@ -2,7 +2,7 @@ class App.RecordsView extends Thorax.View
   name: 'records'
 
   events:
-    'click #records tr': 'showEditServicePopover'
+    'click #records .record': 'showEditServicePopover'
 
   initialize: ->
     @records = @collection.groupByYear()

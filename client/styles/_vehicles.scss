@@ -6,7 +6,7 @@
     @include clearfix;
     @include border-radius(3px);
     display: block;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     font-weight: bold;
 
     &:hover {
@@ -37,14 +37,6 @@
     font-weight: bold;
     color: #444;
   }
-
-  table {
-    font-size: 18px;
-
-    .date, .mileage, .cost {
-      width: 100px;
-    }
-  }
 }
 
 #records {
@@ -58,8 +50,41 @@
     margin-bottom: 40px;
   }
 
-  tr {
-    cursor: pointer;
+  table {
+    font-size: 18px;
+
+    .date, .mileage, .cost {
+      width: 100px;
+    }
+  }
+
+  @include respond-to($container-md) {
+    .record {
+      padding: 15px;
+      margin: 0 -15px;
+
+      &:nth-child(2n+1) {
+        background: #fff;
+      }
+
+      header {
+        color: $gray;
+        margin-bottom: 2px;
+
+        span, strong {
+          margin-right: 6px;
+        }
+
+        .date {
+          font-weight: bold;
+        }
+      }
+
+      p {
+        margin: 0;
+        font-size: 18px;
+      }
+    }
   }
 
 }
