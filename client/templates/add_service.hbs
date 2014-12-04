@@ -7,13 +7,15 @@
 
   <div class="form-group">
     <label class="control-label" for="mileage">Mileage</label>
-    <input type="text" name="mileage" class="form-control"
-      value="{{formatNumber '0,0' currentEstimatedMileage}}" placeholder="E.g., 13,500">
 
     {{#if currentEstimatedMileage}}
+      <input type="text" name="mileage" class="form-control"
+        value="{{formatNumber '0,0' currentEstimatedMileage}}" placeholder="E.g., 13,500">
       <small class="help-block">
         Your current mileage (we estimated)
       </small>
+    {{else}}
+      <input type="text" name="mileage" class="form-control" placeholder="E.g., 13,500">
     {{/if}}
   </div>
 

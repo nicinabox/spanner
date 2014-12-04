@@ -17,13 +17,15 @@ class App.PopOverView extends Thorax.LayoutView
     @render()
     options.view.retain()
 
-    unless options.populate
+    @stack.push options
+    @setView options.view
+
+    if options.view.context
+      options.view.populate(options.view.context())
+    else
       options.view.populate({}, {
         children: false
       })
-
-    @stack.push options
-    @setView options.view
 
     @appendTo App.layout.$el
     @setPosition(options)

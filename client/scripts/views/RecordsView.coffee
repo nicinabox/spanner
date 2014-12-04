@@ -16,10 +16,18 @@ class App.RecordsView extends Thorax.View
     App.popover.toggle
       title: 'Edit Service'
       elem: e.currentTarget
-      populate: true
       focus: '[name=mileage]'
       top: -80
       view: new App.AddServiceView
         collection: @collection
         model: @collection.get($(e.currentTarget).data('id'))
         vehicle: @model.toJSON()
+        context: ->
+          attrs = @model.attributes
+          {
+            date: moment(new Date(attrs.date)).format('MM-DD-YYYY')
+            mileage: numeral(attrs.mileage).format('0,0')
+            cost: attrs.cost
+            notes: attrs.notes
+          }
+

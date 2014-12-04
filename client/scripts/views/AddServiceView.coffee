@@ -7,12 +7,13 @@ class App.AddServiceView extends Thorax.View
     'rendered': ->
       @$('textarea').autosize()
       @$('input[name=date]').datepicker({
+        format: 'mm-dd-yyyy'
         autoclose: true
       })
 
   initialize: ->
-    @date = moment().format('MM-DD-YYYY')
     unless @model
+      @date = moment().format('MM-DD-YYYY')
       @currentEstimatedMileage = @collection.currentEstimatedMileage()
 
   destroyRecord: (e) ->
