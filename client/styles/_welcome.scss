@@ -1,6 +1,23 @@
 #welcome {
+  #main {
+    margin-top: 60px;
+  }
+
   #user {
     width: 300px;
+  }
+
+  #teaser {
+    margin-top: 60px;
+    height: 600px;
+    width: 100%;
+    overflow: hidden;
+    @include box-shadow(0 2px 12px rgba(#000, 0.3));
+    @include border-radius(5px);
+
+    img {
+      max-width: 100%;
+    }
   }
 
   @include respond-to($container-sm) {
