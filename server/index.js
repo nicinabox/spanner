@@ -6,15 +6,7 @@ var mongoose       = require('mongoose');
 var passwordless   = require('passwordless');
 var MongoStore     = require('passwordless-mongostore');
 
-var nodemailer = require('nodemailer');
-
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD
-    }
-});
+var postmark = require("postmark")(process.env.POSTMARK_API_KEY);
 
 var vehicleRoutes = require('./app/routes/vehicle');
 var sessionRoutes = require('./app/routes/session');
@@ -30,7 +22,7 @@ passwordless.init(new MongoStore(mongoDbPath), {
 });
 passwordless.addDelivery(
   function(tokenToSend, uidToSend, recipient, callback) {
-    transporter.sendMail({
+    postmark.send({
       text: 'Hello '+ recipient +'!\nYou can now access your vehicles here: ' +
         'http://' + host + '/#login/' +
         encodeURIComponent(uidToSend) + '/' +

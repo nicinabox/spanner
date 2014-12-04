@@ -34,12 +34,11 @@
     "lodash": "^2.4.1",
     "moment": "^2.8.4",
     "mongoose": "^3.8.19",
-    "nodemailer": "^1.3.0",
     "numeral": "^1.5.3",
     "papaparse": "^4.0.5",
     "passwordless": "^1.0.7",
     "passwordless-mongostore": "^0.1.0",
-    "sendgrid": "^1.3.0",
+    "postmark": "^0.2.6",
     "thorax": "^2.2.1"
   }
 }
