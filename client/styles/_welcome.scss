@@ -2,4 +2,14 @@
   #user {
     width: 300px;
   }
+
+  @include respond-to($container-sm) {
+    .text-center {
+      text-align: left;
+    }
+
+    #user {
+      width: 100%;
+    }
+  }
 }

@@ -1,12 +1,20 @@
 <div id="main">
   <div class="container">
-    <div class="text-center">
-      <h2>
-        Easily keep service records for all your vehicles
-      </h2>
-      <br>
+      <div class="row text-center">
+        <div class="col-sm-12">
+          <h2>
+            <strong>
+              The easiest way keep service records for all your vehicles
+            </strong>
+          </h2>
+          <p class="lead">
+            Navigating lists of menus just to log an oil change sucks. <br>
+            Spanner lets you keep records in a natural way.
+          </p>
+        </div>
+      </div>
 
-      <div class="row">
+      <div class="row text-center">
         <div class="col-sm-6 col-sm-offset-3">
           {{#if authenticating}}
             <h4 class="text-success">
@@ -24,11 +32,18 @@
               </div>
 
               <button class="btn btn-primary">Sign In</button>
+
+              <p class="help-block">
+                <small class="text-muted">
+                  First time? We'll setup your account automagically.
+                </small>
+              </p>
             </form>
           {{/if}}
         </div>
       </div>
 
     </div>
+
   </div>
 </div>
