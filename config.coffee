@@ -2,7 +2,8 @@ _      = require 'lodash'
 
 config =
   base: (path) ->
-    path.replace('/**/*', '')
+    path.replace('/**', '')
+        .replace('/*', '')
 
   paths:
     www:
