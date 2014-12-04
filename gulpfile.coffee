@@ -1,5 +1,6 @@
 gulp    = require 'gulp'
 process = require 'child_process'
+path    = require 'path'
 config  = require './config'
 $       = require('gulp-load-plugins')()
 
@@ -11,6 +12,7 @@ gulp.task 'default', [
 
 gulp.task 'watch', ->
   gulp.watch config.paths.client.html, ['copy:html']
+  gulp.watch config.paths.client.images, ['copy:images']
   gulp.watch config.paths.client.styles, ['styles']
   gulp.watch config.paths.client.scripts, ['scripts']
   gulp.watch config.paths.client.templates, ['templates']
@@ -41,12 +43,12 @@ gulp.task 'scripts', ->
 
 gulp.task 'styles', ->
   gulp.src(config.paths.client.styles)
-  .pipe($.compass(
-    css: config.paths.www.assets
-    sass: config.base(config.paths.client.styles)
-    images: config.paths.www.assets
-    import_path: ['node_modules', 'bower_components']
-  ))
+    .pipe($.compass(
+      css: config.paths.www.assets
+      sass: config.base(config.paths.client.styles)
+      images: config.base(config.paths.client.images)
+      import_path: ['node_modules', 'bower_components']
+    ))
 
 gulp.task 'templates', ->
   gulp.src(config.paths.client.templates)
