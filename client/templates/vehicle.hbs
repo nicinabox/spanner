@@ -72,7 +72,8 @@
 
 <div id="main">
   <div class="container">
-    {{#any recordsView.records}}
+    {{#empty collection}}
+    {{else}}
       <div class="row">
         <div class="col-sm-4">
           {{view remindersView}}
@@ -111,7 +112,7 @@
           </div>
         </div>
       </div>
-    {{/any}}
+    {{/empty}}
     {{view recordsView}}
   </div>
 </div>
