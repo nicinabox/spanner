@@ -11,6 +11,8 @@ var Reminder    = require('../models/reminder');
 var Maintenance = require('../models/maintenance');
 
 var getVehicleDetails = function(vehicle, callback) {
+  if (!vehicle.vin) return;
+
   var api = new EdmundsApi({
     resource: 'vins/' + vehicle.vin
   });
@@ -19,6 +21,8 @@ var getVehicleDetails = function(vehicle, callback) {
 };
 
 var getVehicleMaintenance = function(vehicle, callback) {
+  if (!vehicle.vin) return;
+
   var api = new EdmundsApi({
     version: 1,
     dataset: 'maintenance',
