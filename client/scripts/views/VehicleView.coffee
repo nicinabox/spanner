@@ -20,8 +20,9 @@ class App.VehicleView extends Thorax.View
     @vehicles = App.vehicles
     @model    = @vehicles.get(id)
 
-    @reminders  = new App.Reminders [], vehicleId: id
-    @collection = new App.Records [], vehicleId: id
+    @maintenance = new App.MaintenanceSchedule [], vehicleId: id
+    @reminders   = new App.Reminders [], vehicleId: id
+    @collection  = new App.Records [], vehicleId: id
 
     @listenTo @vehicles, 'sync', ->
       @setModel @vehicles.get(id)
@@ -29,16 +30,16 @@ class App.VehicleView extends Thorax.View
 
       @listenTo @model, 'change', @render
 
-      @model.maintenanceSchedule.on 'reset', =>
-        @model.set
-          milesPerDay: @collection.milesPerDay()
-          currentEstimatedMileage: @collection.currentEstimatedMileage()
-
-        @nextActions = @model.maintenanceSchedule.nextActions()
-        @render()
-
     @listenTo @collection, 'add sync remove', ->
       @milesPerYear = @collection.milesPerYear()
+      @render()
+
+    @listenTo @maintenance, 'sync', ->
+      @model.set
+        milesPerDay: @collection.milesPerDay()
+        currentEstimatedMileage: @collection.currentEstimatedMileage()
+
+      @nextActions = @maintenance.nextActions()
       @render()
 
     @sessionView = new App.SessionView
@@ -51,6 +52,7 @@ class App.VehicleView extends Thorax.View
     @vehicles.fetch()
     @collection.fetch()
     @reminders.fetch()
+    @maintenance.fetch()
 
   filterRecords: (e) ->
     val = e.currentTarget.value

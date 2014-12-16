@@ -1,13 +1,18 @@
 class App.MaintenanceSchedule extends Thorax.Collection
   model: App.MaintenanceAction
+  url: ->
+    "/api/vehicles/#{@vehicleId}/maintenance"
 
-  initialize: (options) ->
-    @vehicle = options.vehicle
-    @fetch() if @vehicle.hasDetails()
+  initialize: (models, options) ->
+    @vehicleId = options.vehicleId
+
+    @vehicle = App.vehicles.get(@vehicleId)
+    @listenTo App.vehicles, 'sync', ->
+      @vehicle = App.vehicles.get(@vehicleId)
 
   nextActions: ->
     MILEAGE = @vehicle.get('currentEstimatedMileage') || 0
-    MPD = @vehicle.get('milesPerDay') || 0
+    MPD     = @vehicle.get('milesPerDay') || 0
 
     actions = @map (model) ->
       m             = model.toJSON()
@@ -21,16 +26,5 @@ class App.MaintenanceSchedule extends Thorax.Collection
 
     _(actions).compact().indexBy('item').values().value()
 
-  fetch: ->
-    edmunds = new App.EdmundsApi
-      version: 1
-      dataset: 'maintenance'
-      resource: 'actionrepository/findbymodelyearid'
-      params:
-        modelyearid: @vehicle.modelYearId()
-
-    edmunds.fetch().done (data) =>
-      @reset @parse data
-
   parse: (data) ->
-    data.actionHolder
+    data.actions.actionHolder

@@ -2,36 +2,8 @@ class App.Vehicle extends Thorax.Model
   idAttribute: '_id'
   validatePresence: ['name']
 
-  initialize: ->
-    @on 'sync', ->
-      if @hasVin() and !@hasDetails()
-        @details()
-
-    @on 'change:vin', ->
-      if @hasVin()
-        @details()
-
-    @maintenanceSchedule = new App.MaintenanceSchedule
-      vehicle: this
-
   settings: ->
     @get('settings') || {}
-
-  squishVin: ->
-    vin = @get('vin')
-    vin.substr(0, 8) + vin.slice(9, 11)
-
-  details: ->
-    edmunds = new App.EdmundsApi
-      resource: 'vins/' + @get('vin')
-
-    edmunds.fetch().done (data) =>
-      @save details: data
-      data
-
-  modelYearId: ->
-    details = @get('details')
-    details.years[0].id
 
   hasVin: ->
     !_.isEmpty @get('vin')
