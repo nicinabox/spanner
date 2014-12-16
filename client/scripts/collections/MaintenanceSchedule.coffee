@@ -14,7 +14,7 @@ class App.MaintenanceSchedule extends Thorax.Collection
       inNextMileage = m.intervalMileage - (MILEAGE % m.intervalMileage)
       inNextDays    = Math.floor inNextMileage / MPD
 
-      if inNextMileage < 4000 && m.frequency == 4
+      if inNextMileage < MPD * 90 && m.frequency == 4
         m.inNextMileage = inNextMileage
         m.inNextDuration = moment().add(inNextDays, 'days').fromNow()
         m
