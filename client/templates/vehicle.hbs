@@ -49,11 +49,23 @@
     </div>
 
     <div class="col-sm-6">
-      {{#if milesPerYear}}
-        <p class="text-muted text-right">
-          You drive about {{formatNumber '0,000' milesPerYear}} miles a year
-        </p>
-      {{/if}}
+      <div class="row text-right text-muted">
+        {{#if vin}}
+          <div class="col-md-6">
+            <p>
+              VIN: {{vin}}
+            </p>
+          </div>
+        {{/if}}
+
+        {{#if milesPerYear}}
+          <div class="col-md-6">
+            <p>
+              You drive about {{formatNumber '0,000' milesPerYear}} miles a year
+            </p>
+          </div>
+        {{/if}}
+      </div>
     </div>
   </div>
 </div>

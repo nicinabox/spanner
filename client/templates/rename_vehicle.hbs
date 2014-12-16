@@ -2,7 +2,15 @@
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" name="name" class="form-control"
-      value="{{value}}">
+      value="{{value}}" placeholder="E.g., 2015 Mini Cooper GP">
   </div>
+
+  <div class="form-group">
+    <label class="control-label" for="">VIN</label>
+    <input type="text" name="vin" class="form-control"
+      value="{{vin}}" placeholder="E.g., WMW12345678901234">
+    <small class="help-block">VIN is optional but recommended.</small>
+  </div>
+
   <button class="btn btn-success">Change</button>
 </form>
