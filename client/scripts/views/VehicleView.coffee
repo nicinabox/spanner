@@ -26,6 +26,14 @@ class App.VehicleView extends Thorax.View
       @setModel @vehicles.get(id)
       @recordsView.setModel @model
 
+      @model.maintenanceSchedule.on 'reset', =>
+        @model.set
+          milesPerDay: @collection.milesPerDay()
+          currentEstimatedMileage: @collection.currentEstimatedMileage()
+
+        @nextActions = @model.maintenanceSchedule.nextActions()
+        @render()
+
     @listenTo @collection, 'add sync remove', ->
       @milesPerYear = @collection.milesPerYear()
       @render()
