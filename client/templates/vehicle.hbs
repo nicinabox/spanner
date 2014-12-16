@@ -72,37 +72,39 @@
 
 <div id="main">
   <div class="container">
-    <div class="row">
-      <div class="col-sm-4">
-        {{view remindersView}}
-      </div>
-      <div class="col-sm-4">
-        <h5 class="text-muted">
-          <span class="fa fa-wrench fa-fw"></span>
-          Recommended Maintenance
-        </h5>
-        <ul class="list-unstyled">
-          {{#each nextActions}}
-            <li>
-              {{action}} {{item}} {{inNextDuration}}
-            </li>
-          {{else}}
-            <span class="text-muted">All good!</span>
-          {{/each}}
-        </ul>
-      </div>
-      <div class="col-sm-4">
-        <h5 class="text-muted">
-          <i class="fa fa-book fa-fw"></i>
-          Vehicle Notes
-        </h5>
+    {{#any recordsView.records}}
+      <div class="row">
+        <div class="col-sm-4">
+          {{view remindersView}}
+        </div>
+        <div class="col-sm-4">
+          <h5 class="text-muted">
+            <span class="fa fa-wrench fa-fw"></span>
+            Recommended Maintenance
+          </h5>
+          <ul class="list-unstyled">
+            {{#each nextActions}}
+              <li>
+                {{action}} {{item}} {{inNextDuration}}
+              </li>
+            {{else}}
+              <span class="text-muted">All good!</span>
+            {{/each}}
+          </ul>
+        </div>
+        <div class="col-sm-4">
+          <h5 class="text-muted">
+            <i class="fa fa-book fa-fw"></i>
+            Vehicle Notes
+          </h5>
 
-        <div id="vehicle-notes">
-          {{{markdown notes}}}
-          <a href="#" class="js-edit-vehicle-notes">Edit</a>
+          <div id="vehicle-notes">
+            {{{markdown notes}}}
+            <a href="#" class="js-edit-vehicle-notes">Edit</a>
+          </div>
         </div>
       </div>
-    </div>
+    {{/any}}
     {{view recordsView}}
   </div>
 </div>

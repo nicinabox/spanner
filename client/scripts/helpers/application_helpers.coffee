@@ -10,3 +10,7 @@ Handlebars.registerHelpers
 
   markdown: (str) ->
     marked(str) if str
+
+  any: (collection, options) ->
+    if !_.isEmpty(collection)
+      options.fn(this)
