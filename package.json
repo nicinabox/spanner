@@ -35,11 +35,13 @@
     "marked": "^0.3.2",
     "moment": "^2.8.4",
     "mongoose": "^3.8.19",
+    "node-jquery-param": "0.0.2",
     "numeral": "^1.5.3",
     "papaparse": "^4.0.5",
     "passwordless": "^1.0.7",
     "passwordless-mongostore": "^0.1.0",
     "postmark": "^0.2.6",
+    "request": "^2.51.0",
     "thorax": "^2.2.1"
   }
 }

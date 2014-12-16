@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 
 var passwordless = require('passwordless');
+var EdmundsApi = require('../edmunds');
 
 var Vehicle  = require('../models/vehicle');
 var Record   = require('../models/record');
