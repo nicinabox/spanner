@@ -34,7 +34,7 @@ class App.Records extends Thorax.Collection
 
     Math.floor(mpy / 10) * 10
 
-  recentMilesPerDay: (days = 90)->
+  recentMilesPerDay: (days = 90) ->
     return unless @length
     ceil  = moment()
     floor = ceil.subtract(days, 'days').startOf('month')
@@ -46,8 +46,14 @@ class App.Records extends Thorax.Collection
     first = _.first(models).toJSON()
     last = _.last(models).toJSON()
 
+    if _.isEqual first, last
+      previousIndex = @indexOf(@last()) - 1
+      first = @at previousIndex
+      first = first.toJSON()
+
     elapsedDays    = moment(last.date).diff(first.date, 'days')
     elapsedMileage = last.mileage - first.mileage
+
     +(elapsedMileage / elapsedDays).toFixed(2)
 
   milesPerDay: ->
