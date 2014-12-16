@@ -36,7 +36,7 @@ class App.VehicleView extends Thorax.View
 
     @listenTo @maintenance, 'sync', ->
       @model.set
-        milesPerDay: @collection.milesPerDay()
+        recentMilesPerDay: @collection.recentMilesPerDay()
         currentEstimatedMileage: @collection.currentEstimatedMileage()
 
       @nextActions = @maintenance.nextActions()

@@ -9,7 +9,7 @@ class App.Records extends Thorax.Collection
   comparator: 'date'
 
   currentEstimatedMileage: ->
-    mpd = @milesPerDay()
+    mpd = @recentMilesPerDay()
     return unless mpd
 
     last        = @last().toJSON()
@@ -33,6 +33,22 @@ class App.Records extends Thorax.Collection
       mpy = mpd * ONE_YEAR
 
     Math.floor(mpy / 10) * 10
+
+  recentMilesPerDay: (days = 90)->
+    return unless @length
+    ceil  = moment()
+    floor = ceil.subtract(days, 'days').startOf('month')
+
+    models = @filter (model) ->
+      modelDate = moment model.get('date')
+      model if modelDate.isAfter(floor)
+
+    first = _.first(models).toJSON()
+    last = _.last(models).toJSON()
+
+    elapsedDays    = moment(last.date).diff(first.date, 'days')
+    elapsedMileage = last.mileage - first.mileage
+    +(elapsedMileage / elapsedDays).toFixed(2)
 
   milesPerDay: ->
     return unless @length

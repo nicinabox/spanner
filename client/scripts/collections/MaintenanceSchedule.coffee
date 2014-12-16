@@ -12,7 +12,7 @@ class App.MaintenanceSchedule extends Thorax.Collection
 
   nextActions: ->
     MILEAGE = @vehicle.get('currentEstimatedMileage') || 0
-    MPD     = @vehicle.get('milesPerDay') || 0
+    MPD     = @vehicle.get('recentMilesPerDay') || 0
 
     actions = @map (model) ->
       m             = model.toJSON()
