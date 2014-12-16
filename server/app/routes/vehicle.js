@@ -17,6 +17,7 @@ var getVehicleDetails = function(vehicle, callback) {
     resource: 'vins/' + vehicle.vin
   });
 
+  console.log(api.url());
   return api.fetch(callback);
 };
 
@@ -31,8 +32,9 @@ var getVehicleMaintenance = function(vehicle, callback) {
     params: {
       modelyearid: _modelYearId
     }
-  })
+  });
 
+  console.log(api.url());
   api.fetch(callback)
 };
 
