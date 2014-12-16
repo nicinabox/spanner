@@ -115,6 +115,32 @@ router.route('/vehicles/:id')
     });
   });
 
+router.route('/vehicles/:vehicleId/maintenance')
+  .get(function(req, res) {
+    var vehicleId = req.params.vehicleId
+    Maintenance.findOne({ vehicleId: vehicleId }, function(err, maintenance) {
+      if (err) res.send(err);
+
+      if (maintenance) {
+        res.json(maintenance);
+      } else {
+        Vehicle.findById(vehicleId, function(err, vehicle) {
+          getVehicleMaintenance(vehicle, function(err, resp, body) {
+            maintenance = new Maintenance
+
+            _.extend(maintenance, {
+              actions: JSON.parse(body),
+              vehicleId: vehicleId
+            });
+
+            maintenance.save()
+            res.json(maintenance);
+          });
+        });
+      }
+    });
+  });
+
 router.route('/vehicles/:vehicleId/records')
   .get(function(req, res) {
     Record.find({ vehicleId: req.params.vehicleId }, function(err, records) {
