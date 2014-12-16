@@ -91,6 +91,17 @@
           {{/each}}
         </ul>
       </div>
+      <div class="col-sm-4">
+        <h5 class="text-muted">
+          <i class="fa fa-book fa-fw"></i>
+          Vehicle Notes
+        </h5>
+
+        <div id="vehicle-notes">
+          {{{markdown notes}}}
+          <a href="#" class="js-edit-vehicle-notes">Edit</a>
+        </div>
+      </div>
     </div>
     {{view recordsView}}
   </div>

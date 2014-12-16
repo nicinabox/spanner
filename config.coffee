@@ -43,6 +43,7 @@ config =
         'bower_components/thorax/thorax.js'
         'node_modules/moment/moment.js'
         'node_modules/numeral/numeral.js'
+        'node_modules/marked/lib/marked.js'
         'node_modules/backbone.localstorage/backbone.localStorage.js'
         'bower_components/bootstrap-sass/dist/js/bootstrap.js'
         'bower_components/jquery-ui-sortable/jquery-ui-sortable.js'

@@ -10,6 +10,7 @@ class App.VehicleView extends Thorax.View
     'click .js-add-service': 'showAddServicePopover'
     'click .js-add-reminder': 'showAddReminderPopover'
     'click .js-remove-record': 'removeRecord'
+    'click .js-edit-vehicle-notes': 'showEditVehicleNotesPopover'
 
     'keyup #filter': 'filterRecords'
     'submit #header form': (e) -> e.preventDefault()
@@ -25,6 +26,8 @@ class App.VehicleView extends Thorax.View
     @listenTo @vehicles, 'sync', ->
       @setModel @vehicles.get(id)
       @recordsView.setModel @model
+
+      @listenTo @model, 'change', @render
 
       @model.maintenanceSchedule.on 'reset', =>
         @model.set
@@ -92,9 +95,17 @@ class App.VehicleView extends Thorax.View
   showChangeNamePopover: (e) ->
     App.popover.toggle
       elem: e.currentTarget
-      title: 'Rename Vehicle'
+      title: 'Edit Vehicle Details'
       populate: true
-      view: new App.RenameVehicleView
+      view: new App.EditVehicleView
+        model: @model
+
+  showEditVehicleNotesPopover: (e) ->
+    App.popover.toggle
+      elem: e.currentTarget
+      title: 'Edit Vehicle Notes'
+      populate: true
+      view: new App.EditVehicleNotesView
         model: @model
 
   showSettingsPopover: (e) ->

@@ -7,3 +7,6 @@ Handlebars.registerHelpers
 
   formatNumber: (format, number) ->
     numeral(number).format(format) if number
+
+  markdown: (str) ->
+    marked(str) if str

@@ -1,5 +1,5 @@
-class App.RenameVehicleView extends Thorax.View
-  name: 'rename_vehicle'
+class App.EditVehicleView extends Thorax.View
+  name: 'edit_vehicle'
 
   events:
     'submit form': 'saveVehicle'

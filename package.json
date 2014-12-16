@@ -32,6 +32,7 @@
     "handlebars": "^2.0.0",
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
+    "marked": "^0.3.2",
     "moment": "^2.8.4",
     "mongoose": "^3.8.19",
     "numeral": "^1.5.3",
