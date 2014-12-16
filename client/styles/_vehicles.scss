@@ -8,6 +8,7 @@
     display: block;
     margin-bottom: 15px;
     font-weight: bold;
+    min-height: 90px;
 
     &:hover {
       background-color: darken($brand-primary, 4%);
@@ -16,7 +17,11 @@
 
     span {
       display: block;
-      margin-bottom: 30px;
+    }
+
+    .text-muted {
+      color: tint($brand-primary, 50%);
+      font-weight: normal;
     }
 
     &.add-vehicle {

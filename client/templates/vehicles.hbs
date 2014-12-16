@@ -31,7 +31,14 @@
       {{#collection id="vehicles-menu"}}
         <div class="col-md-3">
           {{#link "vehicles/{{_id}}" class="vehicle" expand-tokens=true}}
-            <span>{{name}}</span>
+            <span>
+              {{name}}
+            </span>
+            {{#if vin}}
+              <small class="text-muted">
+                VIN: {{vin}}
+              </small>
+            {{/if}}
           {{/link}}
         </div>
       {{/collection}}
