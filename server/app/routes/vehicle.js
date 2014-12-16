@@ -21,14 +21,15 @@ var getVehicleDetails = function(vehicle, callback) {
 };
 
 var getVehicleMaintenance = function(vehicle, callback) {
-  if (!vehicle.vin) return;
+  var _modelYearId = modelYearId(vehicle)
+  if (!_modelYearId) return;
 
   var api = new EdmundsApi({
     version: 1,
     dataset: 'maintenance',
     resource: 'actionrepository/findbymodelyearid',
     params: {
-      modelyearid: modelYearId(vehicle)
+      modelyearid: _modelYearId
     }
   })
 
@@ -127,6 +128,7 @@ router.route('/vehicles/:vehicleId/maintenance')
 
       if (maintenance) {
         res.json(maintenance);
+
       } else {
         Vehicle.findById(vehicleId, function(err, vehicle) {
           getVehicleMaintenance(vehicle, function(err, resp, body) {
