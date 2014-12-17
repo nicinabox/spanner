@@ -52,7 +52,11 @@
   h3 {
     position: sticky;
     position: -webkit-sticky;
-    top: 50px;
+    top: 43px;
+    background: #f7f7f7;
+    margin: 0;
+    padding-top: 22px;
+    padding-bottom: 11px;
   }
 
   .record-year {
@@ -68,6 +72,13 @@
   }
 
   @include respond-to($container-md) {
+    h3 {
+      margin: 0 -15px;
+      padding-left: 15px;
+      padding-right: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
     .record {
       padding: 15px;
       margin: 0 -15px;
