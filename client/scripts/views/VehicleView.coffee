@@ -74,6 +74,8 @@ class App.VehicleView extends Thorax.View
         collection: @reminders
 
   showEditVehicleNotesPopover: (e) ->
+    e.preventDefault()
+
     App.popover.toggle
       elem: e.currentTarget
       title: 'Edit Vehicle Notes'

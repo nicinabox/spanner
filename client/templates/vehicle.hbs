@@ -71,9 +71,13 @@
             Vehicle Notes
           </h5>
 
-          <div id="vehicle-notes">
+          <div id="vehicle-notes" class="js-edit-vehicle-notes">
             {{{markdown notes}}}
-            <a href="#" class="js-edit-vehicle-notes">Edit</a>
+            {{#unless notes}}
+              <span class="text-muted">
+                Add notes...
+              </span>
+            {{/unless}}
           </div>
         </div>
       </div>
