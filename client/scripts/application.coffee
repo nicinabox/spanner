@@ -24,6 +24,7 @@ App =
         Backbone.history.start()
 
         if @session.isAuthorized()
+          @vehicles.fetch()
           @session.trigger 'auth:resolve'
         else
           @session.trigger 'auth:reject'

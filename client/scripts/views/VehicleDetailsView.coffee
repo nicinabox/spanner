@@ -7,15 +7,16 @@ class App.VehicleDetailsView extends Thorax.View
 
   initialize: (id) ->
     @vehicles = App.vehicles
-    $.when(@vehicles.fetch()).then =>
+    if @vehicles.length
       @model = @vehicles.get(id)
+    else
+      @model = new App.Vehicle _id: id
+      @model.fetch()
 
-      @listenTo @model, 'change', @render
+    @listenTo @model, 'change', @render
 
-      @vehicleHeaderView = new App.VehicleHeaderView
-        model: @model
-
-      @render()
+    @vehicleHeaderView = new App.VehicleHeaderView
+      model: @model
 
   refresh: ->
     @model.save()

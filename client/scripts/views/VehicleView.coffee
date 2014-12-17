@@ -12,43 +12,43 @@ class App.VehicleView extends Thorax.View
 
   initialize: (id) ->
     @vehicles = App.vehicles
-    $.when(@vehicles.fetch()).then =>
+    if @vehicles.length
       @model = @vehicles.get(id)
+    else
+      @model = new App.Vehicle _id: id
+      @model.fetch()
 
-      @maintenance = new App.MaintenanceSchedule [], vehicleId: id
-      @reminders   = new App.Reminders [], vehicleId: id
-      @collection  = new App.Records [], vehicleId: id
+    @collection  = new App.Records [], vehicleId: id
+    @reminders   = new App.Reminders [], vehicleId: id
+    @maintenance = new App.MaintenanceSchedule [], vehicleId: id
 
-      # Listeners
-      @listenTo @model, 'change', @render
+    # Listeners
+    @listenTo @model, 'change', @render
 
-      @listenTo @collection, 'add sync remove', ->
-        @milesPerYear = @collection.milesPerYear()
-        @render()
+    @listenTo @collection, 'add sync remove', ->
+      @milesPerYear = @collection.milesPerYear()
+      @render()
 
-      @listenTo @maintenance, 'sync', ->
-        @model.set
-          recentMilesPerDay: @collection.recentMilesPerDay()
-          currentEstimatedMileage: @collection.currentEstimatedMileage()
+    $.when(@collection.fetch(), @maintenance.fetch()).then =>
+      @nextActions = @maintenance.nextActions(
+        @collection.currentEstimatedMileage()
+        @collection.recentMilesPerDay()
+      )
 
-        @nextActions = @maintenance.nextActions()
-        @render()
+      @render()
 
-      # Child views
-      @recordsView = new App.RecordsView
-        model: @model
-        collection: @collection
+    # Child views
+    @recordsView = new App.RecordsView
+      model: @model
+      collection: @collection
 
-      @remindersView = new App.RemindersView
-        collection: @reminders
+    @remindersView = new App.RemindersView
+      collection: @reminders
 
-      @vehicleHeaderView = new App.VehicleHeaderView
-        model: @model
+    @vehicleHeaderView = new App.VehicleHeaderView
+      model: @model
 
-      # And go
-      @collection.fetch()
-      @reminders.fetch()
-      @maintenance.fetch()
+    @reminders.fetch()
 
   removeRecord: (e) ->
     id = $(e.currentTarget).data('record-id')
