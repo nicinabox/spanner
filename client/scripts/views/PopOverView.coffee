@@ -83,6 +83,9 @@ class App.PopOverView extends Thorax.LayoutView
       right: $(window).width()
       bottom: $(window).height()
 
+    if @width > bounds.right
+      @width = bounds.right - 10
+
     position.right = offset.left + @width
 
     # Normal top
@@ -96,6 +99,9 @@ class App.PopOverView extends Thorax.LayoutView
     # Right bound
     if position.right > bounds.right
       position.left = offset.left - @width + $(elem).outerWidth()
+
+    if position.left < bounds.left
+      position.left = (bounds.right - @width) / 2
 
     # Bottom bound
     if position.bottom > bounds.bottom + bounds.top
