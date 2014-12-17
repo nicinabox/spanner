@@ -12,7 +12,6 @@ class App.RecordsView extends Thorax.View
 
   showEditServicePopover: (e) ->
     e.preventDefault()
-
     App.popover.toggle
       title: 'Edit Service'
       elem: e.currentTarget

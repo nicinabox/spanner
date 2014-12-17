@@ -20,6 +20,8 @@ class App.VehicleView extends Thorax.View
       @collection  = new App.Records [], vehicleId: id
 
       # Listeners
+      @listenTo @model, 'change', @render
+
       @listenTo @collection, 'add sync remove', ->
         @milesPerYear = @collection.milesPerYear()
         @render()
