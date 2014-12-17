@@ -8,6 +8,9 @@ Handlebars.registerHelpers
   formatNumber: (format, number) ->
     numeral(number).format(format) if number
 
+  capitalize: (str) ->
+    _.capitalize(str) if str
+
   markdown: (str) ->
     marked(str) if str
 
