@@ -2,8 +2,17 @@ class App.RootView extends Thorax.LayoutView
   el: '#app'
 
   initialize: ->
+    Thorax.setRootObject(this)
+
     _.bindAll this, 'closePopoversWithClick'
     _.bindAll this, 'closePopoversWithEsc'
+
+    @on 'load:start', Thorax.loadHandler(
+      ->
+        NProgress.start()
+    , ->
+      NProgress.done()
+    )
 
     $(document).on('click', @closePopoversWithClick)
     $(document).on('keyup', @closePopoversWithEsc)

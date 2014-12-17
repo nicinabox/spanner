@@ -5,6 +5,7 @@
     "thorax": "~2.3.2",
     "jquery-ui-sortable": "*",
     "jquery-autosize": "~1.18.15",
-    "bootstrap-datepicker": "~1.3.0"
+    "bootstrap-datepicker": "~1.3.0",
+    "nprogress": "~0.1.6"
   }
 }

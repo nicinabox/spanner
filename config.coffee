@@ -50,6 +50,7 @@ config =
         'bower_components/jquery-ui-sortable/jquery-ui-sortable.js'
         'bower_components/jquery-autosize/jquery.autosize.js'
         'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js'
+        'bower_components/nprogress/nprogress.js'
       ]
 
 module.exports = config
