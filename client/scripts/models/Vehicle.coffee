@@ -21,5 +21,11 @@ class App.Vehicle extends Thorax.Model
           message: 'cannot be empty'
         }
 
+    if attrs.vin && attrs.vin.length != 17
+      errors.push {
+        name: 'vin'
+        message: 'must be 17 characters'
+      }
+
     errors = _.compact(errors)
     errors unless _.isEmpty(errors)

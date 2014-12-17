@@ -39,7 +39,7 @@ var getVehicleMaintenance = function(vehicle, callback) {
 };
 
 var modelYearId = function(vehicle) {
-  if (vehicle.details) {
+  if (vehicle.details && vehicle.details.years) {
     return vehicle.details.years[0].id;
   }
 };
@@ -94,8 +94,15 @@ router.route('/vehicles/:id')
       _.merge(vehicle, req.body);
 
       if (vehicle.vin) {
+        vehicle.vin = vehicle.vin.toUpperCase();
         getVehicleDetails(vehicle, function(err, resp, body) {
-          _.extend(vehicle, { details: JSON.parse(body) });
+          if (err) {
+            console.log(err);
+            return;
+          }
+
+          var details = JSON.parse(body);
+          _.extend(vehicle, { details: details });
 
           vehicle.save(function(err, v) {
             if (err) res.send(err);

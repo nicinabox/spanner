@@ -6,5 +6,11 @@ class App.EditVehicleView extends Thorax.View
 
   saveVehicle: (e) ->
     e.preventDefault()
-    @model.save @serialize()
-    @parent.close()
+    @model.set @serialize(), validate: true
+    if @model.isValid()
+      @model.save()
+      @parent.close()
+    else
+      _.each @model.validationError, (error) =>
+          @$("[name=#{error.name}]").closest('.form-group')
+            .addClass('has-error')

@@ -1,123 +1,132 @@
 {{view vehicleHeaderView}}
 
-<div class="container action-bar">
-  <div class="row">
-    <div class="col-sm-9">
-      <h4>
-        <strong>
-          {{details.years.[0].year}}
-          {{details.make.name}}
-          {{details.model.name}}
-          {{details.years.[0].styles.[0].trim}}
-        </strong>
-        <span class="text-muted">&nbsp;{{details.vin}}</span>
-      </h4>
-    </div>
-
-    <div class="col-sm-3 text-right">
-      <nav>
-        <a href="#" class="js-refresh-details btn btn-secondary">
-          <i class="fa fa-refresh fa-fw"></i>
-          Refresh details
-        </a>
-      </nav>
-    </div>
-  </div>
-</div>
-
-<div id="main">
-  <div class="container">
-    <div class="block-grid-lg-5 block-grid-md-4 block-grid-sm-3 block-grid-xs-2">
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>{{details.engine.horsepower}} hp</strong>
-        </div>
-        <span class="text-muted">
-          Horsepower
-        </span>
-      </div>
-
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>{{details.engine.torque}} ft-lbs</strong>
-        </div>
-        <span class="text-muted">
-          Torque
-        </span>
-      </div>
-
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>{{details.engine.cylinder}}</strong>
-        </div>
-        <span class="text-muted">
-          Cylinders
-        </span>
-      </div>
-
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>{{details.engine.totalValves}}</strong>
-        </div>
-        <span class="text-muted">
-          Valves
-        </span>
-      </div>
-
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>{{details.engine.size}}</strong>
-        </div>
-        <span class="text-muted">
-          Size
-        </span>
-      </div>
-
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>{{details.engine.compressionRatio}}</strong>
-        </div>
-        <span class="text-muted">
-          Compression
-        </span>
-      </div>
-
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>{{capitalize details.engine.compressorType}}</strong>
-        </div>
-        <span class="text-muted">
-          Compressor
-        </span>
-      </div>
-
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>{{capitalize details.engine.configuration}}</strong>
-        </div>
-        <span class="text-muted">
-          Engine Configuration
-        </span>
-      </div>
-
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>{{details.MPG.city}} / {{details.MPG.highway}}</strong>
-        </div>
-        <span class="text-muted">
-          MPG
-        </span>
-      </div>
-
-      <div class="block-grid-item text-center">
-        <div class="h2">
-          <strong>${{details.price.usedPrivateParty}}</strong>
-        </div>
-        <span class="text-muted">
-          Private Sale Price
-        </span>
+{{#if details.errorType}}
+  <div id="main">
+    <div class="container">
+      <div class="no-results">
+        <h3>{{details.message}}</h3>
       </div>
     </div>
   </div>
-</div>
+{{else}}
+  <div class="container action-bar">
+    <div class="row">
+      <div class="col-sm-9">
+        <h4>
+          <strong>
+            {{details.years.[0].year}}
+            {{details.make.name}}
+            {{details.model.name}}
+            {{details.years.[0].styles.[0].trim}}
+          </strong>
+          <span class="text-muted">&nbsp;{{details.vin}}</span>
+        </h4>
+      </div>
 
+      <div class="col-sm-3 text-right">
+        <nav>
+          <a href="#" class="js-refresh-details btn btn-secondary">
+            <i class="fa fa-refresh fa-fw"></i>
+            Refresh details
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div id="main">
+    <div class="container">
+      <div class="block-grid-lg-5 block-grid-md-4 block-grid-sm-3 block-grid-xs-2">
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>{{details.engine.horsepower}} hp</strong>
+          </div>
+          <span class="text-muted">
+            Horsepower
+          </span>
+        </div>
+
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>{{details.engine.torque}} ft-lbs</strong>
+          </div>
+          <span class="text-muted">
+            Torque
+          </span>
+        </div>
+
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>{{details.engine.cylinder}}</strong>
+          </div>
+          <span class="text-muted">
+            Cylinders
+          </span>
+        </div>
+
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>{{details.engine.totalValves}}</strong>
+          </div>
+          <span class="text-muted">
+            Valves
+          </span>
+        </div>
+
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>{{details.engine.size}}</strong>
+          </div>
+          <span class="text-muted">
+            Size
+          </span>
+        </div>
+
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>{{details.engine.compressionRatio}}</strong>
+          </div>
+          <span class="text-muted">
+            Compression
+          </span>
+        </div>
+
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>{{capitalize details.engine.compressorType}}</strong>
+          </div>
+          <span class="text-muted">
+            Compressor
+          </span>
+        </div>
+
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>{{capitalize details.engine.configuration}}</strong>
+          </div>
+          <span class="text-muted">
+            Engine Configuration
+          </span>
+        </div>
+
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>{{details.MPG.city}} / {{details.MPG.highway}}</strong>
+          </div>
+          <span class="text-muted">
+            MPG
+          </span>
+        </div>
+
+        <div class="block-grid-item text-center">
+          <div class="h2">
+            <strong>${{details.price.usedPrivateParty}}</strong>
+          </div>
+          <span class="text-muted">
+            Private Sale Price
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/if}}
