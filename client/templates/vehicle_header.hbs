@@ -1,0 +1,32 @@
+<div id="header">
+  <nav class="navbar navbar-default navbar-fixed-top">
+
+    <div class="container-fluid">
+      <div class="">
+        <div class="col-md-4">
+          <a href="#vehicles" class="back btn">
+            <i class="fa fa-chevron-left"></i>
+          </a>
+          <a href="#" class="js-name btn btn-default">
+            {{name}}
+          </a>
+          <a href="#" class="js-settings btn btn-default">
+            Settings
+          </a>
+        </div>
+        <div class="col-sm-4 hidden-sm hidden-xs">
+          <form class="navbar-form">
+            <input type="search" name="filter" id="filter" class="form-control text-center"
+              placeholder="Search">
+          </form>
+        </div>
+        <div class="col-sm-4 hidden-sm hidden-xs">
+          <nav class="pull-right">
+            {{view sessionView}}
+          </nav>
+        </div>
+      </div>
+    </div>
+
+  </nav>
+</div>

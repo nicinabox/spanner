@@ -3,6 +3,7 @@ class App.ApplicationRouter extends Backbone.Router
     '': 'welcome'
     'vehicles': 'vehicles'
     'vehicles/:id': 'vehicle'
+    'vehicles/:id/details': 'vehicleDetails'
     'login/:uid/:token': 'login'
 
   constructor: ->

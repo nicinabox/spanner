@@ -1,0 +1,98 @@
+{{view vehicleHeaderView}}
+
+<div id="main">
+  <div class="container">
+    <div class="block-grid-lg-5 block-grid-md-4 block-grid-sm-3 block-grid-xs-2">
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>{{details.make.name}}</strong>
+        </div>
+        <span class="text-muted">
+          Make
+        </span>
+      </div>
+
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>{{details.model.name}}</strong>
+        </div>
+        <span class="text-muted">
+          Model
+        </span>
+      </div>
+
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>{{details.years.[0].styles.[0].trim}}</strong>
+        </div>
+        <span class="text-muted">
+          Trim
+        </span>
+      </div>
+
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>{{details.engine.torque}}</strong>
+        </div>
+        <span class="text-muted">
+          Torque
+        </span>
+      </div>
+
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>{{details.engine.size}}</strong>
+        </div>
+        <span class="text-muted">
+          Size
+        </span>
+      </div>
+
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>{{details.engine.horsepower}}</strong>
+        </div>
+        <span class="text-muted">
+          Horsepower
+        </span>
+      </div>
+
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>{{details.engine.cylinder}}</strong>
+        </div>
+        <span class="text-muted">
+          Cylinders
+        </span>
+      </div>
+
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>{{details.engine.compressionRatio}}</strong>
+        </div>
+        <span class="text-muted">
+          Compression
+        </span>
+      </div>
+
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>${{details.price.usedPrivateParty}}</strong>
+        </div>
+        <span class="text-muted">
+          Current Price
+        </span>
+      </div>
+
+      <div class="block-grid-item text-center">
+        <div class="h2">
+          <strong>{{details.MPG.city}} / {{details.MPG.highway}}</strong>
+        </div>
+        <span class="text-muted">
+          MPG
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+

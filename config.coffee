@@ -28,6 +28,7 @@ config =
         'client/scripts/helpers/*'
         'client/scripts/models/*'
         'client/scripts/collections/*'
+        'client/scripts/views/VehicleHeader*'
         'client/scripts/views/*'
         'client/scripts/routers/*'
         'client/scripts/*.coffee'
