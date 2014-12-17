@@ -1,7 +1,7 @@
 class App.PopOverView extends Thorax.LayoutView
   name: 'popover'
   className: 'pop-over'
-  width: 300
+  width: 340
 
   events:
     'click .close': 'close'
