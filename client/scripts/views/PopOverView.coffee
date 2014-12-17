@@ -14,6 +14,8 @@ class App.PopOverView extends Thorax.LayoutView
     @stackEmpty = true
     @title      = options.title
 
+    return if @isTextSelected()
+
     @render()
     options.view.retain()
 
@@ -61,6 +63,10 @@ class App.PopOverView extends Thorax.LayoutView
   selectInput: (options = {}) ->
     selector = options.focus || 'input, textarea'
     @$(selector).first().select()
+
+  isTextSelected: ->
+    if window.getSelection
+      !!window.getSelection().toString()
 
   isLastInStack: (view) ->
     @stack[0] == view
