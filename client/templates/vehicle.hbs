@@ -45,26 +45,9 @@
         </div>
 
         <div class="col-sm-4">
-          <h5 class="">
-            <span class="fa fa-wrench fa-fw"></span>
-            Recommended Maintenance
-          </h5>
-          <ul class="list-unstyled">
-            {{#each nextActions}}
-              <li>
-                {{action}} {{item}} {{inNextDuration}}
-              </li>
-            {{else}}
-              {{#if vin}}
-                <span class="text-muted">All good!</span>
-              {{else}}
-                <span class="text-muted">
-                  Add your VIN (click on your vehicle in the upper left) to get maintenance based on your mileage.
-                </span>
-              {{/if}}
-            {{/each}}
-          </ul>
+          {{view nextActionsView}}
         </div>
+
         <div class="col-sm-4">
           <h5 class="">
             <i class="fa fa-book fa-fw"></i>
@@ -82,6 +65,7 @@
         </div>
       </div>
     {{/empty}}
+
     {{view recordsView}}
   </div>
 </div>

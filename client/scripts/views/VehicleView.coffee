@@ -20,21 +20,12 @@ class App.VehicleView extends Thorax.View
 
     @collection  = new App.Records [], vehicleId: id
     @reminders   = new App.Reminders [], vehicleId: id
-    @maintenance = new App.MaintenanceSchedule [], vehicleId: id
 
     # Listeners
     @listenTo @model, 'change', @render
 
     @listenTo @collection, 'add sync remove', ->
       @milesPerYear = @collection.milesPerYear()
-      @render()
-
-    $.when(@collection.fetch(), @maintenance.fetch()).then =>
-      @nextActions = @maintenance.nextActions(
-        @collection.currentEstimatedMileage()
-        @collection.recentMilesPerDay()
-      )
-
       @render()
 
     # Child views
@@ -48,7 +39,12 @@ class App.VehicleView extends Thorax.View
     @vehicleHeaderView = new App.VehicleHeaderView
       model: @model
 
+    @nextActionsView = new App.VehicleNextActionsView
+      model: @model
+      collection: @collection
+
     @reminders.fetch()
+    @collection.fetch()
 
   removeRecord: (e) ->
     id = $(e.currentTarget).data('record-id')
