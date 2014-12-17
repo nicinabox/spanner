@@ -14,7 +14,7 @@ class App.AddServiceView extends Thorax.View
 
   initialize: ->
     unless @model
-      @date = moment().utc().format('MM-DD-YYYY')
+      @date = moment().format('MM-DD-YYYY')
       @currentEstimatedMileage = @collection.currentEstimatedMileage()
 
   destroyRecord: (e) ->
