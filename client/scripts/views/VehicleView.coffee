@@ -36,6 +36,7 @@ class App.VehicleView extends Thorax.View
 
       # Child views
       @recordsView = new App.RecordsView
+        model: @model
         collection: @collection
 
       @remindersView = new App.RemindersView

@@ -101,3 +101,7 @@ body {
   text-align: center;
   color: $gray-light;
 }
+
+[class*="js-"] {
+  cursor: pointer;
+}

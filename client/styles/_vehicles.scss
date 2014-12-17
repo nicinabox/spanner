@@ -45,6 +45,10 @@
 }
 
 #records {
+  .record {
+    cursor: pointer;
+  }
+
   h3 {
     position: sticky;
     position: -webkit-sticky;
