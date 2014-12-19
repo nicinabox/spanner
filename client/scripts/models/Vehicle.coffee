@@ -2,7 +2,10 @@ class App.Vehicle extends Thorax.Model
   idAttribute: '_id'
   validatePresence: ['name']
   url: ->
-    "/api/vehicles/#{@id}"
+    if @id
+      "/api/vehicles/#{@id}"
+    else
+      "/api/vehicles"
 
   settings: ->
     @get('settings') || {}
