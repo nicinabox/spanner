@@ -35,7 +35,8 @@ class App.Records extends Thorax.Collection
     Math.floor(mpy / 10) * 10
 
   recentMilesPerDay: (days = 90) ->
-    return unless @length
+    return unless @length && @length > 1
+
     ceil  = moment()
     floor = ceil.subtract(days, 'days').startOf('month')
 
