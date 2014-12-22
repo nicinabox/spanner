@@ -11,11 +11,12 @@ A simple tracking application to keep up with your vehicles.
 * Current mileage estimation (when adding service)
 * Yearly mileage estimation
 * Live record searching
-* Import
+* Integrated with Edmunds maintenenace interval data for your VIN
+* Import existing records (csv)
 
 ## Development
 
-* `npm install && bower install`
+* `npm run setup`
 * `gulp`
 
 ## Todo
@@ -24,7 +25,11 @@ A simple tracking application to keep up with your vehicles.
 * [x] Editing record
 * [x] Timezone bug in record date?
 * [x] Authentication
-* [ ] Editing record date, mileage formatting
+* [x] Editing record date, mileage formatting
 * [ ] Export as csv
-* [ ] Deploy
+* [x] Deploy
 * [ ] Track more than just road vehicles (boats, planes, houses, etc)
+
+## Copyright
+
+Copyright 2014 Nic Aitch.
