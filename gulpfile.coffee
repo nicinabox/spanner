@@ -81,9 +81,3 @@ gulp.task 'server', ->
       livereload: true
       open: true
     }))
-
-gulp.task 'deploy', ['precompile'], (done) ->
-  proc = process.spawn 'git', ['push', 'heroku', 'heroku:master'],
-    stdout: 'inherit'
-  proc.on 'close', ->
-    done()
