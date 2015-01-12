@@ -2,7 +2,7 @@ Handlebars.registerHelpers
   log: (obj) ->
     console.log obj
 
-  formatDate: (format, date) ->
+  formatDate: (date, format) ->
     moment(new Date(date)).utc().format(format) if date
 
   formatNumber: (format, number) ->

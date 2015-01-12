@@ -6,7 +6,7 @@
         <table class="table table-striped">
           {{#each records}}
             <tr class="record" data-id="{{_id}}">
-              <td class="date">{{formatDate 'MMM DD' date}}</td>
+              <td class="date">{{formatDate date 'MMM DD'}}</td>
               <td class="mileage">{{formatNumber '000,000' mileage}}</td>
 
               {{#if ../../settings.enableCost}}
@@ -23,7 +23,7 @@
         {{#each records}}
           <div class="record" data-id="{{_id}}">
             <header>
-              <span class="date">{{formatDate 'MMM DD' date}}</span>
+              <span class="date">{{formatDate date 'MMM DD'}}</span>
               <span class="mileage">{{formatNumber '000,000' mileage}}</span>
 
               {{#if ../../settings.enableCost}}
