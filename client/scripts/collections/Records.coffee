@@ -63,6 +63,8 @@ class App.Records extends Thorax.Collection
     first = @first().toJSON()
     last  = @last().toJSON()
 
+    return unless last.mileage
+
     elapsedDays    = moment(last.date).diff(first.date, 'days')
     elapsedMileage = last.mileage - first.mileage
 
