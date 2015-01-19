@@ -12,6 +12,10 @@ CURRENT_BRANCH=`git branch | awk '/^\*/{print $2}'`
 echo "=> Checking out $DEPLOY_BRANCH"
 git checkout $DEPLOY_BRANCH
 
+if [[ $? > 0 ]]; then
+  exit
+fi
+
 echo "=> Precompiling"
 gulp precompile
 
