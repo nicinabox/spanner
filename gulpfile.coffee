@@ -83,7 +83,7 @@ gulp.task 'server', ->
     }))
 
 gulp.task 'deploy', (done) ->
-  proc = process.spawn 'deploy.sh',
+  proc = process.spawn './deploy.sh', [],
     stdio: 'inherit'
 
   proc.on 'close', done
