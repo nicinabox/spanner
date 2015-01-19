@@ -81,9 +81,3 @@ gulp.task 'server', ->
       livereload: true
       open: true
     }))
-
-gulp.task 'deploy', (done) ->
-  proc = process.spawn './deploy.sh', [],
-    stdio: 'inherit'
-
-  proc.on 'close', done

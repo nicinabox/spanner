@@ -19,6 +19,10 @@ A simple tracking application to keep up with your vehicles.
 * `npm run setup`
 * `gulp`
 
+## Deploy
+
+* `npm run deploy`
+
 ## Todo
 
 * [x] Removing reminder
@@ -26,8 +30,8 @@ A simple tracking application to keep up with your vehicles.
 * [x] Timezone bug in record date?
 * [x] Authentication
 * [x] Editing record date, mileage formatting
-* [ ] Export as csv
 * [x] Deploy
+* [ ] Export as csv
 * [ ] Track more than just road vehicles (boats, planes, houses, etc)
 
 ## Copyright
