@@ -38,7 +38,7 @@ class App.Records extends Thorax.Collection
   recentMilesPerDay: (days = 90) ->
     return unless @length && @length > 1
 
-    ceil  = moment()
+    ceil  = moment @last().get('date')
     floor = ceil.subtract(days, 'days').startOf('month')
 
     models = @filter (model) ->
