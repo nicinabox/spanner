@@ -45,7 +45,9 @@ app.use(expressSession({
   saveUninitialized: true,
   resave: false
 }));
-app.use(express.static('public'));
+
+var oneYear = 31557600000;
+app.use(express.static('public', { maxAge: oneYear }));
 
 // Passwordless middleware
 app.use(passwordless.acceptToken());
