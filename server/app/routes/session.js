@@ -6,6 +6,8 @@ var passwordless = require('passwordless');
 
 var User = require('../models/user');
 
+var ONE_MONTH = 2629800000;
+
 router.route('/session')
   .post(
     passwordless.requestToken(
@@ -43,6 +45,8 @@ router.route('/session/:uid')
   .get(passwordless.restricted(), function(req, res) {
     User.findById(req.user, function(err, user) {
       if (err) res.send(err);
+
+      res.header('Cache-Control', 'public, max-age=' + ONE_MONTH);
       res.json(user);
     });
   })

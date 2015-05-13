@@ -10,6 +10,9 @@ var Record      = require('../models/record');
 var Reminder    = require('../models/reminder');
 var Maintenance = require('../models/maintenance');
 
+var ONE_MONTH = 2629800000;
+var ONE_YEAR = 31557600000;
+
 var getVehicleDetails = function(vehicle, callback) {
   if (!vehicle.vin) return;
 
@@ -76,6 +79,8 @@ router.route('/vehicles')
   .get(function(req, res) {
     Vehicle.find({ user: req.user }, function(err, vehicles) {
       if (err) res.send(error);
+
+      res.header('Cache-Control', 'public, max-age=' + ONE_MONTH);
       res.json(vehicles);
     });
   });
@@ -84,6 +89,8 @@ router.route('/vehicles/:id')
   .get(function(req, res) {
     Vehicle.findById(req.params.id, function(err, vehicle) {
       if (err) res.send(err);
+
+      res.header('Cache-Control', 'public, max-age=' + ONE_MONTH);
       res.json(vehicle);
     });
   })
@@ -135,6 +142,8 @@ router.route('/vehicles/:vehicleId/maintenance')
     Maintenance.findOne({ vehicleId: vehicleId }, function(err, maintenance) {
       if (err) res.send(err);
 
+      res.header('Cache-Control', 'public, max-age=' + ONE_MONTH);
+
       if (maintenance) {
         res.json(maintenance);
 
@@ -160,6 +169,8 @@ router.route('/vehicles/:vehicleId/records')
   .get(function(req, res) {
     Record.find({ vehicleId: req.params.vehicleId }, function(err, records) {
       if (err) res.send(err);
+
+      res.header('Cache-Control', 'public, max-age=' + ONE_MONTH);
       res.json(records);
     });
   })
@@ -202,6 +213,8 @@ router.route('/vehicles/:vehicleId/reminders')
   .get(function(req, res) {
     Reminder.find({ vehicleId: req.params.vehicleId }, function(err, reminders) {
       if (err) res.send(err);
+
+      res.header('Cache-Control', 'public, max-age=' + ONE_MONTH);
       res.json(reminders);
     });
   })
