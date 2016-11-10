@@ -12,7 +12,7 @@ var vehicleRoutes = require('./app/routes/vehicle');
 var sessionRoutes = require('./app/routes/session');
 var app           = express();
 
-var mongoDbPath = process.env.MONGOLAB_URI || 'mongodb://localhost/service-records';
+var mongoDbPath = process.env.MONGOHQ_URL || 'mongodb://localhost/service-records';
 mongoose.connect(mongoDbPath);
 
 var ONE_YEAR = 31557600000;
