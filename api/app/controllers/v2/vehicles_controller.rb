@@ -11,12 +11,18 @@ module V2
       if vehicle.save
         render json: vehicle
       else
-        render json: vehicle.errors, status: 400
+        respond_with_errors(vehicle)
       end
     end
 
     def update
+      vehicle = @current_user.vehicles.find(params[:id])
 
+      if vehicle.update_attributes(vehicle_params)
+        render json: vehicle
+      else
+        respond_with_errors(vehicle)
+      end
     end
 
     def destroy
