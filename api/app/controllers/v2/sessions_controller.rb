@@ -26,6 +26,8 @@ module V2
           login_token_valid_until: 1.year.ago,
         )
         session = user.sessions.build(
+          ip: request.remote_ip,
+          description: request.user_agent,
           auth_token: SecureRandom.urlsafe_base64(24)
         )
         session.save
