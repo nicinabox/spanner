@@ -1,3 +1,5 @@
+include ErrorSerializer
+
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
@@ -21,6 +23,28 @@ class ApplicationController < ActionController::API
   end
 
   def render_unauthorized
-    render json: 'Bad credentials', status: :unauthorized
+    respond_with_error 'Bad credentials', status: :unauthorized
+  end
+
+  def respond_with_errors(object)
+    render json: {
+      errors: ErrorSerializer.serialize(object)
+    }, status: :unprocessable_entity
+  end
+
+  def respond_with_error(detail, **args)
+    render({
+      json: {
+        error: ErrorSerializer.serialize(detail)
+      }
+    }.merge(args))
+  end
+
+  def respond_with_message(detail, **args)
+    render({
+      json: {
+        message: ErrorSerializer.serialize(detail)
+      }
+    }.merge(args))
   end
 end

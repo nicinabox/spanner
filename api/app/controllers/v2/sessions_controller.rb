@@ -12,7 +12,7 @@ module V2
 
       LoginMailer.login_link(user).deliver
 
-      render :success
+      render :success, status: 204
     end
 
     def login
@@ -32,19 +32,15 @@ module V2
         )
         session.save
 
-        render json: {
-          id: user.id,
-          email: user.email,
-          auth_token: session.auth_token
-        }
+        render json: session
       else
-        render json: 'Invalid or expired login link', status: 401
+        respond_with_message error: 'Invalid or expired login link', status: 401
       end
     end
 
     def destroy
       @current_session.destroy!
-      render json: 'Ok, Bye!'
+      render :success, status: 204
     end
   end
 end
