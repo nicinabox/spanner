@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  resources :reminders
-  resources :records
-  resources :users
-  resources :vehicles
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  scope module: :v2, constraints: ApiConstraint.new(version: 2) do
+    resources :reminders
+    resources :records
+    resources :users
+    resources :vehicles
+  end
 end
