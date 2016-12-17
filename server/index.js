@@ -26,7 +26,7 @@ passwordless.addDelivery(
   function(tokenToSend, uidToSend, recipient, callback) {
     postmark.send({
       "TextBody": 'Hello '+ recipient +'!\nYou can now access your vehicles here: ' +
-        'http://' + host + '/#login/' +
+        'https://' + host + '/#login/' +
         encodeURIComponent(uidToSend) + '/' +
         tokenToSend,
       "From": 'spanner@nicinabox.com',
