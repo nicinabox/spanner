@@ -6,5 +6,9 @@ Rails.application.routes.draw do
     resources :records
     resources :users
     resources :vehicles
+
+    post 'sessions', to: 'sessions#create'
+    get 'sessions/:login_token', to: 'sessions#login'
+    delete 'sessions/destroy'
   end
 end
