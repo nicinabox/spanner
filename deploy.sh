@@ -17,6 +17,7 @@ if [[ $? > 0 ]]; then
 fi
 
 echo "=> Precompiling"
+git merge master --no-edit
 gulp precompile
 
 echo "=> Committing dist"
