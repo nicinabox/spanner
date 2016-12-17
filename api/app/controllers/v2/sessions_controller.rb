@@ -24,13 +24,16 @@ module V2
         user.update!(
           login_token: nil,
           login_token_valid_until: 1.year.ago,
-          auth_token: SecureRandom.urlsafe_base64(15)
         )
+        session = user.sessions.build(
+          auth_token: SecureRandom.urlsafe_base64(24)
+        )
+        session.save
 
         render json: {
           id: user.id,
           email: user.email,
-          auth_token: user.auth_token
+          auth_token: session.auth_token
         }
       else
         render json: 'Invalid or expired login link', status: 401
