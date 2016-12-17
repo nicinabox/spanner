@@ -22,8 +22,8 @@ gulp precompile
 echo "=> Committing dist"
 git add . && git ci -m "Dist"
 
-echo "=> Pushing to Heroku"
-git push dokku deploy:master
+echo "=> Pushing to remote"
+git push dokku deploy:master $1
 
 echo "=> Returning to $CURRENT_BRANCH"
 git checkout $CURRENT_BRANCH
