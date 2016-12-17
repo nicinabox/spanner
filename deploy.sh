@@ -23,7 +23,7 @@ echo "=> Committing dist"
 git add . && git ci -m "Dist"
 
 echo "=> Pushing to Heroku"
-git push heroku deploy:master
+git push dokku deploy:master
 
 echo "=> Returning to $CURRENT_BRANCH"
 git checkout $CURRENT_BRANCH
