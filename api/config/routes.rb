@@ -9,6 +9,6 @@ Rails.application.routes.draw do
 
     post 'sessions', to: 'sessions#create'
     get 'sessions/:login_token', to: 'sessions#login'
-    delete 'sessions/destroy'
+    delete 'sessions', to: 'sessions#destroy'
   end
 end

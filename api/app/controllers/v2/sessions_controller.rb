@@ -41,8 +41,8 @@ module V2
     end
 
     def destroy
-      current_user.update!(auth_token: nil)
-      render json: 'Bye!'
+      @current_session.destroy!
+      render json: 'Ok, Bye!'
     end
   end
 end
