@@ -34,7 +34,7 @@ module V2
 
         render json: session
       else
-        respond_with_message error: 'Invalid or expired login link', status: 401
+        respond_with_error 'Invalid or expired login link', status: 401
       end
     end
 
