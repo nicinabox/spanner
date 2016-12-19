@@ -43,8 +43,11 @@ module V2
     end
 
     def destroy
-      @current_session.destroy!
-      render :success, status: 204
+      session = current_user.sessions.find(params[:id])
+      if session
+        session.destroy!
+        render :success, status: 204
+      end
     end
   end
 end
