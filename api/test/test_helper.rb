@@ -7,7 +7,7 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
-  def http_options(auth_token)
+  def http_options(auth_token = nil)
     {
       headers: {
         accept: "application/json; version=2",
