@@ -7,6 +7,14 @@ class ApplicationController < ActionController::API
 
   protected
 
+  def current_user
+    @current_user
+  end
+
+  def current_session
+    @current_session
+  end
+
   def authenticate
     authenticate_token || render_unauthorized
   end
