@@ -1,7 +1,5 @@
 module ErrorSerializer
   def self.serialize(object)
-    return if object.nil?
-
     if object.is_a? String
       serizlize_message(object)
     else
@@ -12,14 +10,13 @@ module ErrorSerializer
   protected
 
   def serialize_object(object)
-    json = {}
-    new_hash = object.to_hash(true).map do |k, v|
+    return if object.errors.nil?
+
+    object.errors.to_hash(true).map do |k, v|
       v.map do |msg|
         { id: k, title: msg }
       end
     end.flatten
-    json[:errors] = new_hash
-    json
   end
 
   def serizlize_message(message)
