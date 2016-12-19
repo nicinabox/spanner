@@ -2,6 +2,10 @@ module V2
   class SessionsController < ApplicationController
     skip_before_action :authenticate, only: [:create, :login]
 
+    def index
+      render json: current_user.sessions
+    end
+
     def create
       user = User.find_or_create_by!(email: params[:email])
 
