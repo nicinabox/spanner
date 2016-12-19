@@ -9,14 +9,18 @@ module V2
     def create
       user = User.find_or_create_by!(email: params[:email])
 
-      user.update!(
+      if user
+        user.update!(
         login_token: SecureRandom.urlsafe_base64,
         login_token_valid_until: Time.now + 15.minutes
-      )
+        )
 
-      LoginMailer.login_link(user).deliver
+        LoginMailer.login_link(user).deliver
 
-      render :success, status: 204
+        render :success, status: 204
+      else
+        respond_with_errors(user)
+      end
     end
 
     def login
