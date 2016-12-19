@@ -1,24 +1,44 @@
-# README
+# spanner-api
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## API
 
-Things you may want to cover:
+All authenticated routes require version in `Accepts` header:
 
-* Ruby version
+`Accepts: "application/json;version=2"`
 
-* System dependencies
+### POST /sessions
 
-* Configuration
+Sends email with login url
 
-* Database creation
+Body
 
-* Database initialization
+`email`
 
-* How to run the test suite
+### GET /sessions/:login_token
 
-* Services (job queues, cache servers, search engines, etc.)
+Used by login url to authenticate token
 
-* Deployment instructions
+### GET /sessions
 
-* ...
+Returns current user sessions
+
+## Vehicles
+
+### GET /vehicles
+### POST /vehicles
+### PUT /vehicles/:id
+### DELETE /vehicles/:id
+
+## Records
+
+### GET /vehicles/:vehicle_id/records
+### POST /vehicles/:vehicle_id/records
+### PUT /vehicles/:vehicle_id/records/:id
+### DELETE /vehicles/:vehicle_id/records/:id
+
+## Reminders
+
+### GET /vehicles/:vehicle_id/reminders
+### POST /vehicles/:vehicle_id/reminders
+### PUT /vehicles/:vehicle_id/reminders/:id
+### DELETE /vehicles/:vehicle_id/reminders/:id
