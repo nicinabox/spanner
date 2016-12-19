@@ -5,6 +5,22 @@ class ApplicationController < ActionController::API
 
   before_action :authenticate
 
+  rescue_from StandardError do |e|
+    respond_with_error(e.message, status: 500)
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    respond_with_error(e.message, status: :not_found)
+  end
+
+  rescue_from ActiveRecord::RecordInvalid do |invalid|
+    respond_with_errors(invalid.record)
+  end
+
+  rescue_from ActionController::ParameterMissing do |e|
+    respond_with_error(e.message, status: :unprocessable_entity)
+  end
+
   protected
 
   def current_user

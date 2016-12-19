@@ -9,21 +9,15 @@ module V2
       vehicle = vehicles.find(params[:vehicle_id])
       record = vehicle.records.build(record_params)
 
-      if record.save
-        render json: record
-      else
-        respond_with_errors(record)
-      end
+      record.save!
+      render json: record
     end
 
     def update
       record = vehicles.records.find(params[:id])
 
-      if record.update_attributes(reminder_params)
-        render json: record
-      else
-        respond_with_errors(record)
-      end
+      record.update_attributes!(reminder_params)
+      render json: record
     end
 
     def destroy

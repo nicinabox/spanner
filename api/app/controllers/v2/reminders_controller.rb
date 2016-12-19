@@ -9,21 +9,15 @@ module V2
       vehicle = vehicles.find(params[:vehicle_id])
       reminder = vehicle.reminders.build(reminder_params)
 
-      if reminder.save
-        render json: reminder
-      else
-        respond_with_errors(reminder)
-      end
+      reminder.save!
+      render json: reminder
     end
 
     def update
       reminder = vehicles.reminders.find(params[:id])
 
-      if reminder.update_attributes(reminder_params)
-        render json: reminder
-      else
-        respond_with_errors(reminder)
-      end
+      reminder.update_attributes!(reminder_params)
+      render json: reminder
     end
 
     def destroy

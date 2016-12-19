@@ -1,28 +1,19 @@
 module V2
   class VehiclesController < ApplicationController
     def index
-      vehicles = vehicles.all
-      render json: vehicles
+      render json: vehicles.all
     end
 
     def create
       vehicle = vehicles.build(vehicle_params)
-
-      if vehicle.save
-        render json: vehicle
-      else
-        respond_with_errors(vehicle)
-      end
+      vehicle.save!
+      render json: vehicle
     end
 
     def update
       vehicle = vehicles.find(params[:id])
-
-      if vehicle.update_attributes(vehicle_params)
-        render json: vehicle
-      else
-        respond_with_errors(vehicle)
-      end
+      vehicle.update_attributes!(vehicle_params)
+      render json: vehicle
     end
 
     def destroy
