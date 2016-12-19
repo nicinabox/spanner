@@ -7,9 +7,10 @@ Rails.application.routes.draw do
   end
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do
-    resources :reminders
-    resources :records
-    resources :vehicles
+    resources :vehicles do
+      resources :reminders
+      resources :records
+    end
 
     get 'user', to: 'users#index'
 
