@@ -2,7 +2,7 @@ module V2
   class RecordsController < ApplicationController
     def index
       vehicle = vehicles.find(params[:vehicle_id])
-      render json: records.all
+      render json: vehicle.records.all
     end
 
     def create
@@ -16,7 +16,7 @@ module V2
     def update
       record = vehicles.records.find(params[:id])
 
-      record.update_attributes!(reminder_params)
+      record.update_attributes!(record_params)
       render json: record
     end
 
@@ -31,7 +31,7 @@ module V2
     end
 
     def record_params
-      params.require(:reminder).permit(:date, :cost, :mileage, :notes)
+      params.require(:record).permit(:date, :cost, :mileage, :notes)
     end
   end
 end
