@@ -1,30 +1,39 @@
 module V2
   class RemindersController < ApplicationController
     def index
-      reminders = vehicles.find(params[:vehicle_id]).reminders
       render json: reminders.all
     end
 
     def create
-      vehicle = vehicles.find(params[:vehicle_id])
-      reminder = vehicle.reminders.build(reminder_params)
+      reminder = reminders.build(reminder_params)
 
       reminder.save!
       render json: reminder
     end
 
     def update
-      reminder = vehicles.reminders.find(params[:id])
+      reminder = reminders.find(params[:id])
 
       reminder.update_attributes!(reminder_params)
       render json: reminder
     end
 
     def destroy
-      vehicles.reminders.destroy(params[:id])
+      record = reminders.find(params[:id])
+
+      record.destroy!
+      render :success
     end
 
     private
+
+    def reminders
+      vehicle.reminders
+    end
+
+    def vehicle
+      vehicles.find(params[:vehicle_id])
+    end
 
     def vehicles
       current_user.vehicles

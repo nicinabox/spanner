@@ -10,6 +10,19 @@ class VehiclesControllerTest < ActionDispatch::IntegrationTest
     assert response_body.size == 1
   end
 
+  test "update a vehicle" do
+    vehicle = @user.vehicles.first
+    put vehicle_url(vehicle), http_options(@session.auth_token).merge({
+      params: {
+        vehicle: {
+          name: 'Mini Cooper'
+        }
+      }
+    })
+
+    assert response_body['name'] == 'Mini Cooper'
+  end
+
   test "delete vehicle" do
     vehicle = @user.vehicles.first
     delete vehicle_url(vehicle), http_options(@session.auth_token)
