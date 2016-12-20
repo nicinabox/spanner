@@ -1,3 +1,3 @@
 class ReminderSerializer < ActiveModel::Serializer
-  attributes :id, :reminder
+  attributes :id, :notes
 end

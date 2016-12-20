@@ -40,7 +40,7 @@ module V2
     end
 
     def reminder_params
-      params.require(:reminder).permit(:reminder)
+      params.require(:reminder).permit(:notes)
     end
   end
 end

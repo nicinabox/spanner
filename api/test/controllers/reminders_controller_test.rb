@@ -19,18 +19,18 @@ class RemindersControllerTest < ActionDispatch::IntegrationTest
     put vehicle_reminder_url(vehicle, reminder), http_options(@session.auth_token).merge({
       params: {
         reminder: {
-          reminder: 'oil change'
+          notes: 'oil change'
         }
       }
     })
 
-    assert response_body['reminder'] == 'oil change'
+    assert response_body['notes'] == 'oil change'
   end
 
   test "deletes all reminders for vehicle" do
     vehicle = @user.vehicles.first
 
-    delete vehicle_reminder_url(vehicle.id, vehicle.reminders.last.id), http_options(@session.auth_token)
+    delete vehicle_reminder_url(vehicle, vehicle.reminders.last), http_options(@session.auth_token)
     assert_response :success
 
     get vehicle_reminders_url(vehicle), http_options(@session.auth_token)
