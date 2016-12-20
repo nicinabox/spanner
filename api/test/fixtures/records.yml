@@ -2,14 +2,14 @@
 
 one:
   date: 2016-12-16 23:34:47
-  cost: 
-  mileage: 
-  notes: MyString
-  vehicle_id: 
+  cost:
+  mileage: 1
+  notes: Purchase
+  vehicle_id: 1
 
 two:
   date: 2016-12-16 23:34:47
-  cost: 
-  mileage: 
-  notes: MyString
-  vehicle_id: 
+  cost:
+  mileage: 5000
+  notes: Oil change
+  vehicle_id: 1

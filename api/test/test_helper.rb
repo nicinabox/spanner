@@ -21,8 +21,7 @@ class ActiveSupport::TestCase
   end
 
   def new_session
-    @user = User.create({ email: "user@test" })
-    @session = @user.sessions.build(auth_token: SecureRandom.urlsafe_base64(24))
-    @session.save!
+    @user = User.where({ email: "user1@test" }).first
+    @session = @user.sessions.first
   end
 end

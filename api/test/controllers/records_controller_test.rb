@@ -5,20 +5,20 @@ class RecordsControllerTest < ActionDispatch::IntegrationTest
     new_session
   end
 
-  test "returns empty records for vehicle" do
-    vehicle = @user.vehicles.create(name: 'Mazda')
+  test "returns all records for vehicle" do
+    vehicle = @user.vehicles.first
 
     get vehicle_records_url(vehicle), http_options(@session.auth_token)
-    assert_equal [], response_body
+    assert response_body.size == vehicle.records.count
   end
 
-  test "returns all records for vehicle" do
-    vehicle = @user.vehicles.create(name: 'Mazda')
-    5.times do |n|
-      vehicle.records.create(date: Time.now, notes: n)
-    end
+  test "deletes all records for vehicle" do
+    vehicle = @user.vehicles.first
+
+    delete vehicle_record_url(vehicle.id, vehicle.records.last.id), http_options(@session.auth_token)
+    assert_response :success
 
     get vehicle_records_url(vehicle), http_options(@session.auth_token)
-    assert response_body.size == 5
+    assert response_body.size == 1
   end
 end

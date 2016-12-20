@@ -1,19 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  vin: MyString
-  notes: MyString
-  position: 
-  enable_cost: 
-  retired: 
-  user_id: 
+  id: 1
+  name: Mazda
+  vin: M213
+  notes: 
+  position:
+  enable_cost:
+  retired:
+  user_id: 1
 
 two:
-  name: MyString
-  vin: MyString
-  notes: MyString
-  position: 
-  enable_cost: 
-  retired: 
-  user_id: 
+  id: 2
+  name: Honda
+  vin: H34534
+  notes:
+  position:
+  enable_cost:
+  retired:
+  user_id: 2
