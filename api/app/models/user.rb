@@ -4,6 +4,8 @@ class User < ApplicationRecord
   has_many :vehicles, dependent: :destroy
   has_many :sessions, dependent: :destroy
 
+  before_save { |user| user.email = user.email.downcase }
+
   def user_id
     id
   end
