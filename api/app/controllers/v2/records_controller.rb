@@ -21,7 +21,11 @@ module V2
     end
 
     def destroy
-      vehicles.records.destroy(params[:id])
+      vehicle = vehicles.find(params[:vehicle_id])
+      record = vehicle.records.find(params[:id])
+      
+      record.destroy!
+      render :success
     end
 
     private
