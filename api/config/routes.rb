@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     end
 
     get 'user', to: 'users#index'
+    put 'user', to: 'users#update'
 
     delete 'sessions/:id', to: 'sessions#destroy'
     get 'sessions', to: 'sessions#index'
