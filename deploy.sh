@@ -6,7 +6,7 @@
 # Push heroku
 # Return to previous branch
 
-DEPLOY_BRANCH='deploy'
+DEPLOY_BRANCH='deploy-ng'
 CURRENT_BRANCH=`git branch | awk '/^\*/{print $2}'`
 
 echo "=> Checking out $DEPLOY_BRANCH"
