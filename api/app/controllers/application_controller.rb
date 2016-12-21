@@ -40,6 +40,7 @@ class ApplicationController < ActionController::API
       session = Session.find_by(auth_token: token)
 
       if session
+        session.update_attributes(last_seen: Time.now)
         @current_session = session
         @current_user = session.user
       end
