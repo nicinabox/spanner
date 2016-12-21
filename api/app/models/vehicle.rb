@@ -9,7 +9,7 @@ class Vehicle < ApplicationRecord
 
   def miles_per_year
     mpd = miles_per_day
-    return if mpd < 0
+    return if mpd.nil? or mpd < 0
 
     first = records.order('date ASC').limit(1).first
     elapsed_days = (Time.now - first.date).to_i / 1.day
@@ -27,7 +27,7 @@ class Vehicle < ApplicationRecord
   def miles_per_day
     first = records.first
     last  = records.last
-    return unless last.mileage
+    return if last.nil? or last.mileage.nil?
 
     elapsed_days    = (last.date - first.date).to_i / 1.day
     elapsed_mileage = last.mileage - first.mileage
