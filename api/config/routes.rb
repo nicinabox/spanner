@@ -1,6 +1,8 @@
 require 'constraints/api_constraint'
 
 Rails.application.routes.draw do
+  root 'status#index'
+
   scope module: :v2 do
     post 'sessions', to: 'sessions#create'
     get 'sessions/:login_token', to: 'sessions#login', as: :sessions_login
