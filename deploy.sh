@@ -24,7 +24,7 @@ echo "=> Committing dist"
 git add . && git ci -m "Dist"
 
 echo "=> Pushing to remote"
-git push ng deploy:master $1
+git push ng $DEPLOY_BRANCH:master $1
 
 echo "=> Returning to $CURRENT_BRANCH"
 git checkout $CURRENT_BRANCH
