@@ -71,6 +71,12 @@ GEM
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     pg (0.19.0)
+    postmark (1.10.0)
+      json
+      rake
+    postmark-rails (0.15.0)
+      actionmailer (>= 3.0.0)
+      postmark (~> 1.10.0)
     puma (3.6.2)
     rack (2.0.1)
     rack-test (0.6.3)
@@ -135,6 +141,7 @@ DEPENDENCIES
   byebug
   listen (~> 3.0.5)
   pg (~> 0.18)
+  postmark-rails (~> 0.15.0)
   puma (~> 3.0)
   rails (~> 5.0.0, >= 5.0.0.1)
   rails_12factor

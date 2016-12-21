@@ -49,6 +49,16 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "spanner-api_#{Rails.env}"
   config.action_mailer.perform_caching = false
 
+  config.action_mailer.delivery_method = :postmark
+
+  config.action_mailer.postmark_settings = {
+    api_token: ENV['POSTMARK_API_KEY']
+  }
+
+  config.action_mailer.default_url_options = {
+    host: 'https://spanner-api.apps.nicinabox.com'
+  }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
