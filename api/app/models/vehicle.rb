@@ -4,4 +4,33 @@ class Vehicle < ApplicationRecord
   belongs_to :user
   has_many :reminders, dependent: :destroy
   has_many :records, dependent: :destroy
+
+  ONE_YEAR = 365
+
+  def miles_per_year
+    mpd = miles_per_day
+    return if mpd < 0
+
+    first = records.order('date ASC').limit(1).first
+    elapsed_days = (Time.now - first.date).to_i / 1.day
+
+    if elapsed_days < ONE_YEAR
+      remaining_days = ONE_YEAR - Date.today.yday
+      mpy = mpd * (elapsed_days + remaining_days)
+    else
+      mpy = mpd * ONE_YEAR
+    end
+
+    (mpy / 10).floor * 10
+  end
+
+  def miles_per_day
+    first = records.first
+    last  = records.last
+    return unless last.mileage
+
+    elapsed_days    = (last.date - first.date).to_i / 1.day
+    elapsed_mileage = last.mileage - first.mileage
+    elapsed_mileage / elapsed_days
+  end
 end
