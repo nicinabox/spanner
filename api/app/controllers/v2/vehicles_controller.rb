@@ -1,7 +1,7 @@
 module V2
   class VehiclesController < ApplicationController
     def index
-      render json: vehicles.all
+      render json: vehicles.all.order(:position)
     end
 
     def create
