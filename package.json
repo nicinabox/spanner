@@ -33,6 +33,7 @@
     "express": "^4.10.2",
     "express-session": "^1.9.2",
     "handlebars": "^2.0.0",
+    "http-proxy": "^1.16.2",
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
     "marked": "^0.3.2",
