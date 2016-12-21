@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161220182122) do
+ActiveRecord::Schema.define(version: 20161220235806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20161220182122) do
     t.text     "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "mongo_id"
     t.index ["vehicle_id"], name: "index_records_on_vehicle_id", using: :btree
   end
 
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(version: 20161220182122) do
     t.string   "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "mongo_id"
     t.index ["vehicle_id"], name: "index_reminders_on_vehicle_id", using: :btree
   end
 
@@ -50,18 +52,21 @@ ActiveRecord::Schema.define(version: 20161220182122) do
     t.datetime "updated_at",              null: false
     t.string   "login_token"
     t.datetime "login_token_valid_until"
+    t.string   "mongo_id"
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
   end
 
   create_table "vehicles", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"
     t.string   "vin"
-    t.string   "notes"
+    t.text     "notes"
     t.integer  "position"
     t.boolean  "enable_cost"
     t.boolean  "retired"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "mongo_id"
     t.index ["user_id"], name: "index_vehicles_on_user_id", using: :btree
   end
 
