@@ -1,3 +1,5 @@
-Login to spanner
+Hi <%= @user.email %>,
 
-http://localhost:3000/sessions/<%= @user.login_token %>
+Click the link below to sign in:
+
+<%= sessions_login_url(@user.login_token) %>

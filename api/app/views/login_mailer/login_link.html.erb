@@ -1,7 +1,9 @@
-<h1>Login to spanner</h1>
-
 <p>
-  <a href="http://localhost:3000/sessions/<%= @user.login_token %>">
-    http://localhost:3000/sessions/<%= @user.login_token %>
-  </a>
+  Hi <%= @user.email %>,
+</p>
+<p>
+  Click the link below to sign in:
+</p>
+<p>
+  <%= link_to 'Sign In', sessions_login_url(@user.login_token) %>
 </p>

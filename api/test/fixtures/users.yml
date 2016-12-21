@@ -3,7 +3,9 @@
 one:
   id: 1
   email: user1@test
+  login_token: 123
 
 two:
   id: 2
   email: user2@test
+  login_token: 456
