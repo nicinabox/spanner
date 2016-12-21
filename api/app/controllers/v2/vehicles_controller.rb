@@ -4,6 +4,10 @@ module V2
       render json: vehicles.all.order(:position)
     end
 
+    def show
+      render json: vehicles.find(params[:id])
+    end
+
     def create
       vehicle = vehicles.build(vehicle_params)
       vehicle.save!
