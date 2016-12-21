@@ -80,6 +80,4 @@ test:
 #
 production:
   <<: *default
-  database: spanner-api_production
-  username: spanner-api
-  password: <%= ENV['SPANNER-API_DATABASE_PASSWORD'] %>
+  database: <%= ENV['POSTGRESQL_URL'] %>

@@ -1,0 +1,10 @@
+{
+  "name": "spanner-api",
+  "description": "",
+  "keywords": [],
+  "scripts": {
+    "dokku": {
+      "postdeploy": "bundle exec rake db:migrate"
+    }
+  }
+}
