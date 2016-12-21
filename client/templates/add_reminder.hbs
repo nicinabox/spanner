@@ -1,11 +1,10 @@
 <form action="">
   <div class="form-group">
     <label class="control-label" for="reminder">Reminder</label>
-    <input type="text" class="form-control" name="reminder"
+    <input type="text" class="form-control" name="notes"
       placeholder="E.g., Change oil at 60,000" required>
   </div>
 
-  <input type="hidden" name="vehicle_id" value={{_id}}>
   <button class="btn btn-success">Save</button>
 
   {{#if model}}

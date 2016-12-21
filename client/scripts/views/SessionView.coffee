@@ -8,7 +8,6 @@ class App.SessionView extends Thorax.View
 
   initialize: ->
     @model = App.session
-    @model.fetch()
 
   showSessionPopover: (e) ->
     e.preventDefault()

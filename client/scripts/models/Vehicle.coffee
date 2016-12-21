@@ -1,14 +1,11 @@
 class App.Vehicle extends Thorax.Model
-  idAttribute: '_id'
   validatePresence: ['name']
+
   url: ->
     if @id
       "/api/vehicles/#{@id}"
     else
       "/api/vehicles"
-
-  settings: ->
-    @get('settings') || {}
 
   hasVin: ->
     !_.isEmpty @get('vin')

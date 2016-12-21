@@ -1,6 +1,5 @@
 class App.Record extends Thorax.Model
   validatePresence: ['date', 'notes']
-  idAttribute: '_id'
 
   validate: (attrs) ->
     errors = _.map attrs, (v, k) =>

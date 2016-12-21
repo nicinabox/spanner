@@ -3,16 +3,14 @@ class App.VehicleSettingsView extends Thorax.View
 
   events:
     'click a[class*=js-]': (e) -> e.preventDefault()
-    'click .js-enable-cost': 'enableCost'
+    'click .js-enable-cost': 'enable_cost'
     'click .js-import-records': 'importRecords'
     'click .js-retire-vehicle': 'retireVehicle'
     'click .js-remove-vehicle': 'removeVehicle'
 
-  enableCost: ->
-    settings = @model.settings()
+  enable_cost: ->
     @model.save
-      settings:
-        enableCost: !settings.enableCost
+      enable_cost: !@model.get('enable_cost')
 
   importRecords: ->
     App.popover.pushView

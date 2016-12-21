@@ -19,7 +19,7 @@
     {{/if}}
   </div>
 
-  {{#if vehicle.settings.enableCost}}
+  {{#if vehicle.enable_cost}}
     <div class="form-group">
       <label class="control-label" for="cost">Cost</label>
       <input type="number" name="cost" class="form-control"
@@ -33,7 +33,6 @@
       placeholder="E.g., Change oil, oil filter"></textarea>
   </div>
 
-  <input type="hidden" name="vehicle_id" value={{_id}}>
   <button class="btn btn-success">Save</button>
 
   {{#if model}}

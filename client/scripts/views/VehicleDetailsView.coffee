@@ -10,7 +10,7 @@ class App.VehicleDetailsView extends Thorax.View
     if @vehicles.length
       @model = @vehicles.get(id)
     else
-      @model = new App.Vehicle _id: id
+      @model = new App.Vehicle id: id
       @model.fetch()
 
     @listenTo @model, 'change', @render

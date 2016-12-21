@@ -5,6 +5,7 @@ class App.Records extends Thorax.Collection
 
   initialize: (models, options) ->
     @vehicleId = options.vehicleId
+    @vehicle = options.vehicle
 
   comparator: 'date'
 
@@ -18,22 +19,6 @@ class App.Records extends Thorax.Collection
 
     currentMileage = last.mileage + (elapsedDays * mpd)
     currentMileage
-
-  milesPerYear: ->
-    ONE_YEAR = 365
-    mpd = @milesPerDay()
-    return unless mpd
-
-    first       = @first().toJSON()
-    elapsedDays = moment().diff(first.date, 'days')
-
-    if elapsedDays < ONE_YEAR
-      remainingDays = ONE_YEAR - moment().dayOfYear()
-      mpy = mpd * (elapsedDays + remainingDays)
-    else
-      mpy = mpd * ONE_YEAR
-
-    Math.floor(mpy / 10) * 10
 
   recentMilesPerDay: (days = 90) ->
     return unless @length && @length > 1
@@ -58,18 +43,11 @@ class App.Records extends Thorax.Collection
 
     +(elapsedMileage / elapsedDays).toFixed(2)
 
+  milesPerYear: ->
+    @vehicle.get('miles_per_year')
+
   milesPerDay: ->
-    return unless @length
-
-    first = @first().toJSON()
-    last  = @last().toJSON()
-
-    return unless last.mileage
-
-    elapsedDays    = moment(last.date).diff(first.date, 'days')
-    elapsedMileage = last.mileage - first.mileage
-
-    +(elapsedMileage / elapsedDays).toFixed(2)
+    @vehicle.get('miles_per_day')
 
   groupByYear: (data) ->
     _(data or @toJSON())

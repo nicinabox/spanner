@@ -15,10 +15,10 @@ class App.VehicleView extends Thorax.View
     if @vehicles.length
       @model = @vehicles.get(id)
     else
-      @model = new App.Vehicle _id: id
+      @model = new App.Vehicle id: id
       @model.fetch()
 
-    @collection  = new App.Records [], vehicleId: id
+    @collection  = new App.Records [], vehicleId: id, vehicle: @model
     @reminders   = new App.Reminders [], vehicleId: id
 
     # Listeners
@@ -38,10 +38,6 @@ class App.VehicleView extends Thorax.View
 
     @vehicleHeaderView = new App.VehicleHeaderView
       model: @model
-
-    @nextActionsView = new App.VehicleNextActionsView
-      model: @model
-      collection: @collection
 
     @reminders.fetch()
     @collection.fetch()

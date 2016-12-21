@@ -1,6 +1,5 @@
 class App.Reminder extends Thorax.Model
-  validatePresence: ['reminder']
-  idAttribute: '_id'
+  validatePresence: ['notes']
 
   validate: (attrs) ->
     errors = _.map attrs, (v, k) =>

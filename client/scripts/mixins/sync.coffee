@@ -1,11 +1,14 @@
 _sync = Backbone.sync
 
 Backbone.sync = (method, model, options) ->
-  options.url = buildUrl(method, model, options)
+  options.headers = {
+    accept: 'application/json;version=2'
+    authorization: "Token #{App.session.get('auth_token')}"
+  }
 
   if model && (method == 'create' || method == 'update' || method == 'patch')
-    options.contentType = 'application/json';
-    options.data = JSON.stringify(options.attrs || model.toJSON());
+    options.contentType = 'application/json'
+    options.data = JSON.stringify(options.attrs || model.toJSON())
 
   _error = options.error
   options.error = (xhr, status, error_thrown) ->
@@ -13,8 +16,3 @@ Backbone.sync = (method, model, options) ->
     App.session.unauthorize() if xhr.status == 401
 
   _sync.call(this, method, model, options)
-
-buildUrl = (method, model, options) ->
-  q   = $.param(App.session.toRequestJSON())
-  url = _.result model, 'url'
-  [url, q].join('?')

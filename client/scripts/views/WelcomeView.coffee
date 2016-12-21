@@ -3,19 +3,19 @@ class App.WelcomeView extends Thorax.View
   id: 'welcome'
 
   events:
-    'submit form': 'login'
+    'submit form': 'requestSession'
     'click .try-again': 'tryAgain'
 
   initialize: ->
     @placeholder = 'E.g., ' + @randomEmail()
     @user = {}
 
-  login: (e) ->
+  requestSession: (e) ->
     e.preventDefault()
     @authenticating = true
     @user = @serialize()
 
-    App.session.login(@user)
+    App.session.requestSession(@user)
     @render()
 
   tryAgain: (e) ->

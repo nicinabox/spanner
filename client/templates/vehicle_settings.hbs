@@ -1,28 +1,13 @@
 <ul class="nav nav-pills nav-stacked">
   <li>
-    <a href="#vehicles/{{_id}}/details">
-      Details
-    </a>
-  </li>
-  <li>
     <a href="#" class="js-enable-cost">
       Enable Cost
 
-      {{#if settings.enableCost}}
+      {{#if enable_cost}}
         <i class="fa fa-check pull-right"></i>
       {{/if}}
     </a>
   </li>
-  <li>
-    <a href="#" class="js-import-records">
-      Import&hellip;
-    </a>
-  </li>
-  {{!-- <li>
-    <a href="#" class="js-retire-vehicle">
-      Retire&hellip;
-    </a>
-  </li> --}}
   <li>
     <a href="#" class="text-danger js-remove-vehicle">
       Remove&hellip;

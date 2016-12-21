@@ -5,11 +5,11 @@
       <div class="records-container hidden-sm hidden-xs">
         <table class="table table-striped">
           {{#each records}}
-            <tr class="record" data-id="{{_id}}">
+            <tr class="record" data-id="{{id}}">
               <td class="date">{{formatDate date 'MMM DD'}}</td>
               <td class="mileage">{{formatNumber '000,000' mileage}}</td>
 
-              {{#if ../../settings.enableCost}}
+              {{#if ../../enable_cost}}
                 <td class="cost">{{formatNumber '$0' cost}}</td>
               {{/if}}
 
@@ -21,12 +21,12 @@
 
       <div class="records-container visible-sm visible-xs">
         {{#each records}}
-          <div class="record" data-id="{{_id}}">
+          <div class="record" data-id="{{id}}">
             <header>
               <span class="date">{{formatDate date 'MMM DD'}}</span>
               <span class="mileage">{{formatNumber '000,000' mileage}}</span>
 
-              {{#if ../../settings.enableCost}}
+              {{#if ../../enable_cost}}
                 <span class="cost">{{formatNumber '$0' cost}}</span>
               {{/if}}
             </header>
