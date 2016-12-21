@@ -2,6 +2,7 @@ require 'constraints/api_constraint'
 
 Rails.application.routes.draw do
   root 'status#index'
+  get '/.well-known/apple-app-site-association' => 'status#apple_app_site_association'
 
   scope module: :v2 do
     post 'sessions', to: 'sessions#create'

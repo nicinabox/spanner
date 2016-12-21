@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "M55932FLPL.com.nicinabox.spanner",
+        "paths": ["*"]
+      }
+    ]
+  }
+}
