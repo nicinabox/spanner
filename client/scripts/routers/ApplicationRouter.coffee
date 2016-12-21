@@ -13,7 +13,6 @@ class App.ApplicationRouter extends Backbone.Router
     , this
 
     super
-    App.session.authorize()
 
     @on 'route', ->
       App.layout.$('.pop-over').remove()

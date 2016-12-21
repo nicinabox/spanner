@@ -21,17 +21,15 @@ class App.Session extends Thorax.Model
     App.session = new @constructor
 
   authorize: (data) ->
-    setTimeout =>
+    if data
+      @set(data)
+      localStorage.setItem 'session', JSON.stringify(@toJSON())
+    else
+      data = JSON.parse(localStorage.getItem('session'))
       if data
         @set(data)
-        localStorage.setItem 'session', JSON.stringify(@toJSON())
       else
-        data = JSON.parse(localStorage.getItem('session'))
-        if data
-          @set(data)
-        else
-          @onChangeToken()
-    , 1
+        @onChangeToken()
 
   unauthorize: ->
     @logout()

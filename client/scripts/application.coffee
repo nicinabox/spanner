@@ -12,12 +12,18 @@ App =
     @vehicles = new App.Vehicles
 
     @session.on 'auth:resolve', =>
+      if !Backbone.History.started
+        Backbone.history.start(pushState: true)
+
       @router.redirectTo 'vehicles'
 
     @session.on 'auth:reject', =>
+      if !Backbone.History.started
+        Backbone.history.start(pushState: true)
+
       @router.redirectTo ''
 
-    Backbone.history.start(pushState: true)
+    @session.authorize()
 
 _.bindAll App
 window.App = App
