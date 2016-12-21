@@ -56,7 +56,7 @@ Rails.application.configure do
   }
 
   config.action_mailer.default_url_options = {
-    host: 'https://spanner-api.apps.nicinabox.com'
+    host: 'https://spanner.nicinabox.com'
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.

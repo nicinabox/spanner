@@ -1,0 +1,10 @@
+<p>
+  Hi <%= @user.email %>,
+</p>
+<p>
+  Copy the token below and paste it in the app (this is like a temporary password and it's only good for 15 minutes).
+</p>
+
+<h3>
+  <%= @user.login_token %>
+</h3>

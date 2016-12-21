@@ -15,7 +15,11 @@ module V2
           login_token_valid_until: Time.now + 15.minutes
         )
 
-        LoginMailer.login_link(user).deliver
+        if params[:platform] == 'mobile'
+          LoginMailer.login_token(user).deliver
+        else
+          LoginMailer.login_link(user).deliver
+        end
 
         render :success, status: 204
       else

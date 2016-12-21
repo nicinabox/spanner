@@ -2,9 +2,8 @@
   Hi <%= @user.email %>,
 </p>
 <p>
-  Copy the token below and paste it in the app (this is like a temporary password and it's only good for 15 minutes).
+  Click the link below to sign in:
 </p>
-
-<h3>
-  <%= @user.login_token %>
-</h3>
+<p>
+  <%= link_to sessions_login_url(@user.login_token), sessions_login_url(@user.login_token) %>
+</p>
