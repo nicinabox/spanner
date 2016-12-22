@@ -2,9 +2,8 @@ class CleanupExpiredSessionsJob < ApplicationJob
   queue_as :default
 
   def perform
-    sessions = Session.where(last_seen: nil)
-    puts "Need to clean #{sessions.size}"
+    Session.where(last_seen: nil).destroy_all
 
-    self.class.set(wait: 1.minute).perform_later
+    self.class.set(wait: 24.hours).perform_later
   end
 end
