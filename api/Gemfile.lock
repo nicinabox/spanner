@@ -45,6 +45,7 @@ GEM
     arel (7.1.4)
     builder (3.2.2)
     byebug (9.0.6)
+    chronic (0.10.2)
     concurrent-ruby (1.0.3)
     erubis (2.7.0)
     ffi (1.9.14)
@@ -134,6 +135,8 @@ GEM
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    whenever (0.9.7)
+      chronic (>= 0.6.3)
 
 PLATFORMS
   ruby
@@ -151,6 +154,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
+  whenever
 
 BUNDLED WITH
    1.13.6

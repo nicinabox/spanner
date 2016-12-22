@@ -3,7 +3,5 @@ class CleanupExpiredSessionsJob < ApplicationJob
 
   def perform
     Session.where(last_seen: nil).destroy_all
-
-    self.class.set(wait: 24.hours).perform_later
   end
 end
