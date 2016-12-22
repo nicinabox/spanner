@@ -42,3 +42,16 @@ Returns current user sessions
 ### POST /vehicles/:vehicle_id/reminders
 ### PUT /vehicles/:vehicle_id/reminders/:id
 ### DELETE /vehicles/:vehicle_id/reminders/:id
+
+
+## Jobs
+
+With dokku you need to manage cron manually.
+
+Locally:
+
+    whenever | pbcopy
+
+Replace everything on Dokku:
+
+    crontab -e
