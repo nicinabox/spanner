@@ -1,7 +1,8 @@
 body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 18px;
-  background: #f7f7f7;
+  background-color: #f7f7f7;
+  margin: 30px;
 }
 
 #root {
@@ -9,7 +10,6 @@ body {
   min-height: 500px;
   margin: 30px auto;
   background: #fff;
-  padding: 30px;
   border: 1px solid #ddd;
 }
 
