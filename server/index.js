@@ -30,6 +30,11 @@ app.all('/api/*', function(req, res){
   })
 })
 
+app.get('/apple-app-site-association', function (req, res) {
+  res.set('Content-Type', 'application/pkcs7-mime')
+  res.send(require('./apple-app-site-association.json'))
+})
+
 var routes = ['/', '/sessions/:token', '/vehicles', '/vehicles/:id']
 
 var handler = function (req, res) {
