@@ -55,3 +55,5 @@ Locally:
 Replace everything on Dokku:
 
     crontab -e
+
+`grep CRON /var/log/syslog` to see the output log for troubleshooting.
