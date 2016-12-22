@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CleanupExpiredSessionsJobTest < ActiveJob::TestCase
+class CleanupUnusedSessionsJobTest < ActiveJob::TestCase
   # test "the truth" do
   #   assert true
   # end
