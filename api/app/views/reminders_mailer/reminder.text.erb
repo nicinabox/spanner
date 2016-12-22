@@ -1,0 +1,8 @@
+<% @reminders.group_by(&:vehicle).each do |vehicle, reminders| %>
+  <%= vehicle.name %>
+
+  <% reminders.each do |reminder| %>
+    * <%= reminder.notes %>
+  <% end %>
+
+<% end %>
