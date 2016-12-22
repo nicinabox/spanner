@@ -19,6 +19,8 @@
 
 # Learn more: http://github.com/javan/whenever
 
+app_name = 'spanner-api'
+
 every 1.day do
-  rake "qc:jobs"
+  command "dokku run #{app_name} rake qc:jobs"
 end
