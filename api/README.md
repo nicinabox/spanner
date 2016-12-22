@@ -43,7 +43,6 @@ Returns current user sessions
 ### PUT /vehicles/:vehicle_id/reminders/:id
 ### DELETE /vehicles/:vehicle_id/reminders/:id
 
-
 ## Jobs
 
 With dokku you need to manage cron manually.
@@ -57,3 +56,8 @@ Replace everything on Dokku:
     crontab -e
 
 `grep CRON /var/log/syslog` to see the output log for troubleshooting.
+
+
+## Deploy
+
+    git push dokku master
