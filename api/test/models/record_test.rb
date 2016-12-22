@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class RecordTest < ActiveSupport::TestCase
-  test "is_oil_change?" do
+  test "oil_change?" do
     oil_changes = [
       "Changed oil with Mobil 1 5w-30 and new MANN filter",
       "Oil change with Castrol 5w30 and changed oil filter using bosch unit",
@@ -20,9 +20,9 @@ s leaking a little too, but not a problem at the moment. ",
 
     records.each do |record|
       if oil_changes.include? record.notes
-        assert record.is_oil_change?, record.notes
+        assert record.oil_change?, record.notes
       else
-        assert !record.is_oil_change?, record.notes
+        assert !record.oil_change?, record.notes
       end
     end
   end
