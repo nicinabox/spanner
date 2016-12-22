@@ -15,7 +15,8 @@ App =
       if !Backbone.History.started
         Backbone.history.start(pushState: true)
 
-      @router.redirectTo 'vehicles'
+      if !Backbone.history.getFragment()
+        @router.redirectTo 'vehicles'
 
     @session.on 'auth:reject', =>
       if !Backbone.History.started
