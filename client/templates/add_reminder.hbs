@@ -1,8 +1,15 @@
 <form action="">
   <div class="form-group">
-    <label class="control-label" for="reminder">Reminder</label>
+    <label class="control-label" for="reminder">Note</label>
     <input type="text" class="form-control" name="notes"
       placeholder="E.g., Change oil at 60,000" required>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="reminder">Date</label>
+    <input type="text" name="date" class="form-control"
+      value="{{formatDate date 'MMM DD, YYYY'}}">
+      <small class="help-block">You'll get a reminder email on this day</small>
   </div>
 
   <button class="btn btn-success">Save</button>

@@ -4,6 +4,11 @@ class App.AddReminderView extends Thorax.View
   events:
     'submit form': 'createOrUpdateRecord'
     'click [data-destroy]': 'destroyRecord'
+    'rendered': ->
+      @$('input[name=date]').datepicker({
+        format: 'M d, yyyy'
+        autoclose: true
+      })
 
   destroyRecord: (e) ->
     e.preventDefault()
