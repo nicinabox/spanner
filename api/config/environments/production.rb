@@ -1,5 +1,6 @@
 Rails.application.configure do
   host = 'https://spanner.nicinabox.com'
+  api_host = 'https://spanner-api.apps.nicinabox.com'
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -20,10 +21,10 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  config.serve_static_assets = true
+  # config.serve_static_assets = true
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = host
+  config.action_controller.asset_host = api_host
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
