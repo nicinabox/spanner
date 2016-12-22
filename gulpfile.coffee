@@ -11,7 +11,7 @@ gulp.task 'default', [
 ]
 
 gulp.task 'watch', ->
-  gulp.watch config.paths.client.html, ['copy:html']
+  gulp.watch config.paths.client.static, ['copy:static']
   gulp.watch config.paths.client.images, ['copy:images']
   gulp.watch config.paths.client.styles, ['styles']
   gulp.watch config.paths.client.scripts, ['scripts']
@@ -23,13 +23,13 @@ gulp.task 'precompile', [
   'templates'
   'styles'
   'copy:images'
-  'copy:html'
+  'copy:static'
 ]
 
 gulp.task 'vendor', ->
   gulp.src(config.paths.client.vendor)
-   .pipe($.concat('vendor.js'))
-   .pipe(gulp.dest(config.paths.www.assets))
+    .pipe($.concat('vendor.js'))
+    .pipe(gulp.dest(config.paths.www.assets))
 
 gulp.task 'scripts', ->
   gulp.src(config.paths.client.app)
@@ -65,8 +65,8 @@ gulp.task 'copy:images', ->
   gulp.src(config.paths.client.images)
     .pipe(gulp.dest(config.paths.www.assets))
 
-gulp.task 'copy:html', ->
-  gulp.src(config.paths.client.html)
+gulp.task 'copy:static', ->
+  gulp.src(config.paths.client.static)
     .pipe(gulp.dest(config.paths.www.root))
 
 gulp.task 'nodemon', ->

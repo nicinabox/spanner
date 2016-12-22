@@ -16,7 +16,10 @@ config =
 
     client:
       root: 'client'
-      html: ['client/*.html', 'client/*.ico']
+      static: [
+        'client/*.html',
+        'client/*.ico',
+      ]
       scripts: 'client/scripts/**/*'
       styles: 'client/styles/**/*'
       images: 'client/images/*'
