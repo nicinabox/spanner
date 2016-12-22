@@ -1,0 +1,48 @@
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  background: #f7f7f7;
+}
+
+#root {
+  max-width: 500px;
+  min-height: 500px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 30px;
+  border: 1px solid #ddd;
+}
+
+.logo {
+  margin-bottom: 40px;
+}
+
+.footer {
+  border-top: 1px solid #ddd;
+  margin-top: 30px;
+  padding: 10px 0;
+}
+
+.text-muted {
+  color: #aaa;
+}
+
+small {
+  font-size: 14px;
+}
+
+.button {
+  display: inline-block;
+  background: #565196;
+  color: #fff;
+  font-weight: bold;
+  padding: 12px 20px;
+  text-decoration: none;
+  margin: 20px 0;
+}
+
+.button.button-small {
+  padding: 6px 12px;
+  margin: 0;
+  font-size: 16px;
+}

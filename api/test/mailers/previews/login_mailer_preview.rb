@@ -7,4 +7,8 @@ class LoginMailerPreview < ActionMailer::Preview
     LoginMailer.login_link(user)
   end
 
+  def login_token
+    user = User.first
+    LoginMailer.login_token(user)
+  end
 end

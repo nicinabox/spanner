@@ -1,9 +1,6 @@
 <p>
-  Hi <%= @user.email %>,
+  Click the button below to sign in and see your vehicles.
 </p>
 <p>
-  Click the link below to sign in:
-</p>
-<p>
-  <%= link_to sessions_login_url(@user.login_token), sessions_login_url(@user.login_token) %>
+  <%= link_to 'Sign In', sessions_login_url(@user.login_token), class: 'button' %>
 </p>

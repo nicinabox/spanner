@@ -1,5 +1,3 @@
-Hi <%= @user.email %>,
+Click the link below to sign in and see your vehicles.
 
-Click the link below to sign in:
-
-<%= link_to sessions_login_url(@user.login_token), sessions_login_url(@user.login_token) %>
+<%= sessions_login_url(@user.login_token) %>

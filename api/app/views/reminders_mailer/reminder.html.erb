@@ -1,7 +1,9 @@
+You wanted to be reminded about some things today.
+
 <% @reminders.group_by(&:vehicle).each do |vehicle, reminders| %>
-  <h2>
+  <h3>
     <%= vehicle.name %>
-  </h2>
+  </h3>
   <ul>
     <% reminders.each do |reminder| %>
       <li>
@@ -9,4 +11,7 @@
       </li>
     <% end %>
   </ul>
+  <p>
+    <%= link_to 'View', vehicle_url(vehicle), class: 'button button-small' %>
+  </p>
 <% end %>

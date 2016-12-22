@@ -1,5 +1,8 @@
+You wanted to be reminded about some things today.
+
 <% @reminders.group_by(&:vehicle).each do |vehicle, reminders| %>
   <%= vehicle.name %>
+  <%= vehicle_url(vehicle) %>
 
   <% reminders.each do |reminder| %>
     * <%= reminder.notes %>
