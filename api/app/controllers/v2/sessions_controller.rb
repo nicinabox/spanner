@@ -40,7 +40,8 @@ module V2
         session = user.sessions.build(
           ip: request.remote_ip,
           description: request.user_agent,
-          auth_token: SecureRandom.urlsafe_base64(24)
+          auth_token: SecureRandom.urlsafe_base64(24),
+          auth_token_valid_until: Time.now + 2.months,
         )
         session.save
 

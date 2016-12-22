@@ -37,10 +37,15 @@ class ApplicationController < ActionController::API
 
   def authenticate_token
     authenticate_with_http_token do |token, options|
-      session = Session.find_by(auth_token: token)
+      session = Session.where(auth_token: token)
+                       .where('auth_token_valid_until > ?', Time.now)
+                       .first
 
       if session
-        session.update_attributes(last_seen: Time.now)
+        session.update_attributes(
+          last_seen: Time.now,
+          auth_token_valid_until: Time.now + 2.months
+        )
         @current_session = session
         @current_user = session.user
       end
