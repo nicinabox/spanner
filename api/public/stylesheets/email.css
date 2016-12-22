@@ -1,13 +1,19 @@
 body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 18px;
+  color: #222;
   background: #f7f7f7;
-  margin: 30px;
 }
 
 #root {
+  background: #f7f7f7;
+  padding: 50px;
+}
+
+.content{
   max-width: 500px;
   min-height: 500px;
+  margin: 0 auto;
   padding: 30px;
   background: #fff;
   border: 1px solid #ddd;
