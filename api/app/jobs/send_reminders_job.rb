@@ -6,7 +6,7 @@ class SendRemindersJob < ApplicationJob
     users = reminders.group_by { |r| r.vehicle.user }
 
     users.each do |user, reminders|
-      RemindersMailer.reminder(user, reminders).deliver_later
+      p RemindersMailer.reminder(user, reminders).deliver_now
     end
   end
 end
