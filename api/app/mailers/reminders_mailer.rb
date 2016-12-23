@@ -9,7 +9,7 @@ class RemindersMailer < ApplicationMailer
   private
 
   def reminder_subject(reminders)
-    names = reminders.map { |r| r.vehicle.name }
+    names = reminders.map { |r| r.vehicle.name }.uniq
     "Reminders for #{names.to_sentence}"
   end
 end
