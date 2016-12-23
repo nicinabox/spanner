@@ -1,51 +1,17 @@
 {
-  "name": "service-records",
-  "version": "0.1.0",
+  "name": "Spanner",
+  "version": "2.0.0",
   "description": "Track your vehicle service easily",
+  "private": true,
   "scripts": {
-    "start": "gulp",
-    "setup": "npm install && bower install",
     "deploy": "./deploy.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nic Aitch",
   "devDependencies": {
-    "coffee-script": "^1.8.0",
-    "gulp": "^3.8.10",
-    "gulp-coffee": "^2.2.0",
-    "gulp-compass": "^2.0.2",
-    "gulp-concat": "^2.4.2",
-    "gulp-declare": "^0.3.0",
-    "gulp-define-module": "^0.1.1",
-    "gulp-handlebars": "^3.0.1",
-    "gulp-load-plugins": "^0.7.1",
-    "gulp-nodemon": "^1.0.4",
-    "gulp-plumber": "^0.6.6",
-    "gulp-rename": "^1.2.0",
-    "gulp-sourcemaps": "^1.2.8",
-    "gulp-webserver": "^0.8.7"
   },
   "dependencies": {
-    "backbone": "~1.1.2",
-    "backbone.localstorage": "^1.1.14",
-    "body-parser": "^1.9.3",
-    "emailjs": "^0.3.12",
-    "express": "^4.10.2",
-    "express-session": "^1.9.2",
-    "handlebars": "^2.0.0",
-    "http-proxy": "^1.16.2",
-    "jquery": "^2.1.1",
-    "lodash": "^2.4.1",
-    "marked": "^0.3.2",
-    "moment": "^2.8.4",
-    "mongoose": "^4.0.2",
-    "node-jquery-param": "0.0.2",
-    "numeral": "^1.5.3",
-    "papaparse": "^4.0.5",
-    "passwordless": "^1.0.7",
-    "passwordless-mongostore": "^0.1.0",
-    "postmark": "^0.2.6",
-    "request": "^2.51.0",
-    "thorax": "^2.2.1"
+    "express": "^4.14.0",
+    "http-proxy": "^1.16.2"
   }
 }

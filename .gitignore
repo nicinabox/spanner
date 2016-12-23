@@ -1,6 +1,3 @@
 node_modules
-bower_components
 .tmp
 .env
-public
-experimental
