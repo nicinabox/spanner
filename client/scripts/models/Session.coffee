@@ -9,7 +9,7 @@ class App.Session extends Thorax.Model
 
   login: (loginToken) ->
     $.ajax
-      url: [@urlRoot, loginToken].join('/')
+      url: ['/api/login', loginToken].join('/')
       dataType: 'json'
       success: (response) =>
         @authorize(response)
