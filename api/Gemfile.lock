@@ -45,6 +45,7 @@ GEM
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (7.1.4)
+    browser (2.3.0)
     builder (3.2.2)
     byebug (9.0.6)
     chronic (0.10.2)
@@ -155,6 +156,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  browser
   byebug
   listen (~> 3.0.5)
   pg (~> 0.18)

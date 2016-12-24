@@ -25,6 +25,7 @@ gem 'postmark-rails', '~> 0.15.0'
 gem 'queue_classic', '~> 3.1.0'
 gem 'whenever', :require => false
 gem 'premailer-rails'
+gem 'browser'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

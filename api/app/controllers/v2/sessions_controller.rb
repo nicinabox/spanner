@@ -1,3 +1,5 @@
+require "browser"
+
 module V2
   class SessionsController < ApplicationController
     skip_before_action :authenticate, only: [:create, :login]
@@ -33,12 +35,16 @@ module V2
                  .first
 
       if user
+        browser = Browser.new(request.user_agent)
+        name = request.user_agent =~ /Spanner/ ? 'Spanner iOS' : browser.name
+
         user.update!(
           login_token: nil,
           login_token_valid_until: 1.year.ago,
         )
         session = user.sessions.build(
           ip: request.remote_ip,
+          description: name || browser.name,
           user_agent: request.user_agent,
           auth_token: SecureRandom.urlsafe_base64(24),
           auth_token_valid_until: Time.now + 2.months,
