@@ -3,7 +3,7 @@ class App.ApplicationRouter extends Backbone.Router
     '': 'welcome'
     'vehicles': 'vehicles'
     'vehicles/:id': 'vehicle'
-    'sessions/:token': 'login'
+    'login/:token': 'login'
 
   constructor: ->
     _.each @routes, (method, route) ->

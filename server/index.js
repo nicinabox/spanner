@@ -35,7 +35,7 @@ app.get('/apple-app-site-association', function (req, res) {
   res.send(require('./apple-app-site-association.json'))
 })
 
-var routes = ['/', '/sessions/:token', '/vehicles', '/vehicles/:id']
+var routes = ['/', '/login/:token', '/vehicles', '/vehicles/:id']
 
 var handler = function (req, res) {
   return res.sendFile(path.join(__dirname, '../public/index.html'))
