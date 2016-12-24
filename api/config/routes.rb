@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   scope module: :v2 do
     post 'sessions', to: 'sessions#create'
 
-    get 'login(/:login_token)', to: 'sessions#login'
+    get 'login(/:login_token)', to: 'sessions#login', as: 'login'
   end
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do
