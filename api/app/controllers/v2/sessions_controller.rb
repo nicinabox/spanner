@@ -9,7 +9,7 @@ module V2
     end
 
     def create
-      user = User.find_or_create_by!(email: params[:email].downcase)
+      user = User.find_or_create_by!(email: params[:email].strip.downcase)
 
       if user
         user.update!(
