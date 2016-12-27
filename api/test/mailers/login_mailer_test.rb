@@ -11,7 +11,7 @@ class LoginMailerTest < ActionMailer::TestCase
     assert_equal "Sign in to Spanner", mail.subject
     assert_equal ["user1@test"], mail.to
     assert_equal ["spanner@nicinabox.com"], mail.from
-    assert_match "Hi", mail.body.encoded
+    assert_match "Hello", mail.body.encoded
   end
 
 end
