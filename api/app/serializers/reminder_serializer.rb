@@ -1,3 +1,3 @@
 class ReminderSerializer < ActiveModel::Serializer
-  attributes :id, :notes, :date
+  attributes :id, :notes, :date, :mileage, :reminder_type
 end

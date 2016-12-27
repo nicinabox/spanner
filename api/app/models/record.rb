@@ -3,6 +3,16 @@ class Record < ApplicationRecord
 
   belongs_to :vehicle
 
+  default_scope { order(date: :asc) }
+
+  after_save :update_mileage_reminders
+  after_update :update_mileage_reminders
+  after_destroy :update_mileage_reminders
+
+  def update_mileage_reminders
+    vehicle.reminders.where(reminder_type: 'mileage').each {|r| r.save }
+  end
+
   def oil_change?
     match_notes [
       'engine oil',

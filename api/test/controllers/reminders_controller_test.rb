@@ -36,4 +36,21 @@ class RemindersControllerTest < ActionDispatch::IntegrationTest
     get vehicle_reminders_url(vehicle), http_options(@session.auth_token)
     assert response_body.size == 0
   end
+
+  test "mileage based reminder" do
+    vehicle = @user.vehicles.first
+    days = 5000 / vehicle.miles_per_day
+
+    post vehicle_reminders_url(vehicle), http_options(@session.auth_token).merge(
+      params: {
+        reminder: {
+          notes: 'Oil change',
+          mileage: 5000,
+          reminder_type: 'mileage'
+        }
+      }
+    )
+
+    assert_not_empty response_body['date']
+  end
 end
