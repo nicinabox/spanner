@@ -17,7 +17,11 @@ class ActiveSupport::TestCase
   end
 
   def response_body
-    JSON.parse(@response.body)
+    if @response.body.empty?
+      return true
+    else
+      JSON.parse(@response.body)
+    end
   end
 
   def new_session
