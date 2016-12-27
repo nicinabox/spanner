@@ -2,8 +2,10 @@
 
 one:
   notes: Rotate tires
+  date: <%= Date.today %>
   vehicle_id: 1
 
 two:
   notes: Oil change
+  date: <%= 2.weeks.from_now %>
   vehicle_id: 2

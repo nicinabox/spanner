@@ -1,0 +1,11 @@
+You have some reminders coming up in <%= time_ago_in_words @date %>.
+
+<% @reminders.group_by(&:vehicle).each do |vehicle, reminders| %>
+  <%= vehicle.name %>
+  <%= vehicle_url(vehicle) %>
+
+  <% reminders.each do |reminder| %>
+    * <%= reminder.notes %>
+  <% end %>
+
+<% end %>

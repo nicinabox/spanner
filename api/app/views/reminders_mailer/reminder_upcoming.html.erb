@@ -1,0 +1,19 @@
+<p>
+  You have some reminders coming up in <%= time_ago_in_words @date %>.
+</p>
+
+<% @reminders.group_by(&:vehicle).each do |vehicle, reminders| %>
+  <h3>
+    <%= vehicle.name %>
+  </h3>
+  <ul>
+    <% reminders.each do |reminder| %>
+      <li>
+        <%= reminder.notes %>
+      </li>
+    <% end %>
+  </ul>
+  <p>
+    <%= link_to 'View', vehicle_url(vehicle), class: 'button button-small' %>
+  </p>
+<% end %>

@@ -1,7 +1,15 @@
 class RemindersMailer < ApplicationMailer
-  def reminder(user, reminders)
+  def reminder_today(user, reminders)
     @user      = user
     @reminders = reminders
+
+    mail to: @user.email, subject: reminder_subject(reminders)
+  end
+
+  def reminder_upcoming(user, reminders)
+    @user      = user
+    @reminders = reminders
+    @date      = @reminders.first.date || Date.today
 
     mail to: @user.email, subject: reminder_subject(reminders)
   end
