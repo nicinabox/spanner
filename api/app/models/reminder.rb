@@ -3,6 +3,8 @@ class Reminder < ApplicationRecord
 
   belongs_to :vehicle
 
+  default_scope { order(date: :asc) }
+
   before_save :set_estimated_date
   before_update :set_estimated_date
 

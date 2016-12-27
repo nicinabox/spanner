@@ -5,6 +5,8 @@ class Vehicle < ApplicationRecord
   has_many :reminders, dependent: :destroy
   has_many :records, dependent: :destroy
 
+  default_scope { order(position: :asc) }
+
   ONE_YEAR = 365
 
   def estimated_mileage
