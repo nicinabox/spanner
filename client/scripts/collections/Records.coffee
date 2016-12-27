@@ -9,17 +9,6 @@ class App.Records extends Thorax.Collection
 
   comparator: 'date'
 
-  currentEstimatedMileage: ->
-    mpd = @recentMilesPerDay()
-    return unless mpd
-
-    last        = @last().toJSON()
-    elapsedDays = moment().subtract(1, 'day')
-                          .diff(last.date, 'days')
-
-    currentMileage = last.mileage + (elapsedDays * mpd)
-    currentMileage
-
   recentMilesPerDay: (days = 90) ->
     return unless @length && @length > 1
 
@@ -42,6 +31,9 @@ class App.Records extends Thorax.Collection
     elapsedMileage = last.mileage - first.mileage
 
     +(elapsedMileage / elapsedDays).toFixed(2)
+
+  currentEstimatedMileage: ->
+    @vehicle.get('estimated_mileage')
 
   milesPerYear: ->
     @vehicle.get('miles_per_year')
