@@ -53,6 +53,7 @@ module V2
           ip: request.remote_ip,
           description: name || browser.name,
           user_agent: request.user_agent,
+          last_seen: Time.now,
           auth_token: SecureRandom.urlsafe_base64(24),
           auth_token_valid_until: Time.now + 2.months,
         )
