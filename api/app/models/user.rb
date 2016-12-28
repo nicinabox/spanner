@@ -10,4 +10,8 @@ class User < ApplicationRecord
   def user_id
     id
   end
+
+  def demo_account?
+    email == 'demo@spanner'
+  end
 end
