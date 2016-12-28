@@ -58,6 +58,7 @@ module V2
           auth_token_valid_until: Time.now + 2.months,
         )
         session.save
+        session.user.update_attributes(time_zone_offset: time_zone_offset)
 
         render json: session
       else

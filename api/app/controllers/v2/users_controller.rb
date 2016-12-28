@@ -12,7 +12,7 @@ module V2
     private
 
     def user_params
-      params.require(:user).permit(:email)
+      params.require(:user).permit(:email, :time_zone_offset)
     end
   end
 end

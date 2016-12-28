@@ -7,6 +7,10 @@ class User < ApplicationRecord
 
   before_save { |user| user.email = user.email.strip.downcase }
 
+  def time_zone
+    ActiveSupport::TimeZone[(time_zone_offset || 0).to_f]
+  end
+
   def user_id
     id
   end
