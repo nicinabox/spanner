@@ -33,6 +33,10 @@ body {
   color: #aaa;
 }
 
+.invisible {
+  opacity: 0;
+}
+
 a {
   color: #565196;
 }
