@@ -3,7 +3,7 @@ class Record < ApplicationRecord
 
   belongs_to :vehicle
 
-  default_scope { order(date: :asc) }
+  default_scope { order(date: :asc, id: :asc) }
 
   after_save :update_mileage_reminders
   after_update :update_mileage_reminders
