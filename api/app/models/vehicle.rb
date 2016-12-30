@@ -40,10 +40,10 @@ class Vehicle < ApplicationRecord
   end
 
   def first_record_with_mileage
-    @first_record_with_mileage = records.where.not(mileage: nil).first
+    @first_record_with_mileage ||= records.where.not(mileage: nil).first
   end
 
   def last_record_with_mileage
-    @last_record_with_mileage = records.where.not(mileage: nil).last
+    @last_record_with_mileage ||= records.where.not(mileage: nil).last
   end
 end
