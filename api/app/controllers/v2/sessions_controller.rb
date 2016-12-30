@@ -50,7 +50,7 @@ module V2
         end
 
         session = user.sessions.build(
-          ip: request.remote_ip,
+          ip: remote_ip,
           description: name || browser.name,
           user_agent: request.user_agent,
           last_seen: Time.now,

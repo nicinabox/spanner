@@ -47,7 +47,7 @@ class ApplicationController < ActionController::API
 
       if session
         session.update_attributes(
-          ip: request.remote_ip,
+          ip: remote_ip,
           last_seen: Time.now,
           auth_token_valid_until: Time.now + 2.months
         )
@@ -58,6 +58,10 @@ class ApplicationController < ActionController::API
         @current_user = session.user
       end
     end
+  end
+
+  def remote_ip
+    request.headers['HTTP_X_FORWARDED_FOR']
   end
 
   def time_zone_offset
