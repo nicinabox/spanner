@@ -61,7 +61,7 @@ class ApplicationController < ActionController::API
   end
 
   def remote_ip
-    p requeset.remote_ip
+    p request.remote_ip
     p request.headers['HTTP_X_FORWARDED_FOR']
   end
 
