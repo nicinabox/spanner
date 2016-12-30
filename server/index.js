@@ -29,6 +29,7 @@ app.use('/', static)
 
 app.all('/api/*', function(req, res){
   var path = req.path.replace('/api', '')
+  console.log('Api request for', remoteIp(req))
 
   apiProxy.web(req, res, {
     target: HOST + path,
