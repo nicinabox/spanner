@@ -61,7 +61,8 @@ class ApplicationController < ActionController::API
   end
 
   def remote_ip
-    request.headers['HTTP_X_FORWARDED_FOR']
+    p requeset.remote_ip
+    p request.headers['HTTP_X_FORWARDED_FOR']
   end
 
   def time_zone_offset
