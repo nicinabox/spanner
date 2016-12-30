@@ -12,6 +12,7 @@ var ONE_YEAR = 31557600000
 
 var app = express()
 var apiProxy = httpProxy.createProxyServer({
+  xfwd: true,
   ignorePath: true,
   agent: isProd ? https.globalAgent : false,
   headers: {
