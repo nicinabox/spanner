@@ -20,6 +20,10 @@ var apiProxy = httpProxy.createProxyServer({
   }
 })
 
+var remoteIp = function (req) {
+  return req.headers['x-forwarded-for'] || req.connection.remoteAddress
+}
+
 var static = express.static(path.join(__dirname, '../public/'), { maxAge: ONE_YEAR })
 app.use('/', static)
 
@@ -27,7 +31,10 @@ app.all('/api/*', function(req, res){
   var path = req.path.replace('/api', '')
 
   apiProxy.web(req, res, {
-    target: HOST + path
+    target: HOST + path,
+    headers: {
+      'x-forwarded-for': remoteIp(req)
+    }
   })
 })
 
