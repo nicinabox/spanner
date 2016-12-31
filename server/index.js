@@ -52,6 +52,10 @@ routes.forEach(function (route) {
   return app.get(route, handler)
 })
 
+app.get('/terms', function (req, res) {
+  return res.sendFile(path.join(__dirname, '../public/terms.html'))
+})
+
 app.listen(PORT)
 
 console.log('Magic happens on port ' + PORT)
