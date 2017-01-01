@@ -1,49 +1,30 @@
-var https     = require('https')
-var path      = require('path')
-var url       = require('url')
-var httpProxy = require('http-proxy')
-var express   = require('express')
+const path = require('path')
+const express = require('express')
+const apiProxy = require('./api-proxy')
 
-var isProd   = process.env.NODE_ENV === 'production'
-var PORT     = process.env.PORT || 8080
-var HOST     = isProd ? 'https://spanner-api.apps.nicinabox.com' : 'http://localhost:3000'
+const PORT = process.env.PORT || 8081
+const ONE_YEAR = 31557600000
 
-var ONE_YEAR = 31557600000
+const app = express()
 
-var app = express()
-var apiProxy = httpProxy.createProxyServer({
-  ignorePath: true,
-  agent: isProd ? https.globalAgent : false,
-  headers: {
-    host: url.parse(HOST).hostname
-  }
-})
+const handler = (filename) => (req, res) => res.sendFile(path.join(__dirname, `../public/${filename}.html`))
 
-var static = express.static(path.join(__dirname, '../public/'), { maxAge: ONE_YEAR })
-app.use('/', static)
+app.use('/', express.static(path.join(__dirname, '../public/'), { maxAge: ONE_YEAR }))
 
-app.all('/api/*', function(req, res){
-  var path = req.path.replace('/api', '')
-
-  apiProxy.web(req, res, {
-    target: HOST + path
+app.all('/api/*', (req, res) => {
+  apiProxy.server.web(req, res, {
+    target: apiProxy.PROXY_HOST + req.path.replace('/api', '')
   })
 })
 
-app.get('/apple-app-site-association', function (req, res) {
+app.get('/apple-app-site-association', (req, res) => {
   res.set('Content-Type', 'application/pkcs7-mime')
   res.send(require('./apple-app-site-association.json'))
 })
 
-var routes = ['/', '/sessions/:token', '/vehicles', '/vehicles/:id']
-
-var handler = function (req, res) {
-  return res.sendFile(path.join(__dirname, '../public/index.html'))
-}
-routes.forEach(function (route) {
-  return app.get(route, handler)
-})
+const routes = ['/', '/sessions/:token', '/vehicles', '/vehicles/:id']
+routes.forEach((route) => app.get(route, handler('index')))
 
 app.listen(PORT)
 
-console.log('Magic happens on port ' + PORT)
+console.log('Magic happens on port ' + PORT) // eslint-disable-line
