@@ -9,6 +9,11 @@ class Vehicle < ApplicationRecord
 
   ONE_YEAR = 365
 
+  def squish_vin
+    return unless vin?
+    vin[0..7] + vin[9..10]
+  end
+
   def estimated_mileage
     return unless can_estimate_mpd?
 
