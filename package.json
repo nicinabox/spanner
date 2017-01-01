@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "deploy": "./deploy.sh",
-    "start": "node server",
+    "start": "node server"
   },
   "author": "Nic Aitch",
   "devDependencies": {
