@@ -1,0 +1,116 @@
+#vehicles {
+  .vehicle {
+    @include clearfix;
+    padding: 20px;
+    background: $brand-primary;
+    color: #fff;
+    border-radius: 3px;
+    display: block;
+    margin-bottom: 15px;
+    font-weight: bold;
+    min-height: 90px;
+
+    &:hover {
+      background-color: darken($brand-primary, 4%);
+      text-decoration: none;
+    }
+
+    span {
+      display: block;
+    }
+
+    .text-muted {
+      color: tint($brand-primary, 50%);
+      font-weight: normal;
+    }
+
+    &.add-vehicle {
+      background-color: lighten($gray-light, 30%);
+      color: $gray-light;
+      text-align: center;
+      font-weight: normal;
+
+      &:hover {
+        background-color: lighten($gray-light, 25%);
+      }
+    }
+  }
+}
+
+#vehicle {
+  .name {
+    font-weight: bold;
+    color: #444;
+  }
+}
+
+#records {
+  .record {
+    cursor: pointer;
+  }
+
+  h3 {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 43px;
+    background: #f7f7f7;
+    margin: 0;
+    padding-top: 22px;
+    padding-bottom: 11px;
+  }
+
+  .record-year {
+    margin-bottom: 40px;
+  }
+
+  table {
+    font-size: 18px;
+
+    .date, .mileage, .cost {
+      width: 100px;
+    }
+  }
+
+  @include respond-to($container-md) {
+    h3 {
+      margin: 0 -15px;
+      padding-left: 15px;
+      padding-right: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .record {
+      padding: 15px;
+      margin: 0 -15px;
+
+      &:nth-child(2n+1) {
+        background: #fff;
+      }
+
+      header {
+        color: $gray;
+        margin-bottom: 2px;
+
+        span, strong {
+          margin-right: 6px;
+        }
+
+        .date {
+          font-weight: bold;
+        }
+      }
+
+      p {
+        margin: 0;
+        font-size: 18px;
+      }
+    }
+  }
+
+}
+
+#reminders {
+  a {
+    color: #F5A623;
+  }
+}
