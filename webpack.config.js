@@ -1,8 +1,18 @@
-export default {
-  entry: './src/index.js',
+const webpack = require('webpack')
+
+module.exports = {
+  entry: [
+    './src/index.js',
+    'webpack/hot/dev-server',
+    'webpack-dev-server/client?http://localhost:8079'
+  ],
   export: {
     path: 'public',
     filename: 'bundle.js'
+  },
+  output: {
+    path: '/',
+    publicPath: 'http://localhost:8079/',
   },
   module: {
     loaders: [
@@ -22,4 +32,13 @@ export default {
       { test: /\.svg$/, loader: 'file-loader' }
     ]
   },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      },
+      '__DEV__': process.env.NODE_ENV !== 'production'
+    })
+  ]
 }

@@ -5,9 +5,7 @@
   "private": true,
   "scripts": {
     "deploy": "./deploy.sh",
-    "server": "node server",
-    "start": "npm run server",
-    "dev": "webpack-dev-server --hot --inline --content-base public"
+    "start": "node server",
   },
   "author": "Nic Aitch",
   "devDependencies": {
