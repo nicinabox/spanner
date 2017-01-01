@@ -1,16 +1,50 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { sample } from 'lodash'
+import * as sessionActions from '../actions/sessionActions'
 
 class Welcome extends Component {
   constructor(props) {
     super(props)
 
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleFormSubmit = this.handleFormSubmit.bind(this)
+    this.handleResetForm = this.handleResetForm.bind(this)
+
     this.state = {
-      isPending: false
+      isPending: false,
+      email: '',
     }
   }
 
   getPlaceholder() {
-    return ''
+    return sample([
+      'lando@cloudci.ty',
+      'robertpaulson@loustave.rn',
+      'drspaceman@rockefellerpla.ce',
+      'mal@firef.ly',
+    ])
+  }
+
+  handleFormSubmit(e) {
+    e.preventDefault()
+
+    this.setState({ isPending: true })
+    this.props.requestSession(this.state.email)
+  }
+
+  handleInputChange(name) {
+    return (e) => {
+      this.setState({ [name]: e.currentTarget.value })
+    }
+  }
+
+  handleResetForm(e) {
+    e.preventDefault()
+
+    this.setState({
+      isPending: false
+    })
   }
 
   render() {
@@ -37,12 +71,12 @@ class Welcome extends Component {
               {this.state.isPending ? (
                 <h4 className="text-success">
                   <i className="fa fa-check"></i>
-                  Check your email for a link.
-
-                  <a href="#" className="try-again">Try again.</a>
+                  Check your email for a Sign In button.
+                  <br/>
+                  <a href="#" className="try-again" onClick={this.handleResetForm}>Try again.</a>
                 </h4>
               ) : (
-                <form className="form-inline">
+                <form className="form-inline" onSubmit={this.handleFormSubmit}>
                   <div className="form-group">
                     <input
                       id="email"
@@ -51,6 +85,7 @@ class Welcome extends Component {
                       className="form-control"
                       value={this.state.email}
                       placeholder={this.getPlaceholder()}
+                      onChange={this.handleInputChange('email')}
                       autoFocus={true} />
                     </div>
 
@@ -71,4 +106,4 @@ class Welcome extends Component {
   }
 }
 
-export default Welcome
+export default connect((state) => ({state}), sessionActions)(Welcome)
