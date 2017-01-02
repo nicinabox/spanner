@@ -2,7 +2,7 @@ export default store => next => action => {
   let result
 
   if (__DEV__) {
-    console.group(action.type)
+    console.groupCollapsed(action.type)
     console.info('dispatching', action)
 
     result = next(action)
