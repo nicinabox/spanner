@@ -82,7 +82,7 @@ const handleClick = (e) => {
 
   while(node && --depth) {
     if (node.nodeName == 'A') {
-      if (isSameOrigin(node.href)) {
+      if (isSameOrigin(node.href) && node.href.indexOf('#') === -1) {
         e.preventDefault()
         navigate(node.href, parseData(node))
       }
