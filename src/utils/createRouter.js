@@ -66,6 +66,12 @@ const handlePopState = () => {
   resolveNavigationHandlers(window.location.pathname)
 }
 
+const parseData = (node) => {
+  try {
+    return JSON.parse(node.dataset.params)
+  } catch (e) {}
+}
+
 const handleClick = (e) => {
   if (e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.defaultPrevented) {
     return
@@ -78,7 +84,7 @@ const handleClick = (e) => {
     if (node.nodeName == 'A') {
       if (isSameOrigin(node.href)) {
         e.preventDefault()
-        navigate(node.href, JSON.parse(node.dataset.params))
+        navigate(node.href, parseData(node))
       }
 
       return
@@ -95,8 +101,6 @@ const Route = (routes, patterns) => ({ path, onEnter, params }) => {
     ...params,
     params: (route || {}).params
   }
-
-  console.log(props);
 
   onEnter(Component)
 
