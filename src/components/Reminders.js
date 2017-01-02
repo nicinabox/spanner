@@ -19,7 +19,7 @@ export class Reminders extends Component {
           Reminders
         </h5>
 
-        {this.props.state.reminders ? (
+        {this.props.state.reminders.length ? (
           <ul className="list-unstyled">
             {this.props.state.reminders.map(({notes}, i) => {
               return (
