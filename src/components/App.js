@@ -15,8 +15,8 @@ export class App extends Component {
   }
 
   componentDidMount() {
-    Router.onNavigate((nextPath) => {
-      this.setState({ path: nextPath })
+    Router.onNavigate((nextPath, params) => {
+      this.setState({ path: nextPath, params })
     })
   }
 
@@ -27,13 +27,16 @@ export class App extends Component {
   handleEnter(Component) {
     if (result(Component, 'route.requireAuth')) {
       if (!this.isSignedIn()) {
-        Router.navigate('/', { replace: true })
+        Router.navigate('/', null, { replace: true })
       }
     }
   }
 
   render() {
-    return <Router path={this.state.path} onEnter={this.handleEnter} />
+    return <Router
+      path={this.state.path}
+      params={this.state.params}
+      onEnter={this.handleEnter} />
   }
 }
 

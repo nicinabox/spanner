@@ -14,7 +14,7 @@ export class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.isSignedIn(nextProps)) {
-      return Router.navigate('/vehicles', { replace: true })
+      return Router.navigate('/vehicles', null, { replace: true })
     }
   }
 

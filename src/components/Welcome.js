@@ -20,7 +20,7 @@ class Welcome extends Component {
 
   componentDidMount() {
     if (this.isSignedIn()) {
-      return Router.navigate('/vehicles', { replace: true })
+      return Router.navigate('/vehicles', null, { replace: true })
     }
   }
 

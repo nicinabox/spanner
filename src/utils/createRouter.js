@@ -29,22 +29,23 @@ const createPatterns = (routes) => {
 let navigationHandlers = []
 let boundNode = null
 
-const resolveNavigationHandlers = (path) => {
-  navigationHandlers.reverse().forEach(handler => handler(path))
+const resolveNavigationHandlers = (url, params) => {
+  let path = url.replace(origin, '')
+  navigationHandlers.reverse().forEach(handler => handler(path, params))
 }
 
-const navigate = (path, options = {}) => {
+const navigate = (path, params = {}, options = {}) => {
   let method = options.replace ? 'replaceState' : 'pushState'
 
   process.nextTick(() => {
-    window.history[method]({}, '', path)
-    resolveNavigationHandlers(path)
+    window.history[method](params, '', path)
+    resolveNavigationHandlers(path, params)
   })
 }
 
 const onNavigate = (cb) => {
   bindEvents(window)
-  navigationHandlers.push((path) => cb(path))
+  navigationHandlers.push((...args) => cb.apply(null, args))
 }
 
 const bindEvents = (node) => {
@@ -77,7 +78,7 @@ const handleClick = (e) => {
     if (node.nodeName == 'A') {
       if (isSameOrigin(node.href)) {
         e.preventDefault()
-        navigate(node.href)
+        navigate(node.href, JSON.parse(node.dataset.params))
       }
 
       return
@@ -87,10 +88,15 @@ const handleClick = (e) => {
   }
 }
 
-const Route = (routes, patterns) => ({ path, onEnter }) => {
+const Route = (routes, patterns) => ({ path, onEnter, params }) => {
   const route = matchRoute(path, patterns)
   const Component = route ? route.component : routes[404]
-  const props = { params: (route || {}).params }
+  const props = {
+    ...params,
+    params: (route || {}).params
+  }
+
+  console.log(props);
 
   onEnter(Component)
 
