@@ -70,9 +70,20 @@ const handleClick = (e) => {
     return
   }
 
-  if (e.target && e.target.nodeName == 'A' && isSameOrigin(e.target.href)) {
-    e.preventDefault()
-    navigate(e.target.href)
+  let depth = 10
+  let node = e.target
+
+  while(node && --depth) {
+    if (node.nodeName == 'A') {
+      if (isSameOrigin(node.href)) {
+        e.preventDefault()
+        navigate(node.href)
+      }
+
+      return
+    }
+
+    node = node.parentNode
   }
 }
 
