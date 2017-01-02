@@ -9,13 +9,15 @@ const ONE_YEAR = 31557600000
 
 const app = express()
 
+const assetProxy = proxy({
+  target: `http://localhost:${PORT - 1}`,
+  changeOrigin: true
+})
+
 const handler = (filename) => (req, res) => res.sendFile(path.join(__dirname, `../public/${filename}.html`))
 
 app.use('/', express.static(path.join(__dirname, '../public/'), { maxAge: ONE_YEAR }))
-app.use('/bundle.js', proxy({
-  target: `http://localhost:${PORT - 1}`,
-  changeOrigin: true
-}))
+app.use('/bundle.js*', assetProxy)
 
 app.all('/api/*', (req, res) => {
   console.log('API request', req.path);
