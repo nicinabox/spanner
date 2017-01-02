@@ -49,7 +49,7 @@ export class Vehicles extends Component {
           <div className="container">
             <div className="row">
               <h5 className="row-heading">
-                <span className="fa fa-car fa-fw"></span>
+                <span className="fa fa-car fa-fw"></span>{' '}
                 All Vehicles
               </h5>
 
