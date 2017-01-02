@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { sample } from 'lodash'
 import * as sessionActions from '../actions/sessionActions'
+import Router from '../router'
 
 class Welcome extends Component {
   constructor(props) {
@@ -15,6 +16,16 @@ class Welcome extends Component {
       isPending: false,
       email: '',
     }
+  }
+
+  componentDidMount() {
+    if (this.isSignedIn()) {
+      return Router.navigate('/vehicles', { replace: true })
+    }
+  }
+
+  isSignedIn(props = this.props) {
+    return props.state.session.authToken
   }
 
   getPlaceholder() {
