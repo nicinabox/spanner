@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import marked from 'marked'
 import * as vehiclesActions from '../actions/vehiclesActions'
 import Header from './Header'
 import Records from './Records'
@@ -91,32 +92,31 @@ export class Vehicle extends Component {
         <div id="main">
           <div className="container">
             <div className="row">
-              <div className="col-sm-4">
+              <div className="col-sm-9">
                 <Reminders vehicleId={this.props.params.id} reminders={this.props.reminders} />
+
+                <Records vehicleId={this.props.params.id} />
               </div>
 
-              <div className="col-sm-4">
-              </div>
-
-              <div className="col-sm-4">
+              <div className="col-sm-3">
                 <h5 className="">
                   <i className="fa fa-book fa-fw"></i>
-                  Vehicle Notes
+                  Notes
                 </h5>
 
                 <div id="vehicle-notes" className="js-edit-vehicle-notes">
-                  {this.props.notes}
-
-                  {!this.props.notes ? (
+                  {this.props.state.vehicle.notes ? (
+                    <div dangerouslySetInnerHTML={{
+                      __html: marked(this.props.state.vehicle.notes)
+                    }} />
+                  ) : (
                     <span className="text-muted">
                       Add notes...
                     </span>
-                  ) : null}
+                  )}
                 </div>
               </div>
             </div>
-
-            <Records vehicleId={this.props.params.id} />
           </div>
         </div>
       </div>
