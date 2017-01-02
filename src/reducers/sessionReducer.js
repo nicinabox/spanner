@@ -8,14 +8,11 @@ import {
   UPDATE_USER,
 } from '../actions/sessionActions'
 
-const demoAccounts = ['demo@spanner']
-
 export default (state = initialState, action) => {
   switch (action.type) {
     case REQUEST_SESSION + PENDING:
       return {
-        loginPending: true,
-        demoAccount: demoAccounts.includes(action.params.email)
+        loginPending: true
       }
 
     case REQUEST_SESSION + ERROR:
