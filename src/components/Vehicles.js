@@ -22,17 +22,17 @@ export class Vehicles extends Component {
     e.preventDefault()
   }
 
-  renderVehicle({ name, vin, id }, i) {
+  renderVehicle(vehicle, i) {
     return (
       <div className="col-md-3" key={i}>
-        <a href={`/vehicles/${id}`} className="vehicle">
+        <a href={`/vehicles/${vehicle.id}`} className="vehicle" data-params={JSON.stringify(vehicle)}>
           <span>
-            {name}
+            {vehicle.name}
           </span>
 
-          {vin ? (
+          {vehicle.vin ? (
             <small className="text-muted">
-              VIN: {vin}
+              VIN: {vehicle.vin}
             </small>
           ) : null}
         </a>
