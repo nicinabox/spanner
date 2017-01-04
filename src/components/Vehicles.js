@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as vehiclesActions from '../actions/vehiclesActions'
 import Header from './Header'
+import Modal from './Modal'
+import VehicleForm from './VehicleForm'
 
 export class Vehicles extends Component {
   static route = {
@@ -20,6 +22,19 @@ export class Vehicles extends Component {
 
   handleAddVehicleClick(e) {
     e.preventDefault()
+
+    Modal.open({
+      el: e.currentTarget,
+      style: { top: -150 },
+      children: (
+        <VehicleForm
+          onSubmit={(params) => {
+            this.props.createVehicle(params)
+              .then(() => Modal.close())
+          }}
+        />
+      )
+    })
   }
 
   renderVehicle(vehicle, i) {
@@ -56,7 +71,7 @@ export class Vehicles extends Component {
               {this.props.state.vehicles.map(this.renderVehicle)}
 
               <form className="col-md-3">
-                <a href="#" onClick={this.handleAddVehicleClick} className="vehicle add-vehicle">
+                <a href="javascript:;" onClick={this.handleAddVehicleClick} className="vehicle add-vehicle">
                   <span>Add a vehicle&hellip;</span>
                 </a>
               </form>

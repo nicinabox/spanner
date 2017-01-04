@@ -2,9 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import marked from 'marked'
 import * as vehiclesActions from '../actions/vehiclesActions'
+import Router from '../router'
 import Header from './Header'
 import Records from './Records'
 import Reminders from './Reminders'
+import RecordForm from './RecordForm'
+import ReminderForm from './ReminderForm'
+import VehicleForm from './VehicleForm'
+import Modal from './Modal'
 
 export class Vehicle extends Component {
   constructor(props) {
@@ -12,10 +17,47 @@ export class Vehicle extends Component {
 
     this.renderHeaderLeft = this.renderHeaderLeft.bind(this)
     this.renderHeaderCenter = this.renderHeaderCenter.bind(this)
+    this.toggleVehicleMenu = this.toggleVehicleMenu.bind(this)
+    this.handleAddService = this.handleAddService.bind(this)
+    this.handleAddReminder = this.handleAddReminder.bind(this)
+
+    this.state = {
+    }
   }
 
   componentDidMount() {
     this.props.fetchVehicle(this.props.params.id)
+  }
+
+  toggleVehicleMenu(e) {
+    e.preventDefault()
+    Modal.open({
+      el: e.currentTarget,
+      children: (
+        <VehicleForm {...this.props.state.vehicle}
+          onSubmit={(params) => {
+            this.props.updateVehicle(params.id, params)
+              .then(() => Modal.close())
+          }}
+          onConfirmDestroy={(id) => {
+            this.props.destroyVehicle(id)
+              .then(() => {
+                Modal.close()
+                Router.navigate('/vehicles')
+              })
+          }}/>
+      )
+    })
+  }
+
+  handleAddService(e) {
+    e.preventDefault()
+    Modal.open({ el: e.currentTarget, children: <RecordForm /> })
+  }
+
+  handleAddReminder(e) {
+    e.preventDefault()
+    Modal.open({ el: e.currentTarget, children: <ReminderForm /> })
   }
 
   renderHeaderLeft() {
@@ -25,12 +67,8 @@ export class Vehicle extends Component {
           <i className="fa fa-chevron-left"></i>
         </a>
         {' '}
-        <a href="#" className="js-name btn btn-default">
+        <a href="javascript:;" onClick={this.toggleVehicleMenu} className="btn btn-default">
           {this.props.state.vehicle.name}
-        </a>
-        {' '}
-        <a href="#" className="js-settings btn btn-default">
-          Settings
         </a>
       </div>
     )
@@ -58,10 +96,10 @@ export class Vehicle extends Component {
           <div className="row">
             <div className="col-sm-6">
               <nav>
-                <a href="#" className="js-add-service btn btn-secondary">
+                <a href="javascript:;" onClick={this.handleAddService} className="js-add-service btn btn-secondary">
                   + Add Service
                 </a>
-                <a href="#" className="js-add-reminder btn btn-secondary">
+                <a href="javascript:;" onClick={this.handleAddReminder} className="js-add-reminder btn btn-secondary">
                   + Add Reminder
                 </a>
               </nav>
