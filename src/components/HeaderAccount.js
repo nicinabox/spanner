@@ -13,6 +13,7 @@ export class HeaderAccount extends Component {
   handleLogout(e) {
     e.preventDefault()
     this.props.signOut(this.props.state.session)
+    Modal.close()
   }
 
   handleEmailClick(e) {
