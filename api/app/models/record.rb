@@ -1,5 +1,7 @@
 class Record < ApplicationRecord
   validates_presence_of :notes, :date
+  validate :mileage_greater_than_trailing_record
+  validate :mileage_less_than_leading_record
 
   belongs_to :vehicle
 
@@ -8,6 +10,22 @@ class Record < ApplicationRecord
   after_save :update_mileage_reminders
   after_update :update_mileage_reminders
   after_destroy :update_mileage_reminders
+
+  def mileage_greater_than_trailing_record
+    trailing_record = self.vehicle.records.where('date < ?', date).last
+
+    if mileage < trailing_record.mileage
+      errors.add(:mileage, "must be greater than #{trailing_record.mileage.to_i}")
+    end
+  end
+
+  def mileage_less_than_leading_record
+    leading_record = self.vehicle.records.where('date > ?', date).first
+
+    if leading_record && mileage > leading_record.mileage
+      errors.add(:mileage, "must be less than #{leading_record.mileage.to_i}")
+    end
+  end
 
   def update_mileage_reminders
     vehicle.reminders.where(reminder_type: 'mileage').each {|r| r.save }
