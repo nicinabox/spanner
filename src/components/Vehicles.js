@@ -6,10 +6,6 @@ import Modal from './Modal'
 import VehicleForm from './VehicleForm'
 
 export class Vehicles extends Component {
-  static route = {
-    requireAuth: true
-  }
-
   constructor(props) {
     super(props)
 
@@ -40,7 +36,7 @@ export class Vehicles extends Component {
   renderVehicle(vehicle, i) {
     return (
       <div className="col-md-3" key={i}>
-        <a href={`/vehicles/${vehicle.id}`} className="vehicle" data-params={JSON.stringify(vehicle)}>
+        <a href={`/vehicles/${vehicle.id}`} className="vehicle" data-props={JSON.stringify(vehicle)}>
           <span>
             {vehicle.name}
           </span>

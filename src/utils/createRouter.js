@@ -2,10 +2,10 @@ import { createElement } from 'react'
 import UrlPattern from 'url-pattern'
 
 const origin = window.location.origin
+let navigationHandlers = []
+let boundNode = null
 
-const isSameOrigin = (url) => {
-  return url.indexOf(origin) === 0
-}
+const isSameOrigin = (url) => url.indexOf(origin) === 0
 
 const matchRoute = (path, patterns) => {
   return patterns.map((p) => {
@@ -25,9 +25,6 @@ const createPatterns = (routes) => {
     pattern: new UrlPattern(path)
   }))
 }
-
-let navigationHandlers = []
-let boundNode = null
 
 const resolveNavigationHandlers = (url, params) => {
   let path = url.replace(origin, '')
@@ -62,13 +59,11 @@ const unbindEvents = (node) => {
   node.removeEventListener('popstate', handlePopState)
 }
 
-const handlePopState = () => {
-  resolveNavigationHandlers(window.location.pathname)
-}
+const handlePopState = () => resolveNavigationHandlers(window.location.pathname)
 
 const parseData = (node) => {
   try {
-    return JSON.parse(node.dataset.params)
+    return JSON.parse(node.dataset.props)
   } catch (e) {}
 }
 
@@ -94,17 +89,18 @@ const handleClick = (e) => {
   }
 }
 
-const Route = (routes, patterns) => ({ path, onEnter, params }) => {
+const getCurrentRoute = () => {
+  return window.location.pathname
+}
+
+const Route = (routes, patterns) => ({ path, props }) => {
   const route = matchRoute(path, patterns)
   const Component = route ? route.component : routes[404]
-  const props = {
-    ...params,
+
+  return createElement(Component, {
+    ...props,
     params: (route || {}).params
-  }
-
-  onEnter(Component)
-
-  return createElement(Component, props)
+  })
 }
 
 export default function createRouter (routes) {
@@ -113,6 +109,7 @@ export default function createRouter (routes) {
 
   Router.onNavigate = onNavigate
   Router.navigate = navigate
+  Router.getCurrentRoute = getCurrentRoute
 
   return Router
 }
