@@ -9,17 +9,17 @@ const extractBody = (resp) => {
   if (isResponseType(resp, 'application/vnd.api+json')) return resp.json()
   if (isResponseType(resp)) return {}
 
-  return resp
+  return Promise.resolve(resp)
 }
 
 const checkStatus = (resp) => {
   if (resp.ok) return resp
 
-  const body = extractBody(resp)
-  return Promise.reject({
-    status: resp.status,
-    body
-  })
+  return extractBody(resp)
+    .then((body) => Promise.reject({
+      status: resp.status,
+      body
+    }))
 }
 
 export default (url, options = {}) => {
