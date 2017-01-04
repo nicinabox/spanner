@@ -1,7 +1,9 @@
 .pop-over {
   position: absolute;
+  top: 0;
+  left: 0;
   background: #fff;
-  min-width: 300px;
+  min-width: 340px;
   padding: 15px;
   margin-top: 8px;
   margin-bottom: 15px;
@@ -31,10 +33,10 @@
       font-weight: bold;
       line-height: 1;
       color: #444;
-      opacity: 0.2;
+      opacity: 0.5;
 
       &:hover {
-        opacity: 0.5
+        opacity: 0.8
       }
     }
 
@@ -49,7 +51,15 @@
     font-weight: bold;
 
     a {
-      // color: inherit;
     }
   }
+}
+
+.pop-over-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1030;
 }
