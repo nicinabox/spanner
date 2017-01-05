@@ -22,13 +22,21 @@ export class Vehicle extends Component {
     this.toggleVehicleMenu = this.toggleVehicleMenu.bind(this)
     this.handleAddService = this.handleAddService.bind(this)
     this.handleAddReminder = this.handleAddReminder.bind(this)
+    this.handleSearch = this.handleSearch.bind(this)
 
     this.state = {
+      search: ''
     }
   }
 
   componentDidMount() {
     this.props.fetchVehicle(this.props.params.id)
+  }
+
+  handleSearch(e) {
+    this.setState({
+      search: e.target.value
+    })
   }
 
   toggleVehicleMenu(e) {
@@ -104,8 +112,12 @@ export class Vehicle extends Component {
     return (
       <div className="col-sm-4 hidden-sm hidden-xs">
         <form className="navbar-form">
-          <input type="search" name="filter" id="filter" className="form-control text-center"
-            placeholder="Search" />
+          <input
+            type="search"
+            className="form-control text-center"
+            placeholder="Search"
+            onChange={this.handleSearch}
+          />
         </form>
       </div>
     )
@@ -159,7 +171,7 @@ export class Vehicle extends Component {
               <div className="col-sm-9">
                 <Reminders vehicleId={this.props.params.id} reminders={this.props.reminders} />
 
-                <Records vehicleId={this.props.params.id} />
+                <Records vehicleId={this.props.params.id} search={this.state.search} />
               </div>
 
               <div className="col-sm-3">

@@ -9,7 +9,7 @@ export class Records extends Component {
     super(props)
 
     this.state = {
-      years: this.getSections(props),
+      years: this.getSections(props.state.records),
       records: this.groupByDate(props.state.records)
     }
   }
@@ -19,9 +19,11 @@ export class Records extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let records = nextProps.state.records.filter(r => r.notes.includes(nextProps.search))
+
     this.setState({
-      years: this.getSections(nextProps),
-      records: this.groupByDate(nextProps.state.records)
+      years: this.getSections(records),
+      records: this.groupByDate(records)
     })
   }
 
@@ -34,8 +36,8 @@ export class Records extends Component {
     }
   }
 
-  getSections(props = this.props) {
-    let blob = this.groupByDate(props.state.records)
+  getSections(records) {
+    let blob = this.groupByDate(records)
     return Object.keys(blob).sort((a, b) => b - a)
   }
 
