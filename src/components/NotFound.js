@@ -8,7 +8,16 @@ export class NotFound extends Component {
 
   render() {
     return (
-      <h1>Not found</h1>
+      <div id="main">
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-6 col-sm-offset-3 text-center">
+              <h1>Not Found</h1>
+              <span>404</span>
+            </div>
+          </div>
+        </div>
+      </div>
     )
   }
 }
