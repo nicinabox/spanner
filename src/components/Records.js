@@ -103,7 +103,7 @@ export class Records extends Component {
 
 export default connect((state, props) => ({
   state: {
-    vehicle: state.vehicles.find(v => v.id === props.vehicleId) || {},
+    vehicle: state.vehicles.find(v => v.id === +props.vehicleId) || {},
     records: state.records[props.vehicleId] || []
   }
 }), recordsActions)(Records)
