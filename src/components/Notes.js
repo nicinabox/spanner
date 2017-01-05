@@ -1,17 +1,38 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import marked from 'marked'
+import Textarea from 'react-textarea-autosize'
 
 export default class Notes extends Component {
   constructor(props) {
     super(props)
 
+    this.app = document.getElementById('root')
+
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleNotesClick = this.handleNotesClick.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
+    this.handleDocumentClick = this.handleDocumentClick.bind(this)
 
     this.state = {
       isEditing: false,
-      notes: props.notes
+      notes: props.notes || ''
+    }
+  }
+
+  componentDidMount() {
+    this.app.addEventListener('click', this.handleDocumentClick)
+  }
+
+  componentWillUnmount() {
+    this.app.removeEventListener('click', this.handleDocumentClick)
+  }
+
+  handleDocumentClick(e) {
+    const form = ReactDOM.findDOMNode(this.editingForm)
+
+    if (form && !form.contains(e.target)) {
+      this.setState({ isEditing: false })
     }
   }
 
@@ -53,13 +74,17 @@ export default class Notes extends Component {
 
   renderForm() {
     return (
-      <form onSubmit={this.handleFormSubmit}>
+      <form
+        ref={r => this.editingForm = r}
+        onSubmit={this.handleFormSubmit}>
         <div className="form-group">
-          <textarea
+          <Textarea
             className="form-control"
-            rows={15}
+            minRows={4}
+            maxRows={15}
             value={this.state.notes}
             onChange={this.handleInputChange('notes')}
+            autoFocus
           />
         </div>
 
