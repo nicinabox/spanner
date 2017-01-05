@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import marked from 'marked'
 import * as vehiclesActions from '../actions/vehiclesActions'
 import * as remindersActions from '../actions/remindersActions'
 import * as recordsActions from '../actions/recordsActions'
@@ -11,6 +10,7 @@ import Reminders from './Reminders'
 import RecordForm from './RecordForm'
 import ReminderForm from './ReminderForm'
 import VehicleForm from './VehicleForm'
+import Notes from './Notes'
 import Modal from './Modal'
 
 export class Vehicle extends Component {
@@ -168,17 +168,11 @@ export class Vehicle extends Component {
                   Notes
                 </h5>
 
-                <div id="vehicle-notes" className="js-edit-vehicle-notes">
-                  {this.props.state.vehicle.notes ? (
-                    <div dangerouslySetInnerHTML={{
-                      __html: marked(this.props.state.vehicle.notes)
-                    }} />
-                  ) : (
-                    <span className="text-muted">
-                      Add notes...
-                    </span>
-                  )}
-                </div>
+                <Notes
+                  notes={this.props.state.vehicle.notes}
+                  onSubmit={(notes) => {
+                    this.props.updateVehicle(this.props.state.vehicle.id, { notes })
+                  }}/>
               </div>
             </div>
           </div>
