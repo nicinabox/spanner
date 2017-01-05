@@ -1,14 +1,33 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as remindersActions from '../actions/remindersActions'
+import ReminderForm from './ReminderForm'
+import Modal from './Modal'
 
 export class Reminders extends Component {
   constructor(props) {
     super(props)
+    this.handleReminderClick = this.handleReminderClick.bind(this)
   }
 
   componentDidMount() {
     this.props.fetchReminders(this.props.vehicleId)
+  }
+
+  handleReminderClick(e, reminder) {
+    Modal.open({
+      el: e.currentTarget,
+      children: <ReminderForm
+        {...reminder}
+        onSubmit={(props) => {
+          this.props.updateReminder(this.props.vehicleId, props.id, props)
+          Modal.close()
+        }}
+        onConfirmDestroy={(id) => {
+          this.props.destroyReminder(this.props.vehicleId, id)
+          Modal.close()
+        }} />
+    })
   }
 
   render() {
@@ -21,11 +40,11 @@ export class Reminders extends Component {
 
         {this.props.state.reminders.length ? (
           <ul className="list-unstyled">
-            {this.props.state.reminders.map(({notes}, i) => {
+            {this.props.state.reminders.map((reminder, i) => {
               return (
                 <li key={i}>
-                  <a href="#" className="js-reminder">
-                    {notes}
+                  <a href="javascript:;" onClick={(e) => this.handleReminderClick(e, reminder)}>
+                    {reminder.notes}
                   </a>
                 </li>
               )
