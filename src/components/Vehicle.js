@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import marked from 'marked'
 import * as vehiclesActions from '../actions/vehiclesActions'
+import * as remindersActions from '../actions/remindersActions'
+import * as recordsActions from '../actions/recordsActions'
 import Router from '../router'
 import Header from './Header'
 import Records from './Records'
@@ -50,14 +52,38 @@ export class Vehicle extends Component {
     })
   }
 
-  handleAddService(e) {
+  handleAddService(e, record) {
     e.preventDefault()
-    Modal.open({ el: e.currentTarget, children: <RecordForm /> })
+    Modal.open({
+      el: e.currentTarget,
+      children: <RecordForm
+        {...record}
+        onSubmit={(props) => {
+          this.props.createRecord(this.props.state.vehicle.id, props)
+          Modal.close()
+        }}
+        onConfirmDestroy={(id) => {
+          this.props.destroyRecord(id)
+          Modal.close()
+        }} />
+    })
   }
 
-  handleAddReminder(e) {
+  handleAddReminder(e, reminder) {
     e.preventDefault()
-    Modal.open({ el: e.currentTarget, children: <ReminderForm /> })
+    Modal.open({
+      el: e.currentTarget,
+      children: <ReminderForm
+        {...reminder}
+        onSubmit={(props) => {
+          this.props.createReminder(this.props.state.vehicle.id, props)
+          Modal.close()
+        }}
+        onConfirmDestroy={(id) => {
+          this.props.destroyReminder(this.props.state.vehicle.id, id)
+          Modal.close()
+        }} />
+    })
   }
 
   renderHeaderLeft() {
@@ -166,4 +192,8 @@ export default connect((state, props) => ({
   state: {
     vehicle: state.vehicles.find(v => v.id === +props.params.id) || props.params
   }
-}), vehiclesActions)(Vehicle)
+}), {
+  ...vehiclesActions,
+  ...remindersActions,
+  ...recordsActions,
+})(Vehicle)

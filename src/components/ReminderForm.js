@@ -53,7 +53,6 @@ export default class ReminderForm extends Component {
 
   handleConfirmDestroy(e) {
     e.preventDefault()
-    console.log(this.props);
     return this.props.onConfirmDestroy(this.props.id)
   }
 
