@@ -10,7 +10,7 @@ class Vehicle < ApplicationRecord
   ONE_YEAR = 365
 
   def squish_vin
-    return unless vin?
+    return unless vin? && vin.size > 10
     vin[0..7] + vin[9..10]
   end
 
