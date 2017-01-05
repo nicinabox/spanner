@@ -95,13 +95,13 @@ export default class ReminderForm extends Component {
 
         <div className="form-group">
           <label className="control-label" htmlFor="reminder">Date</label>
-          <input
-            type="text"
-            name="date"
-            className="form-control"
-            value={formatDate(this.state.date, 'MMM DD, YYYY')}
-            onChange={this.handleInputChange('date')}
-          />
+            <input
+              type="text"
+              name="date"
+              className="form-control"
+              value={this.state.date ? formatDate(this.state.date, 'MMM DD, YYYY') : ''}
+              onChange={this.handleInputChange('date')}
+            />
 
           <small className="help-block">
             You'll get a reminder email on this day
