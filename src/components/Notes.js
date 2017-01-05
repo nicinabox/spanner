@@ -13,6 +13,7 @@ export default class Notes extends Component {
     this.handleNotesClick = this.handleNotesClick.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.handleDocumentClick = this.handleDocumentClick.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
 
     this.state = {
       isEditing: false,
@@ -32,7 +33,7 @@ export default class Notes extends Component {
     const form = ReactDOM.findDOMNode(this.editingForm)
 
     if (form && !form.contains(e.target)) {
-      this.setState({ isEditing: false })
+      this.handleCancel()
     }
   }
 
@@ -47,6 +48,18 @@ export default class Notes extends Component {
     this.props.onSubmit(this.state.notes)
     this.setState({
       isEditing: false
+    })
+  }
+
+  handleCancel() {
+    if (this.props.notes !== this.state.notes) {
+      let answer = confirm('You have unsaved changes. Do you want to abandon them?')
+      if (!answer) return
+    }
+
+    this.setState({
+      isEditing: false,
+      notes: this.props.notes,
     })
   }
 
@@ -94,7 +107,7 @@ export default class Notes extends Component {
         {' '}
         <a href="javascript:;"
           className="btn btn-secondary"
-          onClick={() => this.setState({ isEditing: false })}>
+          onClick={this.handleCancel}>
           Cancel
         </a>
       </form>
