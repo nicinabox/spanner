@@ -49,6 +49,9 @@ export class Records extends Component {
       }, {})
   }
 
+  handleShowEdit(e, record) {
+    e.preventDefault()
+  }
 
   render() {
     let { records, years } = this.state
@@ -73,7 +76,7 @@ export class Records extends Component {
                   <tbody>
                     {records[year].map((record, i) => {
                       return (
-                        <tr className="record" data-id={record.id} key={i}>
+                        <tr className="record" key={i} onClick={(e) => this.handleShowEdit(e, record)}>
                           <td className="date">{formatDate(record.date, 'MMM DD')}</td>
                           <td className="mileage">{record.mileage.toLocaleString()}</td>
 
