@@ -28,6 +28,7 @@ const createPatterns = (routes) => {
 
 const resolveNavigationHandlers = (url, params) => {
   let path = url.replace(origin, '')
+  window.scrollTo(0, 0)
   navigationHandlers.reverse().forEach(handler => handler(path, params))
 }
 
