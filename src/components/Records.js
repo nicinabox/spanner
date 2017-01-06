@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { sortBy } from 'lodash'
 import { format as formatDate } from 'date-fns'
 import * as recordsActions from '../actions/recordsActions'
+import Modal from './Modal'
+import RecordForm from './RecordForm'
 
 export class Records extends Component {
   constructor(props) {
@@ -53,6 +55,17 @@ export class Records extends Component {
 
   handleShowEdit(e, record) {
     e.preventDefault()
+    Modal.open({
+      el: e.currentTarget,
+      style: {
+        top: -e.currentTarget.offsetHeight - 15,
+      },
+      children: (
+        <RecordForm
+          vehicle={this.props.state.vehicle}
+          {...record} />
+      )
+    })
   }
 
   render() {

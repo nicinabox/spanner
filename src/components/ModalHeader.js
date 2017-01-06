@@ -23,5 +23,4 @@ export default function ModalHeader (props) {
 
 ModalHeader.defaultProps = {
   back: false,
-  onBack: () => {}
 }

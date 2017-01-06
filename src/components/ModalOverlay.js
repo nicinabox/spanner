@@ -37,7 +37,7 @@ const getPosition = ({ el, style }, node) => {
   let position = {
     ...offset,
     top: offset.top + el.offsetHeight + (style.top || 0),
-    width: node.offsetWidth,
+    width: style.width || node.offsetWidth,
   }
 
   let nodeRightBound = position.left + position.width

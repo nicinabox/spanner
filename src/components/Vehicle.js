@@ -44,7 +44,8 @@ export class Vehicle extends Component {
     Modal.open({
       el: e.currentTarget,
       children: (
-        <VehicleForm {...this.props.state.vehicle}
+        <VehicleForm
+          {...this.props.state.vehicle}
           onSubmit={(params) => {
             this.props.updateVehicle(params.id, params)
               .then(() => Modal.close())
@@ -66,6 +67,7 @@ export class Vehicle extends Component {
       el: e.currentTarget,
       children: <RecordForm
         {...record}
+        vehicle={this.props.state.vehicle}
         onSubmit={(props) => {
           this.props.createRecord(this.props.state.vehicle.id, props)
           Modal.close()

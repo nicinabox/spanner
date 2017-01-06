@@ -17,7 +17,12 @@ export default class RecordForm extends Component {
 
     this.state = {
       ...initialState,
+      modalTitle: this.getModalTitle(props)
     }
+  }
+
+  getModalTitle(props = this.props) {
+    return props.id ? 'Edit Service' : 'Add Service'
   }
 
   handleSubmit(e) {
@@ -33,7 +38,7 @@ export default class RecordForm extends Component {
   render() {
     return (
       <div>
-        <ModalHeader title="Add Service" />
+        <ModalHeader title={this.state.modalTitle} />
 
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
@@ -60,6 +65,22 @@ export default class RecordForm extends Component {
               autoFocus
             />
           </div>
+
+          {this.props.vehicle.costEnabled ? (
+            <div className="form-group">
+              <label className="control-label" htmlFor="cost">
+                Cost
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="E.g., 90"
+                value={this.props.cost}
+                onChange={this.handleInputChange('cost')}
+                autoFocus
+              />
+            </div>
+          ) : null}
 
           <div className="form-group">
             <label className="control-label" htmlFor="notes">
