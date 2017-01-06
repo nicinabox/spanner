@@ -58,10 +58,10 @@ export class Vehicles extends Component {
 
         <div id="main">
           <div className="container">
-            <div className="row">
+            <div className="row vehicles-row">
               <h5 className="row-heading">
                 <span className="fa fa-car fa-fw"></span>{' '}
-                All Vehicles
+                Vehicles
               </h5>
 
               {this.props.state.vehicles.map(this.renderVehicle)}
@@ -72,6 +72,15 @@ export class Vehicles extends Component {
                 </a>
               </form>
             </div>
+
+            <div className="row vehicles-row">
+              <h5 className="row-heading">
+                <span className="fa fa-car fa-fw"></span>{' '}
+                Retired Vehicles
+              </h5>
+
+              {this.props.state.retiredVehicles.map(this.renderVehicle)}
+            </div>
           </div>
         </div>
       </div>
@@ -79,4 +88,9 @@ export class Vehicles extends Component {
   }
 }
 
-export default connect((state) => ({state}), vehiclesActions)(Vehicles)
+export default connect((state) => ({
+  state: {
+    vehicles: state.vehicles.filter(v => !v.retired),
+    retiredVehicles: state.vehicles.filter(v => v.retired),
+  }
+}), vehiclesActions)(Vehicles)

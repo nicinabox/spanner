@@ -135,14 +135,16 @@ export class Vehicle extends Component {
         <div className="container action-bar">
           <div className="row">
             <div className="col-sm-6">
-              <nav>
-                <a href="javascript:;" onClick={this.handleAddService} className="js-add-service btn btn-secondary">
-                  + Add Service
-                </a>
-                <a href="javascript:;" onClick={this.handleAddReminder} className="js-add-reminder btn btn-secondary">
-                  + Add Reminder
-                </a>
-              </nav>
+              {!this.props.state.vehicle.retired && (
+                <nav>
+                  <a href="javascript:;" onClick={this.handleAddService} className="js-add-service btn btn-secondary">
+                    + Add Service
+                  </a>
+                  <a href="javascript:;" onClick={this.handleAddReminder} className="js-add-reminder btn btn-secondary">
+                    + Add Reminder
+                  </a>
+                </nav>
+              )}
             </div>
 
             <div className="col-sm-6">

@@ -1,4 +1,8 @@
 #vehicles {
+  .vehicles-row {
+    margin-bottom: 50px;
+  }
+
   .vehicle {
     @include clearfix;
     padding: 20px;
