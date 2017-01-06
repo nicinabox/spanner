@@ -150,17 +150,17 @@ export class Vehicle extends Component {
             <div className="col-sm-6">
               <div className="row text-right text-muted">
                 <div className="col-md-6">
-                  {this.props.vin ? (
+                  {this.props.state.vehicle.vin ? (
                     <p>
-                      VIN: {this.props.vin}
+                      VIN: {this.props.state.vehicle.vin}
                     </p>
                   ) : null}
                 </div>
 
-                {this.props.milesPerYear ? (
+                {this.props.state.vehicle.milesPerYear ? (
                   <div className="col-md-6">
                     <p>
-                      You drive about {this.props.milesPerYear} miles a year
+                      You drive about {this.props.state.vehicle.milesPerYear.toLocaleString()} miles a year
                     </p>
                   </div>
                 ) : null}
