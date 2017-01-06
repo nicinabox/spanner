@@ -15,6 +15,7 @@ export default class VehicleForm extends Component {
       name: '',
       vin: '',
       enableCost: true,
+      retired: false,
     }
 
     this.state = {
@@ -32,7 +33,7 @@ export default class VehicleForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    let props = pick(this.state, 'id', 'name', 'vin', 'enableCost')
+    let props = pick(this.state, 'id', 'name', 'vin', 'retired', 'enableCost')
     this.props.onSubmit(props)
   }
 
@@ -142,6 +143,20 @@ export default class VehicleForm extends Component {
               checked={this.state.enableCost}
               onChange={this.handleInputChange('enableCost')}/>{' '}
             Enable Cost
+          </label>
+        </div>
+
+        <div className="form-group">
+          <label className="control-label" htmlFor="retired">
+            <input
+              id="retired"
+              type="checkbox"
+              checked={this.state.retired}
+              onChange={this.handleInputChange('retired')}
+              {...(!this.props.id ? { disabled: true } : {})}
+            />
+            {' '}
+            Retire
           </label>
         </div>
 
