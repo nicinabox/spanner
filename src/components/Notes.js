@@ -116,7 +116,12 @@ export default class Notes extends Component {
 
   render() {
     return (
-      <div id="vehicle-notes">
+      <div id="vehicle-notes" className="content-section">
+        <h4 className="">
+          <i className="fa fa-book fa-fw"></i>
+          Notes
+        </h4>
+
         {this.state.isEditing ? (
           this.renderForm()
         ) : (

@@ -172,23 +172,19 @@ export class Vehicle extends Component {
         <div id="main">
           <div className="container">
             <div className="row">
-              <div className="col-sm-9">
-                <Reminders vehicleId={this.props.params.id} reminders={this.props.reminders} />
-
+              <div className="col-sm-8">
                 <Records vehicleId={this.props.params.id} search={this.state.search} />
               </div>
 
-              <div className="col-sm-3">
-                <h5 className="">
-                  <i className="fa fa-book fa-fw"></i>
-                  Notes
-                </h5>
+              <div className="col-sm-3 col-sm-offset-1">
+                <Reminders vehicleId={this.props.params.id} reminders={this.props.reminders} />
 
                 <Notes
                   notes={this.props.state.vehicle.notes}
                   onSubmit={(notes) => {
                     this.props.updateVehicle(this.props.state.vehicle.id, { notes })
-                  }}/>
+                  }}
+                />
               </div>
             </div>
           </div>

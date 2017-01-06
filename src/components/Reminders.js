@@ -32,11 +32,11 @@ export class Reminders extends Component {
 
   render() {
     return (
-      <div id="reminders">
-        <h5>
+      <div id="reminders" className="content-section">
+        <h4>
           <span className="fa fa-clock-o fa-fw"></span>
           Reminders
-        </h5>
+        </h4>
 
         {this.props.state.reminders.length ? (
           <ul className="list-unstyled">
