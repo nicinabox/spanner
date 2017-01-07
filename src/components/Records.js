@@ -55,14 +55,24 @@ export class Records extends Component {
 
   handleShowEdit(e, record) {
     e.preventDefault()
+
     Modal.open({
       el: e.currentTarget,
       style: {
         top: -e.currentTarget.offsetHeight - 15,
+        width: e.currentTarget.offsetWidth,
       },
       children: (
         <RecordForm
           vehicle={this.props.state.vehicle}
+          onSubmit={(props) => {
+            this.props.updateRecord(this.props.state.vehicle.id, props.id, props)
+            Modal.close()
+          }}
+          onConfirmDestroy={(id) => {
+            this.props.destroyRecord(this.props.state.vehicle.id, id)
+            Modal.close()
+          }}
           {...record} />
       )
     })
