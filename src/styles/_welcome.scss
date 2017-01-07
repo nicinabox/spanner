@@ -1,6 +1,15 @@
 #welcome {
+  #logo {
+    opacity: 1;
+    width: 64px;
+
+    img {
+      height: auto;
+    }
+  }
+
   #main {
-    margin-top: 60px;
+    margin-top: 30px;
   }
 
   #user {
@@ -18,6 +27,24 @@
     img {
       max-width: 100%;
     }
+  }
+
+  .section {
+    padding: 30px;
+  }
+
+  .section-purple {
+    background: $brand-primary;
+    color: #fff;
+  }
+
+  .section-teaser {
+    margin-top: 150px;
+  }
+
+  .teaser-img {
+    text-align: center;
+    margin-top: -150px;
   }
 
   @include respond-to($container-sm) {

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import logoWhite from '../images/logo-white.png'
 import HeaderAccount from './HeaderAccount'
 
 export class Header extends Component {
@@ -23,7 +22,7 @@ export class Header extends Component {
     return (
       <div className="col-sm-4 text-center hidden-sm hidden-xs">
         <a href="/" id="logo">
-          <img src={logoWhite} alt="" />
+          <img src="/assets/logo-white.png" alt="" />
         </a>
       </div>
     )

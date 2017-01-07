@@ -21,18 +21,20 @@ app.use('/bundle.js*', assetProxy)
 app.use('/style.css*', assetProxy)
 
 app.all('/api/*', (req, res) => {
-  console.log('API request', req.path);
+  console.log(req.method, req.path) // eslint-disable-line
+
   apiProxy.server.web(req, res, {
     target: apiProxy.PROXY_HOST + req.path.replace('/api', '')
   })
 })
 
-app.get('/*', handler('index'))
-
 app.get('/apple-app-site-association', (req, res) => {
   res.set('Content-Type', 'application/pkcs7-mime')
   res.send(require('./apple-app-site-association.json'))
 })
+
+app.get('/terms', handler('terms'))
+app.get('/*', handler('index'))
 
 if (isProduction) {
   app.listen(PORT)
