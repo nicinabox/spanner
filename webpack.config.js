@@ -18,7 +18,7 @@ if (isProduction) {
 }
 
 module.exports = {
-  devtool: 'cheap-module-source-map',
+  devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
   entry: [
     './src/index.js',
     'webpack/hot/dev-server',
