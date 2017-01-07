@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { format as formatDate } from 'date-fns'
+import { format as formatDate, isTomorrow, isToday } from 'date-fns'
+import classNames from 'classnames'
 import * as remindersActions from '../actions/remindersActions'
 import ReminderForm from './ReminderForm'
 import Modal from './Modal'
@@ -41,17 +42,24 @@ export class Reminders extends Component {
         </h4>
 
         {this.props.state.reminders.length ? (
-          <ul className="list-unstyled">
+          <ul className="nav">
             {this.props.state.reminders.map((reminder, i) => {
+              let className = classNames({
+                'reminder-date-overdue': new Date(reminder.date) < new Date,
+                'reminder-date-soon': isTomorrow(reminder.date) || isToday(reminder.date)
+              })
+
               return (
-                <li key={i}>
-                  <a href="javascript:;" onClick={(e) => this.handleReminderClick(e, reminder)}>
-                    <strong>
+                <li key={i} className={className}>
+                  <a href="javascript:;" onClick={(e) => this.handleReminderClick(e, reminder)} className="clearfix">
+                    <span className="reminder-notes">
                       {reminder.notes}
-                    </strong>
-                    <span className="text-muted pull-right">
-                      {formatDate(reminder.date, 'MMM D, YYYY')}
                     </span>
+                    {reminder.date ? (
+                      <span className="reminder-date">
+                        {formatDate(reminder.date, 'MMM D, YYYY')}
+                      </span>
+                    ) : null}
                   </a>
                 </li>
               )

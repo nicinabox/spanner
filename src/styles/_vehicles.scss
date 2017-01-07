@@ -49,16 +49,18 @@
 }
 
 #vehicle-notes {
-  cursor: pointer;
+  > div {
+    cursor: pointer;
+  }
 
   h1 {
-    font-size: 26px;
-  }
-  h2 {
     font-size: 22px;
   }
+  h2 {
+    font-size: 20px;
+  }
   h3 {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 
@@ -130,5 +132,20 @@
 #reminders {
   a {
     display: block;
+    color: inherit;
+  }
+
+  .reminder-notes {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+  }
+
+  .reminder-date-soon {
+    color: $brand-warning;
+  }
+
+  .reminder-date-overdue {
+    color: $brand-danger;
   }
 }

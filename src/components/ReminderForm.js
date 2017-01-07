@@ -145,7 +145,7 @@ export default class ReminderForm extends Component {
 
             <DayPicker
               ref={r => this.datepicker = r}
-              initialMonth={new Date(this.state.date)}
+              initialMonth={this.state.date ? new Date(this.state.date) : new Date}
               selectedDays={d => isSameDay(this.state.date, d)}
               onDayClick={(e, date) => this.setState({ date })}
               fixedWeeks
