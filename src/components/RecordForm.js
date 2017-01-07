@@ -16,7 +16,7 @@ export default class RecordForm extends Component {
     let initialState = props.id ? props : {
       date: new Date,
       cost: '',
-      mileage: '',
+      mileage: props.vehicle.estimatedMileage,
       notes: '',
     }
 
