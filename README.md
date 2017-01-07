@@ -14,8 +14,8 @@ A simple tracking application to keep up with your vehicles.
 
 ## Development
 
-* `npm run setup`
-* `gulp`
+* `yarn`
+* `npm start`
 
 ## Deploy
 
