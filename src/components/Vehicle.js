@@ -126,12 +126,18 @@ export class Vehicle extends Component {
     )
   }
 
+  renderHeaderRight() {
+    return null
+  }
+
   render() {
     return (
       <div id="vehicle">
         <Header
           renderLeft={this.renderHeaderLeft}
-          renderCenter={this.renderHeaderCenter} />
+          renderCenter={this.renderHeaderCenter}
+          renderRight={this.renderHeaderRight}
+        />
 
         <div className="container action-bar">
           <div className="row">

@@ -81,6 +81,53 @@ export class Records extends Component {
     })
   }
 
+  renderTable(records) {
+    return (
+      <table className="table table-striped">
+        <tbody>
+          {records.map((record, i) => {
+            return (
+              <tr className="record" key={i} onClick={(e) => this.handleShowEdit(e, record)}>
+                <td className="date">{formatDate(record.date, 'MMM DD')}</td>
+                {record.mileage ? (
+                  <td className="mileage">{record.mileage.toLocaleString()}</td>
+                ) : <td />}
+
+                {this.props.state.vehicle.enableCost && (
+                  <td className="cost">{record.cost}</td>
+                )}
+
+                <td className="notes">{record.notes}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    )
+  }
+
+  renderRecords(records) {
+    if (window.innerWidth >= 768) return this.renderTable(records)
+
+    return records.map((record, i) => {
+      return (
+        <div className="record" key={i} onClick={(e) => this.handleShowEdit(e, record)}>
+          <header>
+            <span className="date">{formatDate(record.date, 'MMM DD')}</span>
+            <span className="mileage">{record.mileage.toLocaleString()}</span>
+
+            {this.props.state.vehicle.enableCost && (
+              <span className="cost">{record.cost}</span>
+            )}
+          </header>
+          <p className="notes">
+            {record.notes}
+          </p>
+        </div>
+      )
+    })
+  }
+
   render() {
     let { records, years } = this.state
 
@@ -99,27 +146,8 @@ export class Records extends Component {
           return (
             <div className="record-year" key={year}>
               <h3>{year}</h3>
-              <div className="records-container hidden-sm hidden-xs">
-                <table className="table table-striped">
-                  <tbody>
-                    {records[year].map((record, i) => {
-                      return (
-                        <tr className="record" key={i} onClick={(e) => this.handleShowEdit(e, record)}>
-                          <td className="date">{formatDate(record.date, 'MMM DD')}</td>
-                          {record.mileage ? (
-                            <td className="mileage">{record.mileage.toLocaleString()}</td>
-                          ) : <td />}
-
-                          {this.props.state.vehicle.enableCost && (
-                            <td className="cost">{record.cost}</td>
-                          )}
-
-                          <td className="notes">{record.notes}</td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
+              <div className="records-container">
+                {this.renderRecords(records[year])}
               </div>
             </div>
           )
