@@ -4,11 +4,11 @@ export default store => next => action => {
   if (!action.isError) return
 
   if (Array.isArray(action.error)) {
-    console.log(
+    alert(
       action.error.map((e) => e.title).join('\n')
     )
   } else {
-    console.log(action.error)
+    alert(action.error)
   }
 
   return result
