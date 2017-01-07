@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
+    "bugsnag-js": "^3.0.7",
+    "classnames": "^2.2.5",
     "date-fns": "^1.22.0",
     "element-class": "^0.2.2",
     "express": "^4.14.0",
