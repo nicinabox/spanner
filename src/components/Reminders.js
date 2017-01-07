@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { format as formatDate } from 'date-fns'
 import * as remindersActions from '../actions/remindersActions'
 import ReminderForm from './ReminderForm'
 import Modal from './Modal'
@@ -19,6 +20,7 @@ export class Reminders extends Component {
       el: e.currentTarget,
       children: <ReminderForm
         {...reminder}
+        vehicle={this.props.state.vehicle}
         onSubmit={(props) => {
           this.props.updateReminder(this.props.vehicleId, props.id, props)
           Modal.close()
@@ -44,7 +46,12 @@ export class Reminders extends Component {
               return (
                 <li key={i}>
                   <a href="javascript:;" onClick={(e) => this.handleReminderClick(e, reminder)}>
-                    {reminder.notes}
+                    <strong>
+                      {reminder.notes}
+                    </strong>
+                    <span className="text-muted pull-right">
+                      {formatDate(reminder.date, 'MMM D, YYYY')}
+                    </span>
                   </a>
                 </li>
               )
@@ -60,6 +67,7 @@ export class Reminders extends Component {
 
 export default connect((state, props) => ({
   state: {
+    vehicle: state.vehicles.find(v => v.id === +props.vehicleId) || {},
     reminders: state.reminders[props.vehicleId] || props.reminders || []
   }
 }), remindersActions)(Reminders)

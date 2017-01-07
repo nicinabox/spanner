@@ -85,6 +85,7 @@ export class Vehicle extends Component {
       el: e.currentTarget,
       children: <ReminderForm
         {...reminder}
+        vehicle={this.props.state.vehicle}
         onSubmit={(props) => {
           this.props.createReminder(this.props.state.vehicle.id, props)
           Modal.close()

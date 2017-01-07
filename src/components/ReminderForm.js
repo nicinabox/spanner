@@ -15,6 +15,8 @@ export default class ReminderForm extends Component {
     let initialState = props.id ? props : {
       notes: '',
       date: addDays(new Date, 1),
+      mileage: '',
+      reminderType: '',
     }
 
     this.state = {
@@ -30,7 +32,7 @@ export default class ReminderForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    let props = pick(this.state, 'id', 'notes', 'date')
+    let props = pick(this.state, 'id', 'notes', 'date', 'mileage', 'reminderType')
     this.props.onSubmit(props)
   }
 
@@ -76,6 +78,34 @@ export default class ReminderForm extends Component {
     )
   }
 
+  estimateDate(mileage) {
+    if (this.props.mileage && this.state.mileage === this.props.mileage) {
+      return this.props.date
+    }
+
+    let { estimatedMileage, milesPerDay } = this.props.vehicle
+
+    let days = (mileage - estimatedMileage) / milesPerDay
+    return addDays(new Date, days)
+  }
+
+
+  renderDateEstimate() {
+    if (!this.state.mileage) return
+    let estimatedDate = this.estimateDate(this.state.mileage)
+
+    if (estimatedDate < new Date) {
+      return (
+        'Enter a mileage higher than your current mileage.'
+      )
+    }
+
+    return (
+      `Estimated for ${formatDate(estimatedDate, 'dddd MMM D, YYYY')}`
+    )
+  }
+
+
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
@@ -94,7 +124,17 @@ export default class ReminderForm extends Component {
         </div>
 
         <div className="form-group">
-          <label className="control-label" htmlFor="reminder">Date</label>
+          <label className="control-label" htmlFor="reminder">Remind me</label>
+          <select className="form-control" value={this.state.reminderType} onChange={this.handleInputChange('reminderType')}>
+            <option value="">Don't remind me</option>
+            <option value="date">On a date</option>
+            <option value="mileage">At a mileage</option>
+          </select>
+        </div>
+
+        {this.state.reminderType === 'date' ? (
+          <div className="form-group">
+            <label className="control-label" htmlFor="reminder">Date</label>
             <input
               type="text"
               name="date"
@@ -103,10 +143,28 @@ export default class ReminderForm extends Component {
               onChange={this.handleInputChange('date')}
             />
 
-          <small className="help-block">
-            You'll get a reminder email on this day
-          </small>
-        </div>
+            <small className="help-block">
+              You'll get a reminder email on this day
+            </small>
+          </div>
+        ) : null}
+
+        {this.state.reminderType === 'mileage' ? (
+          <div className="form-group">
+            <label className="control-label" htmlFor="reminder">Mileage</label>
+            <input
+              type="text"
+              name="mileage"
+              className="form-control"
+              value={this.state.mileage}
+              onChange={this.handleInputChange('mileage')}
+            />
+
+            <small className="help-block">
+              {this.renderDateEstimate()}
+            </small>
+          </div>
+        ) : null}
 
         <button className="btn btn-success">Save</button>
 
