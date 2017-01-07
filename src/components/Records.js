@@ -21,7 +21,10 @@ export class Records extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let records = nextProps.state.records.filter(r => r.notes.includes(nextProps.search))
+    let records = nextProps.state.records.filter(r => {
+      let re = new RegExp(nextProps.search, 'i')
+      return re.test(r.notes)
+    })
 
     this.setState({
       years: this.getSections(records),
