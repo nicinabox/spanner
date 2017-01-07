@@ -30,7 +30,7 @@ const getWindowBounds = () => {
   }
 }
 
-const getPosition = ({ el, style }, node) => {
+const getPosition = ({ el, style }, node = {}) => {
   const offset = getOffset(el)
   const bounds = getWindowBounds()
 
@@ -55,7 +55,7 @@ export default class ModalOverlay extends Component {
     this.handleClose = this.handleClose.bind(this)
 
     this.state = {
-      position: {}
+      position: getPosition(this.props)
     }
   }
 
