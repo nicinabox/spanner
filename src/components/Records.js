@@ -106,7 +106,9 @@ export class Records extends Component {
                       return (
                         <tr className="record" key={i} onClick={(e) => this.handleShowEdit(e, record)}>
                           <td className="date">{formatDate(record.date, 'MMM DD')}</td>
-                          <td className="mileage">{record.mileage.toLocaleString()}</td>
+                          {record.mileage ? (
+                            <td className="mileage">{record.mileage.toLocaleString()}</td>
+                          ) : <td />}
 
                           {this.props.state.vehicle.enableCost && (
                             <td className="cost">{record.cost}</td>
