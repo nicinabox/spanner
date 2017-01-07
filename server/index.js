@@ -14,6 +14,15 @@ const handler = (filename) => (req, res) => res.sendFile(path.join(__dirname, `.
 app.use('/', express.static(path.join(__dirname, '../public/'), { maxAge: ONE_YEAR }))
 app.use('/api', apiProxy)
 
+if (!isProduction) {
+  const assetProxy = proxy({
+    target: `http://localhost:${PORT - 1}`,
+    changeOrigin: true
+  })
+  app.use('/bundle.js*', assetProxy)
+  app.use('/style.css*', assetProxy)
+}
+
 app.get('/apple-app-site-association', (req, res) => {
   res.set('Content-Type', 'application/pkcs7-mime')
   res.send(require('./apple-app-site-association.json'))
@@ -26,13 +35,6 @@ if (isProduction) {
   app.listen(PORT)
 } else {
   const webpack = require('./webpack')
-
-  const assetProxy = proxy({
-    target: `http://localhost:${PORT - 1}`,
-    changeOrigin: true
-  })
-  app.use('/bundle.js*', assetProxy)
-  app.use('/style.css*', assetProxy)
 
   webpack.listen(PORT - 1, 'localhost', () => {})
   app.listen(PORT)
