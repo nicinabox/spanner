@@ -32,6 +32,7 @@
     "element-class": "^0.2.2",
     "express": "^4.14.0",
     "http-proxy": "^1.16.2",
+    "http-proxy-middleware": "^0.17.3",
     "marked": "^0.3.6",
     "react": "^15.4.1",
     "react-day-picker": "^3.1.1",

@@ -19,14 +19,7 @@ const handler = (filename) => (req, res) => res.sendFile(path.join(__dirname, `.
 app.use('/', express.static(path.join(__dirname, '../public/'), { maxAge: ONE_YEAR }))
 app.use('/bundle.js*', assetProxy)
 app.use('/style.css*', assetProxy)
-
-app.all('/api/*', (req, res) => {
-  console.log(req.method, req.path) // eslint-disable-line
-
-  apiProxy.server.web(req, res, {
-    target: apiProxy.PROXY_HOST + req.path.replace('/api', '')
-  })
-})
+app.use('/api', apiProxy)
 
 app.get('/apple-app-site-association', (req, res) => {
   res.set('Content-Type', 'application/pkcs7-mime')
