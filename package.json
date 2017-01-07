@@ -6,7 +6,8 @@
   "scripts": {
     "deploy": "./deploy.sh",
     "start": "node server",
-    "build": "NODE_ENV=production webpack -p"
+    "build": "NODE_ENV=production webpack -p",
+    "dokku-postdeploy": "npm run build"
   },
   "author": "Nic Aitch",
   "devDependencies": {
