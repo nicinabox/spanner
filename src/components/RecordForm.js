@@ -82,7 +82,7 @@ export default class RecordForm extends Component {
             Mileage
           </label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             placeholder="E.g., 13,500"
             value={this.state.mileage}
