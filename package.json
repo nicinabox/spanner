@@ -37,6 +37,7 @@
     "react-textarea-autosize": "^4.0.5",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
-    "url-pattern": "^1.0.3"
+    "url-pattern": "^1.0.3",
+    "whatwg-fetch": "^2.0.1"
   }
 }
