@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { format as formatDate } from 'date-fns'
+import { format as formatDate, isSameDay, isValid } from 'date-fns'
 import { pick } from 'lodash'
+import DayPicker from 'react-day-picker'
 import ModalHeader from './ModalHeader'
 import Textarea from 'react-textarea-autosize'
 
@@ -23,7 +24,8 @@ export default class RecordForm extends Component {
     this.state = {
       ...initialState,
       modalTitle: this.getModalTitle(props),
-      modalBack: false
+      modalBack: false,
+      showDatepicker: true
     }
   }
 
@@ -70,10 +72,21 @@ export default class RecordForm extends Component {
           <label className="control-label" htmlFor="date">
             Date
           </label>
-          <input type="text"
+          <input
+            type="hidden"
             className="form-control"
             onChange={this.handleInputChange('date')}
-            value={formatDate(this.props.date, 'MMM DD, YYYY')}
+            value={formatDate(this.state.date, 'MMM DD, YYYY')}
+            onFocus={() => {
+              this.datepicker && this.datepicker.showMonth(this.state.date)
+            }}
+          />
+          <DayPicker
+            ref={r => this.datepicker = r}
+            initialMonth={new Date(this.state.date)}
+            selectedDays={d => isSameDay(this.state.date, d)}
+            onDayClick={(e, date) => this.setState({ date })}
+            fixedWeeks
           />
         </div>
 
@@ -134,13 +147,24 @@ export default class RecordForm extends Component {
               <label className="control-label" htmlFor="date">
                 Date
               </label>
-              <input type="text"
+              <input
+                type="hidden"
                 className="form-control"
                 onChange={this.handleInputChange('date')}
                 value={formatDate(this.state.date, 'MMM DD, YYYY')}
               />
+              <DayPicker
+                ref={r => this.datepicker = r}
+                initialMonth={new Date(this.state.date)}
+                selectedDays={d => isSameDay(this.state.date, d)}
+                onDayClick={(e, date) => this.setState({ date })}
+                fixedWeeks
+              />
             </div>
 
+          </div>
+
+          <div className="col-sm-8">
             <div className="form-group">
               <label className="control-label" htmlFor="mileage">
                 Mileage
@@ -167,9 +191,6 @@ export default class RecordForm extends Component {
                 />
               </div>
             ) : null}
-          </div>
-
-          <div className="col-sm-8">
             <div className="form-group">
               <label className="control-label" htmlFor="notes">
                 Notes

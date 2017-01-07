@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { format as formatDate, addDays } from 'date-fns'
+import { format as formatDate, addDays, isSameDay } from 'date-fns'
 import { pick } from 'lodash'
+import DayPicker from 'react-day-picker'
 import ModalHeader from './ModalHeader'
 
 export default class ReminderForm extends Component {
@@ -105,7 +106,6 @@ export default class ReminderForm extends Component {
     )
   }
 
-
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
@@ -136,11 +136,19 @@ export default class ReminderForm extends Component {
           <div className="form-group">
             <label className="control-label" htmlFor="reminder">Date</label>
             <input
-              type="text"
+              type="hidden"
               name="date"
               className="form-control"
-              value={this.state.date ? formatDate(this.state.date, 'MMM DD, YYYY') : ''}
+              value={formatDate(this.state.date, 'MMM DD, YYYY')}
               onChange={this.handleInputChange('date')}
+            />
+
+            <DayPicker
+              ref={r => this.datepicker = r}
+              initialMonth={new Date(this.state.date)}
+              selectedDays={d => isSameDay(this.state.date, d)}
+              onDayClick={(e, date) => this.setState({ date })}
+              fixedWeeks
             />
 
             <small className="help-block">

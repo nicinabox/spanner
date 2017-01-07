@@ -24,9 +24,8 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.scss$/,
+        test: /\.s?css$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader'),
-        exclude: /node_modules/
       },
       { test: /\.woff2?$/, loader: 'url-loader?limit=10000&minetype=application/font-woff' },
       { test: /\.ttf$/, loader: 'file-loader' },
