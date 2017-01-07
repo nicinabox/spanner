@@ -123,7 +123,7 @@ class Welcome extends Component {
           <div className="section section-purple section-teaser">
             <div className="container">
               <div className="teaser-img">
-                <img src="/assets/teaser-1.png" alt="" className="img-responsive"/>
+                <img src="/assets/teaser-vehicle.png" alt="" className="img-responsive"/>
               </div>
             </div>
           </div>
