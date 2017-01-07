@@ -18,6 +18,7 @@ const handler = (filename) => (req, res) => res.sendFile(path.join(__dirname, `.
 
 app.use('/', express.static(path.join(__dirname, '../public/'), { maxAge: ONE_YEAR }))
 app.use('/bundle.js*', assetProxy)
+app.use('/style.css*', assetProxy)
 
 app.all('/api/*', (req, res) => {
   console.log('API request', req.path);
