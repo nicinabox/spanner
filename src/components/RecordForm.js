@@ -68,72 +68,82 @@ export default class RecordForm extends Component {
   renderNewForm() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <label className="control-label" htmlFor="date">
-            Date
-          </label>
-          <input
-            type="hidden"
-            className="form-control"
-            onChange={this.handleInputChange('date')}
-            value={formatDate(this.state.date, 'MMM DD, YYYY')}
-            onFocus={() => {
-              this.datepicker && this.datepicker.showMonth(this.state.date)
-            }}
-          />
-          <DayPicker
-            ref={r => this.datepicker = r}
-            initialMonth={new Date(this.state.date)}
-            selectedDays={d => isSameDay(this.state.date, d)}
-            onDayClick={(e, date) => this.setState({ date })}
-            fixedWeeks
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="control-label" htmlFor="mileage">
-            Mileage
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="E.g., 13,500"
-            value={this.state.mileage}
-            onChange={this.handleInputChange('mileage')}
-            autoFocus
-          />
-        </div>
-
-        {this.props.vehicle.enableCost ? (
-          <div className="form-group">
-            <label className="control-label" htmlFor="cost">
-              Cost
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="E.g., 90"
-              value={this.state.cost}
-              onChange={this.handleInputChange('cost')}
-            />
+        <div className="row">
+          <div className="col-sm-6">
+            <div className="form-group">
+              <label className="control-label" htmlFor="date">
+                Date
+              </label>
+              <input
+                type="hidden"
+                className="form-control"
+                onChange={this.handleInputChange('date')}
+                value={formatDate(this.state.date, 'MMM DD, YYYY')}
+                onFocus={() => {
+                  this.datepicker && this.datepicker.showMonth(this.state.date)
+                }}
+              />
+              <DayPicker
+                ref={r => this.datepicker = r}
+                initialMonth={new Date(this.state.date)}
+                selectedDays={d => isSameDay(this.state.date, d)}
+                onDayClick={(e, date) => this.setState({ date })}
+                fixedWeeks
+              />
+            </div>
           </div>
-        ) : null}
 
-        <div className="form-group">
-          <label className="control-label" htmlFor="notes">
-            Notes
-          </label>
-          <Textarea
-            className="form-control"
-            minRows={4}
-            value={this.state.notes}
-            onChange={this.handleInputChange('notes')}
-            placeholder="E.g., Change oil, oil filter"
-            required
-          />
+          <div className="col-sm-6">
+            <div className="form-group">
+              <label className="control-label" htmlFor="mileage">
+                Mileage
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="E.g., 13,500"
+                value={this.state.mileage}
+                onChange={this.handleInputChange('mileage')}
+                autoFocus
+              />
+            </div>
+
+            {this.props.vehicle.enableCost ? (
+              <div className="form-group">
+                <label className="control-label" htmlFor="cost">
+                  Cost
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="E.g., 90"
+                  value={this.state.cost}
+                  onChange={this.handleInputChange('cost')}
+                />
+              </div>
+            ) : null}
+
+            <div className="form-group">
+              <label className="control-label" htmlFor="notes">
+                Notes
+              </label>
+              <Textarea
+                className="form-control"
+                minRows={4}
+                value={this.state.notes}
+                onChange={this.handleInputChange('notes')}
+                placeholder="E.g., Change oil, oil filter"
+                required
+              />
+            </div>
+          </div>
         </div>
 
-        <button className="btn btn-success">Save</button>
+        <div className="row">
+          <div className="col-sm-12">
+            <button className="btn btn-success">Save</button>
+          </div>
+        </div>
       </form>
     )
   }
@@ -142,7 +152,7 @@ export default class RecordForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="row">
-          <div className="col-sm-4">
+          <div className="col-sm-5">
             <div className="form-group">
               <label className="control-label" htmlFor="date">
                 Date
@@ -164,7 +174,7 @@ export default class RecordForm extends Component {
 
           </div>
 
-          <div className="col-sm-8">
+          <div className="col-sm-7">
             <div className="form-group">
               <label className="control-label" htmlFor="mileage">
                 Mileage

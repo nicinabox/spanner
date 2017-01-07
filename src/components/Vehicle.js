@@ -65,6 +65,7 @@ export class Vehicle extends Component {
     e.preventDefault()
     Modal.open({
       el: e.currentTarget,
+      style: { width: 600 },
       children: <RecordForm
         {...record}
         vehicle={this.props.state.vehicle}
