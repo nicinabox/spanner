@@ -1,3 +1,5 @@
+import 'whatwg-fetch'
+
 const isResponseType = (resp, type) => {
   let contentType = resp.headers.get('content-type')
   return !contentType || contentType.includes(type)
