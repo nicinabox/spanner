@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "deploy": "./deploy.sh",
-    "start": "node server"
+    "start": "node server",
+    "build": "NODE_ENV=production webpack -p"
   },
   "author": "Nic Aitch",
   "devDependencies": {
@@ -16,6 +17,7 @@
     "babel-preset-stage-2": "^6.18.0",
     "css-loader": "^0.26.1",
     "file-loader": "^0.9.0",
+    "lodash-webpack-plugin": "^0.10.7",
     "node-sass": "^4.1.1",
     "react-scripts": "0.8.4",
     "sass-loader": "^4.1.1",

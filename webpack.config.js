@@ -1,19 +1,32 @@
+const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+
+const isProduction = process.env.NODE_ENV === 'production'
+
+let plugins = [
+  new webpack.HotModuleReplacementPlugin(),
+]
+
+if (isProduction) {
+  plugins = [
+    new LodashModuleReplacementPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+  ]
+}
 
 module.exports = {
-  devtool: 'cheap-eval-source-map',
+  devtool: 'cheap-module-source-map',
   entry: [
     './src/index.js',
     'webpack/hot/dev-server',
     'webpack-dev-server/client?http://localhost:8079'
   ],
-  export: {
-    path: 'public',
-    filename: 'bundle.js'
-  },
   output: {
-    path: '/',
+    path: path.join(__dirname, './public'),
+    filename: 'bundle.js',
     publicPath: 'http://localhost:8079/',
   },
   module: {
@@ -36,12 +49,11 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin('style.css'),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
       },
-      '__DEV__': process.env.NODE_ENV !== 'production'
+      '__DEV__': !isProduction
     })
-  ]
+  ].concat(plugins)
 }
