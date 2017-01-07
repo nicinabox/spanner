@@ -1,0 +1,59 @@
+#welcome {
+  #logo {
+    opacity: 1;
+    width: 64px;
+
+    img {
+      height: auto;
+    }
+  }
+
+  #main {
+    margin-top: 30px;
+  }
+
+  #user {
+    width: 300px;
+  }
+
+  #teaser {
+    margin-top: 60px;
+    height: 600px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(#000, 0.3);
+    border-radius: 5px;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  .section {
+    padding: 30px;
+  }
+
+  .section-purple {
+    background: $brand-primary;
+    color: #fff;
+  }
+
+  .section-teaser {
+    margin-top: 150px;
+  }
+
+  .teaser-img {
+    text-align: center;
+    margin-top: -150px;
+  }
+
+  @include respond-to($container-sm) {
+    .text-center {
+      text-align: left;
+    }
+
+    #user {
+      width: 100%;
+    }
+  }
+}

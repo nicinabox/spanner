@@ -1,0 +1,21 @@
+.DayPicker {
+  outline: none;
+}
+
+.DayPicker-Month {
+  width: 100%;
+  margin: 0;
+
+  abbr {
+    border: none;
+  }
+}
+
+.DayPicker-Caption {
+  height: auto;
+}
+
+.DayPicker-Day--today {
+  color: $brand-primary;
+  font-weight: bold;
+}
