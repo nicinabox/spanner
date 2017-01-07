@@ -21,13 +21,14 @@ module.exports = {
   devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
   entry: [
     './src/index.js',
+  ].concat((isProduction ? [] : [
     'webpack/hot/dev-server',
     'webpack-dev-server/client?http://localhost:8079'
-  ],
+  ])),
   output: {
     path: path.join(__dirname, './public'),
     filename: 'bundle.js',
-    publicPath: 'http://localhost:8079/',
+    publicPath: '/',
   },
   module: {
     loaders: [
