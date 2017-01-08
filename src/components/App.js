@@ -7,14 +7,20 @@ export class App extends Component {
     super(props)
 
     this.state = {
-      path: window.location.pathname
+      path: Router.getCurrentRoute()
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     Router.onNavigate((nextPath, params) => {
       this.setState({ path: nextPath, params })
     })
+
+    if (Router.getCurrentRoute() !== this.state.path) {
+      this.setState({
+        path: Router.getCurrentRoute()
+      })
+    }
 
     if (!this.isSignedIn()) {
       this.navigate('/')
