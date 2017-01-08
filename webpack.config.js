@@ -28,7 +28,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, './public'),
     filename: 'bundle.js',
-    publicPath: '/',
+    publicPath: isProduction ? '/' : 'http://localhost:8079',
   },
   module: {
     loaders: [
