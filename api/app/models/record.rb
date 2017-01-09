@@ -14,7 +14,7 @@ class Record < ApplicationRecord
   def mileage_greater_than_trailing_record
     trailing_record = self.vehicle.records.where('date < ?', date).last
 
-    if mileage < trailing_record.mileage
+    if trailing_record && mileage < trailing_record.mileage
       errors.add(:mileage, "must be greater than #{trailing_record.mileage.to_i}")
     end
   end
