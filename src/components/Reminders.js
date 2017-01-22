@@ -45,7 +45,7 @@ export class Reminders extends Component {
           <ul className="nav">
             {this.props.state.reminders.map((reminder, i) => {
               let className = classNames({
-                'reminder-date-overdue': new Date(reminder.date) < new Date,
+                'reminder-date-overdue': reminder.date && new Date(reminder.date) < new Date,
                 'reminder-date-soon': isTomorrow(reminder.date) || isToday(reminder.date)
               })
 
