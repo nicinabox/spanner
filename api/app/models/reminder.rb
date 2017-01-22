@@ -13,7 +13,7 @@ class Reminder < ApplicationRecord
   end
 
   def date_reminder?
-    reminder_type == 'date' || reminder_type.blank? && date.present?
+    reminder_type == 'date'
   end
 
   def can_estimate_date?
