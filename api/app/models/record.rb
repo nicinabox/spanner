@@ -17,7 +17,7 @@ class Record < ApplicationRecord
       .where.not(id: id)
       .last
 
-    if mileage && trailing_record && mileage < trailing_record.mileage
+    if mileage > 0 && trailing_record && mileage < trailing_record.mileage
       errors.add(:mileage, "must be greater than #{trailing_record.mileage.to_i}")
     end
   end
@@ -28,7 +28,7 @@ class Record < ApplicationRecord
       .where.not(id: id)
       .first
 
-    if mileage && leading_record && mileage > leading_record.mileage
+    if mileage > 0 && leading_record && mileage > leading_record.mileage
       errors.add(:mileage, "must be less than #{leading_record.mileage.to_i}")
     end
   end
