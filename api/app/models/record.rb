@@ -12,17 +12,23 @@ class Record < ApplicationRecord
   after_destroy :update_mileage_reminders
 
   def mileage_greater_than_trailing_record
-    trailing_record = self.vehicle.records.where('date < ?', date).last
+    trailing_record = self.vehicle.records
+      .where('date < ?', date)
+      .where.not(id: id)
+      .last
 
-    if trailing_record && mileage < trailing_record.mileage
+    if mileage && trailing_record && mileage < trailing_record.mileage
       errors.add(:mileage, "must be greater than #{trailing_record.mileage.to_i}")
     end
   end
 
   def mileage_less_than_leading_record
-    leading_record = self.vehicle.records.where('date > ?', date).first
+    leading_record = self.vehicle.records
+      .where('date > ?', date)
+      .where.not(id: id)
+      .first
 
-    if leading_record && mileage > leading_record.mileage
+    if mileage && leading_record && mileage > leading_record.mileage
       errors.add(:mileage, "must be less than #{leading_record.mileage.to_i}")
     end
   end
