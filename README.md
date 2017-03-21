@@ -2,7 +2,7 @@
 
 A simple tracking application to keep up with your vehicles.
 
-![](public/assets/teaser-1.png)
+![](public/assets/teaser-vehicle.png)
 
 ## Features
 
