@@ -15,6 +15,8 @@ Rails.application.routes.draw do
       resources :records
     end
 
+    resources :reminders, only: :index
+
     get 'user', to: 'users#index'
     put 'user', to: 'users#update'
 

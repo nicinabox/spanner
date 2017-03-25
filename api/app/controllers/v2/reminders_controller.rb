@@ -1,7 +1,11 @@
 module V2
   class RemindersController < ApplicationController
     def index
-      render json: reminders.all
+      if params[:vehicle_id]
+        render json: reminders.all
+      else
+        render json: current_user.reminders.all
+      end
     end
 
     def create
