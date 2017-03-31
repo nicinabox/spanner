@@ -12,6 +12,7 @@ module V2
         active_users: active_users_in_range(start_date, end_date),
         new_vehicles: new_vehicles_in_range(start_date, end_date),
         new_records: new_records_in_range(start_date, end_date),
+        new_reminders: new_reminders_in_range(start_date, end_date),
       }
     end
 
@@ -36,6 +37,7 @@ module V2
       User
         .select(user_fields)
         .where(created_at: start_date..end_date)
+        .order(created_at: 'desc')
     end
 
     def active_users_in_range(start_date, end_date)
@@ -45,15 +47,29 @@ module V2
         .where(sessions: {
           last_seen: start_date..end_date
         })
-        .uniq
+        .distinct
+        .order(created_at: :desc)
     end
 
     def new_vehicles_in_range(start_date, end_date)
-      Vehicle.where(created_at: start_date..end_date)
+      Vehicle
+        .unscoped
+        .where(created_at: start_date..end_date)
+        .order(created_at: :desc)
+    end
+
+    def new_reminders_in_range(start_date, end_date)
+      Reminder
+        .unscoped
+        .where(created_at: start_date..end_date)
+        .order(created_at: :desc)
     end
 
     def new_records_in_range(start_date, end_date)
-      Record.where(created_at: start_date..end_date)
+      Record
+        .unscoped
+        .where(created_at: start_date..end_date)
+        .order(created_at: :desc)
     end
 
     def user_fields
