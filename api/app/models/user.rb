@@ -18,4 +18,8 @@ class User < ApplicationRecord
   def demo_account?
     email == 'demo@spanner'
   end
+
+  def can_access_analytics?
+    ['nic@nicinabox.com'].include? email
+  end
 end
