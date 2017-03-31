@@ -4,9 +4,11 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
   before_action :authenticate
+  before_bugsnag_notify :add_user_info_to_bugsnag
 
   rescue_from StandardError do |e|
     logger.debug e
+    Bugsnag.notify(e)
     respond_with_error(e.message, status: 500)
   end
 
@@ -26,6 +28,12 @@ class ApplicationController < ActionController::API
   end
 
   protected
+  def add_user_info_to_bugsnag(notification)
+    notification.user = {
+      email: current_user.email,
+      id: current_user.id
+    }
+  end
 
   def current_user
     @current_user
