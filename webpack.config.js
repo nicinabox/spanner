@@ -19,16 +19,16 @@ if (isProduction) {
 
 module.exports = {
   devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
-  entry: [
-    './src/index.js',
-  ].concat((isProduction ? [] : [
+  entry: (isProduction ? [] : [
+    'webpack-dev-server/client?http://localhost:8079',
     'webpack/hot/dev-server',
-    'webpack-dev-server/client?http://localhost:8079'
-  ])),
+  ]).concat([
+    './src/index.js',
+  ]),
   output: {
     path: path.join(__dirname, './public'),
     filename: 'bundle.js',
-    publicPath: isProduction ? '/' : 'http://localhost:8079',
+    publicPath: isProduction ? '/' : 'http://localhost:8079/',
   },
   module: {
     loaders: [
