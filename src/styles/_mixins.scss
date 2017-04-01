@@ -3,3 +3,9 @@
     @content;
   }
 }
+
+@mixin respond-to-min($size) {
+  @media screen and (min-width: $size) {
+    @content;
+  }
+}

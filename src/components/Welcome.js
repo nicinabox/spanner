@@ -62,12 +62,12 @@ class Welcome extends Component {
     return (
       <div id="welcome">
         <div id="main">
-          <div className="section">
+          <div className="section section-purple">
             <div className="container">
               <div className="row text-center">
                 <div className="col-sm-10 col-sm-offset-1">
                   <a href="/" id="logo">
-                    <img src="/assets/logo-purple.png" alt=""/>
+                    <img src="/assets/logo-white.png" alt=""/>
                   </a>
 
                   <h2>
@@ -84,29 +84,34 @@ class Welcome extends Component {
               </div>
 
               <div className="row text-center">
-                <div className="col-sm-6 col-sm-offset-3">
-                  {this.state.isPending ? (
-                    <h4 className="text-success">
-                      <i className="fa fa-check"></i>
-                      Check your email for a Sign In button.
-                      <br/>
-                      <a href="#" className="try-again" onClick={this.handleResetForm}>Try again.</a>
-                    </h4>
-                  ) : (
-                    <form className="form-inline" onSubmit={this.handleFormSubmit}>
-                      <div className="form-group">
-                        <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          className="form-control"
-                          value={this.state.email}
-                          placeholder={this.getPlaceholder()}
-                          onChange={this.handleInputChange('email')}
-                          autoFocus={true} />
+                <div className="col-md-6 col-md-offset-3">
+                  <div id="sign-in">
+                    {this.state.isPending ? (
+                      <div>
+                        <h4>
+                          <i className="fa fa-check"></i>{' '}
+                          Check your email for a Sign In button.
+                        </h4>
+                        <a href="#" className="try-again btn btn-text" onClick={this.handleResetForm}>
+                          Try again
+                        </a>
+                      </div>
+                    ) : (
+                      <form className="form-inline" onSubmit={this.handleFormSubmit}>
+                        <div className="form-group">
+                          <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            className="form-control"
+                            value={this.state.email}
+                            placeholder={this.getPlaceholder()}
+                            onChange={this.handleInputChange('email')}
+                            autoFocus={true}
+                          />
                         </div>
-
-                        <button className="btn btn-primary">Sign In</button>
+                        {' '}
+                        <button className="btn btn-success">Sign In</button>
 
                         <p className="help-block">
                           <small className="text-muted">
@@ -118,12 +123,116 @@ class Welcome extends Component {
                   </div>
                 </div>
               </div>
+
+              <div className="row">
+                <div className="teaser-img">
+                  <img src="/assets/teaser-vehicle.png" alt="" className="img-responsive"/>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="section section-purple section-teaser">
+          <div className="section">
             <div className="container">
-              <div className="teaser-img">
-                <img src="/assets/teaser-vehicle.png" alt="" className="img-responsive"/>
+              <div className="row">
+                <div className="col-sm-5">
+                  <h3>
+                    <strong>
+                      With predictive mileage, adding new service is dead easy.
+                    </strong>
+                  </h3>
+                  <p>
+                    By tracking the frequency and mileage of your records we can predict the mileage for your next service, making it even easier to keep records.
+                  </p>
+                </div>
+                <div className="col-sm-7">
+                  <img src="/assets/teasers/new-record.png" alt="New Record" className="img-responsive pull-right"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="section section-purple">
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-6">
+                  <img src="/assets/teasers/new-reminder-purple.png" alt="New Reminder" className="img-responsive pull-right"/>
+                </div>
+                <div className="col-sm-6">
+                  <h3>
+                    <strong>
+                      Get reminders on a date or at a mileage.
+                    </strong>
+                  </h3>
+                  <p>
+                    It's hard to pinpoint the date of your next oil change, tire rotation, or brake flush. We analyze your mileage and send you a reminder when your service is coming up.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="section">
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-6">
+                  <h3>
+                    <strong>
+                      With Notes you can keep track of anything related to your vehicle.
+                    </strong>
+                  </h3>
+                  <p>
+                    Every vehicle has it's quirks, like how to change the clock or an awkward reset procedure.{' '}
+                    Notes are a perfect place to jot this down, as well as things like common torque measurments or planned upgrades.
+                  </p>
+                </div>
+                <div className="col-sm-6">
+                  <div className="teaser-img">
+                    <img src="/assets/teasers/notes.png" alt="Notes" className="img-responsive" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="section section-purple">
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-12 text-center">
+                  <h3>
+                    <strong>
+                      Lower your insurance rate by reporting how much you really drive.
+                    </strong>
+                  </h3>
+                  <p>
+                    If you drive significantly less than the national average you could be eligible discount on your insurance.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="section section-bordered">
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-6 text-center">
+                  <h3>
+                    <strong>
+                      Download for iOS
+                    </strong>
+                  </h3>
+                  <br/>
+                  <p>
+                    <a href="https://itunes.apple.com/us/app/spanner/id1187772916?ls=1&mt=8">
+                      <img src="/assets/appstore.svg" alt="" height="50"/>
+                    </a>
+                  </p>
+                </div>
+                <div className="col-sm-6">
+                  <div className="teaser-img">
+                    <img src="/assets/teasers/iphone.png" alt=""  className="img-responsive" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
