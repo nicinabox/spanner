@@ -22,7 +22,7 @@ export class HeaderAccount extends Component {
       children: (
         <ul className="nav nav-pills nav-stacked">
           <li>
-            <a href="javascript:;" onClick={this.handleLogout} className=" text-danger">Sign Out</a>
+            <a href="javascript:;" onClick={this.handleLogout} className="text-danger">Sign Out</a>
           </li>
         </ul>
       )
