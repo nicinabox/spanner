@@ -5,6 +5,7 @@ class Importer
     rows = CSV.parse(string, { headers: true })
     vehicle.records.delete_all
     vehicle.records.create(rows.map { |r| r.to_h })
+    vehicle.save!
   end
 
   def self.fuelly(vehicle, string)
@@ -19,5 +20,6 @@ class Importer
 
     vehicle.records.delete_all
     vehicle.records.create(rows)
+    vehicle.save!
   end
 end
