@@ -1,3 +1,5 @@
+require 'importer'
+
 module V2
   class VehiclesController < ApplicationController
     def index
@@ -24,6 +26,15 @@ module V2
       vehicles.destroy(params[:id])
     end
 
+    def import
+      vehicle = vehicles.find(params[:vehicle_id])
+      if params[:vehicle][:fuelly]
+        Importer.fuelly(vehicle, params[:vehicle][:import_file].read)
+      else
+        Importer.records(vehicle, params[:vehicle][:import_file].read)
+      end
+    end
+
     private
 
     def vehicles
@@ -31,7 +42,12 @@ module V2
     end
 
     def vehicle_params
-      params.require(:vehicle).permit(:name, :vin, :notes, :position, :enable_cost, :retired)
+      params
+        .require(:vehicle)
+        .permit(
+          :name, :vin, :notes, :position, :enable_cost, :retired, :import_file,
+          :fuelly
+        )
     end
   end
 end
