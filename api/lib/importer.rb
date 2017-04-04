@@ -1,14 +1,14 @@
 require 'csv'
 
 class Importer
-  def self.records(vehicle, file)
-    rows = CSV.foreach(file, { headers: true })
+  def self.records(vehicle, string)
+    rows = CSV.parse(string, { headers: true })
     vehicle.records.delete_all
     vehicle.records.create(rows.map { |r| r.to_h })
   end
 
-  def self.fuelly(vehicle, file)
-    rows = CSV.foreach(file, { headers: true }).map do |row|
+  def self.fuelly(vehicle, string)
+    rows = CSV.parse(string, { headers: true }).map do |row|
       {
         mileage: row[' odometer'],
         cost: row[' price'],

@@ -11,12 +11,12 @@ namespace :records do
   desc "Import vehicle records"
   task :import, [:file, :vehicle_id] => :environment do |t, args|
     vehicle = Vehicle.find(args.vehicle_id)
-    Importer.records(vehicle, args.file)
+    Importer.records(vehicle, File.read(args.file))
   end
 
   desc "Import vehicle records from Fuelly export"
   task :fuelly, [:file, :vehicle_id] => :environment do |t, args|
     vehicle = Vehicle.find(args.vehicle_id)
-    Importer.fuelly(vehicle, args.file)
+    Importer.fuelly(vehicle, File.read(args.file))
   end
 end
