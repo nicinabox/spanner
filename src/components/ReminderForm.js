@@ -3,15 +3,17 @@ import { format as formatDate, addDays, isSameDay } from 'date-fns'
 import { pick } from 'lodash'
 import DayPicker from 'react-day-picker'
 import ModalHeader from './ModalHeader'
+import handleInputChange from '../utils/handleInputChange'
 
 export default class ReminderForm extends Component {
   constructor(props) {
     super(props)
+
+    this.handleInputChange = handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDestroy = this.handleDestroy.bind(this)
     this.handleConfirmDestroy = this.handleConfirmDestroy.bind(this)
     this.handleCancelDestroy = this.handleCancelDestroy.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)
 
     let initialState = props.id ? props : {
       notes: '',
@@ -57,10 +59,6 @@ export default class ReminderForm extends Component {
   handleConfirmDestroy(e) {
     e.preventDefault()
     return this.props.onConfirmDestroy(this.props.id)
-  }
-
-  handleInputChange(name) {
-    return (e) => this.setState({ [name]: e.target.value })
   }
 
   renderConfirmDestroy() {

@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import { pick } from 'lodash'
 import ModalHeader from './ModalHeader'
+import handleInputChange from '../utils/handleInputChange'
 
 export default class VehicleForm extends Component {
   constructor(props) {
     super(props)
+
+    this.handleInputChange = handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDestroy = this.handleDestroy.bind(this)
     this.handleConfirmDestroy = this.handleConfirmDestroy.bind(this)
     this.handleCancelDestroy = this.handleCancelDestroy.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)
 
     let initialState = props.id ? props : {
       name: '',
@@ -63,20 +65,6 @@ export default class VehicleForm extends Component {
     this.setState({
       error: true
     })
-  }
-
-  handleInputChange(name) {
-    return (e) => {
-      let state = { [name]: e.target.value }
-
-      if (e.target.type === 'checkbox') {
-        state = {
-          [name]: !this.state[name],
-        }
-      }
-
-      this.setState(state)
-    }
   }
 
   renderConfirmDestroy() {
