@@ -26,4 +26,12 @@ class User < ApplicationRecord
   def can_access_analytics?
     ['nic@nicinabox.com'].include? email
   end
+
+  def active_sessions?
+    sessions.active.any?
+  end
+
+  def last_seen
+    sessions.order('last_seen').last.last_seen
+  end
 end
