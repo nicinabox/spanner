@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ModalHeader from './ModalHeader'
 import VehicleForm from './VehicleForm'
+import ImportRecords from './ImportRecords'
 import handleInputChange from '../utils/handleInputChange'
 
 export default class VehicleMenu extends Component {
@@ -36,12 +37,8 @@ export default class VehicleMenu extends Component {
     this.setState({ path: 'import' })
   }
 
-  handleImport(e) {
-    e.preventDefault()
-    this.props.importRecords(this.props.vehicle.id, {
-      importFile: this.state.importFile,
-      fuelly: this.state.fuelly,
-    })
+  handleImport(props) {
+    this.props.importRecords(this.props.vehicle.id, props)
     .then(() => {
       this.props.fetchRecords(this.props.vehicle.id)
     })
@@ -51,42 +48,9 @@ export default class VehicleMenu extends Component {
     return (
       <div>
         <ModalHeader title="Import Records" onBack={() => this.setState({ path: '' })} />
-        <form action="" onSubmit={this.handleImport}>
-          <div className="alert alert-info">
-            <p>
-              Import from a CSV with the headers{' '}
-              <strong>date</strong>, <strong>cost</strong>, <strong>mileage</strong>, <strong>notes</strong>.
-            </p>
-          </div>
-
-          <div className="form-group">
-            <label className="control-label" htmlFor="importFile">
-              Import a CSV
-            </label>
-            <input
-              type="file"
-              id="importFile"
-              className="form-control"
-              onChange={(e) => {
-                this.setState({ importFile: e.target.files[0] })
-              }}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="control-label" htmlFor="fuelly">
-              <input
-                id="fuelly"
-                type="checkbox"
-                checked={this.state.fuelly}
-                onChange={this.handleInputChange} />{' '}
-              This data is from Fuelly
-            </label>
-          </div>
-          <button type="submit" className="btn btn-success">
-            Import
-          </button>
-        </form>
+        <ImportRecords
+          onSubmit={this.handleImport}
+        />
       </div>
     )
   }
@@ -116,10 +80,12 @@ export default class VehicleMenu extends Component {
   renderMenu() {
     return (
       <div>
+        <ModalHeader title={this.props.vehicle.name} />
         <ul className="nav nav-pills nav-stacked">
           <li><a href="javascript:;" onClick={this.handleEditClick}>Edit</a></li>
-          <li><a href="javascript:;" onClick={this.handleExportClick}>Export</a></li>
-          <li><a href="javascript:;" onClick={this.handleImportClick}>Import</a></li>
+          <li role="separator" className="divider"></li>
+          <li><a href="javascript:;" onClick={this.handleImportClick}>Import Records</a></li>
+          <li><a href="javascript:;" onClick={this.handleExportClick}>Export Records</a></li>
         </ul>
       </div>
     )
