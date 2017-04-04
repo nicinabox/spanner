@@ -28,10 +28,12 @@ module V2
 
     def import
       vehicle = vehicles.find(params[:vehicle_id])
+      contents = params[:vehicle][:import_file].read
+
       if params[:vehicle][:fuelly]
-        Importer.fuelly(vehicle, params[:vehicle][:import_file].read)
+        Importer.fuelly(vehicle, contents)
       else
-        Importer.records(vehicle, params[:vehicle][:import_file].read)
+        Importer.records(vehicle, contents)
       end
     end
 
