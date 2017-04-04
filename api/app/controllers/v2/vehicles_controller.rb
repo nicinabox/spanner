@@ -32,7 +32,7 @@ module V2
       vehicle = vehicles.find(params[:vehicle_id])
       contents = params[:vehicle][:import_file].read
 
-      if params[:vehicle][:fuelly]
+      if params[:vehicle][:fuelly] == 'true'
         Importer.fuelly(vehicle, contents)
       else
         Importer.records(vehicle, contents)
@@ -45,8 +45,7 @@ module V2
       Exporter.records(vehicle, tempfile)
 
       send_file tempfile,
-        filename: vehicle.name + '.csv',
-        type: 'application/csv'
+        filename: vehicle.name + '.csv'
     end
 
     private
