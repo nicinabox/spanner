@@ -12,6 +12,8 @@ class Record < ApplicationRecord
   after_destroy :update_mileage_reminders
 
   def mileage_greater_than_trailing_record
+    return if mileage == 0
+
     trailing_record = self.vehicle.records
       .where('date < ?', date)
       .where('mileage > ?', 0)
@@ -24,6 +26,8 @@ class Record < ApplicationRecord
   end
 
   def mileage_less_than_leading_record
+    return if mileage == 0
+
     leading_record = self.vehicle.records
       .where('date > ?', date)
       .where('mileage > ?', 0)
