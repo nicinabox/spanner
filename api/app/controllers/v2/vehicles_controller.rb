@@ -1,4 +1,6 @@
+require 'tempfile'
 require 'importer'
+require 'exporter'
 
 module V2
   class VehiclesController < ApplicationController
@@ -35,6 +37,16 @@ module V2
       else
         Importer.records(vehicle, contents)
       end
+    end
+
+    def export
+      vehicle = vehicles.find(params[:vehicle_id])
+      tempfile = Tempfile.new('tmp')
+      Exporter.records(vehicle, tempfile)
+
+      send_file tempfile,
+        filename: vehicle.name + '.csv',
+        type: 'application/csv'
     end
 
     private
