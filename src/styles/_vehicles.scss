@@ -62,6 +62,10 @@
   h3 {
     font-size: 16px;
   }
+
+  table {
+    @extend .table;
+  }
 }
 
 #records {
