@@ -6,4 +6,18 @@ class Importer
     vehicle.records.delete_all
     vehicle.records.create(rows.map { |r| r.to_h })
   end
+
+  def self.fuelly(vehicle, file)
+    rows = CSV.foreach(file, { headers: true }).map do |row|
+      {
+        mileage: row[' odometer'],
+        cost: row[' price'],
+        date: row[' service_date'],
+        notes: row[' notes']
+      }
+    end
+
+    vehicle.records.delete_all
+    vehicle.records.create(rows)
+  end
 end

@@ -13,4 +13,10 @@ namespace :records do
     vehicle = Vehicle.find(args.vehicle_id)
     Importer.records(vehicle, args.file)
   end
+
+  desc "Import vehicle records from Fuelly export"
+  task :fuelly, [:file, :vehicle_id] => :environment do |t, args|
+    vehicle = Vehicle.find(args.vehicle_id)
+    Importer.fuelly(vehicle, args.file)
+  end
 end
