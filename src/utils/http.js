@@ -7,6 +7,7 @@ const isResponseType = (resp, type) => {
 
 const extractBody = (resp) => {
   if (isResponseType(resp, 'text/plain')) return resp.text()
+  if (isResponseType(resp, 'text/csv')) return resp.blob()
   if (isResponseType(resp, 'application/json')) return resp.json()
   if (isResponseType(resp, 'application/vnd.api+json')) return resp.json()
   if (isResponseType(resp)) return {}

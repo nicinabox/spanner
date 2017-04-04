@@ -176,7 +176,6 @@ export default class VehicleForm extends Component {
   render() {
     return (
       <div>
-        <ModalHeader title={this.state.modalTitle} onBack={this.state.modalBack}/>
         {this.state.confirmDestroy ? this.renderConfirmDestroy() : this.renderForm()}
       </div>
     )

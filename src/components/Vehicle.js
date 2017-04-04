@@ -9,7 +9,7 @@ import Records from './Records'
 import Reminders from './Reminders'
 import RecordForm from './RecordForm'
 import ReminderForm from './ReminderForm'
-import VehicleForm from './VehicleForm'
+import VehicleMenu from './VehicleMenu'
 import Notes from './Notes'
 import Modal from './Modal'
 
@@ -44,19 +44,14 @@ export class Vehicle extends Component {
     Modal.open({
       el: e.currentTarget,
       children: (
-        <VehicleForm
-          {...this.props.state.vehicle}
-          onSubmit={(params) => {
-            this.props.updateVehicle(params.id, params)
-              .then(() => Modal.close())
-          }}
-          onConfirmDestroy={(id) => {
-            this.props.destroyVehicle(id)
-              .then(() => {
-                Modal.close()
-                Router.navigate('/vehicles')
-              })
-          }}/>
+        <VehicleMenu
+          vehicle={this.props.state.vehicle}
+          fetchRecords={this.props.fetchRecords}
+          updateVehicle={this.props.updateVehicle}
+          destroyVehicle={this.props.destroyVehicle}
+          importRecords={this.props.importRecords}
+          exportRecords={this.props.exportRecords}
+        />
       )
     })
   }

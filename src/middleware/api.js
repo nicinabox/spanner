@@ -47,7 +47,8 @@ export default store => next => action => {
     return next(action)
   }
 
-  let { types, path, method = 'get', params, body } = action
+  let { types, path, method = 'get', params, body, headers } = action
+  const hasFormData = body instanceof FormData
   const [PENDING, SUCCESS, ERROR] = types
   const { session } = store.getState()
 
@@ -55,14 +56,18 @@ export default store => next => action => {
 
   let options = {
     headers: {
-      'Content-Type': 'application/json',
       Accept: `application/vnd.api+json; version=${API_VERSION}`,
       Authorization: `Token ${session.authToken}`,
-      'Time-Zone-Offset': getTimeZoneOffset()
+      'Time-Zone-Offset': getTimeZoneOffset(),
+      ...headers
     },
-    body: body && JSON.stringify(snakeCaseKeys(body)),
+    body: hasFormData ? body : JSON.stringify(snakeCaseKeys(body)),
     params: snakeCaseKeys(params),
     method: method.toUpperCase(),
+  }
+
+  if (!hasFormData) {
+    options.headers['Content-Type'] = 'application/json'
   }
 
   let req = http(url, options)
@@ -70,7 +75,7 @@ export default store => next => action => {
   next({
     type: PENDING,
     isPending: true,
-    params: body || params,
+    params: hasFormData ? params : body || params,
   })
 
   req
@@ -78,7 +83,7 @@ export default store => next => action => {
       next({
         type: SUCCESS,
         isPending: false,
-        params: body || params,
+        params: hasFormData ? params : body || params,
         body: Array.isArray(respBody) ? respBody.map(camelCaseKeys) : camelCaseKeys(respBody),
       })
     })
