@@ -13,7 +13,8 @@ const enhancer = compose(
     errorHandler,
     cache,
     logger
-  )
+  ),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 export default (initialState) => {
   let store = createStore(reducers, initialState, enhancer)
