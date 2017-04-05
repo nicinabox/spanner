@@ -9,6 +9,12 @@ class Vehicle < ApplicationRecord
 
   ONE_YEAR = 365
 
+  def mean_days_between_records
+    span_secs = records.maximum(:date) - records.minimum(:date)
+    days = span_secs / (records.count - 1) / (24 * 60 * 60)
+    days.round
+  end
+
   def squish_vin
     return unless vin? && vin.size > 10
     vin[0..7] + vin[9..10]
