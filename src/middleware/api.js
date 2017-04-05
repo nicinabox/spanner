@@ -95,14 +95,18 @@ export default store => next => action => {
         })
       }
 
+      let errorMessage = error instanceof Error
+        ? error.message
+        : error.body.error || error.body.errors
+
+      errorMessage = errorMessage || error.body
+
       next({
         type: ERROR,
         isError: true,
         isPending: false,
         params: body || params,
-        error: error instanceof Error
-          ? error.message
-          : error.body.error || error.body.errors
+        error: errorMessage
       })
     })
 
