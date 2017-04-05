@@ -1,0 +1,20 @@
+.flash-container {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  max-width: 500px;
+  z-index: 10000;
+  cursor: pointer;
+
+  .alert {
+    position: relative;
+    left: -50%;
+    padding: 8px 12px;
+    border: none !important;
+  }
+
+  .alert-warning {
+    background: #f6c746;
+    color: #222;
+  }
+}

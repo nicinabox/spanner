@@ -108,7 +108,8 @@ export default class VehicleForm extends Component {
             value={this.state.name}
             onChange={this.handleInputChange('name')}
             placeholder="E.g., 2015 Mini Cooper GP"
-            autoFocus />
+            autoFocus
+            required />
         </div>
 
         <div className="form-group">

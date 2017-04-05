@@ -1,14 +1,20 @@
+import Flash from '../components/Flash'
+
 export default store => next => action => {
   let result = next(action)
 
   if (!action.isError) return
 
+  Flash.close()
+
   if (Array.isArray(action.error)) {
-    alert(
-      action.error.map((e) => e.title).join('\n')
-    )
+    Flash.open({
+      message: action.error.map((e) => e.title).join('\n')
+    })
   } else {
-    alert(action.error)
+    Flash.open({
+      message: action.error
+    })
   }
 
   return result
