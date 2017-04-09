@@ -6,4 +6,16 @@ class PromptUserMailerPreview < ActionMailer::Preview
 
     PromptUserMailer.add_record(user, vehicle)
   end
+
+  def add_first_vehicle
+    user = User.first
+    PromptUserMailer.add_first_vehicle(user)
+  end
+
+  def add_first_record
+    user    = User.first
+    vehicle = user.vehicles.first
+
+    PromptUserMailer.add_first_record(user, vehicle)
+  end
 end
