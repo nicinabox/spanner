@@ -30,7 +30,7 @@ class Analytics
         .order(created_at: :desc)
   end
 
-  def mobile_users
+  def total_mobile_users
     User.joins(:sessions)
         .where("sessions.description LIKE ?", "%Spanner%")
         .distinct
