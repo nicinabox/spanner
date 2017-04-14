@@ -20,12 +20,19 @@ class Analytics
         .order(created_at: :desc)
   end
 
-  def mobile_users
+  def active_mobile_users
     User.joins(:sessions)
         .where("sessions.description LIKE ?", "%Spanner%")
         .where(sessions: {
           last_seen: @start_date..@end_date
         })
+        .distinct
+        .order(created_at: :desc)
+  end
+
+  def mobile_users
+    User.joins(:sessions)
+        .where("sessions.description LIKE ?", "%Spanner%")
         .distinct
         .order(created_at: :desc)
   end
