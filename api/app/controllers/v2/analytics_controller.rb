@@ -12,6 +12,7 @@ module V2
         },
         new_users: analytics.new_users,
         active_users: analytics.active_users,
+        active_mobile_users: analytics.mobile_users,
         new_vehicles: analytics.new_vehicles,
         new_records: analytics.new_records,
         new_reminders: analytics.new_reminders,
