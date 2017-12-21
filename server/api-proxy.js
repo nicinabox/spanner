@@ -2,11 +2,8 @@ const https = require('https')
 const url = require('url')
 const proxy = require('http-proxy-middleware')
 
-const isProd = process.env.NODE_ENV === 'production'
-
-const PROXY_HOST = isProd
-  ? 'https://spanner-api.apps.nicinabox.com'
-  : 'http://localhost:3000'
+const { NODE_ENV, PROXY_HOST } = process.env
+const isProd = NODE_ENV === 'production'
 
 module.exports = proxy({
   target: PROXY_HOST,
