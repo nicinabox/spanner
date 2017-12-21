@@ -1,6 +1,6 @@
 Rails.application.configure do
   host = 'https://spanner.nicinabox.com'
-  api_host = 'https://spanner-api.apps.nicinabox.com'
+  api_host = ENV['API_HOST']
 
   # Settings specified here will take precedence over those in config/application.rb.
 
