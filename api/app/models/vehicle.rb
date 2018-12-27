@@ -46,7 +46,7 @@ class Vehicle < ApplicationRecord
         previous = selected[i + 1]
         next if !previous
 
-        n = WEIGHT_COEFFICIENT - i
+        n = selected.size - i
         weight = n * (n - 1) / 2
 
         period_elapsed_days = elapsed_days(r[0], previous[0])
@@ -109,6 +109,6 @@ class Vehicle < ApplicationRecord
     sum = values.inject(:+).to_f
     total_weight = weights.inject(:+).to_f
 
-    sum / total_weight
+    total_weight.nonzero? ? sum / total_weight : 0
   end
 end
