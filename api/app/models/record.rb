@@ -21,7 +21,7 @@ class Record < ApplicationRecord
       .last
 
     if trailing_record && mileage < trailing_record.mileage
-      errors.add(:mileage, "must be greater than #{trailing_record.mileage.to_i}")
+      errors.add(:mileage, "must be greater than #{trailing_record.mileage.to_i} on this date")
     end
   end
 
