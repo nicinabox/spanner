@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181228023747) do
+ActiveRecord::Schema.define(version: 20181228164151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20181228023747) do
     t.datetime "date"
     t.integer  "mileage"
     t.string   "reminder_type"
+    t.date     "reminder_date"
     t.index ["vehicle_id"], name: "index_reminders_on_vehicle_id", using: :btree
   end
 
