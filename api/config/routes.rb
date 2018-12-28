@@ -11,8 +11,11 @@ Rails.application.routes.draw do
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do
     resources :vehicles do
+      get 'reminders/estimate_date', to: 'reminders#estimate_date'
       resources :reminders
+
       resources :records
+
       post :import
       get :export
     end

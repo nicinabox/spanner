@@ -29,6 +29,15 @@ module V2
       render :success
     end
 
+    def estimate_date
+      reminder = reminders.build(reminder_params)
+      reminder.set_reminder_date!
+
+      render json: {
+        reminder_date: reminder.reminder_date
+      }
+    end
+
     private
 
     def reminders
