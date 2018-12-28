@@ -58,8 +58,8 @@ module V2
       params
         .require(:vehicle)
         .permit(
-          :name, :vin, :notes, :position, :enable_cost, :retired, :import_file,
-          :fuelly
+          :name, :vin, :notes, :position, :enable_cost, :distance_unit,
+          :retired, :import_file, :fuelly
         )
     end
   end
