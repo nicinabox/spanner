@@ -1,3 +1,4 @@
+import qs from 'qs'
 import { snakeCase, camelCase, isObjectLike, isDate, isArray } from 'lodash'
 import config from '../config'
 import http from '../utils/http'
@@ -52,7 +53,9 @@ export default store => next => action => {
   const [PENDING, SUCCESS, ERROR] = types
   const { session } = store.getState()
 
-  const url = (path.indexOf('/') === 0) ? [config.host, '/api', path].join('') : path
+  let url = (path.indexOf('/') === 0)
+    ? [config.host, '/api', path].join('')
+    : path
 
   let options = {
     headers: {
@@ -65,6 +68,10 @@ export default store => next => action => {
     params: snakeCaseKeys(params),
     method: method.toUpperCase(),
   }
+
+  url = options.params
+      ? [url, qs.stringify(options.params)].join('?')
+      : url
 
   if (!hasFormData) {
     options.headers['Content-Type'] = 'application/json'
