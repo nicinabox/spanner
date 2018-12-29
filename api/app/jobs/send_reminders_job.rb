@@ -27,6 +27,6 @@ class SendRemindersJob < ApplicationJob
   private
 
   def reminders_on(date)
-    Reminder.where(date: date.beginning_of_day..date.end_of_day)
+    Reminder.where(reminder_date: date.beginning_of_day..date.end_of_day)
   end
 end
