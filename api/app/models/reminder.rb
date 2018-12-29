@@ -26,17 +26,15 @@ class Reminder < ApplicationRecord
 
   def set_reminder_date!
     if mileage_reminder?
-      self.reminder_date = estimate_date
-    end
-
-    if date_reminder?
-      self.reminder_date = date
+      return self.reminder_date = estimate_date
     end
 
     if date_or_mileage_reminder? and can_estimate_date?
       reminder_date = date < estimate_date ? date : estimate_date
-      self.reminder_date = reminder_date
+      return self.reminder_date = reminder_date
     end
+
+    self.reminder_date = date
   end
 
   def estimate_date
