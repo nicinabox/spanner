@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
-import { format as formatDate, addDays, isSameDay } from 'date-fns'
+import { format as formatDate, addDays, addMonths, isSameDay } from 'date-fns'
 import { pick } from 'lodash'
 import DayPicker from 'react-day-picker'
 import ModalHeader from './ModalHeader'
 import handleInputChange from '../utils/handleInputChange'
+
+const reminderOptions = [
+  ['', 'Don\'t remind me'],
+  ['date_or_mileage', 'Date or mileage, whichever is first'],
+  ['date', 'On a date'],
+  ['mileage', 'At a mileage'],
+]
 
 export default class ReminderForm extends Component {
   constructor(props) {
@@ -14,12 +21,16 @@ export default class ReminderForm extends Component {
     this.handleDestroy = this.handleDestroy.bind(this)
     this.handleConfirmDestroy = this.handleConfirmDestroy.bind(this)
     this.handleCancelDestroy = this.handleCancelDestroy.bind(this)
+    this.estimateReminderDate = this.estimateReminderDate.bind(this)
 
-    let initialState = props.id ? props : {
+    this.defaultDate = addMonths(new Date(), 6)
+
+    const initialState = props.id ? props : {
       notes: '',
-      date: addDays(new Date, 1),
+      date: this.defaultDate,
       mileage: '',
       reminderType: '',
+      reminderDate: null,
     }
 
     this.state = {
@@ -33,10 +44,23 @@ export default class ReminderForm extends Component {
     return props.id ? 'Edit Reminder' : 'Add Reminder'
   }
 
+  estimateReminderDate() {
+    const params = pick(this.state, 'mileage', 'date', 'reminderType')
+
+    this.props.estimateReminderDate(
+      this.props.vehicle.id,
+      params
+    )
+    .then((resp) => {
+      this.setState({
+        reminderDate: resp.reminder_date
+      })
+    })
+  }
+
   handleSubmit(e) {
     e.preventDefault()
-    let props = pick(this.state, 'id', 'notes', 'date', 'mileage', 'reminderType')
-    this.props.onSubmit(props)
+    this.props.onSubmit(this.state)
   }
 
   handleDestroy(e) {
@@ -77,30 +101,15 @@ export default class ReminderForm extends Component {
     )
   }
 
-  estimateDate(mileage) {
-    if (this.props.mileage && this.state.mileage === this.props.mileage) {
-      return this.props.date
-    }
-
-    let { estimatedMileage, milesPerDay } = this.props.vehicle
-
-    let days = (mileage - estimatedMileage) / milesPerDay
-    return addDays(new Date, days)
-  }
-
-
   renderDateEstimate() {
-    if (!this.state.mileage) return
-    let estimatedDate = this.estimateDate(this.state.mileage)
+    const { reminderType, reminderDate } = this.state
 
-    if (estimatedDate < new Date) {
-      return (
-        'Enter a mileage higher than your current mileage.'
-      )
+    if (reminderType === 'date' || !reminderDate) {
+      return
     }
 
     return (
-      `Estimated for ${formatDate(estimatedDate, 'dddd MMM D, YYYY')}`
+      `Estimated for ${formatDate(this.state.reminderDate, 'dddd MMM D, YYYY')}`
     )
   }
 
@@ -113,7 +122,7 @@ export default class ReminderForm extends Component {
             type="text"
             className="form-control"
             name="notes"
-            placeholder="E.g., Change oil at 60,000"
+            placeholder="E.g., Change oil"
             value={this.state.notes}
             onChange={this.handleInputChange('notes')}
             autoFocus
@@ -124,20 +133,20 @@ export default class ReminderForm extends Component {
         <div className="form-group">
           <label className="control-label" htmlFor="reminder">Remind me</label>
           <select className="form-control" value={this.state.reminderType} onChange={this.handleInputChange('reminderType')}>
-            <option value="">Don't remind me</option>
-            <option value="date">On a date</option>
-            <option value="mileage">At a mileage</option>
+            {reminderOptions.map(([value, label], i) => (
+              <option key={i} value={value}>{label}</option>
+            ))}
           </select>
         </div>
 
-        {this.state.reminderType === 'date' ? (
+        {/date/.test(this.state.reminderType) && (
           <div className="form-group">
             <label className="control-label" htmlFor="reminder">Date</label>
             <input
               type="hidden"
               name="date"
               className="form-control"
-              value={formatDate(this.state.date, 'MMM DD, YYYY')}
+              value={formatDate(this.state.date, 'YYYY-MM-DD')}
               onChange={this.handleInputChange('date')}
             />
 
@@ -145,32 +154,28 @@ export default class ReminderForm extends Component {
               ref={r => this.datepicker = r}
               initialMonth={this.state.date ? new Date(this.state.date) : new Date}
               selectedDays={d => isSameDay(this.state.date, d)}
-              onDayClick={(e, date) => this.setState({ date })}
+              onDayClick={(e, date) => this.setState({ date }, this.estimateReminderDate)}
               fixedWeeks
             />
-
-            <small className="help-block">
-              You'll get a reminder email on this day
-            </small>
           </div>
-        ) : null}
+        )}
 
-        {this.state.reminderType === 'mileage' ? (
+        {/mileage/.test(this.state.reminderType) && (
           <div className="form-group">
             <label className="control-label" htmlFor="reminder">Mileage</label>
             <input
-              type="text"
+              type="number"
               name="mileage"
               className="form-control"
               value={this.state.mileage}
-              onChange={this.handleInputChange('mileage')}
+              onChange={this.handleInputChange('mileage', this.estimateReminderDate)}
             />
-
-            <small className="help-block">
-              {this.renderDateEstimate()}
-            </small>
           </div>
-        ) : null}
+        )}
+
+        <small className="help-block">
+          {this.renderDateEstimate()}
+        </small>
 
         <button className="btn btn-success">Save</button>
 
