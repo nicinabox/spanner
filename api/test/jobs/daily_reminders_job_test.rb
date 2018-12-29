@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SendRemindersJobTest < ActiveJob::TestCase
+class DailiyRemindersJobTest < ActiveJob::TestCase
   # test "the truth" do
   #   assert true
   # end
