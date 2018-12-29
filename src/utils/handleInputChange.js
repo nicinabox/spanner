@@ -1,4 +1,4 @@
-export default function handleInputChange (name) {
+export default function handleInputChange (name, cb) {
   return (e) => {
     let state = { [name]: e.target.value }
 
@@ -8,6 +8,6 @@ export default function handleInputChange (name) {
       }
     }
 
-    this.setState(state)
+    this.setState(state, cb)
   }
 }
