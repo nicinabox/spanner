@@ -40,7 +40,7 @@ class Record < ApplicationRecord
   end
 
   def update_mileage_reminders
-    vehicle.reminders.where(reminder_type: 'mileage').each {|r| r.save }
+    vehicle.reminders.each(&:save)
   end
 
   def oil_change?
