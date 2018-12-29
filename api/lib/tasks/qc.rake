@@ -6,4 +6,8 @@ namespace :qc do
     PromptUserJob.perform_later
   end
 
+  desc "Run hourly"
+  task hourly_jobs: :environment do
+    HourlyRemindersJob.perform_later
+  end
 end

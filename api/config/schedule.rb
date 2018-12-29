@@ -24,3 +24,7 @@ app_name = 'spanner-api'
 every 1.day, at: '5 am' do
   command "dokku run #{app_name} rake qc:daily_jobs"
 end
+
+every 1.hour do
+  command "dokku run #{app_name} rake qc:hourly_jobs"
+end
