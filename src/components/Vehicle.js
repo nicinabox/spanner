@@ -64,6 +64,7 @@ export class Vehicle extends Component {
       children: <RecordForm
         {...record}
         vehicle={this.props.state.vehicle}
+        estimateReminderDate={this.props.estimateReminderDate}
         onSubmit={(props) => {
           this.props.createRecord(this.props.state.vehicle.id, props)
           Modal.close()
@@ -82,6 +83,7 @@ export class Vehicle extends Component {
       children: <ReminderForm
         {...reminder}
         vehicle={this.props.state.vehicle}
+        estimateReminderDate={this.props.estimateReminderDate}
         onSubmit={(props) => {
           this.props.createReminder(this.props.state.vehicle.id, props)
           Modal.close()

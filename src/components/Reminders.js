@@ -22,6 +22,7 @@ export class Reminders extends Component {
       children: <ReminderForm
         {...reminder}
         vehicle={this.props.state.vehicle}
+        estimateReminderDate={this.props.estimateReminderDate}
         onSubmit={(props) => {
           this.props.updateReminder(this.props.vehicleId, props.id, props)
           Modal.close()
@@ -45,8 +46,8 @@ export class Reminders extends Component {
           <ul className="nav">
             {this.props.state.reminders.map((reminder, i) => {
               let className = classNames({
-                'reminder-date-overdue': reminder.date && new Date(reminder.date) < new Date,
-                'reminder-date-soon': isTomorrow(reminder.date) || isToday(reminder.date)
+                'reminder-date-overdue': reminder.reminderDate && new Date(reminder.reminderDate) < new Date,
+                'reminder-date-soon': isTomorrow(reminder.reminderDate) || isToday(reminder.reminderDate)
               })
 
               return (
@@ -55,9 +56,9 @@ export class Reminders extends Component {
                     <span className="reminder-notes">
                       {reminder.notes}
                     </span>
-                    {reminder.date ? (
+                    {reminder.reminderDate ? (
                       <span className="reminder-date">
-                        {formatDate(reminder.date, 'MMM D, YYYY')}
+                        {formatDate(reminder.reminderDate, 'MMM D, YYYY')}
                       </span>
                     ) : null}
                   </a>
