@@ -3,17 +3,23 @@ class RemindersMailerPreview < ActionMailer::Preview
 
   # Preview this email at http://localhost:3000/rails/mailers/reminders_mailer/reminder
   def reminder_today
-    user = User.find 40
+    user = User.first
     reminders = user.reminders
 
     RemindersMailer.reminder_today(user, reminders)
   end
 
   def reminder_upcoming
-    user = User.find 40
+    user = User.first
     reminders = user.reminders
 
     RemindersMailer.reminder_upcoming(user, reminders)
+  end
+
+  private
+
+  def random_user
+    User.offset(rand(User.count)).first
   end
 
 end
