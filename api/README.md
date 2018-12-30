@@ -51,9 +51,9 @@ Locally:
 
     whenever | pbcopy
 
-Replace everything on Dokku:
+Edit relevant cron configs on server:
 
-    crontab -e
+    cd /etc/cron.d
 
 `grep CRON /var/log/syslog` to see the output log for troubleshooting.
 
