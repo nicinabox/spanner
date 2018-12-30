@@ -10,12 +10,6 @@ class Vehicle < ApplicationRecord
   ONE_YEAR = 365
   WEIGHT_COEFFICIENT = 10
 
-  def mean_days_between_records
-    span_secs = records.maximum(:date) - records.minimum(:date)
-    days = span_secs / (records.count - 1) / (24 * 60 * 60)
-    days.round
-  end
-
   def squish_vin
     return unless vin? && vin.size > 10
     vin[0..7] + vin[9..10]
@@ -25,12 +19,20 @@ class Vehicle < ApplicationRecord
     return unless can_estimate_mpd?
 
     last_record = last_record_with_mileage
-    (last_record.mileage + weighted_miles_per_day * elapsed_days(Time.now, last_record.date)).to_i
+    (last_record.mileage + weighted_averge_miles_per_day * elapsed_days(Time.now, last_record.date)).to_i
+  end
+
+  def estimated_next_record_date
+    record = last_record_with_mileage
+    return unless record
+
+    days = weighted_average_days_per_period + elapsed_days(Time.now, record.date)
+    record.date + days.days
   end
 
   def miles_per_year
     return unless can_estimate_mpd?
-    (weighted_miles_per_day * ONE_YEAR).to_i
+    (weighted_averge_miles_per_day * ONE_YEAR).to_i
   end
 
   def periods
@@ -68,10 +70,17 @@ class Vehicle < ApplicationRecord
   end
 
   def miles_per_day
-    weighted_miles_per_day
+    weighted_averge_miles_per_day
   end
 
-  def weighted_miles_per_day
+  def weighted_average_days_per_period
+    days = periods.map { |p| p[:elapsed_days] * p[:weight] }
+    weights = periods.map { |p| p[:weight] }
+
+    weighted_average(days, weights)
+  end
+
+  def weighted_averge_miles_per_day
     miles = periods.map { |p| p[:weighted_miles_per_day] }
     weights = periods.map { |p| p[:weight] }
 
