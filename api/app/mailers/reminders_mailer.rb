@@ -9,7 +9,7 @@ class RemindersMailer < ApplicationMailer
   def reminder_upcoming(user, reminders)
     @user      = user
     @reminders = reminders
-    @date      = @reminders.first.reminder_date || Date.today
+    @date      = @reminders.first.try(:reminder_date) || Date.today
 
     mail to: @user.email, subject: reminder_subject(reminders)
   end
