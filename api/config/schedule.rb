@@ -20,11 +20,20 @@
 # Learn more: http://github.com/javan/whenever
 
 app_name = 'spanner-api'
+run = "dokku /usr/bin/dokku run"
 
-every 1.day, at: '5 am' do
-  command "dokku run #{app_name} rake qc:daily_jobs"
+every :monday, at: '5am' do
+  command "#{run} #{app_name} rake qc:weekday_jobs"
 end
 
-every 1.hour do
-  command "dokku run #{app_name} rake qc:hourly_jobs"
+every :saturday, at: '5am' do
+  command "#{run} #{app_name} rake qc:weekend_jobs"
+end
+
+every :day, at: '5am' do
+  command "#{run} #{app_name} rake qc:daily_jobs"
+end
+
+every :hour do
+  command "#{run} #{app_name} rake qc:hourly_jobs"
 end
