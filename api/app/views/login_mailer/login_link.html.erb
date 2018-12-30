@@ -4,3 +4,14 @@
 <p>
   <%= link_to 'Sign In', login_url(@user.login_token), class: 'button' %>
 </p>
+
+<p>
+  Alternatively, copy the token below and paste it in the app.
+</p>
+<h3>
+  <%= @user.login_token %>
+</h3>
+
+<p>
+  This token is like a temporary password. It lasts for 15 minutes and can only be used once.
+</p>
