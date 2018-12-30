@@ -1,13 +1,21 @@
 namespace :qc do
+  desc "Run weekday jobs"
+  task weekday_jobs: :environment do
+  end
+
+  desc "Run weekend jobs"
+  task weekend_jobs: :environment do
+    WeekendJob.perform_later
+  end
+
   desc "Run daily jobs"
   task daily_jobs: :environment do
-    DailyRemindersJob.perform_later
-    DeleteExpiredSessionsJob.perform_later
+    DailyJob.perform_later
     PromptUserJob.perform_later
   end
 
   desc "Run hourly"
   task hourly_jobs: :environment do
-    HourlyRemindersJob.perform_later
+    HourlyJob.perform_later
   end
 end
