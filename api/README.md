@@ -51,13 +51,12 @@ Locally:
 
     whenever | pbcopy
 
-Edit relevant cron configs on server:
+Server:
 
-    cd /etc/cron.d
+    vim /etc/cron.d/spanner-job
 
 `grep CRON /var/log/syslog` to see the output log for troubleshooting.
 
-
 ## Deploy
 
-    git push dokku master
+    git push ash master
