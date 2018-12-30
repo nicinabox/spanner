@@ -11,7 +11,6 @@ namespace :qc do
   desc "Run daily jobs"
   task daily_jobs: :environment do
     DailyJob.perform_later
-    PromptUserJob.perform_later
   end
 
   desc "Run hourly"
