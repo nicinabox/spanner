@@ -9,12 +9,16 @@ module V2
     end
 
     def create
-      user = User.find_or_create_by!(email: params[:email].strip.downcase) do |u|
-        PromptUserMailer.add_first_vehicle(u).deliver_later
+      email = params[:email].strip.downcase
+      user = User.find_by_email email
+
+      if not user
+        user = User.create! email: email
+        PromptUserMailer.add_first_vehicle(user).deliver_later wait: 5.minutes
       end
 
-      if user && user.demo_account?
-        return render json: user
+      if user.demo_account?
+        return render :success, status: 204
       end
 
       if user

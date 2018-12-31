@@ -1,7 +1,7 @@
 class PromptUserMailer < ApplicationMailer
 
   def add_record(user, vehicle)
-    @user    = user
+    @user = user
     @vehicle = vehicle
 
     mail to: @user.email,
@@ -9,14 +9,14 @@ class PromptUserMailer < ApplicationMailer
   end
 
   def add_first_vehicle(user)
-    @user    = user
+    @user = user
 
     mail to: @user.email,
       subject: "Add your first vehicle"
   end
 
   def add_first_record(user, vehicle)
-    @user    = user
+    @user = user
     @vehicle = vehicle
 
     mail to: @user.email,
