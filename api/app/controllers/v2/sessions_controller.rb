@@ -13,7 +13,7 @@ module V2
       user = User.find_by_email email
 
       if not user
-        user = User.create! email: email
+        user = User.create! email: email, time_zone_offset: time_zone_offset
         PromptUserMailer.add_first_vehicle(user).deliver_later wait: 5.minutes
       end
 
