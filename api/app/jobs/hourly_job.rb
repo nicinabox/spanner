@@ -1,6 +1,4 @@
 class HourlyJob < ApplicationJob
-  queue_as :default
-
   def perform
     today_reminders_in_timezone
   end

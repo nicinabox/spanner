@@ -1,6 +1,4 @@
 class WeekendJob < ApplicationJob
-  queue_as :default
-
   def perform
     prompt_to_add_new_record
   end

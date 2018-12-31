@@ -1,6 +1,4 @@
 class DailyJob < ApplicationJob
-  queue_as :default
-
   def perform
     upcoming_reminders
     delete_expired_sessions
