@@ -7,7 +7,7 @@ namespace :db do
     puts 'Dumping production database...'
 
     production = Rails.application.config.database_configuration['production']
-    system "ssh -t root@#{ENV[PRODUCTION_SERVER_ADDRESS]} 'dokku postgres:export spanner-api' > #{dumpfile}"
+    system "ssh -t root@#{ENV['PRODUCTION_SERVER_ADDRESS']} 'dokku postgres:export spanner-api' > #{dumpfile}"
     puts 'Done!'
   end
 
