@@ -12,11 +12,7 @@ class WeekendJob < ApplicationJob
       .having('count(vehicle_id) > 2')
 
     vehicles.each do |vehicle|
-      date = vehicle.estimated_next_record_date
-
-      if date and date <= Date.today.beginning_of_day
-        PromptUserMailer.add_record(vehicle.user, vehicle)
-      end
+      vehicle.prompt_to_add_new_record!
     end
   end
 end
