@@ -14,7 +14,7 @@ class Vehicle < ApplicationRecord
     return if records.any?
 
     PromptUserMailer.add_first_record(user, self).deliver_later
-    GoodJob.set(wait: 3.days).perform_later(self, :prompt_for_first_record!)
+    GoodJob.set(wait: 3.days).perform_later(self, 'prompt_for_first_record!')
   end
 
   def prompt_for_new_record!

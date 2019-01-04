@@ -16,7 +16,7 @@ module V2
       vehicle = vehicles.build(vehicle_params)
       vehicle.save!
 
-      GoodJob.set(wait: 24.hours).perform_later(vehicle, :prompt_for_first_record!)
+      GoodJob.set(wait: 24.hours).perform_later(vehicle, 'prompt_for_first_record!')
 
       render json: vehicle
     end
