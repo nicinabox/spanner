@@ -28,9 +28,9 @@ module V2
         )
 
         if params[:platform] == 'mobile'
-          LoginMailer.login_token(user).deliver
+          LoginMailer.login_token(user).deliver_later
         else
-          LoginMailer.login_link(user).deliver
+          LoginMailer.login_link(user).deliver_later
         end
 
         render :success, status: 204
