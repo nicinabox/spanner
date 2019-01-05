@@ -21,7 +21,7 @@ class Vehicle < ApplicationRecord
     date = estimated_next_record_date
     return unless date and date <= Date.today.beginning_of_day
 
-    PromptUserMailer.add_record(user, self)
+    PromptUserMailer.add_record(user, self).deliver_later
   end
 
   def squish_vin

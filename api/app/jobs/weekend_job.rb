@@ -4,7 +4,6 @@ class WeekendJob < ApplicationJob
   end
 
   def prompt_to_add_new_record
-    today = Date.today
     vehicles = Vehicle
       .joins(:records )
       .where(retired: false)
