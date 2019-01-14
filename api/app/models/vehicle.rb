@@ -11,7 +11,7 @@ class Vehicle < ApplicationRecord
   WEIGHT_COEFFICIENT = 10
 
   def prompt_for_first_record!
-    return if records.any?
+    return if !prompt_for_records || records.any?
 
     PromptUserMailer.add_first_record(user, self).deliver_later
     GoodJob.set(wait: 3.days).perform_later(self, 'prompt_for_first_record!')
