@@ -1,5 +1,6 @@
 class Reminder < ApplicationRecord
   validates_presence_of :notes
+  validate :mileage_greater_than_trailing_record
 
   belongs_to :vehicle
 
@@ -7,6 +8,17 @@ class Reminder < ApplicationRecord
 
   before_save :set_reminder_date!
   before_update :set_reminder_date!
+
+  def mileage_greater_than_trailing_record
+    return if mileage.nil? or mileage == 0
+
+    trailing_record = self.vehicle.records
+      .where('mileage > ?', 0).last
+
+    if trailing_record && mileage < trailing_record.mileage
+      errors.add(:mileage, "must be greater than #{trailing_record.mileage.to_i}")
+    end
+  end
 
   def mileage_reminder?
     reminder_type == 'mileage'
@@ -25,16 +37,17 @@ class Reminder < ApplicationRecord
   end
 
   def set_reminder_date!
+    self.reminder_date = calculate_reminder_date
+  end
+
+  def calculate_reminder_date
     if mileage_reminder?
-      return self.reminder_date = estimate_date
+      return estimate_date
     end
 
     if date_or_mileage_reminder? and can_estimate_date?
-      reminder_date = date < estimate_date ? date : estimate_date
-      return self.reminder_date = reminder_date
+      date < estimate_date ? date : estimate_date
     end
-
-    self.reminder_date = date
   end
 
   def estimate_date
