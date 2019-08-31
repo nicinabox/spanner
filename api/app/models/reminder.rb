@@ -33,7 +33,8 @@ class Reminder < ApplicationRecord
   end
 
   def can_estimate_date?
-    mileage && vehicle.estimated_mileage && vehicle.miles_per_day
+    mpd = vehicle.miles_per_day
+    mileage && vehicle.estimated_mileage && mpd && mpd > 0
   end
 
   def set_reminder_date!
