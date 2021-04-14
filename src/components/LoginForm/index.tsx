@@ -90,7 +90,7 @@ export const LoginForm: React.FC = () => {
                         onChange={handleChange}
                         autoFocus
                     />
-                    <Button type="submit" ml="4" disabled={!isFormValid || loading} isLoading={loading}>Sign In</Button>
+                    <Button type="submit" colorScheme="brand" ml="4" disabled={!isFormValid || loading} isLoading={loading}>Sign In</Button>
                 </Flex>
                 <FormHelperText>
                     First time? We'll setup your account automagically.
