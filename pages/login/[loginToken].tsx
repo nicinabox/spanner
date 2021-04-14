@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router'
-import { Session, signIn } from '../../queries/session';
+import { Session, signIn } from '../../src/queries/session';
 
 interface LoginProps {
     session: Session;

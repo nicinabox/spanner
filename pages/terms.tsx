@@ -1,5 +1,5 @@
 import { Container } from "@chakra-ui/react"
-import { getHtmlFromMarkdown } from "../utils/getContentFile";
+import { getHtmlFromMarkdown } from "../src/utils/getContentFile";
 
 const Terms = ({ html }) => {
     return (
