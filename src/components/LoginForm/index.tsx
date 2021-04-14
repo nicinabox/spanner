@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Button, FormHelperText, FormControl, Flex, Spacer, AlertIcon, Alert, Center } from "@chakra-ui/react"
+import { Input, Button, FormHelperText, FormControl, Flex, Spacer, AlertIcon, Alert, Center, Box, FormLabel } from "@chakra-ui/react"
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { sample } from 'lodash';
 import { requestSession } from '../../queries/session';
@@ -46,7 +46,7 @@ export const LoginForm: React.FC = () => {
 
     if (error) {
         return (
-            <div>
+            <Box p="4">
                 <Alert status="error">
                     <AlertIcon />
                     {error}
@@ -57,13 +57,13 @@ export const LoginForm: React.FC = () => {
                         Try again
                     </Button>
                 </Center>
-            </div>
+            </Box>
         )
     }
     
     if (pending) {
         return (
-            <div>
+            <Box p="4">
                 <Alert status="success">
                     <AlertIcon />
                     Check your email for a Sign In button.
@@ -74,29 +74,34 @@ export const LoginForm: React.FC = () => {
                         Try again
                     </Button>
                 </Center>
-            </div>
+            </Box>
         )
     }
     
     return (
-        <form onSubmit={handleSubmit}>
-            <FormControl>
-                <Flex>
-                    <Input
-                        name="email"
-                        type="email"
-                        value={email}
-                        placeholder={getPlaceholder()}
-                        onChange={handleChange}
-                        autoFocus
-                    />
-                    <Button type="submit" colorScheme="brand" ml="4" disabled={!isFormValid || loading} isLoading={loading}>Sign In</Button>
-                </Flex>
-                <FormHelperText>
-                    First time? We'll setup your account automagically.
-                </FormHelperText>
-            </FormControl>
-        </form>
+        <Box p="4">
+            <form onSubmit={handleSubmit}>
+                <FormControl>
+                    <FormLabel>
+                        Enter your email to get started
+                    </FormLabel>
+                    <Flex>
+                        <Input
+                            name="email"
+                            type="email"
+                            value={email}
+                            placeholder={getPlaceholder()}
+                            onChange={handleChange}
+                            autoFocus
+                        />
+                        <Button type="submit" colorScheme="brand" ml="4" disabled={!isFormValid || loading} isLoading={loading}>Sign In</Button>
+                    </Flex>
+                    <FormHelperText>
+                        First time? We'll setup your account automagically.
+                    </FormHelperText>
+                </FormControl>
+            </form>
+        </Box>
     )
 }
 

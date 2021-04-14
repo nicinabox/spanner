@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Session, signIn } from '../../src/queries/session';
+import Cookies from 'cookies'
+import { ClientSession, Session, signIn } from '../../src/queries/session'
 
 interface LoginProps {
-    session: Session;
+    session: ClientSession;
     error: string | undefined;
 }
 
@@ -12,8 +13,9 @@ const Login: React.FC<LoginProps> = ({ session, error }) => {
 
     useEffect(() => {
         if (session) {
+            // TODO: persist the session for reference
             router.replace('/vehicles');
-        } 
+        }
     }, [session])
 
     if (error) {
@@ -25,14 +27,23 @@ const Login: React.FC<LoginProps> = ({ session, error }) => {
     return <p>Signing in...</p>
 }
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ req, res, params }) {
     const { loginToken } = params;
 
-    let session;
-    let error;
+    const cookies = new Cookies(req, res)
 
-    try { 
-        session = await signIn(loginToken);
+    let session: ClientSession | undefined;
+    let error: Error | undefined;
+
+    try {
+        const { data } = await signIn(loginToken)
+        const { authToken, ...clientSession } = data
+        session = clientSession
+
+        cookies.set('auth-token', authToken, {
+            httpOnly: true
+        })
+
     } catch (err) {
         error = err;
     }
