@@ -1,7 +1,12 @@
+import { Container } from "@chakra-ui/react"
 import { getHtmlFromMarkdown } from "../utils/getContentFile";
 
 const Terms = ({ html }) => {
-    return <div dangerouslySetInnerHTML={{ __html: html }} />;
+    return (
+        <Container maxW="container.md">
+            <div dangerouslySetInnerHTML={{ __html: html }} />
+        </Container>
+    );
 }
 
 export async function getStaticProps() {
