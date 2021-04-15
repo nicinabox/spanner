@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Cookies from 'cookies'
 import { ClientSession, Session, signIn } from '../../src/queries/session'
+import { getSessionCookieName } from '../../src/utils/session'
+import { Container, Link } from '@chakra-ui/react'
 
 interface LoginProps {
     session: ClientSession;
@@ -13,14 +15,16 @@ const Login: React.FC<LoginProps> = ({ session, error }) => {
 
     useEffect(() => {
         if (session) {
-            // TODO: persist the session for reference
             router.replace('/vehicles');
         }
     }, [session])
 
     if (error) {
         return (
-            <p>{error}</p>
+            <Container>
+                <p>{error}</p>
+                <Link href="/">Sign in again</Link>
+            </Container>
         )
     }
 
@@ -32,20 +36,19 @@ export async function getServerSideProps({ req, res, params }) {
 
     const cookies = new Cookies(req, res)
 
-    let session: ClientSession | undefined;
-    let error: Error | undefined;
+    let session: ClientSession | null = null;
+    let error: string | null = null;
 
     try {
         const { data } = await signIn(loginToken)
-        const { authToken, ...clientSession } = data
-        session = clientSession
+        session = data
 
-        cookies.set('auth-token', authToken, {
+        cookies.set(getSessionCookieName(), JSON.stringify(session), {
             httpOnly: true
         })
 
     } catch (err) {
-        error = err;
+        error = err.response.data.error;
     }
 
     return {

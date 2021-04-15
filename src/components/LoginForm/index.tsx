@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Input, Button, FormHelperText, FormControl, Flex, Spacer, AlertIcon, Alert, Center, Box, FormLabel } from "@chakra-ui/react"
-import { CheckCircleIcon } from '@chakra-ui/icons';
 import { sample } from 'lodash';
 import { requestSession } from '../../queries/session';
 
@@ -20,12 +19,12 @@ export const LoginForm: React.FC = () => {
     const [error, setError] = useState();
 
     const handleChange = (event) => setEmail(event.target.value)
-    
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         setLoading(true);
-        
+
         try {
             await requestSession(email);
             setPending(true);
@@ -37,8 +36,8 @@ export const LoginForm: React.FC = () => {
     }
 
     const handleReset = () => {
-        setEmail(undefined);
         setError(undefined);
+        setLoading(false);
         setPending(false);
     }
 
@@ -60,7 +59,7 @@ export const LoginForm: React.FC = () => {
             </Box>
         )
     }
-    
+
     if (pending) {
         return (
             <Box p="4">
@@ -77,7 +76,7 @@ export const LoginForm: React.FC = () => {
             </Box>
         )
     }
-    
+
     return (
         <Box p="4">
             <form onSubmit={handleSubmit}>

@@ -23,6 +23,7 @@
     "@chakra-ui/react": "^1.5.1",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
+    "@types/cookies": "^0.7.6",
     "axios": "^0.21.1",
     "bugsnag-js": "^4.7.3",
     "classnames": "^2.2.5",

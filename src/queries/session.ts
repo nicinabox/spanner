@@ -2,6 +2,10 @@ import axios from 'axios';
 
 const { PROXY_HOST } = process.env;
 
+const serverApi = axios.create({
+    baseURL: PROXY_HOST
+})
+
 export interface Session {
     id: string;
     userId: string;
@@ -16,13 +20,13 @@ export interface Session {
 export type ClientSession = Omit<Session, 'authToken'>
 
 export function signIn(token: string) {
-    return axios.get<Session>(`${PROXY_HOST}/login/${token}`);
+    return serverApi.get<Session>(`/login/${token}`);
 }
-  
+
 export function requestSession(email: string) {
-    return axios.post(`${PROXY_HOST}/sessions`, { email });
+    return axios.post(`/api/sessions`, { email });
 }
 
 export function destroySession(session: Session) {
-    return axios.delete(`${PROXY_HOST}/sessions/${session.id}`);
+    return serverApi.delete(`/sessions/${session.id}`);
 }
