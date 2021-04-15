@@ -1,31 +1,32 @@
 import Cookies from 'cookies';
 import crypto from 'crypto';
+import { withIronSession } from "next-iron-session";
 import { Session } from '../queries/session';
 
-export const getSessionCookieName = () => {
-    const hashedSecret = crypto
-        .createHash("sha256")
-        .update(process.env.CLIENT_SECRET)
-        .digest("hex");
+const hashedSecret = crypto
+    .createHash("sha256")
+    .update(process.env.CLIENT_SECRET)
+    .digest("hex");
 
-    return `session-${hashedSecret}`;
+export const withSession = (handler) => {
+    return withIronSession(handler, {
+        password: hashedSecret,
+        cookieName: 'session',
+        cookieOptions: {
+            secure: process.env.NODE_ENV !== 'development',
+        },
+    });
 }
 
-export const getSessionCookie = (cookies: Cookies): Session | undefined => {
-    try {
-        return JSON.parse(cookies.get(getSessionCookieName()));
-    } catch (err) {
-        return undefined;
+export const authRedirect = (req) => {
+    const session = req.session.get('session');
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
     }
-}
-
-export const withSession = (handler) => (props) => {
-    const { req, res } = props;
-
-    const cookies = new Cookies(req, res);
-    req.session = {
-        session: getSessionCookie(cookies)
-    }
-
-    return handler(props);
 }

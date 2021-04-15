@@ -12,7 +12,7 @@ export default function Home() {
 }
 
 export const getServerSideProps = withSession(async function ({ req }) {
-    const { session } = req.session
+    const session = req.session.get('session');
 
     if (session) {
         return {
@@ -22,4 +22,8 @@ export const getServerSideProps = withSession(async function ({ req }) {
             },
         }
     }
+
+    return {
+        props: {}
+    };
 });

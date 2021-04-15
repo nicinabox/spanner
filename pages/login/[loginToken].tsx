@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Cookies from 'cookies'
-import { ClientSession, Session, signIn } from '../../src/queries/session'
-import { getSessionCookieName } from '../../src/utils/session'
+import { ClientSession, signIn } from '../../src/queries/session'
+import { withSession } from '../../src/utils/session'
 import { Container, Link } from '@chakra-ui/react'
 
 interface LoginProps {
-    session: ClientSession;
-    error: string | undefined;
+    session: ClientSession | null;
+    error: string | null;
 }
 
 const Login: React.FC<LoginProps> = ({ session, error }) => {
@@ -31,22 +30,18 @@ const Login: React.FC<LoginProps> = ({ session, error }) => {
     return <p>Signing in...</p>
 }
 
-export async function getServerSideProps({ req, res, params }) {
-    const { loginToken } = params;
-
-    const cookies = new Cookies(req, res)
-
+export const getServerSideProps = withSession(async ({ req, res, params }) => {
     let session: ClientSession | null = null;
     let error: string | null = null;
 
     try {
-        const { data } = await signIn(loginToken)
-        session = data
+        const { data } = await signIn(params.loginToken);
 
-        cookies.set(getSessionCookieName(), JSON.stringify(session), {
-            httpOnly: true
-        })
+        req.session.set('session', data);
+        await req.session.save();
 
+        const { authToken, ...clientSession } = data;
+        session = clientSession;
     } catch (err) {
         error = err.response.data.error;
     }
@@ -57,6 +52,6 @@ export async function getServerSideProps({ req, res, params }) {
             error,
         }
     }
-}
+});
 
 export default Login;
