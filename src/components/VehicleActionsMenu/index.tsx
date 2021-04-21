@@ -11,13 +11,15 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
     return (
         <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="brand" size="sm">
-                Actions
+                {vehicle.name}
             </MenuButton>
             <MenuList>
                 <MenuItem>Edit</MenuItem>
+                <MenuItem>View</MenuItem>
+                <MenuItem>Change color</MenuItem>
                 <MenuDivider />
-                <MenuItem>Import Records</MenuItem>
-                <MenuItem>Export Records</MenuItem>
+                <MenuItem>Import from CSV</MenuItem>
+                <MenuItem>Export to CSV</MenuItem>
             </MenuList>
         </Menu>
     );

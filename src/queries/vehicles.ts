@@ -17,12 +17,24 @@ export interface Vehicle {
     reminder: string;
 }
 
+export interface VehicleRecord {
+    cost: string;
+    date: string; //"2019-07-19T04:35:26.370Z"
+    id: number;
+    mileage: number;
+    notes: string;
+}
+
 export function fetchVehicles(api: AxiosInstance) {
     return api.get<Vehicle[]>('/vehicles');
 }
 
 export function fetchVehicle(api: AxiosInstance, vehicleId: string) {
     return api.get<Vehicle>(`/vehicles/${vehicleId}`);
+}
+
+export function fetchRecords(api: AxiosInstance, vehicleId: string) {
+return api.get(`/vehicles/${vehicleId}/records`);
 }
 
 //   export function createVehicle(params) {

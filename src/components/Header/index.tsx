@@ -8,7 +8,7 @@ export interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ LeftComponent, CenterComponent }) => {
     return (
-        <Box bg="brand.primary" mb={6} p={2}>
+        <Box bg="brand.primary" mb={6} p={2} position="sticky" top="0" zIndex={1}>
             <Flex justify="space-between" align="center">
                 <Box>
                     {LeftComponent}

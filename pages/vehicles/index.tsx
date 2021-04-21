@@ -28,6 +28,9 @@ const Vehicles: React.FC<VehiclesProps> = ({ vehicles, error }) => {
                     CenterComponent={<Logo height={30} />}
                 />
             )}>
+
+            <Box height={12} />
+
             <Heading fontSize="xl">
                 Vehicles
             </Heading>
