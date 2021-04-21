@@ -1,4 +1,4 @@
-import { Link, Box, Flex } from '@chakra-ui/react';
+import { Link, Box, Flex, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 
 export interface HeaderProps {
@@ -9,17 +9,17 @@ export interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ LeftComponent, CenterComponent }) => {
     return (
         <Box bg="brand.primary" mb={6} p={2} position="sticky" top="0" zIndex={1}>
-            <Flex justify="space-between" align="center">
+            <SimpleGrid columns={3}>
                 <Box>
                     {LeftComponent}
                 </Box>
-                <Box>
+                <Flex justify="center">
                     {CenterComponent}
-                </Box>
-                <Box>
+                </Flex>
+                <Flex justify="flex-end">
                     User
-                </Box>
-            </Flex>
+                </Flex>
+            </SimpleGrid>
         </Box>
     );
 };
