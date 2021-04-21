@@ -27,20 +27,22 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
         return b.mileage - a.mileage;
     });
 
-    const getNextRecord = (currentIdx: number) => {
-        return reverseChronoRecords[currentIdx + 1];
+    const getNextRecordWithMileage = (currentIdx: number, arr: VehicleRecord[]): VehicleRecord | undefined => {
+        let found: VehicleRecord | undefined;
+        for (let i = currentIdx + 1; i < arr.length; i++) {
+            const record = arr[i];
+            if (record.mileage) {
+                found = record;
+                break;
+            }
+        }
+        console.log(found)
+        return found;
     }
 
-    const getDeltaMileage = (record: VehicleRecord, i: number) => {
-        const nextRecord = getNextRecord(i);
-        if (!nextRecord) return;
-
-        const aMileage = Number(record.mileage);
-        const bMileage = Number(nextRecord.mileage);
-
-        if (aMileage && bMileage) {
-            return aMileage - bMileage;
-        }
+    const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord) => {
+        if (!record.mileage) return;
+        return record.mileage - olderRecord.mileage;
     }
 
     return (
@@ -102,18 +104,21 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {reverseChronoRecords.map((record, i) => {
+                                {reverseChronoRecords.map((record, i, arr) => {
+                                    const nextRecord = getNextRecordWithMileage(i, arr);
+                                    const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
+
                                     return (
                                         <Tr key={record.id}>
                                             <Td whiteSpace="nowrap">{format(new Date(record.date), 'MMM dd, yyy')}</Td>
-                                            <Td whiteSpace="nowrap">{record.cost && formatCurrency(record.cost)}</Td>
+                                            <Td whiteSpace="nowrap">{record.cost && formatCurrency(Number(record.cost))}</Td>
                                             <Td whiteSpace="nowrap">
                                                 {Boolean(Number(record.mileage)) && formatMileage(record.mileage, vehicle.distanceUnit)}
-                                                {getDeltaMileage(record, i) && (
+                                                {deltaMileage !== undefined && (
                                                     <>
                                                         {' '}
                                                         <Text fontSize="xs" color="gray">
-                                                            (+{formatMileage(getDeltaMileage(record, i), vehicle.distanceUnit)})
+                                                            (+{deltaMileage})
                                                         </Text>
                                                     </>
                                                 )}
