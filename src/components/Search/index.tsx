@@ -6,7 +6,13 @@ export interface SearchProps {
 
 export const Search: React.FC<SearchProps> = ({  }) => {
     return (
-        <Input placeholder="Search" bg="brand.700" border="none" />
+        <Input
+            placeholder="Search records"
+            colorScheme="brand"
+            variant="filled"
+            size="sm"
+            width={400}
+        />
     );
 };
 

@@ -21,12 +21,12 @@ export function fetchVehicles(api: AxiosInstance) {
     return api.get<Vehicle[]>('/vehicles');
 }
 
+export function fetchVehicle(api: AxiosInstance, vehicleId: string) {
+    return api.get<Vehicle>(`/vehicles/${vehicleId}`);
+}
+
 //   export function createVehicle(params) {
 //     return post('/vehicles', params, CREATE_VEHICLE)
-//   }
-
-//   export function fetchVehicle(vehicleId) {
-//     return get(`/vehicles/${vehicleId}`, RECEIVE_VEHICLE)
 //   }
 
 //   export function updateVehicle(vehicleId, params) {

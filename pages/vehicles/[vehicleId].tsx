@@ -1,15 +1,46 @@
+import { Button, Flex, Heading, HStack, IconButton } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import Header from 'components/Header';
+import Page from 'components/Page';
+import Search from 'components/Search';
+import VehicleActionsMenu from 'components/VehicleActionsMenu';
+import Link from 'next/link';
+import { createAPIRequest } from 'queries/config';
+import { fetchVehicle, Vehicle } from 'queries/vehicles';
 import React from 'react';
 import { authRedirect, withSession } from '../../src/utils/session';
 
-interface VehicleProps {
-    vehicleId: string;
+interface VehiclePageProps {
+    vehicle: Vehicle;
 }
 
-const Vehicle: React.FC<VehicleProps> = ({ vehicleId }) => {
+const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle }) => {
     return (
-        <div>
-            Vehicle {vehicleId}
-        </div>
+        <Page Header={() => (
+            <Header
+                LeftComponent={
+                    <HStack spacing={2}>
+                        <Link href="/" passHref>
+                            <Button
+                                as="a"
+                                leftIcon={<ArrowBackIcon />}
+                                size="sm"
+                                variant="solid"
+                                colorScheme="gray"
+                            >
+                                Vehicles
+                            </Button>
+                        </Link>
+                        <VehicleActionsMenu vehicle={vehicle} />
+                    </HStack>
+                }
+                CenterComponent={<Search />}
+            />
+        )}>
+            <Heading>
+                {vehicle.name}
+            </Heading>
+        </Page>
     )
 }
 
@@ -19,11 +50,20 @@ export const getServerSideProps = withSession(async function ({ req, params }) {
 
     const { vehicleId } = params;
 
-    return {
-        props: {
-            vehicleId
+    try {
+        const { data } = await fetchVehicle(createAPIRequest(req), vehicleId);
+        return {
+            props: {
+                vehicle: data,
+            },
+        };
+    } catch(err) {
+        return {
+            props: {
+                error: err.data.error
+            }
         }
     }
 })
 
-export default Vehicle;
+export default VehiclePage;
