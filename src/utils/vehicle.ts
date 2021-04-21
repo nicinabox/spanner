@@ -1,10 +1,14 @@
 import { Vehicle } from "queries/vehicles";
 import { formatNumber } from "./number";
 
-export function formatEstimatedMilage(vehicle: Vehicle) {
-    return `${formatNumber(vehicle.estimatedMileage)} ${vehicle.distanceUnit}`;
+export function formatMileage(mileage: number, distanceUnit: string) {
+    return `${formatNumber(mileage)} ${distanceUnit}`;
+}
+
+export function formatEstimatedMileage(vehicle: Vehicle) {
+    return formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit);
 }
 
 export function formatMilesPerYear(vehicle: Vehicle) {
-    return `${formatNumber(vehicle.milesPerYear)} ${vehicle.distanceUnit}`;
+    return `${formatMileage(vehicle.milesPerYear, vehicle.distanceUnit)}`;
 }

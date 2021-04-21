@@ -10,7 +10,7 @@ import { createAPIRequest } from 'queries/config';
 import { fetchRecords, fetchVehicle, Vehicle, VehicleRecord } from 'queries/vehicles';
 import React from 'react';
 import { authRedirect, withSession } from 'utils/session';
-import { formatEstimatedMilage, formatMilesPerYear } from 'utils/vehicle';
+import { formatEstimatedMileage, formatMileage, formatMilesPerYear } from 'utils/vehicle';
 import { format } from 'date-fns';
 import { formatCurrency, formatNumber } from 'utils/number';
 import marked from 'marked';
@@ -26,6 +26,22 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
         if (byDate) return byDate;
         return b.mileage - a.mileage;
     });
+
+    const getNextRecord = (currentIdx: number) => {
+        return reverseChronoRecords[currentIdx + 1];
+    }
+
+    const getDeltaMileage = (record: VehicleRecord, i: number) => {
+        const nextRecord = getNextRecord(i);
+        if (!nextRecord) return;
+
+        const aMileage = Number(record.mileage);
+        const bMileage = Number(nextRecord.mileage);
+
+        if (aMileage && bMileage) {
+            return aMileage - bMileage;
+        }
+    }
 
     return (
         <Page Header={() => (
@@ -64,8 +80,8 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
                 </HStack>
                 <Spacer />
                 <HStack spacing={8}>
-                    <Text color="brand.400" fontWeight="500">
-                        Since <strong>{format(new Date(records[0].date), 'MMMM d, yyy')}</strong>, you drive about <strong>{formatMilesPerYear(vehicle)} per year</strong> for an estimated <strong>{formatEstimatedMilage(vehicle)}</strong>.
+                    <Text color="gray.900" fontWeight="500">
+                        Since <strong>{format(new Date(records[0].date), 'MMMM d, yyy')}</strong>, you drive about <strong>{formatMilesPerYear(vehicle)} per year</strong> for an estimated <strong>{formatEstimatedMileage(vehicle)}</strong>.
                     </Text>
                 </HStack>
             </Flex>
@@ -75,28 +91,42 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
                     <Heading size="md" mb={6}>
                         Service
                     </Heading>
-                    <Table size="sm">
-                        <Thead>
-                            <Tr>
-                                <Th>Date</Th>
-                                <Th>Cost</Th>
-                                <Th>Mileage</Th>
-                                <Th>Notes</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            {reverseChronoRecords.map((record) => {
-                                return (
-                                    <Tr>
-                                        <Td whiteSpace="nowrap">{format(new Date(record.date), 'MMM dd, yyy')}</Td>
-                                        <Td>{record.cost && formatCurrency(record.cost)}</Td>
-                                        <Td>{Boolean(Number(record.mileage)) && formatNumber(record.mileage)}</Td>
-                                        <Td>{record.notes}</Td>
-                                    </Tr>
-                                )
-                            })}
-                        </Tbody>
-                    </Table>
+                    <Box shadow="lg" p={4}>
+                        <Table size="sm">
+                            <Thead>
+                                <Tr>
+                                    <Th>Date</Th>
+                                    <Th>Cost</Th>
+                                    <Th>Mileage</Th>
+                                    <Th>Notes</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {reverseChronoRecords.map((record, i) => {
+                                    return (
+                                        <Tr key={record.id}>
+                                            <Td whiteSpace="nowrap">{format(new Date(record.date), 'MMM dd, yyy')}</Td>
+                                            <Td whiteSpace="nowrap">{record.cost && formatCurrency(record.cost)}</Td>
+                                            <Td whiteSpace="nowrap">
+                                                {Boolean(Number(record.mileage)) && formatMileage(record.mileage, vehicle.distanceUnit)}
+                                                {getDeltaMileage(record, i) && (
+                                                    <>
+                                                        {' '}
+                                                        <Text fontSize="xs" color="gray">
+                                                            (+{formatMileage(getDeltaMileage(record, i), vehicle.distanceUnit)})
+                                                        </Text>
+                                                    </>
+                                                )}
+                                            </Td>
+                                            <Td>
+                                                {record.notes}
+                                            </Td>
+                                        </Tr>
+                                    )
+                                })}
+                            </Tbody>
+                        </Table>
+                    </Box>
                 </Box>
 
                 <Box width="30%">

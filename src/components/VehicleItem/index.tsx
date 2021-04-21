@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import { Box, Button, Flex, Heading, HStack, Link, Text } from '@chakra-ui/react';
 import Interpunct from 'components/Interpunct';
 import { Vehicle } from 'queries/vehicles';
-import { formatEstimatedMilage, formatMilesPerYear } from 'utils/vehicle';
+import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
 
 export interface VehicleItemProps {
     vehicle: Vehicle;
@@ -20,7 +20,7 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
                     <HStack divider={<Interpunct color="brand.300" fontSize="sm" />}>
                         {Boolean(vehicle.estimatedMileage) && (
                             <Text color="brand.300" fontSize="sm">
-                                ~{formatEstimatedMilage(vehicle)}
+                                ~{formatEstimatedMileage(vehicle)}
                             </Text>
                         )}
                         {Boolean(vehicle.milesPerYear) && (
