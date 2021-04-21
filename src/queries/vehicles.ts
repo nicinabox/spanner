@@ -6,14 +6,14 @@ export interface Vehicle {
     vin: string;
     notes: string;
     position: number;
-    enable_cost: boolean;
-    distance_unit: 'mi' | 'km';
+    enableCost: boolean;
+    distanceUnit: 'mi' | 'km';
     retired: boolean;
-    created_at: string;
-    miles_per_day: number;
-    miles_per_year: number;
-    estimated_mileage: number;
-    squish_vin: number;
+    createdAt: string;
+    milesPerDay: number;
+    milesPerYear: number;
+    estimatedMileage: number;
+    squishVin: number;
     reminder: string;
 }
 

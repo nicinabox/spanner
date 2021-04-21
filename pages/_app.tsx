@@ -5,6 +5,7 @@ import { extendTheme } from "@chakra-ui/react"
 
 const colors = {
     brand: {
+        primary: '#565196',
         50: '#f7f6fa',
         100: '#eeeef5',
         200: '#d5d4e5',
@@ -20,7 +21,7 @@ const colors = {
 
 const theme = extendTheme({ colors })
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
     return (
         <ChakraProvider theme={theme}>
             <Head>
@@ -51,11 +52,11 @@ function MyApp({ Component, pageProps }) {
 
                 <link href='//fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css' />
             </Head>
-            
+
             <CSSReset />
             <Component {...pageProps} />
         </ChakraProvider>
     )
 }
 
-export default MyApp
+export default App
