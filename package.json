@@ -25,6 +25,7 @@
     "@emotion/styled": "^11.3.0",
     "@types/cookies": "^0.7.6",
     "axios": "^0.21.1",
+    "axios-case-converter": "^0.7.0",
     "bugsnag-js": "^4.7.3",
     "classnames": "^2.2.5",
     "cookies": "^0.8.0",

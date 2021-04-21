@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { ClientSession, signIn } from '../../src/queries/session'
 import { withSession } from '../../src/utils/session'
 import { Container, Link } from '@chakra-ui/react'
+import { createAPIRequest } from '../../src/queries/config'
 
 interface LoginProps {
     session: ClientSession | null;
@@ -34,8 +35,10 @@ export const getServerSideProps = withSession(async ({ req, res, params }) => {
     let session: ClientSession | null = null;
     let error: string | null = null;
 
+    const api = createAPIRequest(req);
+
     try {
-        const { data } = await signIn(params.loginToken);
+        const { data } = await signIn(api, params.loginToken);
 
         req.session.set('session', data);
         await req.session.save();
