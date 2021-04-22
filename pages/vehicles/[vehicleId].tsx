@@ -1,10 +1,12 @@
 import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Button, Container, Flex, HStack, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, HStack, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
+import { mode } from "@chakra-ui/theme-tools";
 import Header from 'components/Header';
 import Page from 'components/Page';
 import Search from 'components/Search';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import VehicleRecordsTable from 'components/VehicleRecordsTable';
+import VehicleSummary from 'components/VehicleSummary';
 import { format } from 'date-fns';
 import marked from 'marked';
 import Link from 'next/link';
@@ -25,6 +27,9 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
         if (byDate) return byDate;
         return b.mileage - a.mileage;
     });
+
+
+    const tabListBg = useColorModeValue('brand.100', 'brand.800')
 
     return (
         <Page
@@ -54,7 +59,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
             )}
         >
             <Tabs colorScheme="brand" mt={0}>
-                <Box bg="brand.100">
+                <Box bg={tabListBg}>
                     <Container maxW="container.xl">
                         <TabList>
                             <Tab>Service</Tab>
@@ -63,42 +68,40 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
                     </Container>
                 </Box>
 
-                    <TabPanels>
-                        <TabPanel pl={0} pr={0}>
-                            <Container maxW="container.xl">
-                                <Flex mb={12}>
-                                    <HStack spacing={2}>
-                                        <Button colorScheme="brand" size="sm" variant="ghost"
-                                            leftIcon={<AddIcon />}
-                                        >
-                                            Add Service
-                                        </Button>
-                                        <Button colorScheme="brand" size="sm" variant="ghost"
-                                            leftIcon={<AddIcon />}
-                                        >
-                                            Add Reminder
-                                        </Button>
-                                    </HStack>
-                                    <Spacer />
-                                    <HStack spacing={8}>
-                                        <Text color="gray.900" fontWeight="500">
-                                            Since <strong>{format(new Date(records[0].date), 'MMMM d, yyy')}</strong>, you drive about <strong>{formatMilesPerYear(vehicle)} per year</strong> for an estimated <strong>{formatEstimatedMileage(vehicle)}</strong>.
-                                        </Text>
-                                    </HStack>
-                                </Flex>
-                                <Box shadow="lg" p={4}>
-                                    <VehicleRecordsTable records={records} distanceUnit={vehicle.distanceUnit} />
-                                </Box>
-                            </Container>
-                        </TabPanel>
-                        <TabPanel>
-                            <Container maxW="container.md">
-                                <Box dangerouslySetInnerHTML={{
-                                    __html: marked(vehicle.notes),
-                                }} />
-                            </Container>
-                        </TabPanel>
-                    </TabPanels>
+                <TabPanels>
+                    <TabPanel pl={0} pr={0}>
+                        <Container maxW="container.xl">
+                            <Flex mb={12}>
+                                <HStack spacing={2}>
+                                    <Button colorScheme="brand" size="sm" variant="ghost"
+                                        leftIcon={<AddIcon />}
+                                    >
+                                        Add Service
+                                    </Button>
+                                    <Button colorScheme="brand" size="sm" variant="ghost"
+                                        leftIcon={<AddIcon />}
+                                    >
+                                        Add Reminder
+                                    </Button>
+                                </HStack>
+                                <Spacer />
+                                <HStack spacing={8}>
+                                    <VehicleSummary vehicle={vehicle} records={records} />
+                                </HStack>
+                            </Flex>
+                            <Box shadow="lg" p={4}>
+                                <VehicleRecordsTable records={records} distanceUnit={vehicle.distanceUnit} />
+                            </Box>
+                        </Container>
+                    </TabPanel>
+                    <TabPanel>
+                        <Container maxW="container.md">
+                            <Box dangerouslySetInnerHTML={{
+                                __html: marked(vehicle.notes),
+                            }} />
+                        </Container>
+                    </TabPanel>
+                </TabPanels>
             </Tabs>
         </Page>
     )

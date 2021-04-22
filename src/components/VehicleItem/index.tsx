@@ -1,6 +1,6 @@
 import React from 'react';
 import NextLink from 'next/link';
-import { Box, Button, Flex, Heading, HStack, Link, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, HStack, Link, Text, useStyleConfig } from '@chakra-ui/react';
 import Interpunct from 'components/Interpunct';
 import { Vehicle } from 'queries/vehicles';
 import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
@@ -9,10 +9,12 @@ export interface VehicleItemProps {
     vehicle: Vehicle;
 }
 
-export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
+export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle}) => {
+    const styles = useStyleConfig('VehicleItem');
+
     return (
         <NextLink href={`/vehicles/${vehicle.id}`} passHref>
-            <Button as="a" display="block" colorScheme="brand" p={5} borderRadius={6} height="auto">
+            <Button as="a" sx={styles}>
                 <Flex direction="column" minH={12}>
                     <Heading size="sm" color="brand.100">
                         {vehicle.name}
