@@ -9,16 +9,7 @@ export interface NewReminderFormProps {
 }
 
 export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => {
-    const [fields, setFields] = useState({
-        note: '',
-        reminder: '',
-        mileage: '',
-        date: '',
-    });
-
-    const handleInputChange = ({ target }) => {
-        setFields({ ...fields, [target.name]: target.value });
-    }
+    const [dependentField, setDependentField] = useState<string | undefined>();
 
     const handleSubmit = () => {
 
@@ -28,12 +19,12 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
         <form onSubmit={handleSubmit}>
             <FormControl mb={4} id="note" isRequired>
                 <FormLabel>Note</FormLabel>
-                <Input type="text" value={fields.note} name="note" onChange={handleInputChange} />
+                <Input type="text" name="note" />
             </FormControl>
 
             <FormControl mb={4} id="reminder">
                 <FormLabel>Remind me</FormLabel>
-                <Select name="reminder" onChange={handleInputChange}>
+                <Select name="reminder" onChange={({ target }) => setDependentField(target.value)}>
                     <option value="">Don't remind me</option>
                     <option value="date_or_mileage">On a date or mileage, whichever is first</option>
                     <option value="date">On a date</option>
@@ -41,17 +32,17 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
                 </Select>
             </FormControl>
 
-            {['date', 'date_or_mileage'].includes(fields.reminder) && (
+            {['date', 'date_or_mileage'].includes(dependentField) && (
                 <FormControl mb={4} id="date" isRequired>
                     <FormLabel>Date</FormLabel>
                     <DatePicker name="date" initialDate={addMonths(new Date(), 6)} />
                 </FormControl>
             )}
 
-            {['mileage', 'date_or_mileage'].includes(fields.reminder) && (
+            {['mileage', 'date_or_mileage'].includes(dependentField) && (
                 <FormControl mb={4} id="mileage" isRequired>
                     <FormLabel>Mileage</FormLabel>
-                    <Input type="text" value={fields.mileage} name="mileage" onChange={handleInputChange} />
+                    <Input type="text" name="mileage" />
                 </FormControl>
             )}
 
