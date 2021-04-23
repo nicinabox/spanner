@@ -8,9 +8,18 @@ export interface VehicleNotesProps {
 }
 
 const styles = {
-    '& *': {
+    '&': {
         fontFamily: 'monospace'
-    }
+    },
+    '.chakra-ui-dark &': {
+        color: 'white',
+    },
+    '.chakra-ui-dark & tr': {
+        backgroundColor: 'gray.800',
+    },
+    '.chakra-ui-dark & tr:nth-child(2n)': {
+        backgroundColor: 'gray.700',
+    },
 }
 
 export const VehicleNotes: React.FC<VehicleNotesProps> = ({ notes }) => {
