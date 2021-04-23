@@ -1,4 +1,6 @@
 import { Button, FormControl, FormLabel, Input, Select } from '@chakra-ui/react';
+import DatePicker from 'components/DatePicker';
+import { addMonths } from 'date-fns';
 import { Vehicle } from 'queries/vehicles';
 import React, { useState } from 'react';
 
@@ -42,7 +44,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
             {['date', 'date_or_mileage'].includes(fields.reminder) && (
                 <FormControl mb={4} id="date" isRequired>
                     <FormLabel>Date</FormLabel>
-                    <Input type="text" value={fields.date} name="date" onChange={handleInputChange} />
+                    <DatePicker name="date" initialDate={addMonths(new Date(), 6)} />
                 </FormControl>
             )}
 

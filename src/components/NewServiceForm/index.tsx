@@ -1,4 +1,5 @@
 import { Box, Button, FormControl, FormLabel, HStack, Input, Textarea } from '@chakra-ui/react';
+import DatePicker from 'components/DatePicker';
 import { Vehicle } from 'queries/vehicles';
 import React, { useState } from 'react';
 
@@ -13,14 +14,18 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <HStack>
+            <HStack spacing={8}>
                 <Box>
                     <FormControl mb={4} id="date" isRequired>
                         <FormLabel>Date</FormLabel>
-                        <Input type="text" name="date" />
+                        <DatePicker />
                     </FormControl>
                 </Box>
                 <Box flex={1}>
+                    <FormControl mb={4} id="Notes" isRequired>
+                        <FormLabel>Notes</FormLabel>
+                        <Textarea />
+                    </FormControl>
                     <FormControl mb={4} id="mileage" isRequired>
                         <FormLabel>Mileage</FormLabel>
                         <Input type="number" defaultValue={vehicle.estimatedMileage} />
@@ -28,10 +33,6 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
                     <FormControl mb={4} id="cost">
                         <FormLabel>Cost</FormLabel>
                         <Input type="number" />
-                    </FormControl>
-                    <FormControl mb={4} id="Notes" isRequired>
-                        <FormLabel>Notes</FormLabel>
-                        <Textarea />
                     </FormControl>
                 </Box>
             </HStack>
