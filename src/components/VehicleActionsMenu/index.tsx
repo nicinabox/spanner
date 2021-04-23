@@ -1,4 +1,4 @@
-import { Menu, MenuButton, Button, MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
+import { Menu, MenuButton, Button, MenuList, MenuItem, MenuDivider, MenuItemOption } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Vehicle } from 'queries/vehicles';
 import React from 'react';
@@ -14,9 +14,18 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                 {vehicle.name}
             </MenuButton>
             <MenuList>
-                <MenuItem>Edit</MenuItem>
-                <MenuItem>View</MenuItem>
+                <MenuItem>Change name</MenuItem>
                 <MenuItem>Change color</MenuItem>
+                <MenuItemOption isChecked={vehicle.retired} flexDirection="row-reverse">
+                    Mark retired
+                </MenuItemOption>
+                <MenuDivider />
+                <MenuItemOption isChecked={true} flexDirection="row-reverse">
+                    Show cost column
+                </MenuItemOption>
+                <MenuItemOption isChecked={true} flexDirection="row-reverse">
+                    Show mileage delta
+                </MenuItemOption>
                 <MenuDivider />
                 <MenuItem>Import from CSV</MenuItem>
                 <MenuItem>Export to CSV</MenuItem>

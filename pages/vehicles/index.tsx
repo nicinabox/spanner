@@ -23,6 +23,7 @@ const Vehicles: React.FC<VehiclesProps> = ({ vehicles, error }) => {
 
     return (
         <Page
+            maxW="container.xl"
             Header={() => (
                 <Header
                     CenterComponent={<Logo height={30} />}

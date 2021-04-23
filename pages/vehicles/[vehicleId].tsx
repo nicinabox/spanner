@@ -1,20 +1,18 @@
 import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, Button, Container, Flex, HStack, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
-import { mode } from "@chakra-ui/theme-tools";
 import Header from 'components/Header';
 import Page from 'components/Page';
 import Search from 'components/Search';
+import TabMenu from 'components/TabMenu';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
+import VehicleNotes from 'components/VehicleNotes';
 import VehicleRecordsTable from 'components/VehicleRecordsTable';
 import VehicleSummary from 'components/VehicleSummary';
-import { format } from 'date-fns';
-import marked from 'marked';
 import Link from 'next/link';
 import { createAPIRequest } from 'queries/config';
 import { fetchRecords, fetchVehicle, Vehicle, VehicleRecord } from 'queries/vehicles';
 import React from 'react';
 import { authRedirect, withSession } from 'utils/session';
-import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
 
 interface VehiclePageProps {
     vehicle: Vehicle;
@@ -28,12 +26,8 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
         return b.mileage - a.mileage;
     });
 
-
-    const tabListBg = useColorModeValue('brand.100', 'brand.800')
-
     return (
         <Page
-            maxW="none"
             p={0}
             Header={() => (
                 <Header
@@ -59,30 +53,21 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
             )}
         >
             <Tabs colorScheme="brand" mt={0}>
-                <Box bg={tabListBg}>
-                    <Container maxW="container.xl">
-                        <TabList>
-                            <Tab>Service</Tab>
-                            <Tab>Notes</Tab>
-                        </TabList>
-                    </Container>
-                </Box>
+                <TabMenu>
+                    <Tab>Service</Tab>
+                    <Tab>Notes</Tab>
+                </TabMenu>
 
                 <TabPanels>
                     <TabPanel pl={0} pr={0}>
                         <Container maxW="container.xl">
-                            <Flex mb={12}>
+                            <Flex mb={6}>
                                 <HStack spacing={2}>
-                                    <Button colorScheme="brand" size="sm" variant="ghost"
-                                        leftIcon={<AddIcon />}
-                                    >
-                                        Add Service
-                                    </Button>
-                                    <Button colorScheme="brand" size="sm" variant="ghost"
-                                        leftIcon={<AddIcon />}
-                                    >
-                                        Add Reminder
-                                    </Button>
+                                    <Link href={`/vehicles/${vehicle.id}/add`} passHref>
+                                        <Button as="a" colorScheme="brand" size="sm" leftIcon={<AddIcon />}>
+                                            Add...
+                                        </Button>
+                                    </Link>
                                 </HStack>
                                 <Spacer />
                                 <HStack spacing={8}>
@@ -90,15 +75,13 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
                                 </HStack>
                             </Flex>
                             <Box shadow="lg" p={4}>
-                                <VehicleRecordsTable records={records} distanceUnit={vehicle.distanceUnit} />
+                                <VehicleRecordsTable records={reverseChronoRecords} distanceUnit={vehicle.distanceUnit} />
                             </Box>
                         </Container>
                     </TabPanel>
                     <TabPanel>
                         <Container maxW="container.md">
-                            <Box dangerouslySetInnerHTML={{
-                                __html: marked(vehicle.notes),
-                            }} />
+                            <VehicleNotes notes={vehicle.notes} />
                         </Container>
                     </TabPanel>
                 </TabPanels>

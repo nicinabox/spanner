@@ -9,7 +9,7 @@ export const Page: React.FC<PageProps> = ({ children, Header, ...containerProps 
     return (
         <>
             {Header && <Header />}
-            <Container maxW="container.xl" mb={12} {...containerProps}>
+            <Container maxW="none" mb={12} {...containerProps}>
                 {children}
             </Container>
         </>
