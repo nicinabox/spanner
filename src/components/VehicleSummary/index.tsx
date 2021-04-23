@@ -2,7 +2,7 @@ import { Text, useColorModeValue } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { Vehicle, VehicleRecord } from 'queries/vehicles';
 import React from 'react';
-import { formatMilesPerYear, formatEstimatedMileage } from 'utils/vehicle';
+import { formatMilesPerYear, formatEstimatedMileage, sortRecordsOldestFirst } from 'utils/vehicle';
 
 export interface VehicleSummaryProps {
     vehicle: Vehicle;
@@ -12,15 +12,15 @@ export interface VehicleSummaryProps {
 export const VehicleSummary: React.FC<VehicleSummaryProps> = ({ vehicle, records }) => {
     const color = useColorModeValue('gray.800', 'brand.400');
 
-    const [firstRecord] = records;
+    const [oldestRecord] = sortRecordsOldestFirst(records);
 
-    if (!firstRecord) {
+    if (!oldestRecord) {
         return null;
     }
 
     return (
         <Text color={color} fontWeight="500">
-            Since <strong>{format(new Date(firstRecord.date), 'MMMM d, yyy')}</strong>, you drive about <strong>{formatMilesPerYear(vehicle)} per year</strong> for an estimated <strong>{formatEstimatedMileage(vehicle)}</strong>.
+            Since <strong>{format(new Date(oldestRecord.date), 'MMMM d, yyy')}</strong>, you drive about <strong>{formatMilesPerYear(vehicle)} per year</strong> for an estimated <strong>{formatEstimatedMileage(vehicle)}</strong>.
         </Text>
     );
 };

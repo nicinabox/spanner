@@ -20,12 +20,6 @@ interface VehiclePageProps {
 }
 
 const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
-    const reverseChronoRecords = records.sort((a, b) => {
-        const byDate = new Date(b.date).getTime() - new Date(a.date).getTime()
-        if (byDate) return byDate;
-        return b.mileage - a.mileage;
-    });
-
     return (
         <Page
             p={0}
@@ -75,7 +69,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
                                 </HStack>
                             </Flex>
                             <Box shadow="lg" p={4}>
-                                <VehicleRecordsTable records={reverseChronoRecords} distanceUnit={vehicle.distanceUnit} />
+                                <VehicleRecordsTable records={records} distanceUnit={vehicle.distanceUnit} />
                             </Box>
                         </Container>
                     </TabPanel>

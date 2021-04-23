@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { VehicleRecord } from 'queries/vehicles';
 import React from 'react';
 import { formatCurrency } from 'utils/number';
-import { formatMileage } from 'utils/vehicle';
+import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
 export interface VehicleRecordsTableProps {
     records: VehicleRecord[];
@@ -28,6 +28,8 @@ const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord) => {
 }
 
 export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, distanceUnit }) => {
+    const reverseChronoRecords = sortRecordsNewestFirst(records);
+
     return (
         <Table size="sm">
             <Thead>
@@ -39,7 +41,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                 </Tr>
             </Thead>
             <Tbody>
-                {records.map((record, i, arr) => {
+                {reverseChronoRecords.map((record, i, arr) => {
                     const nextRecord = getNextRecordWithMileage(i, arr);
                     const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
 
