@@ -1,3 +1,4 @@
+import React from 'react';
 import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, Button, Container, Flex, HStack, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 import Header from 'components/Header';
@@ -10,8 +11,8 @@ import VehicleRecordsTable from 'components/VehicleRecordsTable';
 import VehicleSummary from 'components/VehicleSummary';
 import Link from 'next/link';
 import { createAPIRequest } from 'queries/config';
-import { fetchRecords, fetchVehicle, Vehicle, VehicleRecord } from 'queries/vehicles';
-import React from 'react';
+import { VehicleRecord, fetchRecords } from 'queries/records';
+import { fetchVehicle, Vehicle } from 'queries/vehicles';
 import { authRedirect, withSession } from 'utils/session';
 
 interface VehiclePageProps {
@@ -113,7 +114,7 @@ export const getServerSideProps = withSession(async function ({ req, params }) {
     } catch(err) {
         return {
             props: {
-                error: err.data.error
+                error: err.response?.data?.error ?? err.toString(),
             }
         }
     }

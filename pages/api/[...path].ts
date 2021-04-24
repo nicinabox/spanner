@@ -1,4 +1,5 @@
 import httpProxy from 'http-proxy'
+import { withSession } from 'utils/session';
 
 const { PROXY_HOST } = process.env
 
@@ -15,12 +16,17 @@ export const config = {
 
 const proxy = httpProxy.createProxyServer();
 
-export default (req, res) => {
-    // Return a Promise to let Next.js know when we're done
-    // processing the request:
+export default withSession((req, res) => {
+    const session = req.session.get('session');
+
+    proxy.on('proxyReq', function(proxyReq) {
+        proxyReq.setHeader('Accept', `application/vnd.api+json; version=2`);
+        proxyReq.setHeader('Authorization', `Token ${session.authToken}`);
+    });
+
+    // Return a Promise to let Next.js know when we're done processing the request
     return new Promise((resolve, reject) => {
         // Rewrite the URL: strip out the leading '/api'.
-        // For example, '/api/login' would become '/login'.
         req.url = req.url.replace(/^\/api/, '')
 
         // Don't forget to handle errors:
@@ -31,4 +37,4 @@ export default (req, res) => {
             target: PROXY_HOST,
         })
     })
-}
+});

@@ -1,4 +1,5 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import React, { useState } from 'react';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -36,7 +37,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
 
     return (
         <Box lineHeight={1.2} sx={styles}>
-            <input onChange={onChange} value={selectedDay.getTime()} type="hidden" name={name} />
+            <input onChange={onChange} value={format(selectedDay, 'yyyy-MM-dd')} type="hidden" name={name} />
             <DayPicker onDayClick={onDayClick} initialMonth={initialDate} selectedDays={selectedDay} />
         </Box>
     );

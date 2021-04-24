@@ -78,7 +78,7 @@ export const getServerSideProps = withSession(async function ({ req, params }) {
         const { data } = await fetchVehicles(api)
         vehicles = data;
     } catch (err) {
-        error = err.data.error;
+        error = err.response?.data?.error ?? err.toString();
     }
 
     return {

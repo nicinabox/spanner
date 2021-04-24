@@ -46,7 +46,7 @@ export const getServerSideProps = withSession(async ({ req, res, params }) => {
         const { authToken, ...clientSession } = data;
         session = clientSession;
     } catch (err) {
-        error = err.data.error;
+        error = err.response?.data?.error ?? err.toString();
     }
 
     return {

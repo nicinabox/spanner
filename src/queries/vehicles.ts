@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 
 export interface Vehicle {
     id: number;
@@ -14,15 +14,17 @@ export interface Vehicle {
     milesPerYear: number;
     estimatedMileage: number;
     squishVin: number;
-    reminder: string;
+    reminders: string;
 }
 
-export interface VehicleRecord {
-    cost: string;
-    date: string; //"2019-07-19T04:35:26.370Z"
-    id: number;
-    mileage: number;
+interface VehicleParams {
+    name: string;
+    vin: string;
     notes: string;
+    position: number;
+    enable_cost: boolean;
+    distance_unit: 'mi' | 'km';
+    retired: boolean;
 }
 
 export function fetchVehicles(api: AxiosInstance) {
@@ -33,17 +35,13 @@ export function fetchVehicle(api: AxiosInstance, vehicleId: string) {
     return api.get<Vehicle>(`/vehicles/${vehicleId}`);
 }
 
-export function fetchRecords(api: AxiosInstance, vehicleId: string) {
-return api.get(`/vehicles/${vehicleId}/records`);
+export function updateVehicle(api: AxiosInstance, vehicleId: number, params: Partial<VehicleParams>) {
+    return api.put(`/vehicles/${vehicleId}`, params);
 }
 
-//   export function createVehicle(params) {
-//     return post('/vehicles', params, CREATE_VEHICLE)
-//   }
-
-//   export function updateVehicle(vehicleId, params) {
-//     return put(`/vehicles/${vehicleId}`, params, UPDATE_VEHICLE)
-//   }
+export function createVehicle(api: AxiosInstance, params: VehicleParams) {
+    return api.post('/vehicles', params);
+}
 
 //   export function destroyVehicle(vehicleId) {
 //     return destroy(`/vehicles/${vehicleId}`, DESTROY_VEHICLE)
