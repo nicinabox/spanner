@@ -17,7 +17,7 @@ const styles = {
     '.chakra-ui-dark & tr': {
         backgroundColor: 'gray.800',
     },
-    '.chakra-ui-dark & tr:nth-child(2n)': {
+    '.chakra-ui-dark & tr:nth-of-type(2n)': {
         backgroundColor: 'gray.700',
     },
 }

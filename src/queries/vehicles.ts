@@ -27,20 +27,25 @@ interface VehicleParams {
     retired: boolean;
 }
 
-export function fetchVehicles(api: AxiosInstance) {
-    return api.get<Vehicle[]>('/vehicles');
+export const vehiclesPath = `/api/vehicles`;
+export const vehiclePath = (vehicleId: number | string) => `/api/vehicles/${vehicleId}`;
+
+export async function fetchVehicles(api: AxiosInstance) {
+    const { data } = await api.get<Vehicle[]>(vehiclesPath);
+    return data;
 }
 
-export function fetchVehicle(api: AxiosInstance, vehicleId: string) {
-    return api.get<Vehicle>(`/vehicles/${vehicleId}`);
+export async function fetchVehicle(api: AxiosInstance, vehicleId: string) {
+    const { data } = await api.get<Vehicle>(vehiclePath(vehicleId));
+    return data;
 }
 
 export function updateVehicle(api: AxiosInstance, vehicleId: number, params: Partial<VehicleParams>) {
-    return api.put(`/vehicles/${vehicleId}`, params);
+    return api.put(vehiclePath(vehicleId), params);
 }
 
 export function createVehicle(api: AxiosInstance, params: VehicleParams) {
-    return api.post('/vehicles', params);
+    return api.post(vehiclesPath, params);
 }
 
 //   export function destroyVehicle(vehicleId) {

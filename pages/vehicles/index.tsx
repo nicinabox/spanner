@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { Box, Button, Flex, Heading, SimpleGrid } from '@chakra-ui/react';
-import { ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { createAPIRequest } from 'queries/config';
-import { fetchVehicles, Vehicle } from 'queries/vehicles';
-import { withSession, authRedirect } from 'utils/session';
-import Page from 'components/Page';
+import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
 import Header from 'components/Header';
 import Logo from 'components/Logo';
+import Page from 'components/Page';
 import VehicleItem from 'components/VehicleItem';
+import { fetchVehicles, Vehicle } from 'queries/vehicles';
+import React, { useState } from 'react';
+import { fetchInitialData } from 'utils/queries';
+import { authRedirect, withSession } from 'utils/session';
 
 interface VehiclesProps {
-    vehicles: Vehicle[],
-    error: string | null
+    data?: Vehicle[];
+    error?: string;
 }
 
-const Vehicles: React.FC<VehiclesProps> = ({ vehicles, error }) => {
+const Vehicles: React.FC<VehiclesProps> = ({ data, error }) => {
     const [showRetired, setShowRetired] = useState(false);
 
-    const sortedVehicles = vehicles.sort((a, b) => a.position - b.position);
+    const sortedVehicles = data?.sort((a, b) => a.position - b.position);
     const activeVehicles = sortedVehicles.filter(v => !v.retired);
     const retiredVehicles = sortedVehicles.filter(v => v.retired);
 
@@ -69,24 +69,11 @@ export const getServerSideProps = withSession(async function ({ req, params }) {
     const redirect = authRedirect(req)
     if (redirect) return redirect;
 
-    let vehicles: Vehicle[] = [];
-    let error: string | null = null;
-
-    const api = createAPIRequest(req)
-
-    try {
-        const { data } = await fetchVehicles(api)
-        vehicles = data;
-    } catch (err) {
-        error = err.response?.data?.error ?? err.toString();
-    }
+    const initialData = await fetchInitialData(req, fetchVehicles);
 
     return {
-        props: {
-            vehicles,
-            error,
-        }
-    }
+        props: initialData,
+    };
 })
 
 export default Vehicles;

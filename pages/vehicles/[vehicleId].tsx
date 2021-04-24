@@ -1,6 +1,5 @@
-import React from 'react';
 import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Button, Container, Flex, HStack, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, HStack, Tab, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import Header from 'components/Header';
 import Page from 'components/Page';
 import Search from 'components/Search';
@@ -9,18 +8,29 @@ import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import VehicleNotes from 'components/VehicleNotes';
 import VehicleRecordsTable from 'components/VehicleRecordsTable';
 import VehicleSummary from 'components/VehicleSummary';
+import useRequest from 'hooks/useRequest';
 import Link from 'next/link';
-import { createAPIRequest } from 'queries/config';
-import { VehicleRecord, fetchRecords } from 'queries/records';
-import { fetchVehicle, Vehicle } from 'queries/vehicles';
+import { fetchRecords, VehicleRecord, vehicleRecordsPath } from 'queries/records';
+import { fetchVehicle, Vehicle, vehiclePath } from 'queries/vehicles';
+import React from 'react';
+import { fetchInitialData } from 'utils/queries';
 import { authRedirect, withSession } from 'utils/session';
 
-interface VehiclePageProps {
-    vehicle: Vehicle;
-    records: VehicleRecord[];
+export interface VehiclePageProps {
+    data?: {
+        vehicle: Vehicle;
+        records: VehicleRecord[];
+    }
+    error?: string
+    params: {
+        vehicleId: string;
+    }
 }
 
-const VehiclePage: React.FC<VehiclePageProps> = ({ vehicle, records }) => {
+const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
+    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId), { initialData: props.data.vehicle })
+    const { data: records } = useRequest<VehicleRecord[]>(vehicleRecordsPath(params.vehicleId), { initialData: props.data.records })
+
     return (
         <Page
             p={0}
@@ -89,11 +99,9 @@ export const getServerSideProps = withSession(async function ({ req, params }) {
     const redirect = authRedirect(req)
     if (redirect) return redirect;
 
-    const { vehicleId } = params;
+    const initialData = await fetchInitialData(req, async (api) => {
+        const { vehicleId } = params;
 
-    const api = createAPIRequest(req);
-
-    try {
         const results = await Promise.allSettled([
             fetchVehicle(api, vehicleId),
             fetchRecords(api, vehicleId),
@@ -101,21 +109,20 @@ export const getServerSideProps = withSession(async function ({ req, params }) {
 
         const [vehicle, records] = results.map((result) => {
             if (result.status === 'fulfilled') {
-                return result.value.data;
+                return result.value;
             }
         });
 
         return {
-            props: {
-                vehicle,
-                records,
-            },
-        };
-    } catch(err) {
-        return {
-            props: {
-                error: err.response?.data?.error ?? err.toString(),
-            }
+            vehicle: vehicle as Vehicle,
+            records: records as VehicleRecord[],
+        }
+    });
+
+    return {
+        props: {
+            params,
+            ...initialData,
         }
     }
 })

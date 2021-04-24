@@ -16,10 +16,14 @@ export interface VehicleRecordParams {
     recordType?: 'mileage adjustment';
 }
 
-export function fetchRecords(api: AxiosInstance, vehicleId: number) {
-    return api.get(`/vehicles/${vehicleId}/records`);
+export const vehicleRecordsPath = (vehicleId: string | number) => `/api/vehicles/${vehicleId}/records`
+
+export async function fetchRecords(api: AxiosInstance, vehicleId: number | string) {
+    const { data } = await api.get<VehicleRecord[]>(vehicleRecordsPath(vehicleId));
+    return data;
 }
 
-export function createRecord(api: AxiosInstance, vehicleId: number, record: VehicleRecordParams) {
-    return api.post(`/vehicles/${vehicleId}/records`, record)
+export async function createRecord(api: AxiosInstance, vehicleId: number | string, record: VehicleRecordParams) {
+    const { data } = await api.post<VehicleRecord>(vehicleRecordsPath(vehicleId), record);
+    return data;
 }

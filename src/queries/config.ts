@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 
 const { PROXY_HOST } = process.env;
@@ -18,10 +18,13 @@ export const createAPIRequest = (req?) => {
                 Authorization,
             }
         });
-    } else {
-        api = axios.create({
-            baseURL: '/api'
+
+        api.interceptors.request.use((config: AxiosRequestConfig) => {
+            config.url = config.url.replace(/^\/api/, '');
+            return config;
         });
+    } else {
+        api = axios.create();
     }
 
 

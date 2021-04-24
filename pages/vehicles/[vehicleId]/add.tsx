@@ -5,17 +5,21 @@ import Header from 'components/Header';
 import Page from 'components/Page';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import React from 'react';
-import { Vehicle } from 'queries/vehicles';
+import { Vehicle, vehiclePath } from 'queries/vehicles';
 import TabMenu from 'components/TabMenu';
 import NewServiceForm from 'components/NewServiceForm';
 import MileageAdjustmentForm from 'components/MileageAdjustmentForm';
 import NewReminderForm from 'components/NewReminderForm';
+import { VehiclePageProps } from '../[vehicleId]';
+import useSWR from 'swr';
+import useRequest from 'hooks/useRequest';
 
-export interface AddPageProps {
-    vehicle: Vehicle;
+export interface AddPageProps extends VehiclePageProps {
 }
 
-export const AddPage: React.FC<AddPageProps> = ({ vehicle }) => {
+export const AddPage: React.FC<AddPageProps> = ({ params, ...props }) => {
+    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId), { initialData: props.data.vehicle })
+
     return (
         <Page
             p={0}

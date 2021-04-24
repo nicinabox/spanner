@@ -43,6 +43,7 @@
     "react-textarea-autosize": "^8.3.2",
     "redux": "^4.0.5",
     "redux-thunk": "^2.1.0",
+    "swr": "^0.5.5",
     "url-pattern": "^1.0.3"
   }
 }
