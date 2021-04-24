@@ -1,16 +1,14 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
-import { format } from 'date-fns';
 import React, { useState } from 'react';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
 export interface DatePickerProps {
-    onChange?: (ev: React.ChangeEvent<HTMLInputElement>) => void;
-    name?: string;
+    onChange?: (date: Date) => void;
     initialDate?: Date
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date(), name = 'date', onChange = () => {} }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date(), onChange = () => {} }) => {
     const [selectedDay, setSelectedDay] = useState(initialDate);
 
     const hoverBg = useColorModeValue('brand.100', 'brand.900');
@@ -32,12 +30,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
     }
 
     const onDayClick = (date: Date) => {
-        setSelectedDay(date)
+        setSelectedDay(date);
+        onChange(date);
     }
 
     return (
         <Box lineHeight={1.2} sx={styles}>
-            <input onChange={onChange} value={format(selectedDay, 'yyyy-MM-dd')} type="hidden" name={name} />
             <DayPicker onDayClick={onDayClick} initialMonth={initialDate} selectedDays={selectedDay} />
         </Box>
     );

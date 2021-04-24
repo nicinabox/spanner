@@ -6,7 +6,6 @@ import useFormData from 'hooks/useFormData';
 import { mutate, useMutation } from 'hooks/useRequest';
 import { createRecord } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
-import { formatNumber } from 'utils/number';
 import { formatEstimatedMileage } from 'utils/vehicle';
 
 export interface MileageAdjustmentFormProps {
@@ -20,21 +19,19 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
         mileage: '',
     });
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
-        try {
-            await mutateVehicleRecord(vehicle.id, {
-                date: format(new Date(), 'yyyy-MM-dd'),
-                notes: 'Milege adjustment',
-                mileage: Number(formData.mileage),
-                recordType: 'mileage adjustment',
-            });
-
-            mutate(vehiclePath(vehicle.id));
-        } catch (err) {
-            console.error(err)
-        }
+        mutateVehicleRecord(vehicle.id, {
+            date: format(new Date(), 'yyyy-MM-dd'),
+            notes: 'Milege adjustment',
+            mileage: Number(formData.mileage),
+            recordType: 'mileage adjustment',
+        }, {
+            onSuccess() {
+                mutate(vehiclePath(vehicle.id));
+            },
+        });
     }
 
     if (isComplete) {

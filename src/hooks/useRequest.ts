@@ -14,7 +14,12 @@ export default function useRequest<Data = any>(queryKey: string, options = {}) {
     return useSWR<Data>(queryKey, fetcher, options);
 }
 
-export function useMutation<T>(queryFn: (api: AxiosInstance, ...args: any[]) => Promise<T>) {
+interface MutationCallbacks<T> {
+    onError?: (error: string) => void;
+    onSuccess?: (data: T) => void;
+}
+
+export function useMutation<T>(queryFn: (api: AxiosInstance, ...args: any[]) => Promise<T>, { onError, onSuccess }: MutationCallbacks<T> = {}) {
     const [status, setStatus] = useState<'idle' | 'processing' | 'complete'>('idle');
     const [data, setData] = useState<T | undefined>();
     const [error, setError] = useState<string | undefined>();
@@ -25,8 +30,10 @@ export function useMutation<T>(queryFn: (api: AxiosInstance, ...args: any[]) => 
         try {
             const nextData = await queryFn(clientAPI, ...args)
             setData(nextData);
+            onSuccess?.(nextData);
         } catch (err) {
             setError(err.response?.data?.error ?? err.toString());
+            onError?.(err);
         } finally {
             setStatus('complete');
         }

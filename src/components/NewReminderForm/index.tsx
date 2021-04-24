@@ -35,7 +35,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
             {['date', 'date_or_mileage'].includes(dependentField) && (
                 <FormControl mb={4} id="date" isRequired>
                     <FormLabel>Date</FormLabel>
-                    <DatePicker name="date" initialDate={addMonths(new Date(), 6)} />
+                    <DatePicker initialDate={addMonths(new Date(), 6)} />
                 </FormControl>
             )}
 

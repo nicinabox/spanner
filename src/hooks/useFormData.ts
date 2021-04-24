@@ -18,9 +18,17 @@ export default function useFormData<T>(initialData: T) {
         }
     }
 
+    const setFormField = (name: string, value: any) => {
+        setFormData({
+            ...formData,
+            [name]: value,
+        })
+    }
+
     return {
         handleInputChange,
         getFormFieldProps,
+        setFormField,
         formData,
     }
 }
