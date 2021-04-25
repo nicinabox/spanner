@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190114163206) do
+ActiveRecord::Schema.define(version: 20210424033911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,9 +33,10 @@ ActiveRecord::Schema.define(version: 20190114163206) do
     t.string   "cost"
     t.float    "mileage"
     t.text     "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "mongo_id"
+    t.string   "record_type"
     t.index ["vehicle_id"], name: "index_records_on_vehicle_id", using: :btree
   end
 
