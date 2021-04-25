@@ -16,6 +16,7 @@ export interface Vehicle {
     estimatedMileage: number;
     squishVin: number;
     reminders: VehicleReminder[];
+    color: string;
 }
 
 interface VehicleParams {

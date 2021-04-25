@@ -1,5 +1,5 @@
 import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Button, Container, Flex, HStack, Tab, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, HStack, Spacer, Tab, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import Header from 'components/Header';
 import Page from 'components/Page';
 import Search from 'components/Search';
