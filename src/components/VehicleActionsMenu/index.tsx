@@ -24,6 +24,12 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
         updateVehicleMutation(vehicle.id, data);
     }
 
+    const handlePrint = () => {
+        setTimeout(() => {
+            window.print()
+        }, 200)
+    }
+
     return (
         <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="brand" size="sm">
@@ -58,7 +64,9 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                 <MenuItem>Import from CSV</MenuItem>
                 <MenuItem>Export to CSV</MenuItem>
                 <MenuDivider />
-                <MenuItem>Print</MenuItem>
+                <MenuItem onClick={handlePrint}>
+                    Print
+                </MenuItem>
             </MenuList>
         </Menu>
     );
