@@ -7,13 +7,14 @@ import { mutate, useMutation } from 'hooks/useRequest';
 import { createRecord } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import { formatEstimatedMileage } from 'utils/vehicle';
+import FormErrors from 'components/FormErrors';
 
 export interface MileageAdjustmentFormProps {
     vehicle: Vehicle;
 }
 
 export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ vehicle }) => {
-    const { mutate: mutateVehicleRecord, isProcessing, isComplete } = useMutation(createRecord);
+    const { mutate: mutateVehicleRecord, isProcessing, isComplete, error } = useMutation(createRecord);
 
     const { formData, getFormFieldProps } = useFormData({
         mileage: '',
@@ -47,6 +48,10 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
 
     return (
         <form onSubmit={handleSubmit}>
+            {error && 'errors' in error && (
+                <FormErrors errors={error.errors} />
+            )}
+
             <FormControl mb={4} id="mileage" isRequired>
                 <FormLabel>Enter your current mileage</FormLabel>
                 <Input type="number" {...getFormFieldProps('mileage')} autoFocus />

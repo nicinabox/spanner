@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { VehicleReminder } from './reminders';
 
 export interface Vehicle {
     id: number;
@@ -14,7 +15,7 @@ export interface Vehicle {
     milesPerYear: number;
     estimatedMileage: number;
     squishVin: number;
-    reminders: string;
+    reminders: VehicleReminder[];
 }
 
 interface VehicleParams {

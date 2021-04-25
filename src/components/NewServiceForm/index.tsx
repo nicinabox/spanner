@@ -6,6 +6,8 @@ import { useMutation } from 'hooks/useRequest';
 import { createRecord } from 'queries/records';
 import { Vehicle } from 'queries/vehicles';
 import { formatDateISO } from 'utils/date';
+import React from 'react';
+import FormErrors from 'components/FormErrors';
 
 export interface NewServiceFormProps {
     vehicle: Vehicle;
@@ -19,7 +21,7 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
         cost: '',
     });
 
-    const { mutate: mutateVehicleRecord, isProcessing, isComplete } = useMutation(createRecord);
+    const { mutate: mutateVehicleRecord, isProcessing, isComplete, error } = useMutation(createRecord);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -43,6 +45,10 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
 
     return (
         <form onSubmit={handleSubmit}>
+            {error && 'errors' in error && (
+                <FormErrors errors={error.errors} />
+            )}
+
             <HStack spacing={8}>
                 <Box>
                     <FormControl mb={4} id="date" isRequired>
