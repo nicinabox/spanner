@@ -52,9 +52,10 @@ export async function createVehicle(api: AxiosInstance, params: VehicleParams) {
     return data;
 }
 
-//   export function destroyVehicle(vehicleId) {
-//     return destroy(`/vehicles/${vehicleId}`, DESTROY_VEHICLE)
-//   }
+export async function destroyVehicle(api: AxiosInstance, vehicleId: number) {
+    const { data } = await api.delete(vehiclePath(vehicleId));
+    return data;
+}
 
 //   export function exportRecords(vehicleId) {
 //     return get(`/vehicles/${vehicleId}/export`, EXPORT_VEHICLE)
