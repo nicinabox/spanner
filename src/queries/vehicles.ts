@@ -46,8 +46,9 @@ export function updateVehicle(api: AxiosInstance, vehicleId: number, params: Par
     return api.put(vehiclePath(vehicleId), params);
 }
 
-export function createVehicle(api: AxiosInstance, params: VehicleParams) {
-    return api.post(vehiclesPath, params);
+export async function createVehicle(api: AxiosInstance, params: VehicleParams) {
+    const { data } = await api.post(vehiclesPath, params);
+    return data;
 }
 
 //   export function destroyVehicle(vehicleId) {

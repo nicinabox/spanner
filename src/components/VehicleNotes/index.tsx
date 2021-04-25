@@ -23,6 +23,8 @@ const styles = {
 }
 
 export const VehicleNotes: React.FC<VehicleNotesProps> = ({ notes }) => {
+    if (!notes) return null;
+
     return (
         <>
             <Head>

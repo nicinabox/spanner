@@ -22,7 +22,11 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
         mileage: '',
     });
 
-    const { mutate: createReminderMutation, isProcessing, isComplete, error } = useMutation(createReminder);
+    const { mutate: createReminderMutation, isProcessing, isComplete, error } = useMutation(createReminder, {
+        onSuccess() {
+            mutate(vehiclePath(vehicle.id));
+        }
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -30,10 +34,6 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
         createReminderMutation(vehicle.id, {
             ...formData,
             date: formatDateISO(formData.date),
-        }, {
-            onSuccess() {
-                mutate(vehiclePath(vehicle.id));
-            }
         });
     }
 
