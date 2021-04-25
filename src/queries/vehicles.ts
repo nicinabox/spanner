@@ -42,8 +42,9 @@ export async function fetchVehicle(api: AxiosInstance, vehicleId: string) {
     return data;
 }
 
-export function updateVehicle(api: AxiosInstance, vehicleId: number, params: Partial<VehicleParams>) {
-    return api.put(vehiclePath(vehicleId), params);
+export async function updateVehicle(api: AxiosInstance, vehicleId: number, params: Partial<VehicleParams>) {
+    const { data } = await api.put(vehiclePath(vehicleId), params);
+    return data;
 }
 
 export async function createVehicle(api: AxiosInstance, params: VehicleParams) {

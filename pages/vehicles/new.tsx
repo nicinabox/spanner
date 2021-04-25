@@ -1,7 +1,7 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Button, Container, Heading, HStack } from '@chakra-ui/react';
 import Header from 'components/Header';
-import NewVehicleForm from 'components/NewVehicleForm';
+import VehicleForm from 'components/VehicleForm';
 import Page from 'components/Page';
 import Link from 'next/link';
 import React from 'react';
@@ -39,7 +39,7 @@ export const NewVehiclePage: React.FC<NewVehiclePageProps> = ({  }) => {
                 <Heading>
                     New Vehicle
                 </Heading>
-                <NewVehicleForm />
+                <VehicleForm />
             </Container>
         </Page>
     );

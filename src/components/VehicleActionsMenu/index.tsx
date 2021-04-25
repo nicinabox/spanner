@@ -3,6 +3,7 @@ import { ChevronDownIcon, CheckIcon } from '@chakra-ui/icons';
 import { updateVehicle, Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
 import { mutate, useMutation } from 'hooks/useRequest';
+import Link from 'next/link';
 
 export interface VehicleActionsMenuProps {
     vehicle: Vehicle;
@@ -36,7 +37,11 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                 {vehicle.name}
             </MenuButton>
             <MenuList>
-                <MenuItem>Change name</MenuItem>
+                <Link href={`/vehicles/${vehicle.id}/edit`} passHref>
+                    <MenuItem as="a">
+                        Edit
+                    </MenuItem>
+                </Link>
                 <MenuItem closeOnSelect={false} as="label" htmlFor="color">
                     Change color
                     <Spacer />

@@ -3,22 +3,28 @@ import FormErrors from 'components/FormErrors';
 import useFormData from 'hooks/useFormData';
 import { useMutation } from 'hooks/useRequest';
 import { useRouter } from 'next/router';
-import { createVehicle } from 'queries/vehicles';
-import React from 'react';
+import { createVehicle, updateVehicle, Vehicle } from 'queries/vehicles';
+import React, { useCallback } from 'react';
 
-export interface NewVehicleFormProps {
+export interface VehicleFormProps {
+    vehicle?: Vehicle;
 }
 
-export const NewVehicleForm: React.FC<NewVehicleFormProps> = ({  }) => {
+export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const router = useRouter();
 
     const { formData, getFormFieldProps } = useFormData({
-        name: '',
-        vin: '',
-        enableCost: true,
+        name: vehicle?.name ?? '',
+        vin: vehicle?.vin ?? '',
+        enableCost: vehicle?.enableCost ?? true,
     });
 
-    const { mutate: createVehicleMutation, isProcessing, error } = useMutation(createVehicle, {
+    const { mutate: createOrUpdateVehicle, isProcessing, error } = useMutation((api, params) => {
+        if (vehicle) {
+            updateVehicle(api, vehicle.id, params);
+        }
+        return createVehicle(api, params);
+    }, {
         onSuccess(nextVehicle) {
             router.push(`/vehicles/${nextVehicle.id}`);
         }
@@ -26,7 +32,7 @@ export const NewVehicleForm: React.FC<NewVehicleFormProps> = ({  }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        createVehicleMutation(formData);
+        createOrUpdateVehicle(formData);
     }
 
     return (
@@ -53,4 +59,4 @@ export const NewVehicleForm: React.FC<NewVehicleFormProps> = ({  }) => {
     );
 };
 
-export default NewVehicleForm;
+export default VehicleForm;
