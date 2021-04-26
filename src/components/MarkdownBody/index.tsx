@@ -8,9 +8,6 @@ export interface MarkdownBodyProps {
 }
 
 const styles = {
-    '&': {
-        fontFamily: 'monospace'
-    },
     '.chakra-ui-dark &': {
         color: 'white',
     },
