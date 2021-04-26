@@ -57,10 +57,6 @@ export async function destroyVehicle(api: AxiosInstance, vehicleId: number) {
     return data;
 }
 
-//   export function exportRecords(vehicleId) {
-//     return get(`/vehicles/${vehicleId}/export`, EXPORT_VEHICLE)
-//   }
-
 //   export function importRecords(vehicleId, params) {
 //     let data = new FormData()
 //     data.append('vehicle[import_file]', params.importFile)

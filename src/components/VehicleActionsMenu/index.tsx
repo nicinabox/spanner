@@ -79,9 +79,13 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
 
                 <MenuDivider />
 
-                <MenuItem>Import from CSV</MenuItem>
-                <MenuItem>Export to CSV</MenuItem>
+                <MenuItem>Import records from CSV</MenuItem>
+                <MenuItem as="a" href={`${vehiclePath(vehicle.id)}/export`} target="_blank">
+                    Export records to CSV
+                </MenuItem>
+
                 <MenuDivider />
+
                 <MenuItem onClick={handlePrint}>
                     Print
                 </MenuItem>
