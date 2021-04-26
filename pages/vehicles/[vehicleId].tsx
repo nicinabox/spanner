@@ -81,7 +81,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                             </Flex>
                             {Boolean(records.length) ? (
                                 <Box shadow="lg" p={4}>
-                                    <VehicleRecordsTable records={records} distanceUnit={vehicle.distanceUnit} />
+                                    <VehicleRecordsTable records={records} enableCost={vehicle.enableCost} distanceUnit={vehicle.distanceUnit} />
                                 </Box>
                             ) : (
                                 <Box>

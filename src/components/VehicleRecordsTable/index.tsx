@@ -1,11 +1,12 @@
 import { Text, Table, Thead, Tr, Th, Tbody, Td } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import { VehicleRecord } from 'queries/vehicles';
+import { VehicleRecord } from 'queries/records';
 import React from 'react';
 import { formatCurrency } from 'utils/number';
 import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
 export interface VehicleRecordsTableProps {
+    enableCost: boolean;
     records: VehicleRecord[];
     distanceUnit: string;
 }
@@ -27,7 +28,7 @@ const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord) => {
     return record.mileage - olderRecord.mileage;
 }
 
-export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, distanceUnit }) => {
+export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, enableCost, distanceUnit }) => {
     const reverseChronoRecords = sortRecordsNewestFirst(records);
 
     return (
@@ -35,7 +36,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
             <Thead>
                 <Tr>
                     <Th>Date</Th>
-                    <Th>Cost</Th>
+                    {enableCost && <Th>Cost</Th>}
                     <Th>Mileage</Th>
                     <Th>Notes</Th>
                 </Tr>
@@ -47,8 +48,14 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
 
                     return (
                         <Tr key={record.id}>
-                            <Td whiteSpace="nowrap" w={100}>{format(new Date(record.date), 'MMM dd, yyy')}</Td>
-                            <Td whiteSpace="nowrap" w={100}>{record.cost && formatCurrency(Number(record.cost))}</Td>
+                            <Td whiteSpace="nowrap" w={100}>
+                                {format(new Date(record.date), 'MMM dd, yyy')}
+                            </Td>
+                            {enableCost && (
+                                <Td whiteSpace="nowrap" w={100}>
+                                    {record.cost && formatCurrency(Number(record.cost))}
+                                </Td>
+                            )}
                             <Td whiteSpace="nowrap" w={120}>
                                 {Boolean(Number(record.mileage)) && formatMileage(record.mileage, distanceUnit)}
                                 {deltaMileage !== undefined && (

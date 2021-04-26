@@ -12,17 +12,14 @@ export interface VehicleActionsMenuProps {
 export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle }) => {
     const { mutate: updateVehicleMutation } = useMutation(updateVehicle);
 
-    const handleRetiredChange = () => {
-        const data = { retired: !vehicle.retired };
-        mutate(vehiclePath(vehicle.id), { ...vehicle, ...data }, false);
-        updateVehicleMutation(vehicle.id, data);
+    const handleUpdateVehicle = (nextOptions: Partial<Vehicle>) => {
+        mutate(vehiclePath(vehicle.id), { ...vehicle, ...nextOptions }, false);
+        updateVehicleMutation(vehicle.id, nextOptions);
     }
 
     const handleColorChange = (e) => {
         const color = e.target.value;
-        const data = { color };
-        mutate(vehiclePath(vehicle.id), { ...vehicle, ...data }, false);
-        updateVehicleMutation(vehicle.id, data);
+        handleUpdateVehicle({ color });
     }
 
     const handlePrint = () => {
@@ -45,10 +42,18 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                 <MenuItem closeOnSelect={false} as="label" htmlFor="color">
                     Change color
                     <Spacer />
-                    <input type="color" id="color" name="color" value={vehicle.color} onClick={e => e.stopPropagation()} onChange={handleColorChange} />
+                    <input
+                        type="color"
+                        id="color"
+                        name="color"
+                        value={vehicle.color ?? ''}
+                        onClick={e => e.stopPropagation()}
+                        onChange={handleColorChange}
+                    />
                 </MenuItem>
+
                 <MenuItem
-                    onClick={handleRetiredChange}
+                    onClick={() => handleUpdateVehicle({ retired: !vehicle.retired })}
                     icon={vehicle.retired ? <CheckIcon /> : <Spacer />}
                     iconSpacing={0}
                     flexDir="row-reverse"
@@ -56,16 +61,21 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                 >
                     Mark retired
                 </MenuItem>
+
                 <MenuDivider />
-                <MenuOptionGroup title="View" type="checkbox">
-                    <MenuItemOption value="show_cost_column" closeOnSelect={false} flexDir="row-reverse" iconSpacing={0}>
-                        Show cost column
-                    </MenuItemOption>
-                    <MenuItemOption value="show_mileage_column" closeOnSelect={false} flexDir="row-reverse" iconSpacing={0}>
-                        Show mileage delta
-                    </MenuItemOption>
-                </MenuOptionGroup>
+
+                <MenuItem
+                    onClick={() => handleUpdateVehicle({ enableCost: !vehicle.enableCost })}
+                    icon={vehicle.enableCost ? <CheckIcon /> : <Spacer />}
+                    iconSpacing={0}
+                    flexDir="row-reverse"
+                    closeOnSelect={false}
+                >
+                    Show cost column
+                </MenuItem>
+
                 <MenuDivider />
+
                 <MenuItem>Import from CSV</MenuItem>
                 <MenuItem>Export to CSV</MenuItem>
                 <MenuDivider />
