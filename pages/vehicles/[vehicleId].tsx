@@ -1,4 +1,4 @@
-import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { AddIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, Button, Container, Flex, Heading, Text, HStack, Spacer, Tab, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import Header from 'components/Header';
 import Page from 'components/Page';
@@ -79,24 +79,22 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                                     <VehicleSummary vehicle={vehicle} records={records} />
                                 </HStack>
                             </Flex>
-                                {Boolean(records.length) ? (
-                                    <Box shadow="lg" p={4}>
-                                        <VehicleRecordsTable records={records} distanceUnit={vehicle.distanceUnit} />
-                                    </Box>
-                                ) : (
-                                    <Box>
-                                        <Heading>
-                                            You don't have any records yet
-                                        </Heading>
-                                        <Text>Try adding your purchase as the first one</Text>
-                                    </Box>
-                                )}
+                            {Boolean(records.length) ? (
+                                <Box shadow="lg" p={4}>
+                                    <VehicleRecordsTable records={records} distanceUnit={vehicle.distanceUnit} />
+                                </Box>
+                            ) : (
+                                <Box>
+                                    <Heading>
+                                        You don't have any records yet
+                                    </Heading>
+                                    <Text>Try adding your purchase as the first one</Text>
+                                </Box>
+                            )}
                         </Container>
                     </TabPanel>
                     <TabPanel>
-                        <Container maxW="container.md">
-                            <VehicleNotes notes={vehicle.notes} />
-                        </Container>
+                        <VehicleNotes vehicle={vehicle} />
                     </TabPanel>
                 </TabPanels>
             </Tabs>
