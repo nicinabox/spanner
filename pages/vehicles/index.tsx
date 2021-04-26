@@ -25,11 +25,11 @@ const Vehicles: React.FC<VehiclesProps> = ({ data, error }) => {
     return (
         <Page
             maxW="container.xl"
-            Header={() => (
+            Header={
                 <Header
                     CenterComponent={<Logo height={30} />}
                 />
-            )}>
+            }>
 
             <Box height={12} />
 

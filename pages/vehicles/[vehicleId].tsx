@@ -34,7 +34,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
     return (
         <Page
             p={0}
-            Header={() => (
+            Header={
                 <Header
                     mb={0}
                     LeftComponent={
@@ -55,7 +55,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                     }
                     CenterComponent={<Search />}
                 />
-            )}
+            }
         >
             <Tabs colorScheme="brand" mt={0}>
                 <TabMenu>

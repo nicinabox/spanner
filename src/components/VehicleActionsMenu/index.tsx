@@ -1,9 +1,9 @@
-import { Menu, MenuButton, Button, MenuList, MenuItem, MenuDivider, MenuItemOption, MenuOptionGroup, Spacer, Input, useMenuItem, Box, useDisclosure } from '@chakra-ui/react';
-import { ChevronDownIcon, CheckIcon } from '@chakra-ui/icons';
-import { updateVehicle, Vehicle, vehiclePath } from 'queries/vehicles';
-import React from 'react';
+import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { Button, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spacer } from '@chakra-ui/react';
 import { mutate, useMutation } from 'hooks/useRequest';
 import Link from 'next/link';
+import { updateVehicle, Vehicle, vehiclePath } from 'queries/vehicles';
+import React from 'react';
 
 export interface VehicleActionsMenuProps {
     vehicle: Vehicle;

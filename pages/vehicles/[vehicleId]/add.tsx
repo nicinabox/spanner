@@ -23,7 +23,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params, ...props }) => {
     return (
         <Page
             p={0}
-            Header={() => (
+            Header={
                 <Header
                     mb={0}
                     LeftComponent={
@@ -43,7 +43,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params, ...props }) => {
                         </HStack>
                     }
                 />
-            )}
+            }
         >
             <Tabs colorScheme="brand" mt={0}>
                 <TabMenu>

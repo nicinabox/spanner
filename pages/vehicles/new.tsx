@@ -14,7 +14,7 @@ export const NewVehiclePage: React.FC<NewVehiclePageProps> = ({  }) => {
     return (
         <Page
             p={0}
-            Header={() => (
+            Header={
                 <Header
                     mb={0}
                     LeftComponent={
@@ -33,7 +33,7 @@ export const NewVehiclePage: React.FC<NewVehiclePageProps> = ({  }) => {
                         </HStack>
                     }
                 />
-            )}
+            }
         >
             <Container maxW="container.sm">
                 <Heading>

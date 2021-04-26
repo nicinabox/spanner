@@ -19,7 +19,7 @@ export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params, ...pro
     return (
         <Page
             p={0}
-            Header={() => (
+            Header={
                 <Header
                     mb={0}
                     LeftComponent={
@@ -39,7 +39,7 @@ export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params, ...pro
                         </HStack>
                     }
                 />
-            )}
+            }
         >
            <Container>
                <VehicleForm vehicle={vehicle} />
