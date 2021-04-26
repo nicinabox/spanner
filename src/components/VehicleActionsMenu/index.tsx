@@ -1,9 +1,10 @@
 import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { Button, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spacer } from '@chakra-ui/react';
 import { mutate, useMutation } from 'hooks/useRequest';
+import { debounce } from 'lodash';
 import Link from 'next/link';
 import { updateVehicle, Vehicle, vehiclePath } from 'queries/vehicles';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 export interface VehicleActionsMenuProps {
     vehicle: Vehicle;
@@ -15,12 +16,14 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
     const handleUpdateVehicle = (nextOptions: Partial<Vehicle>) => {
         mutate(vehiclePath(vehicle.id), { ...vehicle, ...nextOptions }, false);
         updateVehicleMutation(vehicle.id, nextOptions);
-    }
+    };
+
+    const debouncedUpdate = useCallback(debounce(handleUpdateVehicle, 200), [vehicle]);
 
     const handleColorChange = (e) => {
         const color = e.target.value;
-        handleUpdateVehicle({ color });
-    }
+        debouncedUpdate({ color });
+    };
 
     const handlePrint = () => {
         setTimeout(() => {
