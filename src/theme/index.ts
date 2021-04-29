@@ -2,7 +2,7 @@ import { extendTheme } from '@chakra-ui/react';
 import Header from 'components/Header/style';
 import VehicleItem from 'components/VehicleItem/style';
 
-const colors = {
+export const colors = {
     brand: {
         primary: '#565196',
 

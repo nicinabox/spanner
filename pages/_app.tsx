@@ -1,5 +1,5 @@
 import React from 'react';
-import Head from 'next/head'
+import Head from 'next/head';
 import { ChakraProvider, CSSReset } from '@chakra-ui/react';
 import theme from 'theme';
 
@@ -32,13 +32,13 @@ function App({ Component, pageProps }) {
                 {/* <!-- For Chrome for Android: --> */}
                 <link rel="icon" sizes="192x192" href="/assets/apple-touch-icon-192x192.png" />
 
-                <link href='//fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css' />
+                <link href="//fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css" />
             </Head>
 
             <CSSReset />
             <Component {...pageProps} />
         </ChakraProvider>
-    )
+    );
 }
 
-export default App
+export default App;

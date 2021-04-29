@@ -6,8 +6,6 @@ import {
 import Interpunct from 'components/Interpunct';
 import { Vehicle } from 'queries/vehicles';
 import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
-import VehicleColorIndicator from 'components/VehicleColorIndicator';
-
 export interface VehicleItemProps {
     vehicle: Vehicle;
 }
@@ -20,7 +18,6 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
             <NextLink href={`/vehicles/${vehicle.id}`} passHref>
                 <LinkOverlay>
                     <Flex>
-                        <VehicleColorIndicator color={vehicle.color} size={5} />
                         <Spacer maxW={2} />
                         <Flex direction="column" minH={12}>
                             <HStack spacing={2}>

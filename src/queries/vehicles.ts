@@ -6,17 +6,17 @@ export interface Vehicle {
     name: string;
     vin: string;
     notes: string;
-    position: number;
+    position: number | null;
     enableCost: boolean;
     distanceUnit: 'mi' | 'km';
     retired: boolean;
     createdAt: string;
-    milesPerDay: number;
-    milesPerYear: number;
+    milesPerDay: number | null;
+    milesPerYear: number | null;
     estimatedMileage: number;
     squishVin: number;
     reminders: VehicleReminder[];
-    color: string;
+    color: string | null;
 }
 
 interface VehicleParams {
@@ -27,6 +27,7 @@ interface VehicleParams {
     enableCost: boolean;
     distanceUnit: 'mi' | 'km';
     retired: boolean;
+    color: string | null;
 }
 
 export const vehiclesPath = '/api/vehicles';

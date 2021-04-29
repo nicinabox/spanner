@@ -1,5 +1,7 @@
-import { AddIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Button, Container, Flex, Heading, Text, HStack, Spacer, Tab, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import {
+    Box, Button, Container, Flex, Heading, Text, HStack, Spacer, Tab, TabPanel, TabPanels, Tabs,
+} from '@chakra-ui/react';
 import Header from 'components/Header';
 import Page from 'components/Page';
 import Search from 'components/Search';
@@ -28,16 +30,16 @@ export interface VehiclePageProps {
 }
 
 const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId), { initialData: props.data.vehicle })
-    const { data: records } = useRequest<VehicleRecord[]>(vehicleRecordsPath(params.vehicleId), { initialData: props.data.records })
+    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId), { initialData: props.data.vehicle });
+    const { data: records } = useRequest<VehicleRecord[]>(vehicleRecordsPath(params.vehicleId), { initialData: props.data.records });
 
     return (
         <Page
             p={0}
-            Header={
+            Header={(
                 <Header
                     mb={0}
-                    LeftComponent={
+                    LeftComponent={(
                         <HStack spacing={2}>
                             <Link href="/" passHref>
                                 <Button
@@ -52,10 +54,10 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                             </Link>
                             <VehicleActionsMenu vehicle={vehicle} />
                         </HStack>
-                    }
+                    )}
                     CenterComponent={<Search />}
                 />
-            }
+            )}
         >
             <Tabs colorScheme="brand" mt={0}>
                 <TabMenu>
@@ -79,7 +81,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                                     <VehicleSummary vehicle={vehicle} records={records} />
                                 </HStack>
                             </Flex>
-                            {Boolean(records.length) ? (
+                            {records.length ? (
                                 <Box shadow="lg" p={4}>
                                     <VehicleRecordsTable records={records} enableCost={vehicle.enableCost} distanceUnit={vehicle.distanceUnit} />
                                 </Box>
@@ -99,11 +101,11 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                 </TabPanels>
             </Tabs>
         </Page>
-    )
-}
+    );
+};
 
-export const getServerSideProps = withSession(async function ({ req, params }) {
-    const redirect = authRedirect(req)
+export const getServerSideProps = withSession(async ({ req, params }) => {
+    const redirect = authRedirect(req);
     if (redirect) return redirect;
 
     const initialData = await fetchInitialData(req, async (api) => {
@@ -118,20 +120,21 @@ export const getServerSideProps = withSession(async function ({ req, params }) {
             if (result.status === 'fulfilled') {
                 return result.value;
             }
-        });
+            return null;
+        }).filter(Boolean);
 
         return {
             vehicle: vehicle as Vehicle,
             records: records as VehicleRecord[],
-        }
+        };
     });
 
     return {
         props: {
             params,
             ...initialData,
-        }
-    }
-})
+        },
+    };
+});
 
 export default VehiclePage;
