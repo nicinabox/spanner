@@ -23,6 +23,10 @@ export default extendTheme({
     colors,
     initialColorMode: 'system',
     useSystemColorMode: true,
+    fonts: {
+        heading: 'Lato',
+        body: 'Lato',
+    },
     components: {
         Header,
         VehicleItem,
