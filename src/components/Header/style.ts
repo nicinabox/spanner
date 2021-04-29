@@ -1,4 +1,4 @@
-import { mode } from "@chakra-ui/theme-tools";
+import { mode } from '@chakra-ui/theme-tools';
 import theme from 'theme';
 
 export default {
@@ -12,5 +12,5 @@ export default {
     }),
     defaultProps: {
         colorScheme: 'brand',
-    }
-}
+    },
+};

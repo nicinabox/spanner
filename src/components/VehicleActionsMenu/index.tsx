@@ -1,5 +1,7 @@
 import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { Text, Box, Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spacer } from '@chakra-ui/react';
+import {
+    Text, Box, Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spacer,
+} from '@chakra-ui/react';
 import VehicleColorIndicator from 'components/VehicleColorIndicator';
 import { mutate, useMutation } from 'hooks/useRequest';
 import { debounce } from 'lodash';
@@ -28,9 +30,9 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
 
     const handlePrint = () => {
         setTimeout(() => {
-            window.print()
-        }, 200)
-    }
+            window.print();
+        }, 200);
+    };
 
     return (
         <Menu>
@@ -54,7 +56,7 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                         id="color"
                         name="color"
                         value={vehicle.color ?? ''}
-                        onClick={e => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
                         onChange={handleColorChange}
                     />
                 </MenuItem>

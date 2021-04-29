@@ -16,9 +16,7 @@ export const FormErrors: React.FC<FormErrorsProps> = ({ errors }) => {
     return (
         <Alert status="error" mb={6}>
             <AlertIcon />
-            {errors.map((apiError) => {
-                return apiError.title
-            })}
+            {errors.map((apiError) => apiError.title)}
         </Alert>
     );
 };

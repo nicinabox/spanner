@@ -1,4 +1,6 @@
-import { Box, Button, Container, Flex, Heading, HStack, Spacer, Text, Textarea } from '@chakra-ui/react';
+import {
+    Box, Button, Container, Flex, Heading, HStack, Spacer, Text, Textarea,
+} from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import React, { useState } from 'react';
 import MarkdownBody from 'components/MarkdownBody';
@@ -17,20 +19,20 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
 
     const { formData, getFormFieldProps, setFormField } = useFormData({
         notes: vehicle.notes ?? '',
-    })
+    });
 
     const { mutate: updateVehicleMutation } = useMutation(updateVehicle, {
         onError() {
             setEditing(true);
             mutate(vehiclePath(vehicle.id));
-        }
+        },
     });
 
     const handleSaveNotes = () => {
         setEditing(false);
         mutate(vehiclePath(vehicle.id), { ...vehicle, ...formData }, false);
         updateVehicleMutation(vehicle.id, formData);
-    }
+    };
 
     return (
         <>
@@ -40,10 +42,15 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
                         <Button colorScheme="brand" size="sm" onClick={handleSaveNotes}>
                             Save
                         </Button>
-                        <Button colorScheme="brand" variant="ghost" size="sm" onClick={() => {
-                            setEditing(false);
-                            setFormField('notes', vehicle.notes);
-                        }}>
+                        <Button
+                            colorScheme="brand"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                                setEditing(false);
+                                setFormField('notes', vehicle.notes);
+                            }}
+                        >
                             Cancel
                         </Button>
                     </HStack>
@@ -55,7 +62,7 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
             </Container>
 
             <Container maxW="container.md">
-                {editing ? (
+                {editing && (
                     <Textarea
                         ref={textareaRef}
                         sx={{ fontFamily: 'monospace' }}
@@ -63,15 +70,16 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
                         minH={32}
                         autoFocus
                     />
-                ) : (
-                    vehicle.notes ? <MarkdownBody body={vehicle.notes} /> : null
+                )}
+                {!editing && vehicle.notes && (
+                    <MarkdownBody body={vehicle.notes} />
                 )}
             </Container>
 
-            {!Boolean(vehicle.notes) && !editing && (
+            {!vehicle.notes && !editing && (
                 <Container maxW="container.xl">
                     <Heading>
-                        You don't have any notes yet
+                        You don&apos;t have any notes yet
                     </Heading>
                     <Text>
                         Keep notes for those hard to remember things, like tire pressures and how to reset the clock.

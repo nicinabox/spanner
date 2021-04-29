@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, FormControl, FormHelperText, FormLabel, Input, VStack, Heading } from '@chakra-ui/react';
+import {
+    Button, FormControl, FormHelperText, FormLabel, Input, VStack, Heading,
+} from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { format } from 'date-fns';
 import useFormData from 'hooks/useFormData';
@@ -14,7 +16,9 @@ export interface MileageAdjustmentFormProps {
 }
 
 export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ vehicle }) => {
-    const { mutate: mutateVehicleRecord, isProcessing, isComplete, error } = useMutation(createRecord);
+    const {
+        mutate: mutateVehicleRecord, isProcessing, isComplete, error,
+    } = useMutation(createRecord);
 
     const { formData, getFormFieldProps } = useFormData({
         mileage: '',
@@ -33,17 +37,19 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
                 mutate(vehiclePath(vehicle.id));
             },
         });
-    }
+    };
 
     if (isComplete) {
         return (
             <VStack spacing={6}>
                 <CheckCircleIcon boxSize={12} color="green" />
                 <Heading>
-                    Mileage updated to {formatEstimatedMileage(vehicle)}
+                    Mileage updated to
+                    {' '}
+                    {formatEstimatedMileage(vehicle)}
                 </Heading>
             </VStack>
-        )
+        );
     }
 
     return (
@@ -55,7 +61,10 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
             <FormControl mb={4} id="mileage" isRequired>
                 <FormLabel>Enter your current mileage</FormLabel>
                 <Input type="number" {...getFormFieldProps('mileage')} autoFocus />
-                <FormHelperText>Estimated mileage is {formatEstimatedMileage(vehicle)}</FormHelperText>
+                <FormHelperText>
+                    Estimated mileage is
+                    {formatEstimatedMileage(vehicle)}
+                </FormHelperText>
             </FormControl>
 
             <Button type="submit" colorScheme="brand" disabled={isProcessing} isLoading={isProcessing}>

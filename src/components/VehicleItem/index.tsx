@@ -1,6 +1,8 @@
 import React from 'react';
 import NextLink from 'next/link';
-import { Box, Button, Flex, Heading, HStack, Link, LinkBox, LinkOverlay, Spacer, Text, useStyleConfig } from '@chakra-ui/react';
+import {
+    Box, Button, Flex, Heading, HStack, Link, LinkBox, LinkOverlay, Spacer, Text, useStyleConfig,
+} from '@chakra-ui/react';
 import Interpunct from 'components/Interpunct';
 import { Vehicle } from 'queries/vehicles';
 import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
@@ -10,7 +12,7 @@ export interface VehicleItemProps {
     vehicle: Vehicle;
 }
 
-export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle}) => {
+export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
     const styles = useStyleConfig('VehicleItem');
 
     return (
@@ -29,12 +31,14 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle}) => {
                             <HStack divider={<Interpunct color="brand.300" fontSize="sm" />}>
                                 {Boolean(vehicle.estimatedMileage) && (
                                     <Text color="brand.300" fontSize="sm">
-                                        ~{formatEstimatedMileage(vehicle)}
+                                        ~
+                                        {formatEstimatedMileage(vehicle)}
                                     </Text>
                                 )}
                                 {Boolean(vehicle.milesPerYear) && (
                                     <Text color="brand.300" fontSize="sm">
-                                        {formatMilesPerYear(vehicle)}/yr
+                                        {formatMilesPerYear(vehicle)}
+                                        /yr
                                     </Text>
                                 )}
                             </HStack>
@@ -43,7 +47,7 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle}) => {
                 </LinkOverlay>
             </NextLink>
         </LinkBox>
-    )
+    );
 };
 
 export default VehicleItem;

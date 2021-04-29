@@ -18,5 +18,5 @@ export function signIn(api: AxiosInstance, token: string) {
 }
 
 export function requestSession(email: string) {
-    return axios.post(`/api/sessions`, { email });
+    return axios.post('/api/sessions', { email });
 }

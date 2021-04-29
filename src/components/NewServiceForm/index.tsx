@@ -1,4 +1,6 @@
-import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, Textarea, VStack } from '@chakra-ui/react';
+import {
+    Box, Button, FormControl, FormLabel, Heading, HStack, Input, Textarea, VStack,
+} from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import DatePicker from 'components/DatePicker';
 import useFormData from 'hooks/useFormData';
@@ -21,7 +23,9 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
         cost: '',
     });
 
-    const { mutate: mutateVehicleRecord, isProcessing, isComplete, error } = useMutation(createRecord);
+    const {
+        mutate: mutateVehicleRecord, isProcessing, isComplete, error,
+    } = useMutation(createRecord);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -30,7 +34,7 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
             ...formData,
             date: formatDateISO(formData.date),
         });
-    }
+    };
 
     if (isComplete) {
         return (
@@ -40,7 +44,7 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
                     Service Added
                 </Heading>
             </VStack>
-        )
+        );
     }
 
     return (

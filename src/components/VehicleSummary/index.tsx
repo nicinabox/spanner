@@ -20,7 +20,19 @@ export const VehicleSummary: React.FC<VehicleSummaryProps> = ({ vehicle, records
 
     return (
         <Text color={color} fontWeight="500">
-            Since <strong>{format(new Date(oldestRecord.date), 'MMMM d, yyy')}</strong>, you drive about <strong>{formatMilesPerYear(vehicle)} per year</strong> for an estimated <strong>{formatEstimatedMileage(vehicle)}</strong>.
+            Since
+            {' '}
+            <strong>{format(new Date(oldestRecord.date), 'MMMM d, yyy')}</strong>
+            , you drive about
+            <strong>
+                {formatMilesPerYear(vehicle)}
+                {' '}
+                per year
+            </strong>
+            {' '}
+            for an estimated
+            <strong>{formatEstimatedMileage(vehicle)}</strong>
+            .
         </Text>
     );
 };

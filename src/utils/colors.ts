@@ -7,9 +7,9 @@ type RgbColor = {
 };
 
 function hexToRgb(hex: string): RgbColor | null {
-    const sanitizedHex = hex.replace(/#+/g, "#");
+    const sanitizedHex = hex.replace(/#+/g, '#');
     const colorParts = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
-        sanitizedHex
+        sanitizedHex,
     );
 
     if (!colorParts) {
@@ -21,7 +21,7 @@ function hexToRgb(hex: string): RgbColor | null {
     return {
         r: parseInt(r, 16),
         g: parseInt(g, 16),
-        b: parseInt(b, 16)
+        b: parseInt(b, 16),
     } as RgbColor;
 }
 
@@ -34,20 +34,20 @@ export function getTextColor(color: string) {
     const rgbColor = hexToRgb(color);
 
     if (!rgbColor) {
-        return "#333";
+        return '#333';
     }
 
     const { r, g, b } = rgbColor;
     const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-    return luma < 120 ? "#FFF" : "#333" as const;
+    return luma < 120 ? '#FFF' : '#333' as const;
 }
 
 function lighten(hex: string, intensity: number): string {
     const color = hexToRgb(`#${hex}`);
 
     if (!color) {
-        return "";
+        return '';
     }
 
     const r = Math.round(color.r + (255 - color.r) * intensity);
@@ -61,7 +61,7 @@ function darken(hex: string, intensity: number): string {
     const color = hexToRgb(hex);
 
     if (!color) {
-        return "";
+        return '';
     }
 
     const r = Math.round(color.r * intensity);
@@ -73,7 +73,7 @@ function darken(hex: string, intensity: number): string {
 
 export default function getColorPalette(baseColor: string): Palette {
     const palette: Palette = {
-        500: `#${baseColor}`.replace("##", "#")
+        500: `#${baseColor}`.replace('##', '#'),
     };
 
     const intensityMap = {
@@ -85,14 +85,14 @@ export default function getColorPalette(baseColor: string): Palette {
         600: 0.9,
         700: 0.75,
         800: 0.6,
-        900: 0.49
+        900: 0.49,
     };
 
-    [50, 100, 200, 300, 400].forEach(level => {
+    [50, 100, 200, 300, 400].forEach((level) => {
         palette[level] = lighten(baseColor, intensityMap[level]);
     });
 
-    [600, 700, 800, 900].forEach(level => {
+    [600, 700, 800, 900].forEach((level) => {
         palette[level] = darken(baseColor, intensityMap[level]);
     });
 

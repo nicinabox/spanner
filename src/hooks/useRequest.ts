@@ -3,13 +3,14 @@ import { APIError } from 'components/FormErrors';
 import { clientAPI } from 'queries/config';
 import { useState } from 'react';
 import useSWR from 'swr';
+
 export * from 'swr';
 
 const fetcher = async (...args: any[]) => {
     const [url] = args;
     const { data } = await clientAPI.get(url);
     return data;
-}
+};
 
 export default function useRequest<Data = any>(queryKey: string, options = {}) {
     return useSWR<Data>(queryKey, fetcher, options);
@@ -34,7 +35,7 @@ export function useMutation<T>(queryFn: (api: AxiosInstance, ...args: any[]) => 
         setError(undefined);
 
         try {
-            const nextData = await queryFn(clientAPI, ...args)
+            const nextData = await queryFn(clientAPI, ...args);
             setData(nextData);
             onSuccess?.(nextData);
         } catch (err) {
@@ -54,5 +55,5 @@ export function useMutation<T>(queryFn: (api: AxiosInstance, ...args: any[]) => 
         isIdle: status === 'processing',
         isProcessing: status === 'processing',
         isComplete: status === 'complete',
-    }
+    };
 }

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Input, Button, FormHelperText, FormControl, Flex, Spacer, AlertIcon, Alert, Center, Box, FormLabel } from "@chakra-ui/react"
+import {
+    Input, Button, FormHelperText, FormControl, Flex, Spacer, AlertIcon, Alert, Center, Box, FormLabel,
+} from '@chakra-ui/react';
 import { sample } from 'lodash';
 import { requestSession } from '../../queries/session';
 
 function getPlaceholder() {
     return sample([
-      'lando@cloudci.ty',
-      'robertpaulson@loustave.rn',
-      'drspaceman@rockefellerpla.ce',
-      'mal@firef.ly',
-    ])
+        'lando@cloudci.ty',
+        'robertpaulson@loustave.rn',
+        'drspaceman@rockefellerpla.ce',
+        'mal@firef.ly',
+    ]);
 }
 
 export const LoginForm: React.FC = () => {
@@ -18,7 +20,7 @@ export const LoginForm: React.FC = () => {
     const [pending, setPending] = useState(false);
     const [error, setError] = useState();
 
-    const handleChange = (event) => setEmail(event.target.value)
+    const handleChange = (event) => setEmail(event.target.value);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -33,13 +35,13 @@ export const LoginForm: React.FC = () => {
             setPending(false);
             setError(err.toString());
         }
-    }
+    };
 
     const handleReset = () => {
         setError(undefined);
         setLoading(false);
         setPending(false);
-    }
+    };
 
     const isFormValid = Boolean(email);
 
@@ -57,7 +59,7 @@ export const LoginForm: React.FC = () => {
                     </Button>
                 </Center>
             </Box>
-        )
+        );
     }
 
     if (pending) {
@@ -74,7 +76,7 @@ export const LoginForm: React.FC = () => {
                     </Button>
                 </Center>
             </Box>
-        )
+        );
     }
 
     return (
@@ -96,12 +98,12 @@ export const LoginForm: React.FC = () => {
                         <Button type="submit" colorScheme="brand" ml="4" disabled={!isFormValid || loading} isLoading={loading}>Sign In</Button>
                     </Flex>
                     <FormHelperText>
-                        First time? We'll setup your account automagically.
+                        First time? We&apos;ll setup your account automagically.
                     </FormHelperText>
                 </FormControl>
             </form>
         </Box>
-    )
-}
+    );
+};
 
 export default LoginForm;

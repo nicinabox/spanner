@@ -8,7 +8,7 @@ export interface DatePickerProps {
     initialDate?: Date
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date(), onChange = () => {} }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date(), onChange }) => {
     const [selectedDay, setSelectedDay] = useState(initialDate);
 
     const hoverBg = useColorModeValue('brand.100', 'brand.900');
@@ -25,14 +25,14 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
             backgroundColor: hoverBg,
         },
         '.DayPicker-Day--today': {
-            color: todayColor
-        }
-    }
+            color: todayColor,
+        },
+    };
 
     const onDayClick = (date: Date) => {
         setSelectedDay(date);
-        onChange(date);
-    }
+        onChange?.(date);
+    };
 
     return (
         <Box lineHeight={1.2} sx={styles}>

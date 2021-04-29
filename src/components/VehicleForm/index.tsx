@@ -1,9 +1,13 @@
-import { FormControl, FormLabel, Input, FormHelperText, Button, Box, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay } from '@chakra-ui/react';
+import {
+    FormControl, FormLabel, Input, FormHelperText, Button, Box, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay,
+} from '@chakra-ui/react';
 import FormErrors from 'components/FormErrors';
 import useFormData from 'hooks/useFormData';
 import { useMutation } from 'hooks/useRequest';
 import { useRouter } from 'next/router';
-import { createVehicle, destroyVehicle, updateVehicle, Vehicle } from 'queries/vehicles';
+import {
+    createVehicle, destroyVehicle, updateVehicle, Vehicle,
+} from 'queries/vehicles';
 import React, { useRef, useState } from 'react';
 
 export interface VehicleFormProps {
@@ -15,7 +19,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
     const cancelDeleteRef = useRef();
 
-    const onClose = () => setIsConfirmDeleteOpen(false)
+    const onClose = () => setIsConfirmDeleteOpen(false);
 
     const { formData, getFormFieldProps } = useFormData({
         name: vehicle?.name ?? '',
@@ -31,24 +35,24 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     }, {
         onSuccess(nextVehicle) {
             router.push(`/vehicles/${nextVehicle.id}`);
-        }
+        },
     });
 
     const { mutate: destroyVehicleMutation } = useMutation(destroyVehicle, {
         onSuccess() {
-            router.push(`/vehicles`);
-        }
+            router.push('/vehicles');
+        },
     });
 
     const handleDeleteVehicle = (e) => {
         e.preventDefault();
         destroyVehicleMutation(vehicle.id);
-    }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         createOrUpdateVehicle(formData);
-    }
+    };
 
     return (
         <>
@@ -85,24 +89,26 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                         onClose={onClose}
                     >
                         <AlertDialogOverlay>
-                        <AlertDialogContent>
-                            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                                Delete "{vehicle.name}"
-                            </AlertDialogHeader>
+                            <AlertDialogContent>
+                                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                    Delete &ldquo;
+                                    {vehicle.name}
+                                    &rdquo;
+                                </AlertDialogHeader>
 
-                            <AlertDialogBody>
-                                Are you sure? You can't undo this action afterwards.
-                            </AlertDialogBody>
+                                <AlertDialogBody>
+                                    Are you sure? You can&apos;t undo this action afterwards.
+                                </AlertDialogBody>
 
-                            <AlertDialogFooter>
-                                <Button ref={cancelDeleteRef} onClick={onClose}>
-                                    Cancel
-                                </Button>
-                                <Button colorScheme="red" onClick={handleDeleteVehicle} ml={3}>
-                                    Delete
-                                </Button>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
+                                <AlertDialogFooter>
+                                    <Button ref={cancelDeleteRef} onClick={onClose}>
+                                        Cancel
+                                    </Button>
+                                    <Button colorScheme="red" onClick={handleDeleteVehicle} ml={3}>
+                                        Delete
+                                    </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
                         </AlertDialogOverlay>
                     </AlertDialog>
                 </Box>

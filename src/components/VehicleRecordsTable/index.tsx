@@ -1,4 +1,6 @@
-import { Text, Table, Thead, Tr, Th, Tbody, Td } from '@chakra-ui/react';
+import {
+    Text, Table, Thead, Tr, Th, Tbody, Td,
+} from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { VehicleRecord } from 'queries/records';
 import React from 'react';
@@ -13,6 +15,7 @@ export interface VehicleRecordsTableProps {
 
 const getNextRecordWithMileage = (currentIdx: number, arr: VehicleRecord[]): VehicleRecord | undefined => {
     let found: VehicleRecord | undefined;
+    // eslint-disable-next-line no-plusplus
     for (let i = currentIdx + 1; i < arr.length; i++) {
         const record = arr[i];
         if (record.mileage) {
@@ -21,12 +24,12 @@ const getNextRecordWithMileage = (currentIdx: number, arr: VehicleRecord[]): Veh
         }
     }
     return found;
-}
+};
 
-const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord) => {
-    if (!record.mileage) return;
+const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord): number | undefined => {
+    if (!record.mileage) return undefined;
     return record.mileage - olderRecord.mileage;
-}
+};
 
 export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, enableCost, distanceUnit }) => {
     const reverseChronoRecords = sortRecordsNewestFirst(records);
@@ -62,7 +65,9 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                                     <>
                                         {' '}
                                         <Text fontSize="xs" color="gray">
-                                            (+{deltaMileage})
+                                            (+
+                                            {deltaMileage}
+                                            )
                                         </Text>
                                     </>
                                 )}
@@ -71,7 +76,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                                 {record.notes}
                             </Td>
                         </Tr>
-                    )
+                    );
                 })}
             </Tbody>
         </Table>

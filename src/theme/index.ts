@@ -15,9 +15,9 @@ const colors = {
         600: '#4d4987',
         700: '#413d71',
         800: '#34315a',
-        900: '#2a284a'
-    }
-}
+        900: '#2a284a',
+    },
+};
 
 export default extendTheme({
     colors,
@@ -27,4 +27,4 @@ export default extendTheme({
         Header,
         VehicleItem,
     },
-})
+});

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function useFormData<T>(initialData: T) {
     const [formData, setFormData] = useState(initialData);
@@ -6,29 +6,27 @@ export default function useFormData<T>(initialData: T) {
     const handleInputChange = ({ target }) => {
         setFormData({
             ...formData,
-            [target.name]: target.value
-        })
-    }
+            [target.name]: target.value,
+        });
+    };
 
-    const getFormFieldProps = (name) => {
-        return {
-            name,
-            value: formData[name],
-            onChange: handleInputChange,
-        }
-    }
+    const getFormFieldProps = (name) => ({
+        name,
+        value: formData[name],
+        onChange: handleInputChange,
+    });
 
     const setFormField = (name: string, value: any) => {
         setFormData({
             ...formData,
             [name]: value,
-        })
-    }
+        });
+    };
 
     return {
         handleInputChange,
         getFormFieldProps,
         setFormField,
         formData,
-    }
+    };
 }

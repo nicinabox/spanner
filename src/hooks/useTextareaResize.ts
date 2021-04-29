@@ -1,9 +1,9 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef } from 'react';
 
 export default function useTextareaResize() {
     const ref = useRef(null);
 
-    const measuredRef = useCallback(node => {
+    const measuredRef = useCallback((node) => {
         if (ref.current) {
             ref.current.removeEventListener('input', onInput);
         }
@@ -17,12 +17,14 @@ export default function useTextareaResize() {
 
     const onInput = (e) => {
         setHeight(e.target);
-    }
+    };
 
     const setHeight = (node) => {
+        // eslint-disable-next-line no-param-reassign
         node.style.height = 'auto';
-        node.style.height = node.scrollHeight + 'px'
-    }
+        // eslint-disable-next-line no-param-reassign
+        node.style.height = `${node.scrollHeight}px`;
+    };
 
     return measuredRef;
 }

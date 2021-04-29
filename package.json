@@ -4,6 +4,8 @@
   "description": "Track your vehicle service easily",
   "private": true,
   "scripts": {
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "npm run lint -- --fix",
     "deploy": "./deploy.sh",
     "dev": "next dev",
     "build": "next build",
@@ -12,15 +14,36 @@
   "engines": {
     "node": "14.16.1"
   },
-  "author": "Nic Aitch",
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": "npm run lint:fix",
+    "pages/**/*.{ts,tsx}": "npm run lint:fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "author": "Nic Haynes",
   "devDependencies": {
     "@types/marked": "^2.0.2",
     "@types/react": "^17.0.3",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
     "typescript": "^4.2.4"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.11",
     "@chakra-ui/react": "^1.5.1",
+    "@chakra-ui/theme-tools": "^1.1.6",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
     "@types/cookies": "^0.7.6",

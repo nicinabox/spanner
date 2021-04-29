@@ -1,14 +1,16 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, CloseButton, FormControl, FormLabel, Heading, Input, Select, VStack } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
+import {
+    Button, FormControl, FormLabel, Heading, Input, Select, VStack,
+} from '@chakra-ui/react';
 import DatePicker from 'components/DatePicker';
+import FormErrors from 'components/FormErrors';
 import { addMonths } from 'date-fns';
 import useFormData from 'hooks/useFormData';
-import { APIError, mutate, useMutation } from 'hooks/useRequest';
+import { mutate, useMutation } from 'hooks/useRequest';
 import { createReminder } from 'queries/reminders';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
 import { formatDateISO } from 'utils/date';
-import FormErrors from 'components/FormErrors';
 
 export interface NewReminderFormProps {
     vehicle: Vehicle;
@@ -22,10 +24,12 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
         mileage: '',
     });
 
-    const { mutate: createReminderMutation, isProcessing, isComplete, error } = useMutation(createReminder, {
+    const {
+        mutate: createReminderMutation, isProcessing, isComplete, error,
+    } = useMutation(createReminder, {
         onSuccess() {
             mutate(vehiclePath(vehicle.id));
-        }
+        },
     });
 
     const handleSubmit = (e) => {
@@ -35,7 +39,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
             ...formData,
             date: formatDateISO(formData.date),
         });
-    }
+    };
 
     if (isComplete && !error) {
         return (
@@ -45,7 +49,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
                     Reminder Added
                 </Heading>
             </VStack>
-        )
+        );
     }
 
     return (
@@ -62,7 +66,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
             <FormControl mb={4} id="reminderType">
                 <FormLabel>Remind me</FormLabel>
                 <Select {...getFormFieldProps('reminderType')}>
-                    <option value="">Don't remind me</option>
+                    <option value="">Don&apos;t remind me</option>
                     <option value="date_or_mileage">On a date or mileage, whichever is first</option>
                     <option value="date">On a date</option>
                     <option value="mileage">At a mileage</option>

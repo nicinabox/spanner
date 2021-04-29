@@ -24,12 +24,12 @@ interface VehicleParams {
     vin: string;
     notes: string;
     position: number;
-    enable_cost: boolean;
-    distance_unit: 'mi' | 'km';
+    enableCost: boolean;
+    distanceUnit: 'mi' | 'km';
     retired: boolean;
 }
 
-export const vehiclesPath = `/api/vehicles`;
+export const vehiclesPath = '/api/vehicles';
 export const vehiclePath = (vehicleId: number | string) => `/api/vehicles/${vehicleId}`;
 
 export async function fetchVehicles(api: AxiosInstance) {

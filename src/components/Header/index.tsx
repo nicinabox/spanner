@@ -1,4 +1,6 @@
-import { Link, Box, Flex, SimpleGrid, BoxProps, HStack, useStyleConfig } from '@chakra-ui/react';
+import {
+    Link, Box, Flex, SimpleGrid, BoxProps, HStack, useStyleConfig,
+} from '@chakra-ui/react';
 import ColorModeButton from 'components/ColorModeButton';
 import React from 'react';
 
@@ -32,6 +34,5 @@ export const Header: React.FC<HeaderProps> = ({ LeftComponent, CenterComponent, 
         </Box>
     );
 };
-
 
 export default Header;
