@@ -1,5 +1,6 @@
 import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { Button, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spacer } from '@chakra-ui/react';
+import { Text, Box, Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spacer } from '@chakra-ui/react';
+import VehicleColorIndicator from 'components/VehicleColorIndicator';
 import { mutate, useMutation } from 'hooks/useRequest';
 import { debounce } from 'lodash';
 import Link from 'next/link';
@@ -34,7 +35,10 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
     return (
         <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="brand" size="sm">
-                {vehicle.name}
+                <HStack spacing={2}>
+                    <VehicleColorIndicator color={vehicle.color} />
+                    <Text>{vehicle.name}</Text>
+                </HStack>
             </MenuButton>
             <MenuList>
                 <Link href={`/vehicles/${vehicle.id}/edit`} passHref>
