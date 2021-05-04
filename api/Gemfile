@@ -21,7 +21,7 @@ gem 'puma', '~> 3.0'
 # gem 'rack-cors'
 
 gem 'active_model_serializers'
-gem 'postmark-rails', '~> 0.15.0'
+gem 'postmark-rails'
 gem 'queue_classic', '~> 3.1.0'
 gem 'whenever', :require => false
 gem 'premailer-rails'
