@@ -1,17 +1,2 @@
-import { Input } from '@chakra-ui/react';
-import React from 'react';
-
-export interface SearchProps {
-}
-
-export const Search: React.FC<SearchProps> = () => (
-    <Input
-        placeholder="Search records"
-        colorScheme="brand"
-        variant="filled"
-        size="sm"
-        width={400}
-    />
-);
-
-export default Search;
+export * from './Search';
+export { default } from './Search';
