@@ -13,6 +13,7 @@ build
 .DS_Store
 .env
 npm-debug.log
+yarn-error.log
 
 # nextjs
 legacy

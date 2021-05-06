@@ -1,24 +1,15 @@
 ---
-to: src/components/<%= name %>/<%= name %>.spec.ts
+to: src/components/<%= name %>/<%= name %>.spec.tsx
 ---
 import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import <%= name %>, { <%= name %>Props } from '..';
-
-jest.mock('helpers/env');
+import <%= name %> from '.';
 
 describe('<%= name %>', () => {
-    let props: <%= name %>Props;
-
-    beforeEach(() => {
-        props = {
-
-        };
-    });
-
     it('renders', () => {
+        const props = {};
         expect(() => render(<<%= name %> {...props} />)).not.toThrow();
     });
 });
