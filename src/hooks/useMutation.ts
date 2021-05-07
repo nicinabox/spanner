@@ -41,7 +41,7 @@ export default function useMutation<T>(queryFn: (api: AxiosInstance, ...args: an
         data,
         error,
         status,
-        isIdle: status === 'processing',
+        isIdle: status === 'idle',
         isProcessing: status === 'processing',
         isComplete: status === 'complete',
     };

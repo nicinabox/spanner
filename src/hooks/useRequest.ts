@@ -1,7 +1,7 @@
 import { clientAPI } from 'queries/config';
 import useSWR from 'swr';
 
-const fetcher = async (...args: any[]) => {
+export const fetcher = async (...args: any[]) => {
     const [url] = args;
     const { data } = await clientAPI.get(url);
     return data;
