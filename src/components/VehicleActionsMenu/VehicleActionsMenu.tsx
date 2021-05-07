@@ -3,7 +3,7 @@ import {
     Text, Box, Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spacer,
 } from '@chakra-ui/react';
 import VehicleColorIndicator from 'components/VehicleColorIndicator';
-import { mutate, useMutation } from 'hooks/useRequest';
+import useMutation, { mutate } from 'hooks/useMutation';
 import { debounce } from 'lodash';
 import Link from 'next/link';
 import { updateVehicle, Vehicle, vehiclePath } from 'queries/vehicles';

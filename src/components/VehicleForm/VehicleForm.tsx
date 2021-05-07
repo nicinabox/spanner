@@ -3,7 +3,7 @@ import {
 } from '@chakra-ui/react';
 import FormErrors from 'components/FormErrors';
 import useFormData from 'hooks/useFormData';
-import { useMutation } from 'hooks/useRequest';
+import useMutation from 'hooks/useMutation';
 import { useRouter } from 'next/router';
 import {
     createVehicle, destroyVehicle, updateVehicle, Vehicle,

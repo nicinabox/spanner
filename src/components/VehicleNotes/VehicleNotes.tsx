@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import MarkdownBody from 'components/MarkdownBody';
 import useTextareaResize from 'hooks/useTextareaResize';
 import useFormData from 'hooks/useFormData';
-import { mutate, useMutation } from 'hooks/useRequest';
+import useMutation, { mutate } from 'hooks/useMutation';
 import { updateVehicle, Vehicle, vehiclePath } from 'queries/vehicles';
 
 export interface VehicleNotesProps {

@@ -4,7 +4,7 @@ import {
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import DatePicker from 'components/DatePicker';
 import useFormData from 'hooks/useFormData';
-import { useMutation } from 'hooks/useRequest';
+import useMutation from 'hooks/useMutation';
 import { createRecord } from 'queries/records';
 import { Vehicle } from 'queries/vehicles';
 import { formatDateISO } from 'utils/date';

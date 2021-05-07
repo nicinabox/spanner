@@ -6,7 +6,7 @@ import DatePicker from 'components/DatePicker';
 import FormErrors from 'components/FormErrors';
 import { addMonths } from 'date-fns';
 import useFormData from 'hooks/useFormData';
-import { mutate, useMutation } from 'hooks/useRequest';
+import useMutation, { mutate } from 'hooks/useMutation';
 import { createReminder } from 'queries/reminders';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';

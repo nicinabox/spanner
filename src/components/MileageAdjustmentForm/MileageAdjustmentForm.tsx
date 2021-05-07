@@ -5,7 +5,7 @@ import {
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { format } from 'date-fns';
 import useFormData from 'hooks/useFormData';
-import { mutate, useMutation } from 'hooks/useRequest';
+import useMutation, { mutate } from 'hooks/useMutation';
 import { createRecord } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import { formatEstimatedMileage } from 'utils/vehicle';
@@ -18,7 +18,11 @@ export interface MileageAdjustmentFormProps {
 export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ vehicle }) => {
     const {
         mutate: mutateVehicleRecord, isProcessing, isComplete, error,
-    } = useMutation(createRecord);
+    } = useMutation(createRecord, {
+        onSuccess() {
+            mutate(vehiclePath(vehicle.id));
+        },
+    });
 
     const { formData, getFormFieldProps } = useFormData({
         mileage: '',
@@ -32,10 +36,6 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
             notes: 'Milege adjustment',
             mileage: Number(formData.mileage),
             recordType: 'mileage adjustment',
-        }, {
-            onSuccess() {
-                mutate(vehiclePath(vehicle.id));
-            },
         });
     };
 
