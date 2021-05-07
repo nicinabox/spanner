@@ -6,7 +6,9 @@ import FormErrors from '.';
 
 describe('FormErrors', () => {
     it('renders', () => {
-        const props = {};
+        const props = {
+            errors: [],
+        };
         expect(() => render(<FormErrors {...props} />)).not.toThrow();
     });
 });

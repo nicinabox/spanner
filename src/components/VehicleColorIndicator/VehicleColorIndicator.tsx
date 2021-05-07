@@ -3,7 +3,7 @@ import React from 'react';
 import getColorPalette from 'utils/colors';
 
 export interface VehicleColorIndicatorProps {
-    color: string | undefined;
+    color: string | null | undefined;
     size?: number;
 }
 

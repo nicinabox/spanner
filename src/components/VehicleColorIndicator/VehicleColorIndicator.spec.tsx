@@ -6,7 +6,9 @@ import VehicleColorIndicator from '.';
 
 describe('VehicleColorIndicator', () => {
     it('renders', () => {
-        const props = {};
+        const props = {
+            color: undefined,
+        };
         expect(() => render(<VehicleColorIndicator {...props} />)).not.toThrow();
     });
 });

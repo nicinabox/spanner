@@ -6,7 +6,11 @@ import VehicleRecordsTable from '.';
 
 describe('VehicleRecordsTable', () => {
     it('renders', () => {
-        const props = {};
+        const props = {
+            enableCost: true,
+            distanceUnit: 'mi',
+            records: [],
+        };
         expect(() => render(<VehicleRecordsTable {...props} />)).not.toThrow();
     });
 });
