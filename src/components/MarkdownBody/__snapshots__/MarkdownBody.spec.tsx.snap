@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MarkdownBody renders markdown to html 1`] = `
+<div>
+  <div
+    class="markdown-body css-1qb95kv"
+  >
+    <h1
+      id="hello-world"
+    >
+      Hello World
+    </h1>
+    
+
+  </div>
+</div>
+`;

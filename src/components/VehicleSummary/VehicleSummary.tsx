@@ -1,6 +1,7 @@
 import { Text, useColorModeValue } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import { Vehicle, VehicleRecord } from 'queries/vehicles';
+import { VehicleRecord } from 'queries/records';
+import { Vehicle } from 'queries/vehicles';
 import React from 'react';
 import { formatMilesPerYear, formatEstimatedMileage, sortRecordsOldestFirst } from 'utils/vehicle';
 
@@ -25,12 +26,14 @@ export const VehicleSummary: React.FC<VehicleSummaryProps> = ({ vehicle, records
             <strong>{format(new Date(oldestRecord.date), 'MMMM d, yyy')}</strong>
             , you drive about
             <strong>
+                {' '}
                 {formatMilesPerYear(vehicle)}
                 {' '}
                 per year
             </strong>
             {' '}
             for an estimated
+            {' '}
             <strong>{formatEstimatedMileage(vehicle)}</strong>
             .
         </Text>
