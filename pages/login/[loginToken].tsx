@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { ClientSession, signIn } from '../../src/queries/session'
-import { withSession } from '../../src/utils/session'
-import { Container, Link } from '@chakra-ui/react'
-import { createAPIRequest } from '../../src/queries/config'
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Container, Link } from '@chakra-ui/react';
+import { ClientSession, signIn } from '../../src/queries/session';
+import { withSession } from '../../src/utils/session';
+import { createAPIRequest } from '../../src/queries/config';
 
 interface LoginProps {
     session: ClientSession | null;
@@ -11,13 +11,13 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ session, error }) => {
-    const router = useRouter()
+    const router = useRouter();
 
     useEffect(() => {
         if (session) {
             router.replace('/vehicles');
         }
-    }, [session])
+    }, [session]);
 
     if (error) {
         return (
@@ -25,11 +25,11 @@ const Login: React.FC<LoginProps> = ({ session, error }) => {
                 <p>{error}</p>
                 <Link href="/">Sign in again</Link>
             </Container>
-        )
+        );
     }
 
-    return <p>Signing in...</p>
-}
+    return <p>Signing in...</p>;
+};
 
 export const getServerSideProps = withSession(async ({ req, res, params }) => {
     let session: ClientSession | null = null;
@@ -53,8 +53,8 @@ export const getServerSideProps = withSession(async ({ req, res, params }) => {
         props: {
             session,
             error,
-        }
-    }
+        },
+    };
 });
 
 export default Login;
