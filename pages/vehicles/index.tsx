@@ -1,26 +1,28 @@
 import { AddIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Box, Button, Heading, HStack, SimpleGrid,
+    Box, Button, Heading, HStack, SimpleGrid, Skeleton,
 } from '@chakra-ui/react';
 import Header from 'components/Header';
+import LinkPreload from 'components/LinkPreload';
 import Logo from 'components/Logo';
 import Page from 'components/Page';
 import VehicleItem from 'components/VehicleItem';
+import useRequest from 'hooks/useRequest';
+import Head from 'next/head';
 import Link from 'next/link';
-import { fetchVehicles, Vehicle } from 'queries/vehicles';
+import { Vehicle, vehiclesPath } from 'queries/vehicles';
 import React, { useState } from 'react';
-import { fetchInitialData } from 'utils/queries';
 import { authRedirect, withSession } from 'utils/session';
 
 interface VehiclesProps {
-    data?: Vehicle[];
-    error?: string;
 }
 
-const Vehicles: React.FC<VehiclesProps> = ({ data, error }) => {
+const Vehicles: React.FC<VehiclesProps> = () => {
+    const { data } = useRequest<Vehicle[]>(vehiclesPath);
+
     const [showRetired, setShowRetired] = useState(false);
 
-    const sortedVehicles = data?.sort((a, b) => a.position - b.position);
+    const sortedVehicles = data?.sort((a, b) => (a.position ?? 0) - (b.position ?? 0)) || [];
     const activeVehicles = sortedVehicles.filter((v) => !v.retired);
     const retiredVehicles = sortedVehicles.filter((v) => v.retired);
 
@@ -33,6 +35,7 @@ const Vehicles: React.FC<VehiclesProps> = ({ data, error }) => {
                 />
               )}
         >
+            <LinkPreload path={vehiclesPath} />
 
             <Box height={12} />
 
@@ -48,23 +51,28 @@ const Vehicles: React.FC<VehiclesProps> = ({ data, error }) => {
             </HStack>
 
             <SimpleGrid columns={3} spacing={5} mt={3}>
+                {!activeVehicles.length && [1,2].map(() => (
+                    <Skeleton height="80px" />
+                ))}
                 {activeVehicles.map(((vehicle) => <VehicleItem key={vehicle.id} vehicle={vehicle} />))}
             </SimpleGrid>
 
             <Box height={12} />
 
-            <Button
-                size="sm"
-                variant="outline"
-                rightIcon={showRetired ? <ChevronDownIcon /> : <ChevronRightIcon />}
-                onClick={() => {
-                    setShowRetired(!showRetired);
-                }}
-            >
-                {showRetired ? 'Hide' : 'Show'}
-                {' '}
-                retired
-            </Button>
+            {Boolean(retiredVehicles.length) && (
+                <Button
+                    size="sm"
+                    variant="outline"
+                    rightIcon={showRetired ? <ChevronDownIcon /> : <ChevronRightIcon />}
+                    onClick={() => {
+                        setShowRetired(!showRetired);
+                    }}
+                >
+                    {showRetired ? 'Hide' : 'Show'}
+                    {' '}
+                    retired
+                </Button>
+            )}
 
             {showRetired && (
                 <SimpleGrid columns={3} spacing={5} mt={3}>
@@ -75,15 +83,13 @@ const Vehicles: React.FC<VehiclesProps> = ({ data, error }) => {
     );
 };
 
-export const getServerSideProps = withSession(async ({ req, params }) => {
+export const getServerSideProps = withSession(async ({ req }) => {
     const redirect = authRedirect(req);
     if (redirect) return redirect;
 
-    const initialData = await fetchInitialData(req, fetchVehicles);
-
     return {
-        props: initialData,
-    };
+        props: {}
+    }
 });
 
 export default Vehicles;

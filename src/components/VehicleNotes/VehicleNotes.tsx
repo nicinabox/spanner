@@ -61,13 +61,13 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
                 )}
             </Container>
 
-            <Container maxW="container.md">
+            <Container maxW="container.md" mx={0}>
                 {editing && (
                     <Textarea
                         ref={textareaRef}
                         sx={{ fontFamily: 'monospace' }}
                         {...getFormFieldProps('notes')}
-                        minH={32}
+                        minH="200px"
                         autoFocus
                     />
                 )}
@@ -82,7 +82,7 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
                         You don&apos;t have any notes yet
                     </Heading>
                     <Text>
-                        Keep notes for those hard to remember things, like tire pressures and how to reset the clock.
+                        Keep notes for those hard to remember things, like how to reset the clock.
                     </Text>
                 </Container>
             )}

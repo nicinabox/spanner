@@ -1,8 +1,9 @@
 import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import {
-    Box, Button, Container, Flex, Heading, Text, HStack, Spacer, Tab, TabPanel, TabPanels, Tabs,
+    Box, Button, Container, Flex, Heading, Text, HStack, Spacer, Tab, TabPanel, TabPanels, Tabs, Skeleton,
 } from '@chakra-ui/react';
 import Header from 'components/Header';
+import LinkPreload from 'components/LinkPreload';
 import Page from 'components/Page';
 import Search from 'components/Search';
 import TabMenu from 'components/TabMenu';
@@ -11,27 +12,22 @@ import VehicleNotes from 'components/VehicleNotes';
 import VehicleRecordsTable from 'components/VehicleRecordsTable';
 import VehicleSummary from 'components/VehicleSummary';
 import useRequest from 'hooks/useRequest';
+import Head from 'next/head';
 import Link from 'next/link';
-import { fetchRecords, VehicleRecord, vehicleRecordsPath } from 'queries/records';
-import { fetchVehicle, Vehicle, vehiclePath } from 'queries/vehicles';
+import { VehicleRecord, vehicleRecordsPath } from 'queries/records';
+import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
-import { fetchInitialData } from 'utils/queries';
 import { authRedirect, withSession } from 'utils/session';
 
 export interface VehiclePageProps {
-    data?: {
-        vehicle: Vehicle;
-        records: VehicleRecord[];
-    }
-    error?: string
     params: {
         vehicleId: string;
     }
 }
 
-const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId), { initialData: props.data.vehicle });
-    const { data: records } = useRequest<VehicleRecord[]>(vehicleRecordsPath(params.vehicleId), { initialData: props.data.records });
+const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
+    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
+    const { data: records } = useRequest<VehicleRecord[]>(vehicleRecordsPath(params.vehicleId));
 
     return (
         <Page
@@ -52,6 +48,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                                     Vehicles
                                 </Button>
                             </Link>
+
                             <VehicleActionsMenu vehicle={vehicle} />
                         </HStack>
                     )}
@@ -59,6 +56,11 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                 />
             )}
         >
+            <LinkPreload path={[
+                vehiclePath(params.vehicleId),
+                vehicleRecordsPath(params.vehicleId)
+            ]} />
+
             <Tabs colorScheme="brand" mt={0}>
                 <TabMenu>
                     <Tab>Service</Tab>
@@ -66,11 +68,11 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                 </TabMenu>
 
                 <TabPanels>
-                    <TabPanel pl={0} pr={0}>
+                    <TabPanel px={0}>
                         <Container maxW="container.xl">
                             <Flex mb={6}>
                                 <HStack spacing={2}>
-                                    <Link href={`/vehicles/${vehicle.id}/add`} passHref>
+                                    <Link href={`/vehicles/${vehicle?.id}/add`} passHref>
                                         <Button as="a" colorScheme="brand" size="sm" leftIcon={<AddIcon />}>
                                             Add...
                                         </Button>
@@ -78,25 +80,31 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params, ...props }) => {
                                 </HStack>
                                 <Spacer />
                                 <HStack spacing={8}>
-                                    <VehicleSummary vehicle={vehicle} records={records} />
+                                    {vehicle && records && (
+                                        <VehicleSummary vehicle={vehicle} records={records} />
+                                    )}
                                 </HStack>
                             </Flex>
-                            {records.length ? (
-                                <Box shadow="lg" p={4}>
-                                    <VehicleRecordsTable records={records} enableCost={vehicle.enableCost} distanceUnit={vehicle.distanceUnit} />
-                                </Box>
-                            ) : (
-                                <Box>
-                                    <Heading>
-                                        You don't have any records yet
-                                    </Heading>
-                                    <Text>Try adding your purchase as the first one</Text>
-                                </Box>
-                            )}
+                            <Skeleton isLoaded={Boolean(records && vehicle)} fadeDuration={0}>
+                                {records?.length && vehicle ? (
+                                    <Box shadow="lg" p={4}>
+                                        <VehicleRecordsTable records={records} enableCost={vehicle.enableCost} distanceUnit={vehicle.distanceUnit} />
+                                    </Box>
+                                ) : (
+                                    <Box>
+                                        <Heading>
+                                            You don't have any records yet
+                                        </Heading>
+                                        <Text>Try adding your purchase as the first one</Text>
+                                    </Box>
+                                )}
+                            </Skeleton>
                         </Container>
                     </TabPanel>
-                    <TabPanel>
-                        <VehicleNotes vehicle={vehicle} />
+                    <TabPanel px={0}>
+                        {vehicle && (
+                            <VehicleNotes vehicle={vehicle} />
+                        )}
                     </TabPanel>
                 </TabPanels>
             </Tabs>
@@ -108,31 +116,9 @@ export const getServerSideProps = withSession(async ({ req, params }) => {
     const redirect = authRedirect(req);
     if (redirect) return redirect;
 
-    const initialData = await fetchInitialData(req, async (api) => {
-        const { vehicleId } = params;
-
-        const results = await Promise.allSettled([
-            fetchVehicle(api, vehicleId),
-            fetchRecords(api, vehicleId),
-        ]);
-
-        const [vehicle, records] = results.map((result) => {
-            if (result.status === 'fulfilled') {
-                return result.value;
-            }
-            return null;
-        }).filter(Boolean);
-
-        return {
-            vehicle: vehicle as Vehicle,
-            records: records as VehicleRecord[],
-        };
-    });
-
     return {
         props: {
             params,
-            ...initialData,
         },
     };
 });

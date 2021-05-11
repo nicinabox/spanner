@@ -11,14 +11,14 @@ import NewServiceForm from 'components/NewServiceForm';
 import MileageAdjustmentForm from 'components/MileageAdjustmentForm';
 import NewReminderForm from 'components/NewReminderForm';
 import { VehiclePageProps } from '../[vehicleId]';
-import useSWR from 'swr';
 import useRequest from 'hooks/useRequest';
+import LinkPreload from 'components/LinkPreload';
 
 export interface AddPageProps extends VehiclePageProps {
 }
 
-export const AddPage: React.FC<AddPageProps> = ({ params, ...props }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId), { initialData: props.data.vehicle })
+export const AddPage: React.FC<AddPageProps> = ({ params }) => {
+    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId))
 
     return (
         <Page
@@ -28,7 +28,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params, ...props }) => {
                     mb={0}
                     LeftComponent={
                         <HStack spacing={2}>
-                            <Link href={`/vehicles/${vehicle.id}`} passHref>
+                            <Link href={`/vehicles/${vehicle?.id}`} passHref>
                                 <Button
                                     as="a"
                                     leftIcon={<ArrowBackIcon />}
@@ -45,6 +45,8 @@ export const AddPage: React.FC<AddPageProps> = ({ params, ...props }) => {
                 />
             }
         >
+            <LinkPreload path={vehiclePath(params.vehicleId)} />
+
             <Tabs colorScheme="brand" mt={0}>
                 <TabMenu>
                     <Tab>Add Service</Tab>
@@ -52,23 +54,25 @@ export const AddPage: React.FC<AddPageProps> = ({ params, ...props }) => {
                     <Tab>Adjust Mileage</Tab>
                 </TabMenu>
 
-                <TabPanels>
-                    <TabPanel>
-                        <Container maxW="container.md">
-                            <NewServiceForm vehicle={vehicle} />
-                        </Container>
-                    </TabPanel>
-                    <TabPanel>
-                        <Container maxW="container.sm">
-                            <NewReminderForm vehicle={vehicle} />
-                        </Container>
-                    </TabPanel>
-                    <TabPanel>
-                        <Container maxW="container.sm">
-                            <MileageAdjustmentForm vehicle={vehicle} />
-                        </Container>
-                    </TabPanel>
-                </TabPanels>
+                {vehicle && (
+                    <TabPanels>
+                        <TabPanel>
+                            <Container maxW="container.md">
+                                <NewServiceForm vehicle={vehicle} />
+                            </Container>
+                        </TabPanel>
+                        <TabPanel>
+                            <Container maxW="container.sm">
+                                <NewReminderForm vehicle={vehicle} />
+                            </Container>
+                        </TabPanel>
+                        <TabPanel>
+                            <Container maxW="container.sm">
+                                <MileageAdjustmentForm vehicle={vehicle} />
+                            </Container>
+                        </TabPanel>
+                    </TabPanels>
+                )}
             </Tabs>
         </Page>
     );
