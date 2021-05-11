@@ -15,7 +15,7 @@ export const VehicleSummary: React.FC<VehicleSummaryProps> = ({ vehicle, records
 
     const [oldestRecord] = sortRecordsOldestFirst(records);
 
-    if (!oldestRecord) {
+    if (!oldestRecord || !vehicle.estimatedMileage) {
         return null;
     }
 
