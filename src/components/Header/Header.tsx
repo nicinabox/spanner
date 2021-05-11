@@ -23,12 +23,9 @@ export const Header: React.FC<HeaderProps> = ({ LeftComponent, CenterComponent, 
                     {CenterComponent}
                 </Flex>
                 <Flex justify="flex-end">
-                    <HStack>
+                    <HStack spacing={2}>
                         <ColorModeButton />
-
-                        <Box>
-                            <UserMenu />
-                        </Box>
+                        <UserMenu />
                     </HStack>
                 </Flex>
             </SimpleGrid>
