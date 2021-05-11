@@ -22,8 +22,9 @@ export default function useTextareaResize() {
     const setHeight = (node) => {
         // eslint-disable-next-line no-param-reassign
         node.style.height = 'auto';
+        const pb = parseFloat(getComputedStyle(node).paddingBottom);
         // eslint-disable-next-line no-param-reassign
-        node.style.height = `${node.scrollHeight}px`;
+        node.style.height = `${node.scrollHeight + pb}px`;
     };
 
     return measuredRef;
