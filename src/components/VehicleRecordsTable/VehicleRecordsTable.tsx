@@ -1,9 +1,10 @@
 import {
     Text, Table, Thead, Tr, Th, Tbody, Td,
 } from '@chakra-ui/react';
-import { format } from 'date-fns';
+import { intlFormat } from 'date-fns';
 import { VehicleRecord } from 'queries/records';
 import React from 'react';
+import { parseDateISO } from 'utils/date';
 import { formatCurrency } from 'utils/number';
 import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
@@ -52,7 +53,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                     return (
                         <Tr key={record.id}>
                             <Td whiteSpace="nowrap" w={100}>
-                                {format(new Date(record.date), 'MMM dd, yyy')}
+                                {intlFormat(parseDateISO(record.date), { month: 'short', year: 'numeric', day: 'numeric' })}
                             </Td>
                             {enableCost && (
                                 <Td whiteSpace="nowrap" w={100}>
