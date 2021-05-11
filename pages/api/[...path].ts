@@ -1,7 +1,12 @@
 import httpProxy from 'http-proxy'
+import { Session } from 'queries/session';
 import { withSession } from 'utils/session';
 
-const { PROXY_HOST } = process.env
+const PROXY_HOST = process.env.PROXY_HOST;
+
+if (!PROXY_HOST) {
+    throw new Error('PROXY_HOST not set')
+}
 
 // You can export a config variable from any API route in Next.js.
 // We'll use this to disable the bodyParser, otherwise Next.js
@@ -17,11 +22,14 @@ export const config = {
 const proxy = httpProxy.createProxyServer();
 
 export default withSession((req, res) => {
-    const session = req.session.get('session');
+    const session: Session | undefined = req.session.get('session');
 
-    proxy.on('proxyReq', function(proxyReq) {
+    proxy.once('proxyReq', function(proxyReq) {
         proxyReq.setHeader('Accept', `application/vnd.api+json; version=2`);
-        proxyReq.setHeader('Authorization', `Token ${session.authToken}`);
+
+        if (session) {
+            proxyReq.setHeader('Authorization', `Token ${session.authToken}`);
+        }
     });
 
     // Return a Promise to let Next.js know when we're done processing the request

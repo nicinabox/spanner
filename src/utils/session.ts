@@ -1,6 +1,10 @@
 import crypto from 'crypto';
 import { withIronSession } from 'next-iron-session';
 
+if (!process.env.CLIENT_SECRET) {
+    throw new Error('CLIENT_SECRET not set')
+}
+
 const hashedSecret = crypto
     .createHash('sha256')
     .update(process.env.CLIENT_SECRET)
