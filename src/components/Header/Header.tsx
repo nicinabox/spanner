@@ -2,6 +2,7 @@ import {
     Link, Box, Flex, SimpleGrid, BoxProps, HStack, useStyleConfig,
 } from '@chakra-ui/react';
 import ColorModeButton from 'components/ColorModeButton';
+import UserMenu from 'components/UserMenu';
 import React from 'react';
 
 export interface HeaderProps extends BoxProps {
@@ -26,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ LeftComponent, CenterComponent, 
                         <ColorModeButton />
 
                         <Box>
-                            User
+                            <UserMenu />
                         </Box>
                     </HStack>
                 </Flex>
