@@ -72,7 +72,9 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
                         </Flex>
 
                         {anyLoading && (
-                            <SkeletonVehicleRecordsTable />
+                            <Box shadow="lg" p={4}>
+                                <SkeletonVehicleRecordsTable />
+                            </Box>
                         )}
 
                         {vehicle && records?.length && (

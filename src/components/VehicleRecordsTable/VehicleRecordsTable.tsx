@@ -51,7 +51,7 @@ export const SkeletonVehicleRecordsTable = () => (
                         <Skeleton h={3} />
                     </Td>
                     <Td>
-                        <Skeleton h={3} w={300} />
+                        <Skeleton h={3} maxW={300} />
                     </Td>
                 </Tr>
             ))}
