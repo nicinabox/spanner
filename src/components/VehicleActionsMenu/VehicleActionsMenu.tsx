@@ -37,7 +37,7 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
 
     return (
         <Menu>
-            <Skeleton isLoaded={Boolean(vehicle)} fadeDuration={0} w={100}>
+            <Skeleton isLoaded={Boolean(vehicle)} fadeDuration={0} minW={100}>
                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="brand" size="sm">
                     <HStack spacing={2}>
                         <VehicleColorIndicator color={vehicle?.color} />
@@ -45,6 +45,7 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                     </HStack>
                 </MenuButton>
             </Skeleton>
+
             {vehicle && (
                 <MenuList>
                     <Link href={`/vehicles/${vehicle.id}/edit`} passHref>

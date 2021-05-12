@@ -4,6 +4,7 @@ import {
 } from '@chakra-ui/react';
 import DatePicker from 'components/DatePicker';
 import FormErrors from 'components/FormErrors';
+import SubmitButton from 'components/SubmitButton';
 import { addMonths } from 'date-fns';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
@@ -88,9 +89,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
                 </FormControl>
             )}
 
-            <Button type="submit" colorScheme="brand" disabled={isProcessing} isLoading={isProcessing}>
-                Save
-            </Button>
+            <SubmitButton isProcessing={isProcessing} />
         </form>
     );
 };

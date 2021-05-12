@@ -10,7 +10,7 @@ export const Search: React.FC<SearchProps> = () => (
         colorScheme="brand"
         variant="filled"
         size="sm"
-        width={400}
+        maxWidth={['100%', 400]}
     />
 );
 

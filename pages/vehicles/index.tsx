@@ -1,11 +1,13 @@
 import { AddIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Box, Button, Heading, HStack, SimpleGrid, Skeleton,
+    Box, Button, Center, Heading, HStack, SimpleGrid, Skeleton,
 } from '@chakra-ui/react';
+import ColorModeButton from 'components/ColorModeButton';
 import Header from 'components/Header';
 import LinkPreload from 'components/LinkPreload';
 import Logo from 'components/Logo';
 import Page from 'components/Page';
+import UserMenu from 'components/UserMenu';
 import VehicleItem from 'components/VehicleItem';
 import useRequest from 'hooks/useRequest';
 import Head from 'next/head';
@@ -28,10 +30,22 @@ const Vehicles: React.FC<VehiclesProps> = () => {
 
     return (
         <Page
-            maxW="container.xl"
+            maxW="container.lg"
             Header={(
                 <Header
-                    CenterComponent={<Logo height={30} />}
+                    LeftComponent={<Box />}
+                    CenterComponent={(
+                        <Center>
+                            <Logo height={30} />
+
+                        </Center>
+                      )}
+                    RightComponent={(
+                        <HStack spacing={2}>
+                            <ColorModeButton />
+                            <UserMenu />
+                        </HStack>
+                  )}
                 />
               )}
         >
@@ -50,8 +64,8 @@ const Vehicles: React.FC<VehiclesProps> = () => {
                 </Link>
             </HStack>
 
-            <SimpleGrid columns={3} spacing={5} mt={3}>
-                {!activeVehicles.length && [1,2].map((n) => (
+            <SimpleGrid columns={[1, 2, 3, 4]} spacing={5} mt={3}>
+                {!activeVehicles.length && [1, 2].map((n) => (
                     <Skeleton key={n} height="80px" />
                 ))}
                 {activeVehicles.map(((vehicle) => <VehicleItem key={vehicle.id} vehicle={vehicle} />))}
@@ -75,7 +89,7 @@ const Vehicles: React.FC<VehiclesProps> = () => {
             )}
 
             {showRetired && (
-                <SimpleGrid columns={3} spacing={5} mt={3}>
+                <SimpleGrid columns={[1, 2, 3, 4]} spacing={5} mt={3}>
                     {retiredVehicles.map(((vehicle) => <VehicleItem key={vehicle.id} vehicle={vehicle} />))}
                 </SimpleGrid>
             )}
@@ -88,8 +102,8 @@ export const getServerSideProps = withSession(async ({ req }) => {
     if (redirect) return redirect;
 
     return {
-        props: {}
-    }
+        props: {},
+    };
 });
 
 export default Vehicles;

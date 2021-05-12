@@ -1,4 +1,6 @@
-import { HStack, Button, Container, Tab, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import {
+    HStack, Button, Container, Tab, TabPanel, TabPanels, Tabs, Spacer,
+} from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import Header from 'components/Header';
@@ -10,44 +12,35 @@ import TabMenu from 'components/TabMenu';
 import NewServiceForm from 'components/NewServiceForm';
 import MileageAdjustmentForm from 'components/MileageAdjustmentForm';
 import NewReminderForm from 'components/NewReminderForm';
-import { VehiclePageProps } from '../[vehicleId]';
 import useRequest from 'hooks/useRequest';
 import LinkPreload from 'components/LinkPreload';
 import TabsHeader from 'components/TabsHeader';
+import BackButton from 'components/BackButton';
+import { VehiclePageProps } from '../[vehicleId]';
 
-export interface AddPageProps extends VehiclePageProps {
-}
+export type AddPageProps = VehiclePageProps
 
-const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => {
-    return (
-        <TabsHeader
-            tabs={[
+const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => (
+    <TabsHeader
+        columns={[1, 1, 3]}
+        tabs={[
                 'Add Service',
                 'Add Reminder',
                 'Adjust Mileage',
             ]}
-            LeftComponent={
-                <HStack spacing={2}>
-                    <Link href={`/vehicles/${vehicle?.id}`} passHref>
-                        <Button
-                            as="a"
-                            leftIcon={<ArrowBackIcon />}
-                            size="sm"
-                            variant="solid"
-                            colorScheme="gray"
-                        >
-                            Back
-                        </Button>
-                    </Link>
-                    <VehicleActionsMenu vehicle={vehicle} />
-                </HStack>
-            }
-        />
-    );
-}
+        LeftComponent={(
+            <HStack spacing={2}>
+                <BackButton href={`/vehicles/${vehicle?.id}`}>
+                    Back
+                </BackButton>
+                <VehicleActionsMenu vehicle={vehicle} />
+            </HStack>
+              )}
+    />
+);
 
 export const AddPage: React.FC<AddPageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId))
+    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
 
     return (
         <Page
@@ -57,18 +50,18 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
 
             {vehicle && (
                 <TabPanels>
-                    <TabPanel>
-                        <Container maxW="container.md">
+                    <TabPanel p={0}>
+                        <Container maxW={[null, 'container.sm']} p={0}>
                             <NewServiceForm vehicle={vehicle} />
                         </Container>
                     </TabPanel>
-                    <TabPanel>
-                        <Container maxW="container.sm">
+                    <TabPanel p={0}>
+                        <Container maxW={[null, 'sm']} p={0}>
                             <NewReminderForm vehicle={vehicle} />
                         </Container>
                     </TabPanel>
-                    <TabPanel>
-                        <Container maxW="container.sm">
+                    <TabPanel p={0}>
+                        <Container maxW={[null, 'sm']} p={0}>
                             <MileageAdjustmentForm vehicle={vehicle} />
                         </Container>
                     </TabPanel>

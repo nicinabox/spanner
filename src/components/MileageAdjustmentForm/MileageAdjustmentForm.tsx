@@ -10,6 +10,7 @@ import { createRecord } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import { formatEstimatedMileage } from 'utils/vehicle';
 import FormErrors from 'components/FormErrors';
+import SubmitButton from 'components/SubmitButton';
 
 export interface MileageAdjustmentFormProps {
     vehicle: Vehicle;
@@ -62,14 +63,14 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
                 <FormLabel>Enter your current mileage</FormLabel>
                 <Input type="number" {...getFormFieldProps('mileage')} autoFocus />
                 <FormHelperText>
-                    Estimated mileage is
+                    Your estimated mileage is
+                    {' '}
                     {formatEstimatedMileage(vehicle)}
                 </FormHelperText>
             </FormControl>
 
-            <Button type="submit" colorScheme="brand" disabled={isProcessing} isLoading={isProcessing}>
-                Save
-            </Button>
+            <SubmitButton isProcessing={isProcessing} />
+
         </form>
     );
 };

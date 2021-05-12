@@ -1,4 +1,6 @@
-import { HStack, Button, Container, Tab, TabPanel, TabPanels, Tabs, Heading } from '@chakra-ui/react';
+import {
+    HStack, Button, Container, Tab, TabPanel, TabPanels, Tabs, Heading,
+} from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import Header from 'components/Header';
@@ -6,22 +8,21 @@ import Page from 'components/Page';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import React from 'react';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
-import { VehiclePageProps } from '../[vehicleId]';
 import useRequest from 'hooks/useRequest';
 import VehicleForm from 'components/VehicleForm';
 import LinkPreload from 'components/LinkPreload';
+import { VehiclePageProps } from '../[vehicleId]';
 
-export interface EditVehiclePageProps extends VehiclePageProps {
-}
+export type EditVehiclePageProps = VehiclePageProps
 
-export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params, ...props }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId))
+export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params }) => {
+    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
 
     return (
         <Page
-            Header={
+            Header={(
                 <Header
-                    LeftComponent={
+                    LeftComponent={(
                         <HStack spacing={2}>
                             <Link href={`/vehicles/${vehicle?.id}`} passHref>
                                 <Button
@@ -36,14 +37,18 @@ export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params, ...pro
                             </Link>
                             <VehicleActionsMenu vehicle={vehicle} />
                         </HStack>
-                    }
+                      )}
                 />
-            }
+              )}
         >
             <LinkPreload path={vehiclePath(params.vehicleId)} />
 
-            <Container>
-                <Heading mb={6}>Edit {vehicle?.name}</Heading>
+            <Container maxW={[null, 'md']} p={0}>
+                <Heading mb={6}>
+                    Edit
+                    {' '}
+                    {vehicle?.name}
+                </Heading>
                 <VehicleForm vehicle={vehicle} />
             </Container>
         </Page>
