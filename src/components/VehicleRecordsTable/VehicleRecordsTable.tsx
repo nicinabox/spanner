@@ -33,7 +33,7 @@ const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord): num
 };
 
 export const SkeletonVehicleRecordsTable = () => (
-    <Table size="sm">
+    <Table size="sm" data-testid="SkeletonVehicleRecordsTable">
         <Thead>
             <Tr>
                 <Th>Date</Th>

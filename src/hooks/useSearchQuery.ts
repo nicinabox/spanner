@@ -5,6 +5,8 @@ export default function useSearchQuery<T>(initialResults: T[] | undefined = [], 
     const [queryResults, setQueryResults] = useState(initialResults);
 
     useEffect(() => {
+        if (!initialResults.length) return;
+
         if (!searchQuery) {
             setQueryResults(initialResults);
             return;
