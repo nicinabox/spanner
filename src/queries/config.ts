@@ -21,7 +21,7 @@ export const createAPIRequest = (req?) => {
 
         api.interceptors.request.use((config: AxiosRequestConfig) => {
             // eslint-disable-next-line no-param-reassign
-            config.url = config.url.replace(/^\/api/, '');
+            config.url = config.url?.replace(/^\/api/, '');
             return config;
         });
     } else {

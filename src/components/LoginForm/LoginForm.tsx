@@ -15,7 +15,7 @@ function getPlaceholder() {
 }
 
 export const LoginForm: React.FC = () => {
-    const [email, setEmail] = useState();
+    const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [pending, setPending] = useState(false);
     const [error, setError] = useState();

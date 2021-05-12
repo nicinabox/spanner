@@ -18,7 +18,7 @@ export interface VehicleFormProps {
 export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const router = useRouter();
     const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
-    const cancelDeleteRef = useRef();
+    const cancelDeleteRef = useRef<HTMLButtonElement>(null);
 
     const onClose = () => setIsConfirmDeleteOpen(false);
 
@@ -51,6 +51,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
 
     const handleDeleteVehicle = (e) => {
         e.preventDefault();
+        if (!vehicle) return;
         destroyVehicleMutation(vehicle.id);
     };
 
@@ -95,7 +96,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                             <AlertDialogContent>
                                 <AlertDialogHeader fontSize="lg" fontWeight="bold">
                                     Delete &ldquo;
-                                    {vehicle.name}
+                                    {vehicle?.name}
                                     &rdquo;
                                 </AlertDialogHeader>
 

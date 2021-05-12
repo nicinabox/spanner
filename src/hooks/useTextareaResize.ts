@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 export default function useTextareaResize() {
-    const ref = useRef(null);
+    const ref = useRef<HTMLTextAreaElement | null>(null);
 
     const measuredRef = useCallback((node) => {
         if (ref.current) {
