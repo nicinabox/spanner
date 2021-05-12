@@ -13,8 +13,37 @@ import NewReminderForm from 'components/NewReminderForm';
 import { VehiclePageProps } from '../[vehicleId]';
 import useRequest from 'hooks/useRequest';
 import LinkPreload from 'components/LinkPreload';
+import TabsHeader from 'components/TabsHeader';
 
 export interface AddPageProps extends VehiclePageProps {
+}
+
+const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => {
+    return (
+        <TabsHeader
+            tabs={[
+                'Add Service',
+                'Add Reminder',
+                'Adjust Mileage',
+            ]}
+            LeftComponent={
+                <HStack spacing={2}>
+                    <Link href={`/vehicles/${vehicle?.id}`} passHref>
+                        <Button
+                            as="a"
+                            leftIcon={<ArrowBackIcon />}
+                            size="sm"
+                            variant="solid"
+                            colorScheme="gray"
+                        >
+                            Back
+                        </Button>
+                    </Link>
+                    <VehicleActionsMenu vehicle={vehicle} />
+                </HStack>
+            }
+        />
+    );
 }
 
 export const AddPage: React.FC<AddPageProps> = ({ params }) => {
@@ -22,58 +51,29 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
 
     return (
         <Page
-            p={0}
-            Header={
-                <Header
-                    mb={0}
-                    LeftComponent={
-                        <HStack spacing={2}>
-                            <Link href={`/vehicles/${vehicle?.id}`} passHref>
-                                <Button
-                                    as="a"
-                                    leftIcon={<ArrowBackIcon />}
-                                    size="sm"
-                                    variant="solid"
-                                    colorScheme="gray"
-                                >
-                                    Back
-                                </Button>
-                            </Link>
-                            <VehicleActionsMenu vehicle={vehicle} />
-                        </HStack>
-                    }
-                />
-            }
+            Header={<PageHeader vehicle={vehicle} />}
         >
             <LinkPreload path={vehiclePath(params.vehicleId)} />
 
-            <Tabs colorScheme="brand" mt={0}>
-                <TabMenu>
-                    <Tab>Add Service</Tab>
-                    <Tab>Add Reminder</Tab>
-                    <Tab>Adjust Mileage</Tab>
-                </TabMenu>
-
-                {vehicle && (
-                    <TabPanels>
-                        <TabPanel>
-                            <Container maxW="container.md">
-                                <NewServiceForm vehicle={vehicle} />
-                            </Container>
-                        </TabPanel>
-                        <TabPanel>
-                            <Container maxW="container.sm">
-                                <NewReminderForm vehicle={vehicle} />
-                            </Container>
-                        </TabPanel>
-                        <TabPanel>
-                            <Container maxW="container.sm">
-                                <MileageAdjustmentForm vehicle={vehicle} />
-                            </Container>
-                        </TabPanel>
-                    </TabPanels>
-                )}
-            </Tabs>
+            {vehicle && (
+                <TabPanels>
+                    <TabPanel>
+                        <Container maxW="container.md">
+                            <NewServiceForm vehicle={vehicle} />
+                        </Container>
+                    </TabPanel>
+                    <TabPanel>
+                        <Container maxW="container.sm">
+                            <NewReminderForm vehicle={vehicle} />
+                        </Container>
+                    </TabPanel>
+                    <TabPanel>
+                        <Container maxW="container.sm">
+                            <MileageAdjustmentForm vehicle={vehicle} />
+                        </Container>
+                    </TabPanel>
+                </TabPanels>
+            )}
         </Page>
     );
 };

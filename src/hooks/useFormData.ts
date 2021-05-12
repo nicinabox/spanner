@@ -27,6 +27,7 @@ export default function useFormData<T>(initialData: T) {
         handleInputChange,
         getFormFieldProps,
         setFormField,
+        setFormData,
         formData,
     };
 }

@@ -1,4 +1,4 @@
-import { HStack, Button, Container, Tab, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { HStack, Button, Container, Tab, TabPanel, TabPanels, Tabs, Heading } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import Header from 'components/Header';
@@ -19,10 +19,8 @@ export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params, ...pro
 
     return (
         <Page
-            p={0}
             Header={
                 <Header
-                    mb={0}
                     LeftComponent={
                         <HStack spacing={2}>
                             <Link href={`/vehicles/${vehicle?.id}`} passHref>
@@ -45,6 +43,7 @@ export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params, ...pro
             <LinkPreload path={vehiclePath(params.vehicleId)} />
 
             <Container>
+                <Heading mb={6}>Edit {vehicle?.name}</Heading>
                 <VehicleForm vehicle={vehicle} />
             </Container>
         </Page>

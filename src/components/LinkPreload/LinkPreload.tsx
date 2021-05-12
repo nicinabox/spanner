@@ -11,7 +11,7 @@ export const LinkPreload: React.FC<LinkPreloadProps> = ({ path }) => {
     return (
         <Head>
             {paths.map((href) => (
-                <link rel="preload" href={href} as="fetch" crossOrigin="anonymous" />
+                <link key={href} rel="preload" href={href} as="fetch" crossOrigin="anonymous" />
             ))}
         </Head>
     );
