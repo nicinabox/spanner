@@ -4,6 +4,7 @@
   "description": "Track your vehicle service easily",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest",
@@ -18,11 +19,6 @@
   "lint-staged": {
     "src/**/*.{ts,tsx}": "npm run lint:fix",
     "pages/**/*.{ts,tsx}": "npm run lint:fix"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "author": "Nic Haynes",
   "devDependencies": {
