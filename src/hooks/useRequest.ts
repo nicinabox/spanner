@@ -8,5 +8,9 @@ export const fetcher = async (...args: any[]) => {
 };
 
 export default function useRequest<Data = any>(queryKey: string, options = {}) {
-    return useSWR<Data>(queryKey, fetcher, options);
+    const result = useSWR<Data>(queryKey, fetcher, options);
+    return {
+        ...result,
+        loading: !result.data && !result.error,
+    }
 }

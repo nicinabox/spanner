@@ -51,8 +51,8 @@ const Vehicles: React.FC<VehiclesProps> = () => {
             </HStack>
 
             <SimpleGrid columns={3} spacing={5} mt={3}>
-                {!activeVehicles.length && [1,2].map(() => (
-                    <Skeleton height="80px" />
+                {!activeVehicles.length && [1,2].map((n) => (
+                    <Skeleton key={n} height="80px" />
                 ))}
                 {activeVehicles.map(((vehicle) => <VehicleItem key={vehicle.id} vehicle={vehicle} />))}
             </SimpleGrid>

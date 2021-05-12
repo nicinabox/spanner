@@ -10,7 +10,7 @@ import TabMenu from 'components/TabMenu';
 import TabsHeader from 'components/TabsHeader';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import VehicleNotes from 'components/VehicleNotes';
-import VehicleRecordsTable from 'components/VehicleRecordsTable';
+import VehicleRecordsTable, { SkeletonVehicleRecordsTable } from 'components/VehicleRecordsTable';
 import VehicleSummary from 'components/VehicleSummary';
 import useRequest from 'hooks/useRequest';
 import Head from 'next/head';
@@ -52,8 +52,10 @@ const PageHeader = ({ vehicle }) => {
 }
 
 const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
-    const { data: records } = useRequest<VehicleRecord[]>(vehicleRecordsPath(params.vehicleId));
+    const { data: vehicle, loading: vehicleLoading } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
+    const { data: records, loading: recordsLoading } = useRequest<VehicleRecord[]>(vehicleRecordsPath(params.vehicleId));
+
+    const anyLoading = vehicleLoading || recordsLoading;
 
     return (
         <Page
@@ -79,20 +81,25 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
                             <Spacer />
                             <Search />
                         </Flex>
-                        <Skeleton isLoaded={Boolean(records && vehicle)} fadeDuration={0}>
-                            {records?.length && vehicle ? (
-                                <Box shadow="lg" p={4}>
-                                    <VehicleRecordsTable records={records} enableCost={vehicle.enableCost} distanceUnit={vehicle.distanceUnit} />
-                                </Box>
-                            ) : (
-                                <Box>
-                                    <Heading>
-                                        You don't have any records yet
-                                    </Heading>
-                                    <Text>Try adding your purchase as the first one</Text>
-                                </Box>
-                            )}
-                        </Skeleton>
+
+                        {anyLoading && (
+                            <SkeletonVehicleRecordsTable />
+                        )}
+
+                        {vehicle && records?.length && (
+                            <Box shadow="lg" p={4}>
+                                <VehicleRecordsTable records={records} enableCost={vehicle.enableCost} distanceUnit={vehicle.distanceUnit} />
+                            </Box>
+                        )}
+
+                        {!anyLoading && vehicle && !records?.length && (
+                            <Box>
+                                <Heading>
+                                    You don't have any records yet
+                                </Heading>
+                                <Text>Try adding your purchase as the first one</Text>
+                            </Box>
+                        )}
                     </Container>
                 </TabPanel>
                 <TabPanel px={0}>
