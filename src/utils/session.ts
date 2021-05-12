@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { withIronSession } from 'next-iron-session';
 
 if (!process.env.CLIENT_SECRET) {
-    throw new Error('CLIENT_SECRET not set')
+    throw new Error('CLIENT_SECRET not set');
 }
 
 const hashedSecret = crypto

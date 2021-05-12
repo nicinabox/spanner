@@ -7,4 +7,4 @@ export const parseDateISO = (value: string) => {
     const tzOffset = date.getTimezoneOffset() / 60;
     date.setHours(date.getHours() + tzOffset);
     return date;
-}
+};

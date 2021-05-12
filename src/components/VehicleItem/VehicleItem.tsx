@@ -6,6 +6,7 @@ import {
 import Interpunct from 'components/Interpunct';
 import { Vehicle } from 'queries/vehicles';
 import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
+
 export interface VehicleItemProps {
     vehicle: Vehicle;
 }

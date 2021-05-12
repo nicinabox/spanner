@@ -13,12 +13,10 @@ const brandShades = {
     700: '#413d71',
     800: '#34315a',
     900: '#2a284a',
-}
+};
 const shades = Object.keys(brandShades);
 
-const invertedBrandShades = Object.values(brandShades).reverse().reduce((acc, value, i) => {
-    return { ...acc, [shades[i]]: value }
-}, {});
+const invertedBrandShades = Object.values(brandShades).reverse().reduce((acc, value, i) => ({ ...acc, [shades[i]]: value }), {});
 
 export const colors = {
     brand: {

@@ -17,8 +17,8 @@
     "node": "14.16.1"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx}": "npm run lint:fix",
-    "pages/**/*.{ts,tsx}": "npm run lint:fix"
+    "src/**/*.{ts,tsx}": "eslint --fix",
+    "pages/**/*.{ts,tsx}": "eslint --fix"
   },
   "author": "Nic Haynes",
   "devDependencies": {

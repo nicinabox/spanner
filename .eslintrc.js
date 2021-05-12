@@ -41,6 +41,8 @@ module.exports = {
             devDependencies: ['jest.setup.ts', '**/*.spec.ts', '**/*.spec.tsx'],
         }],
 
+        'react/no-array-index-key': 'warn',
+
         'import/extensions': [
             'error',
             'ignorePackages',

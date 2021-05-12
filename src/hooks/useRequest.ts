@@ -12,5 +12,5 @@ export default function useRequest<Data = any>(queryKey: string, options = {}) {
     return {
         ...result,
         loading: !result.data && !result.error,
-    }
+    };
 }

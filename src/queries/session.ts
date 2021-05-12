@@ -23,7 +23,7 @@ export function signIn(api: AxiosInstance, token: string) {
 }
 
 export async function fetchUser(api: AxiosInstance) {
-    const { data } = await api.get<User>(`/user`);
+    const { data } = await api.get<User>('/user');
     return data;
 }
 

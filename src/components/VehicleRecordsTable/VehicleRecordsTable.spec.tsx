@@ -25,7 +25,7 @@ describe('VehicleRecordsTable', () => {
                     cost: null,
                     mileage: 10,
                     id: 1,
-                }
+                },
             ],
         };
         render(<VehicleRecordsTable {...props} />);

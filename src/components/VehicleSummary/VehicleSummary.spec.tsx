@@ -22,7 +22,7 @@ describe('VehicleSummary', () => {
         const { container } = render(<VehicleSummary {...props} />);
         expect(container.firstChild).toHaveTextContent('Since July 18, 2019, you drive about 280 mi per year for an estimated 3,290 mi.');
     });
-     
+
     it('does not render summary when no estimated mileage', () => {
         const props = {
             vehicle: {

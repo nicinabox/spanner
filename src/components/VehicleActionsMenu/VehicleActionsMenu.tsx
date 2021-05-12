@@ -39,10 +39,10 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
         <Menu>
             <Skeleton isLoaded={Boolean(vehicle)} fadeDuration={0} w={100}>
                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="brand" size="sm">
-                        <HStack spacing={2}>
-                            <VehicleColorIndicator color={vehicle?.color} />
-                            <Text>{vehicle?.name}</Text>
-                        </HStack>
+                    <HStack spacing={2}>
+                        <VehicleColorIndicator color={vehicle?.color} />
+                        <Text>{vehicle?.name}</Text>
+                    </HStack>
                 </MenuButton>
             </Skeleton>
             {vehicle && (

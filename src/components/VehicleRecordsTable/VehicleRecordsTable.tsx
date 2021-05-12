@@ -42,7 +42,7 @@ export const SkeletonVehicleRecordsTable = () => (
             </Tr>
         </Thead>
         <Tbody>
-            {[1,2,3].map((n) => (
+            {[1, 2, 3].map((n) => (
                 <Tr key={n}>
                     <Td w={100}>
                         <Skeleton h={3} />
@@ -57,7 +57,7 @@ export const SkeletonVehicleRecordsTable = () => (
             ))}
         </Tbody>
     </Table>
-)
+);
 
 export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, enableCost, distanceUnit }) => {
     const reverseChronoRecords = sortRecordsNewestFirst(records);
