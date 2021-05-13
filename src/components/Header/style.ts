@@ -5,7 +5,7 @@ export default {
     baseStyle: (props) => ({
         mb: 6,
         p: 2,
-        positon: 'sticky',
+        position: 'sticky',
         top: 0,
         zIndex: theme.zIndices.sticky,
         bg: mode(`${props.colorScheme}.primary`, `${props.colorScheme}.900`)(props),

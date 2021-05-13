@@ -1,5 +1,6 @@
 import { AddIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
+    Badge,
     Box, Button, Center, Heading, HStack, SimpleGrid, Skeleton,
 } from '@chakra-ui/react';
 import ColorModeButton from 'components/ColorModeButton';
@@ -30,7 +31,7 @@ const Vehicles: React.FC<VehiclesProps> = () => {
 
     return (
         <Page
-            maxW="container.lg"
+            maxW="container.xl"
             Header={(
                 <Header
                     LeftComponent={<Box />}
