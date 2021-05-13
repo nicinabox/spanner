@@ -26,7 +26,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
         const re = new RegExp(query, 'gi');
         const date = intlFormat(parseDateISO(item.date), { month: 'short', year: 'numeric', day: 'numeric' });
 
-        return re.test(item.notes) || re.test(date);
+        return re.test(item.notes) || re.test(date) || re.test(item.mileage.toString());
     });
 
     const anyLoading = vehicleLoading || recordsLoading;
