@@ -63,6 +63,8 @@ module.exports = {
         'react/jsx-indent-props': ['error', 4],
         'react/jsx-indent': ['error', 4],
 
+        'arrow-body-style': 'off',
+
         indent: 'off',
         '@typescript-eslint/indent': ['error', 4, { ignoredNodes: ['JSXElement *', 'JSXElement'] }],
 
