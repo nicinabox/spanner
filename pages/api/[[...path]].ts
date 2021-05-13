@@ -1,5 +1,7 @@
 import https from 'https';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import { Session } from 'queries/session';
+import { withSession } from 'utils/session';
 
 // eslint-disable-next-line prefer-destructuring
 const PROXY_HOST = process.env.PROXY_HOST;
@@ -22,7 +24,7 @@ export const config = {
 
 const host = new URL(PROXY_HOST).hostname;
 
-export default createProxyMiddleware({
+const baseProxyConfig = {
     target: PROXY_HOST,
     changeOrigin: true,
     pathRewrite: (path, req) => {
@@ -35,4 +37,21 @@ export default createProxyMiddleware({
     headers: {
         host,
     },
+};
+
+export default withSession((req, res) => {
+    const session: Session | undefined = req.session.get('session');
+
+    const onProxyReq = (proxyReq) => {
+        proxyReq.setHeader('Accept', 'application/vnd.api+json; version=2');
+
+        if (session) {
+            proxyReq.setHeader('Authorization', `Token ${session.authToken}`);
+        }
+    };
+
+    return createProxyMiddleware({
+        ...baseProxyConfig,
+        onProxyReq,
+    });
 });
