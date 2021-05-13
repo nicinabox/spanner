@@ -61,7 +61,7 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
                 )}
             </Container>
 
-            <Container maxW="container.md" mx={0}>
+            <Container maxW="container.xl">
                 {editing && (
                     <Textarea
                         ref={textareaRef}

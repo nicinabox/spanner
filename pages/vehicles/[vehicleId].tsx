@@ -52,7 +52,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
                 <TabPanel px={0}>
                     <VehicleService vehicleId={params.vehicleId} />
                 </TabPanel>
-                <TabPanel px={0}>
+                <TabPanel>
                     {vehicle && (
                         <VehicleNotes vehicle={vehicle} />
                     )}
