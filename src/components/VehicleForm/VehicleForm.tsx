@@ -69,12 +69,12 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
 
                 <FormControl id="name" mb={4} isRequired>
                     <FormLabel>Name</FormLabel>
-                    <Input type="string" {...getFormFieldProps('name')} />
+                    <Input type="text" {...getFormFieldProps('name')} />
                 </FormControl>
 
                 <FormControl id="name" mb={4}>
                     <FormLabel>VIN</FormLabel>
-                    <Input type="string" {...getFormFieldProps('vin')} />
+                    <Input type="text" {...getFormFieldProps('vin')} />
                     <FormHelperText>VIN is optional but recommended</FormHelperText>
                 </FormControl>
 
