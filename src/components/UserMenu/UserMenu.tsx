@@ -20,7 +20,7 @@ const gravatarUrl = (email: string) => {
         .createHash('md5')
         .update(email)
         .digest('hex');
-    return `https://www.gravatar.com/avatar/${hash}.jpg`;
+    return `https://www.gravatar.com/avatar/${hash}.jpg?default=identicon`;
 };
 
 export const UserMenu: React.FC<UserMenuProps> = () => {
@@ -39,7 +39,6 @@ export const UserMenu: React.FC<UserMenuProps> = () => {
                                 borderRadius="full"
                                 boxSize={6}
                                 src={gravatarUrl(user.email)}
-                                alt="gravatar"
                             />
                         )}
                     </HStack>
