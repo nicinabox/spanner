@@ -25,18 +25,6 @@ const proxyConfig = {
     },
 };
 
-// export default withSession((req, res) => httpProxyMiddleware(req, res, proxyConfig));
-
-// const proxy = createProxyMiddleware({
-//     ...proxyConfig,
-//     pathRewrite: (path, req) => {
-//         const nextPath = path.replace('/api', '');
-//         console.log(req.method, nextPath) // eslint-disable-line
-
-//         return nextPath;
-//     },
-// });
-
 const proxy = httpProxy.createProxyServer(proxyConfig);
 
 export default withSession((req, res) => {
@@ -48,7 +36,7 @@ export default withSession((req, res) => {
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        proxy.once('onProxyReq', (proxyReq) => {
+        proxy.once('proxyReq', (proxyReq) => {
             proxyReq.setHeader('Accept', 'application/vnd.api+json; version=2');
 
             if (session) {
