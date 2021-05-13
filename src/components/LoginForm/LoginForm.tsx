@@ -36,7 +36,8 @@ export const LoginForm: React.FC = () => {
         requestSession.mutate(newSessionForm.formData.email);
     };
 
-    const handleLogin = () => {
+    const handleLogin = (ev) => {
+        ev.preventDefault();
         router.push(`/login/${loginForm.formData.loginToken}`);
     };
 
@@ -65,7 +66,7 @@ export const LoginForm: React.FC = () => {
     if (loginPending) {
         return (
             <Box p="4">
-                <Alert status="success">
+                <Alert status="success" mb={6}>
                     <AlertIcon />
                     Check your email for a login token.
                 </Alert>
@@ -77,7 +78,7 @@ export const LoginForm: React.FC = () => {
                         </FormLabel>
                         <Flex>
                             <Input
-                                {...newSessionForm.getFormFieldProps('loginToken')}
+                                {...loginForm.getFormFieldProps('loginToken')}
                                 autoFocus
                             />
                             <Button type="submit" colorScheme="brand" ml="4">Sign In</Button>
