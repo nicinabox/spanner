@@ -1,18 +1,13 @@
-import https from 'https';
-import { createProxyMiddleware } from 'http-proxy-middleware';
+import httpProxyMiddleware from 'next-http-proxy-middleware';
 import { Session } from 'queries/session';
 import { withSession } from 'utils/session';
 
 // eslint-disable-next-line prefer-destructuring
 const PROXY_HOST = process.env.PROXY_HOST;
-// eslint-disable-next-line prefer-destructuring
-const NODE_ENV = process.env.NODE_ENV;
 
 if (!PROXY_HOST) {
     throw new Error('PROXY_HOST not set');
 }
-
-const isProd = NODE_ENV === 'production';
 
 export const config = {
     api: {
@@ -22,36 +17,24 @@ export const config = {
     },
 };
 
-const host = new URL(PROXY_HOST).hostname;
-
-const baseProxyConfig = {
+const proxyConfig = {
     target: PROXY_HOST,
-    changeOrigin: true,
-    pathRewrite: (path, req) => {
-        const nextPath = path.replace('/api', '');
-        console.log(req.method, nextPath) // eslint-disable-line
-
-        return nextPath;
-    },
-    agent: isProd ? https.globalAgent : false,
+    xfwd: true,
     headers: {
-        host,
+        host: new URL(PROXY_HOST).hostname,
     },
-};
+    pathRewrite: {
+        '^/api': '',
+    },
+    onProxyReq: (proxyReq, req) => {
+        const session: Session | undefined = req.session.get('session');
 
-export default withSession((req, res) => {
-    const session: Session | undefined = req.session.get('session');
-
-    const onProxyReq = (proxyReq) => {
         proxyReq.setHeader('Accept', 'application/vnd.api+json; version=2');
 
         if (session) {
             proxyReq.setHeader('Authorization', `Token ${session.authToken}`);
         }
-    };
+    },
+};
 
-    return createProxyMiddleware({
-        ...baseProxyConfig,
-        onProxyReq,
-    });
-});
+export default withSession((req, res) => httpProxyMiddleware(req, res, proxyConfig));
