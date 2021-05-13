@@ -19,20 +19,26 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) 
 
     return (
         <HStack spacing={4} mb={10}>
-            <Stat>
-                <StatLabel>{oldestRecord.notes}</StatLabel>
-                <StatNumber>
-                    {intlFormat(parseDateISO(oldestRecord.date), { month: 'short', year: 'numeric', day: 'numeric' })}
-                </StatNumber>
-            </Stat>
-            <Stat>
-                <StatLabel>Estimated mileage</StatLabel>
-                <StatNumber>{formatEstimatedMileage(vehicle)}</StatNumber>
-            </Stat>
-            <Stat>
-                <StatLabel>Yearly mileage</StatLabel>
-                <StatNumber>{formatMilesPerYear(vehicle)}</StatNumber>
-            </Stat>
+            {oldestRecord && (
+                <Stat>
+                    <StatLabel>Since</StatLabel>
+                    <StatNumber>
+                        {intlFormat(parseDateISO(oldestRecord?.date), { month: 'short', year: 'numeric', day: 'numeric' })}
+                    </StatNumber>
+                </Stat>
+            )}
+            {vehicle.estimatedMileage && (
+                <Stat>
+                    <StatLabel>Estimated mileage</StatLabel>
+                    <StatNumber>{formatEstimatedMileage(vehicle)}</StatNumber>
+                </Stat>
+            )}
+            {vehicle.milesPerYear && (
+                <Stat>
+                    <StatLabel>Yearly mileage</StatLabel>
+                    <StatNumber>{formatMilesPerYear(vehicle)}</StatNumber>
+                </Stat>
+            )}
             <Stat>
                 <StatLabel>VIN</StatLabel>
                 <StatNumber>
