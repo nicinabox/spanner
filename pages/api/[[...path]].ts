@@ -48,7 +48,7 @@ export default withSession((req, res) => {
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        proxy.once('onProxyReq', (proxyReq) => {
+        proxy.once('proxyReq', (proxyReq) => {
             proxyReq.setHeader('Accept', 'application/vnd.api+json; version=2');
 
             if (session) {
