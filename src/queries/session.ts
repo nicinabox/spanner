@@ -27,6 +27,7 @@ export async function fetchUser(api: AxiosInstance) {
     return data;
 }
 
-export function requestSession(email: string) {
-    return axios.post('/api/sessions', { email });
+export async function requestSession(api: AxiosInstance, email: string) {
+    const { data } = await api.post('/api/sessions', { email });
+    return data;
 }

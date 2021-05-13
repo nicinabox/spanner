@@ -19,6 +19,12 @@ export default function useMutation<T>(queryFn: (api: AxiosInstance, ...args: an
     const [data, setData] = useState<T | undefined>();
     const [error, setError] = useState<Error | APIReponseError | undefined>();
 
+    const reset = () => {
+        setData(undefined);
+        setError(undefined);
+        setStatus('idle');
+    };
+
     const mutate = async (...args: any[]) => {
         setStatus('processing');
         setError(undefined);
@@ -38,6 +44,7 @@ export default function useMutation<T>(queryFn: (api: AxiosInstance, ...args: an
 
     return {
         mutate,
+        reset,
         data,
         error,
         status,

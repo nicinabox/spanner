@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import {
-    Input, Button, FormHelperText, FormControl, Flex, Spacer, AlertIcon, Alert, Center, Box, FormLabel,
+    Input, Button, FormHelperText, FormControl, Flex, AlertIcon, Alert, Center, Box, FormLabel,
 } from '@chakra-ui/react';
 import { sample } from 'lodash';
-import { requestSession } from '../../queries/session';
+import * as session from 'queries/session';
+import useFormData from 'hooks/useFormData';
+import useMutation from 'hooks/useMutation';
+import { useRouter } from 'next/router';
 
 function getPlaceholder() {
     return sample([
@@ -15,42 +18,39 @@ function getPlaceholder() {
 }
 
 export const LoginForm: React.FC = () => {
-    const [email, setEmail] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [pending, setPending] = useState(false);
-    const [error, setError] = useState();
+    const router = useRouter();
 
-    const handleChange = (event) => setEmail(event.target.value);
+    const [loginPending, setLoginPending] = useState(false);
 
-    const handleSubmit = async (event) => {
+    const newSessionForm = useFormData({ email: '' });
+    const loginForm = useFormData({ loginToken: '' });
+
+    const requestSession = useMutation(session.requestSession, {
+        onSuccess() {
+            setLoginPending(true);
+        },
+    });
+
+    const handleRequestSession = async (event) => {
         event.preventDefault();
+        requestSession.mutate(newSessionForm.formData.email);
+    };
 
-        setLoading(true);
-
-        try {
-            await requestSession(email);
-            setPending(true);
-        } catch (err) {
-            setLoading(false);
-            setPending(false);
-            setError(err.toString());
-        }
+    const handleLogin = () => {
+        router.push(`/login/${loginForm.formData.loginToken}`);
     };
 
     const handleReset = () => {
-        setError(undefined);
-        setLoading(false);
-        setPending(false);
+        requestSession.reset();
+        setLoginPending(false);
     };
 
-    const isFormValid = Boolean(email);
-
-    if (error) {
+    if (requestSession.error) {
         return (
             <Box p="4">
                 <Alert status="error">
                     <AlertIcon />
-                    {error}
+                    {requestSession.error}
                 </Alert>
 
                 <Center mt="4">
@@ -62,13 +62,28 @@ export const LoginForm: React.FC = () => {
         );
     }
 
-    if (pending) {
+    if (loginPending) {
         return (
             <Box p="4">
                 <Alert status="success">
                     <AlertIcon />
-                    Check your email for a Sign In button.
+                    Check your email for a login token.
                 </Alert>
+
+                <form onSubmit={handleLogin}>
+                    <FormControl>
+                        <FormLabel>
+                            Paste the login token from the email
+                        </FormLabel>
+                        <Flex>
+                            <Input
+                                {...newSessionForm.getFormFieldProps('loginToken')}
+                                autoFocus
+                            />
+                            <Button type="submit" colorScheme="brand" ml="4">Sign In</Button>
+                        </Flex>
+                    </FormControl>
+                </form>
 
                 <Center mt="4">
                     <Button variant="outline" size="sm" onClick={handleReset}>
@@ -81,21 +96,21 @@ export const LoginForm: React.FC = () => {
 
     return (
         <Box p="4">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleRequestSession}>
                 <FormControl>
                     <FormLabel>
                         Enter your email to get started
                     </FormLabel>
                     <Flex>
                         <Input
-                            name="email"
+                            {...newSessionForm.getFormFieldProps('email')}
                             type="email"
-                            value={email}
                             placeholder={getPlaceholder()}
-                            onChange={handleChange}
                             autoFocus
                         />
-                        <Button type="submit" colorScheme="brand" ml="4" disabled={!isFormValid || loading} isLoading={loading}>Sign In</Button>
+                        <Button type="submit" colorScheme="brand" ml="4" disabled={requestSession.isProcessing} isLoading={requestSession.isProcessing}>
+                            Next
+                        </Button>
                     </Flex>
                     <FormHelperText>
                         First time? We&apos;ll setup your account automagically.
