@@ -18,34 +18,36 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) 
     const [oldestRecord] = sortRecordsOldestFirst(records);
 
     return (
-        <HStack spacing={4} mb={10}>
-            {oldestRecord && (
+        <Box overflowY="hidden" overflowX="auto" maxW="100%">
+            <HStack spacing={4} mb={10} minW="max-content">
+                {oldestRecord && (
+                    <Stat>
+                        <StatLabel>Since</StatLabel>
+                        <StatNumber minW="max-content">
+                            {intlFormat(parseDateISO(oldestRecord?.date), { month: 'short', year: 'numeric', day: 'numeric' })}
+                        </StatNumber>
+                    </Stat>
+                )}
+                {vehicle.estimatedMileage && (
+                    <Stat>
+                        <StatLabel>Estimated mileage</StatLabel>
+                        <StatNumber>{formatEstimatedMileage(vehicle)}</StatNumber>
+                    </Stat>
+                )}
+                {vehicle.milesPerYear && (
+                    <Stat>
+                        <StatLabel>Yearly mileage</StatLabel>
+                        <StatNumber>{formatMilesPerYear(vehicle)}</StatNumber>
+                    </Stat>
+                )}
                 <Stat>
-                    <StatLabel>Since</StatLabel>
+                    <StatLabel>VIN</StatLabel>
                     <StatNumber>
-                        {intlFormat(parseDateISO(oldestRecord?.date), { month: 'short', year: 'numeric', day: 'numeric' })}
+                        {vehicle.vin || <Link href={`/vehicles/${vehicle.id}/edit`}>Add VIN...</Link>}
                     </StatNumber>
                 </Stat>
-            )}
-            {vehicle.estimatedMileage && (
-                <Stat>
-                    <StatLabel>Estimated mileage</StatLabel>
-                    <StatNumber>{formatEstimatedMileage(vehicle)}</StatNumber>
-                </Stat>
-            )}
-            {vehicle.milesPerYear && (
-                <Stat>
-                    <StatLabel>Yearly mileage</StatLabel>
-                    <StatNumber>{formatMilesPerYear(vehicle)}</StatNumber>
-                </Stat>
-            )}
-            <Stat>
-                <StatLabel>VIN</StatLabel>
-                <StatNumber>
-                    {vehicle.vin || <Link href={`/vehicles/${vehicle.id}/edit`}>Add VIN...</Link>}
-                </StatNumber>
-            </Stat>
-        </HStack>
+            </HStack>
+        </Box>
     );
 };
 
