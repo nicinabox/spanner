@@ -17,17 +17,9 @@ export interface VehicleRecordsTableProps {
     isLoaded?: boolean;
 }
 
-const getNextRecordWithMileage = (currentIdx: number, arr: VehicleRecord[]): VehicleRecord | undefined => {
-    let found: VehicleRecord | undefined;
-    // eslint-disable-next-line no-plusplus
-    for (let i = currentIdx + 1; i < arr.length; i++) {
-        const record = arr[i];
-        if (record.mileage) {
-            found = record;
-            break;
-        }
-    }
-    return found;
+const getNextRecordWithMileage = (record: VehicleRecord, arr: VehicleRecord[]): VehicleRecord | undefined => {
+    const idx = arr.findIndex((r) => r.id === record.id);
+    return arr[idx + 1];
 };
 
 const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord): number | undefined => {
@@ -123,54 +115,54 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                                 <Cell>Notes</Cell>
                             </Row>
 
-                            {yearRecords.map((record, i, arr) => {
-                        const nextRecord = getNextRecordWithMileage(i, arr);
-                        const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
+                            {yearRecords.map((record, i) => {
+                                const nextRecord = getNextRecordWithMileage(record, reverseChronoRecords);
+                                const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
 
-                        return (
-                            <Row key={record.id} bg={i % 2 ? 'gray.50' : 'white'}>
-                                <Cell
-                                    whiteSpace="nowrap"
-                                    fontWeight={['bold', null, 'inherit']}
-                                    fontSize={['sm', null, 'md']}
-                                    mr={[3, null, 'auto']}
-                                >
-                                    {intlFormat(parseDateISO(record.date), { month: 'short', day: 'numeric' })}
-                                </Cell>
+                                return (
+                                    <Row key={record.id} bg={i % 2 ? 'gray.50' : 'white'}>
+                                        <Cell
+                                            whiteSpace="nowrap"
+                                            fontWeight={['bold', null, 'inherit']}
+                                            fontSize={['sm', null, 'md']}
+                                            mr={[3, null, 'auto']}
+                                        >
+                                            {intlFormat(parseDateISO(record.date), { month: 'short', day: 'numeric' })}
+                                        </Cell>
 
-                                <Cell
-                                    whiteSpace="nowrap"
-                                    alignItems="center"
-                                    textAlign={['left', null, 'right']}
-                                    flex={[1, null, 'auto']}
-                                    fontSize={['sm', null, 'md']}
-                                >
-                                    {Boolean(Number(record.mileage)) && formatMileage(record.mileage, distanceUnit)}
-                                    {deltaMileage !== undefined && (
-                                        <Text fontSize="xs" color="gray" ml={1}>
-                                            (+
-                                            {deltaMileage}
-                                            )
-                                        </Text>
-                                    )}
-                                </Cell>
+                                        <Cell
+                                            whiteSpace="nowrap"
+                                            alignItems="center"
+                                            textAlign={['left', null, 'right']}
+                                            flex={[1, null, 'auto']}
+                                            fontSize={['sm', null, 'md']}
+                                        >
+                                            {Boolean(Number(record.mileage)) && formatMileage(record.mileage, distanceUnit)}
+                                            {deltaMileage !== undefined && (
+                                                <Text fontSize="xs" color="gray" ml={1}>
+                                                    (+
+                                                    {deltaMileage}
+                                                    )
+                                                </Text>
+                                            )}
+                                        </Cell>
 
-                                {enableCost && (
-                                    <Cell
-                                        whiteSpace="nowrap"
-                                        fontSize={['sm', null, 'md']}
-                                        textAlign="right"
-                                    >
-                                        {record.cost ? formatCurrency(Number(record.cost)) : '--'}
-                                    </Cell>
-                                )}
+                                        {enableCost && (
+                                            <Cell
+                                                whiteSpace="nowrap"
+                                                fontSize={['sm', null, 'md']}
+                                                textAlign="right"
+                                            >
+                                                {record.cost ? formatCurrency(Number(record.cost)) : '--'}
+                                            </Cell>
+                                        )}
 
-                                <Cell basis={['100%', null]} w="100%">
-                                    {record.notes}
-                                </Cell>
-                            </Row>
-                        );
-                    })}
+                                        <Cell basis={['100%', null]} w="100%">
+                                            {record.notes}
+                                        </Cell>
+                                    </Row>
+                                );
+                            })}
                         </FlexTable>
                     </Box>
                 );
