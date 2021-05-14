@@ -93,36 +93,37 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
         );
     }
 
-    return Object.keys(recordsByYear).sort((a, b) => Number(b) - Number(a)).map((year) => {
-        const yearRecords = recordsByYear[year];
+    return (
+        <>
+            {Object.keys(recordsByYear).sort((a, b) => Number(b) - Number(a)).map((year) => {
+                const yearRecords = recordsByYear[year];
 
-        return (
-            <Box key={year}>
-                <Heading
-                    size="md"
-                    px={[0, null, 4]}
-                    pb={2}
-                    borderBottomColor="gray.300"
-                    borderBottomWidth="1px"
-                >
-                    {year}
-                </Heading>
-                <FlexTable mb={8}>
-                    <Row
-                        fontWeight="bold"
-                        fontSize="sm"
-                        color="gray.600"
-                        borderBottomColor="gray.300"
-                        display={['none', null, 'table-row']}
+                return (
+                    <Box key={year}>
+                        <Heading
+                            size="md"
+                            px={[0, null, 4]}
+                            pb={2}
+                            borderBottomColor="gray.300"
+                            borderBottomWidth="1px"
+                        >
+                            {year}
+                        </Heading>
+                        <FlexTable mb={8}>
+                            <Row
+                                fontWeight="bold"
+                                fontSize="sm"
+                                color="gray.600"
+                                borderBottomColor="gray.300"
+                                display={['none', null, 'table-row']}
+                            >
+                                <Cell>Date</Cell>
+                                <Cell>Mileage</Cell>
+                                {enableCost && <Cell>Cost</Cell>}
+                                <Cell>Notes</Cell>
+                            </Row>
 
-                    >
-                        <Cell>Date</Cell>
-                        <Cell>Mileage</Cell>
-                        {enableCost && <Cell>Cost</Cell>}
-                        <Cell>Notes</Cell>
-                    </Row>
-
-                    {yearRecords.map((record, i, arr) => {
+                            {yearRecords.map((record, i, arr) => {
                         const nextRecord = getNextRecordWithMileage(i, arr);
                         const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
 
@@ -170,10 +171,12 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                             </Row>
                         );
                     })}
-                </FlexTable>
-            </Box>
-        );
-    });
+                        </FlexTable>
+                    </Box>
+                );
+            })}
+        </>
+    );
 };
 
 export default VehicleRecordsTable;
