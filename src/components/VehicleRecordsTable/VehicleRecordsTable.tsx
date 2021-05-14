@@ -60,7 +60,7 @@ const FlexTable = (props) => (
         direction="column"
         flexFlow="column nowrap"
         display={['flex', null, 'table']}
-        __css={{ 'border-collapse': 'collapse' }}
+        __css={{ borderCollapse: 'collapse' }}
         {...props}
     />
 );
@@ -106,7 +106,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                 const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
 
                 return (
-                    <Row borderBottomWidth={i < arr.length - 1 ? '1px' : 'none'}>
+                    <Row key={record.id} borderBottomWidth={i < arr.length - 1 ? '1px' : 'none'}>
                         <Cell
                             whiteSpace="nowrap"
                             basis={basis.date}
