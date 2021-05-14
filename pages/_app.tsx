@@ -12,6 +12,9 @@ function App({ Component, pageProps }) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta name="description" content="The easiest way keep service records for all your vehicles." />
 
+                <link rel="manifest" href="/manifest.json" />
+                <meta name="apple-mobile-web-app-capable" content="yes" />
+
                 {/* <!-- For non-Retina (@1× display) iPhone, iPod Touch, and Android 2.1+ devices: --> */}
                 {/* <!-- 57×57px --> */}
                 <link rel="apple-touch-icon-precomposed" href="/assets/apple-touch-icon-precomposed.png" />
