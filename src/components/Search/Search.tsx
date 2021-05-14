@@ -7,10 +7,10 @@ export interface SearchProps {
 
 export const Search: React.FC<SearchProps> = ({ onChangeText }) => (
     <Input
-        placeholder="Search records"
-        colorScheme="brand"
+        placeholder="Search by date, mileage, or notes"
+        colorScheme="gray"
         variant="filled"
-        size="sm"
+        size="md"
         maxWidth={['100%', 400]}
         onChange={(e) => {
             onChangeText(e.target.value);

@@ -16,8 +16,8 @@ export interface VehicleStatsProps {
 
 const VehicleStat = ({ label, children }) => (
     <Stat minW="max-content">
-        <StatLabel>{label}</StatLabel>
-        <StatNumber>
+        <StatLabel color="gray.500">{label}</StatLabel>
+        <StatNumber fontSize={['lg', null, 'x-large']}>
             {children}
         </StatNumber>
     </Stat>
@@ -27,8 +27,8 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) 
     const [oldestRecord] = sortRecordsOldestFirst(records);
 
     return (
-        <Box overflowY="hidden" overflowX="auto" maxW="calc(100vw - 32px)">
-            <HStack spacing={[8, null, 5]} mb={10}>
+        <Box overflowY="hidden" overflowX="auto" maxW="calc(100vw - 32px)" mb={6}>
+            <HStack spacing={[8, null, 5]} pb={2}>
                 {vehicle.estimatedMileage && (
                     <VehicleStat label="Estimated mileage">
                         {formatEstimatedMileage(vehicle)}

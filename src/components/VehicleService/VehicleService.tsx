@@ -45,7 +45,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
             <Flex mb={6}>
                 <HStack spacing={6}>
                     <Link href={`/vehicles/${vehicleId}/add`} passHref>
-                        <Button as="a" colorScheme="brand" size="sm" leftIcon={<AddIcon />}>
+                        <Button as="a" colorScheme="brand" size="md" leftIcon={<AddIcon />}>
                             Add...
                         </Button>
                     </Link>
@@ -55,7 +55,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
             </Flex>
 
             {(anyLoading || Boolean(records?.length)) ? (
-                <Box shadow="lg" p={4} overflowY="hidden" overflowX="auto" maxW={['100%', null]}>
+                <Box shadow={['none', 'lg', 'lg']} p={[0, 4]} overflowY="hidden" overflowX="auto">
                     <VehicleRecordsTable
                         records={recordsResults}
                         enableCost={vehicle?.enableCost}
