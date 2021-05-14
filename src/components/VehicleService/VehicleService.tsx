@@ -61,7 +61,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
             )}
 
             {vehicle && Boolean(recordsResults?.length) && (
-            <Box shadow="lg" p={4}>
+            <Box shadow="lg" p={4} overflowY="hidden" overflowX="auto" maxW={['100%', null]}>
                 <VehicleRecordsTable records={recordsResults} enableCost={vehicle.enableCost} distanceUnit={vehicle.distanceUnit} />
             </Box>
             )}

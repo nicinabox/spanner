@@ -18,8 +18,8 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) 
     const [oldestRecord] = sortRecordsOldestFirst(records);
 
     return (
-        <Box overflowY="hidden" overflowX="auto" maxW="100%">
-            <HStack spacing={4} mb={10} minW="max-content">
+        <Box overflowY="hidden" overflowX="auto" maxW="calc(100vw - 32px)">
+            <HStack spacing={5} mb={10}>
                 {oldestRecord && (
                     <Stat>
                         <StatLabel>Since</StatLabel>
@@ -30,14 +30,14 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) 
                 )}
                 {vehicle.estimatedMileage && (
                     <Stat>
-                        <StatLabel>Estimated mileage</StatLabel>
-                        <StatNumber>{formatEstimatedMileage(vehicle)}</StatNumber>
+                        <StatLabel minW="max-content">Estimated mileage</StatLabel>
+                        <StatNumber minW="max-content">{formatEstimatedMileage(vehicle)}</StatNumber>
                     </Stat>
                 )}
                 {vehicle.milesPerYear && (
                     <Stat>
-                        <StatLabel>Yearly mileage</StatLabel>
-                        <StatNumber>{formatMilesPerYear(vehicle)}</StatNumber>
+                        <StatLabel minW="max-content">Yearly mileage</StatLabel>
+                        <StatNumber minW="max-content">{formatMilesPerYear(vehicle)}</StatNumber>
                     </Stat>
                 )}
                 <Stat>
