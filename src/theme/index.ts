@@ -31,8 +31,10 @@ export const colors = {
 
 export default extendTheme({
     colors,
-    initialColorMode: 'system',
-    useSystemColorMode: true,
+    config: {
+        initialColorMode: 'light',
+        useSystemColorMode: true,
+    },
     fonts: {
         heading: 'Lato',
         body: 'Lato',
