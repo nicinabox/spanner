@@ -33,7 +33,7 @@ export default extendTheme({
     colors,
     config: {
         initialColorMode: 'light',
-        useSystemColorMode: true,
+        useSystemColorMode: false,
     },
     fonts: {
         heading: 'Lato',
