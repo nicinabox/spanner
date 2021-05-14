@@ -23,6 +23,11 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
         notes: '',
         reminderType: '',
         mileage: '',
+    }, (fieldName, fieldValue) => {
+        if (fieldName === 'mileage') {
+            return fieldValue.replace(/\D/g, '');
+        }
+        return fieldValue;
     });
 
     const {
@@ -85,7 +90,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
             {['mileage', 'date_or_mileage'].includes(formData.reminderType) && (
                 <FormControl mb={4} id="mileage" isRequired>
                     <FormLabel>Mileage</FormLabel>
-                    <Input type="text" {...getFormFieldProps('mileage')} />
+                    <Input {...getFormFieldProps('mileage')} />
                 </FormControl>
             )}
 

@@ -27,6 +27,11 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
 
     const { formData, getFormFieldProps } = useFormData({
         mileage: '',
+    }, (fieldName, fieldValue) => {
+        if (fieldName === 'mileage') {
+            return fieldValue.replace(/\D/g, '');
+        }
+        return fieldValue;
     });
 
     const handleSubmit = (e) => {
@@ -35,7 +40,7 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
         mutateVehicleRecord(vehicle.id, {
             date: format(new Date(), 'yyyy-MM-dd'),
             notes: 'Mileage adjustment',
-            mileage: Number(formData.mileage),
+            mileage: formData.mileage,
             recordType: 'mileage adjustment',
         });
     };
@@ -61,7 +66,7 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
 
             <FormControl mb={4} id="mileage" isRequired>
                 <FormLabel>Enter your current mileage</FormLabel>
-                <Input type="number" {...getFormFieldProps('mileage')} autoFocus />
+                <Input {...getFormFieldProps('mileage')} autoFocus />
                 <FormHelperText>
                     Your estimated mileage is
                     {' '}

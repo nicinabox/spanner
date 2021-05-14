@@ -91,7 +91,9 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                 </FormControl>
 
                 <FormControl display="flex" alignItems="center" mb={4}>
-                    <Checkbox {...getFormFieldProps('enableCost')}>Enable Cost</Checkbox>
+                    <Checkbox {...getFormFieldProps('enableCost')}>
+                        Enable Cost
+                    </Checkbox>
                 </FormControl>
 
                 <SubmitButton isProcessing={isProcessing} />

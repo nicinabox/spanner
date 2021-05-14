@@ -22,6 +22,14 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
         notes: '',
         mileage: vehicle.estimatedMileage,
         cost: '',
+    }, (fieldName, fieldValue) => {
+        if (fieldName === 'mileage') {
+            return fieldValue.replace(/\D/g, '');
+        }
+        if (fieldName === 'cost') {
+            return fieldValue.replace(/\D/g, '');
+        }
+        return fieldValue;
     });
 
     const {
@@ -70,11 +78,11 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
                     </FormControl>
                     <FormControl mb={4} id="mileage" isRequired>
                         <FormLabel>Mileage</FormLabel>
-                        <Input type="number" {...getFormFieldProps('mileage')} />
+                        <Input {...getFormFieldProps('mileage')} />
                     </FormControl>
                     <FormControl mb={4} id="cost">
                         <FormLabel>Cost</FormLabel>
-                        <Input type="number" {...getFormFieldProps('cost')} />
+                        <Input {...getFormFieldProps('cost')} />
                     </FormControl>
                 </Box>
             </SimpleGrid>
