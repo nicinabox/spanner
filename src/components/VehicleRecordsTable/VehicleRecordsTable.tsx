@@ -56,7 +56,7 @@ const FlexTable = (props) => (
         direction="column"
         flexFlow="column nowrap"
         display={['flex', null, 'table']}
-        __css={{ borderCollapse: 'collapse' }}
+        sx={{ borderCollapse: 'collapse' }}
         {...props}
     />
 );
