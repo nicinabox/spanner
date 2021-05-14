@@ -54,21 +54,21 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 <Search onChangeText={handleSearch} />
             </Flex>
 
-            <Box shadow="lg" p={4} overflowY="hidden" overflowX="auto" maxW={['100%', null]}>
-                <VehicleRecordsTable
-                    records={recordsResults}
-                    enableCost={vehicle?.enableCost}
-                    distanceUnit={vehicle?.distanceUnit}
-                />
-            </Box>
-
-            {Boolean(!anyLoading && !records?.length) && (
-            <Box>
-                <Heading>
-                    You don&apos;t have any records yet
-                </Heading>
-                <Text>Try adding your purchase as the first one</Text>
-            </Box>
+            {(anyLoading || Boolean(records?.length)) ? (
+                <Box shadow="lg" p={4} overflowY="hidden" overflowX="auto" maxW={['100%', null]}>
+                    <VehicleRecordsTable
+                        records={recordsResults}
+                        enableCost={vehicle?.enableCost}
+                        distanceUnit={vehicle?.distanceUnit}
+                    />
+                </Box>
+            ) : (
+                <Box>
+                    <Heading>
+                        You don&apos;t have any records yet
+                    </Heading>
+                    <Text>Try adding your purchase as the first one</Text>
+                </Box>
             )}
 
             {Boolean(searchQuery && !queryResults.length) && (

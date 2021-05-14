@@ -34,7 +34,7 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
 
         mutateVehicleRecord(vehicle.id, {
             date: format(new Date(), 'yyyy-MM-dd'),
-            notes: 'Milege adjustment',
+            notes: 'Mileage adjustment',
             mileage: Number(formData.mileage),
             recordType: 'mileage adjustment',
         });
