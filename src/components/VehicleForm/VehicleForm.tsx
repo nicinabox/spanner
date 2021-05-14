@@ -81,7 +81,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
 
                 <FormControl id="name" mb={4}>
                     <FormLabel>Distance Unit</FormLabel>
-                    <RadioGroup {...getFormFieldProps('distanceUnit', 'radioGroup')}>
+                    <RadioGroup {...getFormFieldProps('distanceUnit', (v) => v)}>
                         <Stack direction="row">
                             <Radio value="mi">miles</Radio>
                             <Radio value="km">kilometers</Radio>

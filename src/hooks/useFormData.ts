@@ -1,27 +1,30 @@
 import { useState } from 'react';
 
-export default function useFormData<T>(initialData: T) {
+export default function useFormData<T>(initialData: T, transformValue?: <V>(n: string, v: V) => V) {
     const [formData, setFormData] = useState(initialData);
 
-    const handleInputChange = ({ target }) => {
+    const getInputValue = ({ target }) => {
+        return target.type === 'checkbox' ? target.checked : target.value;
+    };
+
+    const handleFieldChange = (name: string, value: any) => {
         setFormData({
             ...formData,
-            [target.name]: target.type === 'checkbox' ? target.checked : target.value,
+            [name]: transformValue ? transformValue(name, value) : value,
         });
     };
 
-    const handleRadioGroupChange = (name: string, value: string) => {
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
+    const getFormFieldProps = (name: string, handleGetValue = getInputValue) => {
+        const valueField = typeof initialData[name] === 'boolean' ? 'isChecked' : 'value';
 
-    const getFormFieldProps = (name: string, type: 'input' | 'radioGroup' = 'input') => ({
-        name,
-        value: formData[name],
-        onChange: type === 'radioGroup' ? (v: string) => handleRadioGroupChange(name, v) : handleInputChange,
-    });
+        return {
+            name,
+            [valueField]: formData[name],
+            onChange: (v) => {
+                handleFieldChange(name, handleGetValue(v));
+            },
+        };
+    };
 
     const setFormField = (name: string, value: any) => {
         setFormData({
@@ -31,7 +34,6 @@ export default function useFormData<T>(initialData: T) {
     };
 
     return {
-        handleInputChange,
         getFormFieldProps,
         setFormField,
         setFormData,
