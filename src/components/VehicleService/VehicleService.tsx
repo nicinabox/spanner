@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Search from 'components/Search';
-import VehicleRecordsTable, { SkeletonVehicleRecordsTable } from 'components/VehicleRecordsTable';
+import VehicleRecordsTable from 'components/VehicleRecordsTable';
 import { intlFormat } from 'date-fns';
 import useRequest from 'hooks/useRequest';
 import useSearchQuery from 'hooks/useSearchQuery';
@@ -30,7 +30,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
     });
 
     const anyLoading = vehicleLoading || recordsLoading;
-    const recordsResults = (searchQuery ? queryResults : records) ?? [];
+    const recordsResults = searchQuery ? queryResults : records;
 
     const handleSearch = (text: string) => {
         setSearchQuery(text);
@@ -54,17 +54,13 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 <Search onChangeText={handleSearch} />
             </Flex>
 
-            {anyLoading && (
-            <Box shadow="lg" p={4}>
-                <SkeletonVehicleRecordsTable />
-            </Box>
-            )}
-
-            {vehicle && Boolean(recordsResults?.length) && (
             <Box shadow="lg" p={4} overflowY="hidden" overflowX="auto" maxW={['100%', null]}>
-                <VehicleRecordsTable records={recordsResults} enableCost={vehicle.enableCost} distanceUnit={vehicle.distanceUnit} />
+                <VehicleRecordsTable
+                    records={recordsResults}
+                    enableCost={vehicle?.enableCost}
+                    distanceUnit={vehicle?.distanceUnit}
+                />
             </Box>
-            )}
 
             {Boolean(!anyLoading && !records?.length) && (
             <Box>

@@ -9,9 +9,10 @@ import { formatCurrency } from 'utils/number';
 import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
 export interface VehicleRecordsTableProps {
-    enableCost: boolean;
-    records: VehicleRecord[];
-    distanceUnit: string;
+    records: VehicleRecord[] | undefined;
+    enableCost?: boolean;
+    distanceUnit?: string;
+    isLoaded?: boolean;
 }
 
 const getNextRecordWithMileage = (currentIdx: number, arr: VehicleRecord[]): VehicleRecord | undefined => {
@@ -31,41 +32,6 @@ const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord): num
     if (!record.mileage) return undefined;
     return record.mileage - olderRecord.mileage;
 };
-
-export const SkeletonVehicleRecordsTable = () => (
-    <>
-        <Box display={['block', 'none']}>
-            <Skeleton mb={2} h={3} />
-            <Skeleton mb={2} h={3} />
-            <Skeleton mb={2} h={3} />
-        </Box>
-
-        <Table size="sm" data-testid="SkeletonVehicleRecordsTable" display={['none', null]}>
-            <Thead>
-                <Tr>
-                    <Th>Date</Th>
-                    <Th>Mileage</Th>
-                    <Th>Notes</Th>
-                </Tr>
-            </Thead>
-            <Tbody>
-                {[1, 2, 3].map((n) => (
-                    <Tr key={n}>
-                        <Td w={100}>
-                            <Skeleton h={3} />
-                        </Td>
-                        <Td w={100}>
-                            <Skeleton h={3} />
-                        </Td>
-                        <Td>
-                            <Skeleton h={3} maxW={300} />
-                        </Td>
-                    </Tr>
-                ))}
-            </Tbody>
-        </Table>
-    </>
-);
 
 const Row = (props) => (
     <Flex
@@ -99,8 +65,8 @@ const FlexTable = (props) => (
     />
 );
 
-export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, enableCost, distanceUnit }) => {
-    const reverseChronoRecords = sortRecordsNewestFirst(records);
+export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, enableCost = false, distanceUnit = 'mi' }) => {
+    const reverseChronoRecords = sortRecordsNewestFirst(records ?? []);
 
     const basis = {
         date: 120,
@@ -120,6 +86,20 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                 <Cell basis={basis.mileage}>Mileage</Cell>
                 <Cell>Notes</Cell>
             </Row>
+
+            {!records && [1, 2, 3, 4].map((n) => (
+                <Row key={n} data-testid={`skeleton${n}`}>
+                    <Cell w={basis.date}>
+                        <Skeleton h={2} />
+                    </Cell>
+                    <Cell w={basis.mileage}>
+                        <Skeleton h={2} />
+                    </Cell>
+                    <Cell maxW={300}>
+                        <Skeleton h={2} />
+                    </Cell>
+                </Row>
+            ))}
 
             {reverseChronoRecords.map((record, i, arr) => {
                 const nextRecord = getNextRecordWithMileage(i, arr);
@@ -163,7 +143,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                             )}
                         </Cell>
 
-                        <Cell basis={['100%', null]} flex={[null, null, 1]}>
+                        <Cell basis={['100%', null]} flex={[null, null, 1]} w="100%">
                             {record.notes}
                         </Cell>
                     </Row>
