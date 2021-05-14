@@ -1,5 +1,5 @@
 import {
-    Box, Flex, Skeleton, Table, Tbody, Td, Text, Th, Thead, Tr,
+    Flex, Skeleton, SkeletonText, Text,
 } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
 import { VehicleRecord } from 'queries/records';
@@ -50,6 +50,8 @@ const Cell = (props) => (
         px={[0, null, 4]}
         py={[0, null, 2]}
         display={['flex', null, 'table-cell']}
+        verticalAlign="top"
+        alignItems="flex-start"
         {...props}
     />
 );
@@ -68,12 +70,6 @@ const FlexTable = (props) => (
 export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, enableCost = false, distanceUnit = 'mi' }) => {
     const reverseChronoRecords = sortRecordsNewestFirst(records ?? []);
 
-    const basis = {
-        date: 120,
-        cost: 100,
-        mileage: 120,
-    };
-
     return (
         <FlexTable>
             <Row
@@ -81,22 +77,22 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                 display={['none', null, 'table-row']}
                 borderBottomWidth="2px"
             >
-                <Cell basis={basis.date}>Date</Cell>
-                {enableCost && <Cell basis={basis.cost}>Cost</Cell>}
-                <Cell basis={basis.mileage}>Mileage</Cell>
+                <Cell>Date</Cell>
+                <Cell>Mileage</Cell>
+                {enableCost && <Cell>Cost</Cell>}
                 <Cell>Notes</Cell>
             </Row>
 
-            {!records && [1, 2, 3, 4].map((n) => (
+            {!records && [1, 2, 3].map((n) => (
                 <Row key={n} data-testid={`skeleton${n}`}>
-                    <Cell w={basis.date}>
-                        <Skeleton h={2} />
+                    <Cell mr={[3, null, 'auto']}>
+                        <Skeleton h={2} w={100} />
                     </Cell>
-                    <Cell w={basis.mileage}>
-                        <Skeleton h={2} />
+                    <Cell flex={[1, null, 'auto']}>
+                        <Skeleton h={2} w={100} />
                     </Cell>
-                    <Cell maxW={300}>
-                        <Skeleton h={2} />
+                    <Cell pt={[2]} basis={['100%', null]} w="100%">
+                        <SkeletonText noOfLines={2} flex={1} />
                     </Cell>
                 </Row>
             ))}
@@ -109,29 +105,18 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                     <Row key={record.id} borderBottomWidth={i < arr.length - 1 ? '1px' : 'none'}>
                         <Cell
                             whiteSpace="nowrap"
-                            basis={basis.date}
-                            fontWeight={['bold', 'bold', 'inherit']}
+                            fontWeight={['bold', null, 'inherit']}
                             fontSize={['sm', null, 'md']}
+                            mr={[3, null, 'auto']}
                         >
                             {intlFormat(parseDateISO(record.date), { month: 'short', year: 'numeric', day: 'numeric' })}
                         </Cell>
 
-                        {enableCost && (
-                            <Cell
-                                whiteSpace="nowrap"
-                                basis={basis.cost}
-                                fontSize={['sm', null, 'md']}
-                                textAlign="right"
-                            >
-                                {record.cost ? formatCurrency(Number(record.cost)) : '--'}
-                            </Cell>
-                        )}
-
                         <Cell
                             whiteSpace="nowrap"
                             alignItems="center"
-                            textAlign="right"
-                            basis={basis.mileage}
+                            textAlign={['left', null, 'right']}
+                            flex={[1, null, 'auto']}
                             fontSize={['sm', null, 'md']}
                         >
                             {Boolean(Number(record.mileage)) && formatMileage(record.mileage, distanceUnit)}
@@ -144,7 +129,17 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                             )}
                         </Cell>
 
-                        <Cell basis={['100%', null]} flex={[null, null, 1]} w="100%">
+                        {enableCost && (
+                            <Cell
+                                whiteSpace="nowrap"
+                                fontSize={['sm', null, 'md']}
+                                textAlign="right"
+                            >
+                                {record.cost ? formatCurrency(Number(record.cost)) : '--'}
+                            </Cell>
+                        )}
+
+                        <Cell basis={['100%', null]} w="100%">
                             {record.notes}
                         </Cell>
                     </Row>
