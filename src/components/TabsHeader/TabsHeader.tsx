@@ -11,7 +11,7 @@ export interface TabsHeaderProps extends HeaderProps {
 export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => (
     <Header
         CenterComponent={(
-            <TabList justifyContent={['start', 'center']} mt={[2, 0]}>
+            <TabList justifyContent={['start', 'center']} mt={[2, null, 0]}>
                 {tabs.map((tab) => (
                     <Tab key={tab} color="brand.100" width="max-content">{tab}</Tab>
                 ))}

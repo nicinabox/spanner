@@ -17,14 +17,18 @@ export const Header: React.FC<HeaderProps> = ({
 
     return (
         <Box __css={styles} {...boxProps}>
-            <SimpleGrid columns={columns} spacingX={2}>
-                {LeftComponent}
-                {CenterComponent}
+            <Flex flexWrap="wrap" direction={['column', null, 'row']}>
+                <Flex flex={1} mr={2}>
+                    {LeftComponent}
+                </Flex>
+                <Flex flex={1} justify="center">
+                    {CenterComponent}
+                </Flex>
 
-                <Flex justify="flex-end">
+                <Flex justify="flex-end" flex={1}>
                     {RightComponent}
                 </Flex>
-            </SimpleGrid>
+            </Flex>
         </Box>
     );
 };
