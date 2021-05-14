@@ -14,38 +14,39 @@ export interface VehicleStatsProps {
     records: VehicleRecord[];
 }
 
+const VehicleStat = ({ label, children }) => (
+    <Stat minW="max-content">
+        <StatLabel>{label}</StatLabel>
+        <StatNumber>
+            {children}
+        </StatNumber>
+    </Stat>
+);
+
 export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) => {
     const [oldestRecord] = sortRecordsOldestFirst(records);
 
     return (
         <Box overflowY="hidden" overflowX="auto" maxW="calc(100vw - 32px)">
-            <HStack spacing={5} mb={10}>
-                {oldestRecord && (
-                    <Stat>
-                        <StatLabel>Since</StatLabel>
-                        <StatNumber minW="max-content">
-                            {intlFormat(parseDateISO(oldestRecord?.date), { month: 'short', year: 'numeric', day: 'numeric' })}
-                        </StatNumber>
-                    </Stat>
-                )}
+            <HStack spacing={[8, null, 5]} mb={10}>
                 {vehicle.estimatedMileage && (
-                    <Stat>
-                        <StatLabel minW="max-content">Estimated mileage</StatLabel>
-                        <StatNumber minW="max-content">{formatEstimatedMileage(vehicle)}</StatNumber>
-                    </Stat>
+                    <VehicleStat label="Estimated mileage">
+                        {formatEstimatedMileage(vehicle)}
+                    </VehicleStat>
                 )}
                 {vehicle.milesPerYear && (
-                    <Stat>
-                        <StatLabel minW="max-content">Yearly mileage</StatLabel>
-                        <StatNumber minW="max-content">{formatMilesPerYear(vehicle)}</StatNumber>
-                    </Stat>
+                    <VehicleStat label="Yearly mileage">
+                        {formatMilesPerYear(vehicle)}
+                    </VehicleStat>
                 )}
-                <Stat>
-                    <StatLabel>VIN</StatLabel>
-                    <StatNumber>
-                        {vehicle.vin || <Link href={`/vehicles/${vehicle.id}/edit`}>Add VIN...</Link>}
-                    </StatNumber>
-                </Stat>
+                {oldestRecord && (
+                    <VehicleStat label="Since">
+                        {intlFormat(parseDateISO(oldestRecord?.date), { month: 'short', year: 'numeric', day: 'numeric' })}
+                    </VehicleStat>
+                )}
+                <VehicleStat label="VIN">
+                    {vehicle.vin || <Link href={`/vehicles/${vehicle.id}/edit`}>Add VIN...</Link>}
+                </VehicleStat>
             </HStack>
         </Box>
     );
