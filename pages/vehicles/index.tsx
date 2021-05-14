@@ -10,6 +10,7 @@ import Logo from 'components/Logo';
 import Page from 'components/Page';
 import UserMenu from 'components/UserMenu';
 import VehicleItem from 'components/VehicleItem';
+import VehiclesList from 'components/VehiclesList';
 import useRequest from 'hooks/useRequest';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -65,12 +66,7 @@ const Vehicles: React.FC<VehiclesProps> = () => {
                 </Link>
             </HStack>
 
-            <SimpleGrid columns={[1, 2, 3, 4]} spacing={5} mt={3}>
-                {!activeVehicles.length && [1, 2].map((n) => (
-                    <Skeleton key={n} height="80px" />
-                ))}
-                {activeVehicles.map(((vehicle) => <VehicleItem key={vehicle.id} vehicle={vehicle} />))}
-            </SimpleGrid>
+            <VehiclesList vehicles={activeVehicles} />
 
             <Box height={12} />
 
@@ -90,9 +86,7 @@ const Vehicles: React.FC<VehiclesProps> = () => {
             )}
 
             {showRetired && (
-                <SimpleGrid columns={[1, 2, 3, 4]} spacing={5} mt={3}>
-                    {retiredVehicles.map(((vehicle) => <VehicleItem key={vehicle.id} vehicle={vehicle} />))}
-                </SimpleGrid>
+                <VehiclesList vehicles={retiredVehicles} />
             )}
         </Page>
     );
