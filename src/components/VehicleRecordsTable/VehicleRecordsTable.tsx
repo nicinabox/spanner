@@ -121,6 +121,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                                 whiteSpace="nowrap"
                                 basis={basis.cost}
                                 fontSize={['sm', null, 'md']}
+                                textAlign="right"
                             >
                                 {record.cost ? formatCurrency(Number(record.cost)) : '--'}
                             </Cell>
