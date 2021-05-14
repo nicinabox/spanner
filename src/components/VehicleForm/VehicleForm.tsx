@@ -1,5 +1,5 @@
 import {
-    FormControl, FormLabel, Input, FormHelperText, Button, Box, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay,
+    FormControl, FormLabel, Input, FormHelperText, Button, Box, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Select, Radio, RadioGroup, Stack, Switch, Checkbox,
 } from '@chakra-ui/react';
 import FormErrors from 'components/FormErrors';
 import SubmitButton from 'components/SubmitButton';
@@ -26,6 +26,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
         name: vehicle?.name ?? '',
         vin: vehicle?.vin ?? '',
         enableCost: vehicle?.enableCost ?? true,
+        distanceUnit: vehicle?.distanceUnit ?? 'mi',
     });
 
     useEffect(() => {
@@ -76,6 +77,21 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                     <FormLabel>VIN</FormLabel>
                     <Input type="text" {...getFormFieldProps('vin')} />
                     <FormHelperText>VIN is optional but recommended</FormHelperText>
+                </FormControl>
+
+                <FormControl id="name" mb={4}>
+                    <FormLabel>Distance Unit</FormLabel>
+                    <RadioGroup {...getFormFieldProps('distanceUnit', 'radioGroup')}>
+                        <Stack direction="row">
+                            <Radio value="mi">miles</Radio>
+                            <Radio value="km">kilometers</Radio>
+                            <Radio value="hr">hours</Radio>
+                        </Stack>
+                    </RadioGroup>
+                </FormControl>
+
+                <FormControl display="flex" alignItems="center" mb={4}>
+                    <Checkbox {...getFormFieldProps('enableCost')}>Enable Cost</Checkbox>
                 </FormControl>
 
                 <SubmitButton isProcessing={isProcessing} />

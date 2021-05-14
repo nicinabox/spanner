@@ -6,14 +6,21 @@ export default function useFormData<T>(initialData: T) {
     const handleInputChange = ({ target }) => {
         setFormData({
             ...formData,
-            [target.name]: target.value,
+            [target.name]: target.type === 'checkbox' ? target.checked : target.value,
         });
     };
 
-    const getFormFieldProps = (name) => ({
+    const handleRadioGroupChange = (name: string, value: string) => {
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const getFormFieldProps = (name: string, type: 'input' | 'radioGroup' = 'input') => ({
         name,
         value: formData[name],
-        onChange: handleInputChange,
+        onChange: type === 'radioGroup' ? (v: string) => handleRadioGroupChange(name, v) : handleInputChange,
     });
 
     const setFormField = (name: string, value: any) => {
