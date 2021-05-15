@@ -5,7 +5,8 @@ export type RecordID = string | number;
 
 export type MutateParams<T extends { id?: RecordID }> = T & Required<Pick<T, 'id'>>
 
-const { PROXY_HOST } = process.env;
+// eslint-disable-next-line prefer-destructuring
+const PROXY_HOST = process.env.PROXY_HOST;
 const API_VERSION = 2;
 
 export const createAPIRequest = (req?) => {
