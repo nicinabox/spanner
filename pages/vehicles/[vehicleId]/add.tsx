@@ -22,7 +22,6 @@ export type AddPageProps = VehiclePageProps
 
 const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => (
     <TabsHeader
-        columns={[1, 1, 3]}
         tabs={[
                 'Add Service',
                 'Add Reminder',
