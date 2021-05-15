@@ -104,10 +104,12 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                 const yearRecords = recordsByYear[year];
 
                 return (
-                    <Box key={year}>
+                    <Box key={year} mx={-4}>
                         <Heading
+                            borderBottomWidth="1px"
+                            borderBottomColor={headerBorderColor}
                             size="md"
-                            px={[0, null, 4]}
+                            px={4}
                             pb={2}
                         >
                             {year}
@@ -117,8 +119,6 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                 fontWeight="bold"
                                 fontSize="sm"
                                 color="gray.600"
-                                borderTopWidth="1px"
-                                borderTopColor={headerBorderColor}
                                 borderBottomColor={headerBorderColor}
                                 bg={rowColorAlt}
                                 display={['none', null, 'table-row']}
@@ -135,7 +135,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                 const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
 
                                 return (
-                                    <Row key={record.id} bg={i % 2 ? rowColorAlt : 'transparent'}>
+                                    <Row key={record.id} px={4} bg={i % 2 ? rowColorAlt : 'transparent'}>
                                         <Cell
                                             whiteSpace="nowrap"
                                             fontWeight={['bold', null, 'inherit']}

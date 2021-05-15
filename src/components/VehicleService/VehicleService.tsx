@@ -55,7 +55,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
             </Flex>
 
             {(anyLoading || Boolean(records?.length)) ? (
-                <Box shadow={['none', 'lg', 'lg']} p={[0, 4]} overflowY="hidden" overflowX="auto">
+                <Box shadow={['none', 'lg', 'lg']} p={[0, 4]}>
                     <VehicleRecordsTable
                         vehicleId={vehicleId}
                         records={recordsResults}
