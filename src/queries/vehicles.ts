@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios';
+import { RecordID } from './config';
 import { VehicleReminder } from './reminders';
 
 export interface Vehicle {
-    id: number;
+    id: RecordID;
     name: string;
     vin: string;
     notes: string;
@@ -20,6 +21,7 @@ export interface Vehicle {
 }
 
 interface VehicleParams {
+    id?: RecordID;
     name: string;
     vin: string;
     notes: string;
@@ -31,19 +33,19 @@ interface VehicleParams {
 }
 
 export const vehiclesPath = '/api/vehicles';
-export const vehiclePath = (vehicleId: number | string) => `/api/vehicles/${vehicleId}`;
+export const vehiclePath = (vehicleId: RecordID) => `/api/vehicles/${vehicleId}`;
 
 export async function fetchVehicles(api: AxiosInstance) {
     const { data } = await api.get<Vehicle[]>(vehiclesPath);
     return data;
 }
 
-export async function fetchVehicle(api: AxiosInstance, vehicleId: string) {
+export async function fetchVehicle(api: AxiosInstance, vehicleId: RecordID) {
     const { data } = await api.get<Vehicle>(vehiclePath(vehicleId));
     return data;
 }
 
-export async function updateVehicle(api: AxiosInstance, vehicleId: number, params: Partial<VehicleParams>) {
+export async function updateVehicle(api: AxiosInstance, vehicleId: RecordID, params: Partial<VehicleParams>) {
     const { data } = await api.put(vehiclePath(vehicleId), params);
     return data;
 }
@@ -53,7 +55,7 @@ export async function createVehicle(api: AxiosInstance, params: VehicleParams) {
     return data;
 }
 
-export async function destroyVehicle(api: AxiosInstance, vehicleId: number) {
+export async function destroyVehicle(api: AxiosInstance, vehicleId: RecordID) {
     const { data } = await api.delete(vehiclePath(vehicleId));
     return data;
 }

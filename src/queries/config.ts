@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 
+export type RecordID = string | number;
+
 const { PROXY_HOST } = process.env;
 const API_VERSION = 2;
 
