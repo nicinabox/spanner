@@ -1,27 +1,37 @@
 import {
-    Box, Button, FormControl, FormLabel, Heading, HStack, Input, SimpleGrid, Textarea, VStack,
+    Box, Button, FormControl, FormLabel, Heading, HStack, Input, InputGroup, InputLeftAddon, InputRightAddon, SimpleGrid, Textarea, VStack,
 } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import DatePicker from 'components/DatePicker';
 import useFormData from 'hooks/useFormData';
 import useMutation from 'hooks/useMutation';
-import { createRecord } from 'queries/records';
+import * as records from 'queries/records';
 import { Vehicle } from 'queries/vehicles';
-import { formatDateISO } from 'utils/date';
-import React from 'react';
+import { formatDateISO, parseDateISO } from 'utils/date';
+import React, { useEffect } from 'react';
 import FormErrors from 'components/FormErrors';
 import SubmitButton from 'components/SubmitButton';
+import { useRouter } from 'next/router';
+import { getCurrencySymbol } from 'utils/number';
+import useTextareaResize from 'hooks/useTextareaResize';
 
 export interface NewServiceFormProps {
     vehicle: Vehicle;
+    record?: records.VehicleRecord;
 }
 
-export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
-    const { formData, getFormFieldProps, setFormField } = useFormData({
-        date: new Date(),
+export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record }) => {
+    const router = useRouter();
+    const textareaRef = useTextareaResize();
+
+    const {
+        formData, getFormFieldProps, setFormData, setFormField,
+    } = useFormData({
+        date: new Date().toISOString(),
         notes: '',
         mileage: vehicle.estimatedMileage,
         cost: '',
+        ...record,
     }, (fieldName, fieldValue) => {
         if (fieldName === 'mileage') {
             return fieldValue.replace(/\D/g, '');
@@ -32,29 +42,24 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
         return fieldValue;
     });
 
-    const {
-        mutate: mutateVehicleRecord, isProcessing, isComplete, error,
-    } = useMutation(createRecord);
+    useEffect(() => {
+        if (record) setFormData({ ...record });
+    }, [record]);
+
+    const { mutate: createOrUpdateRecord, isProcessing, error } = useMutation(records.createOrUpdateRecord, {
+        onSuccess() {
+            router.push(`/vehicles/${vehicle.id}`);
+        },
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        mutateVehicleRecord(vehicle.id, {
+        createOrUpdateRecord(vehicle.id, {
             ...formData,
-            date: formatDateISO(formData.date),
+            date: formatDateISO(new Date(formData.date)),
         });
     };
-
-    if (isComplete) {
-        return (
-            <VStack spacing={6}>
-                <CheckCircleIcon boxSize={12} color="green" />
-                <Heading>
-                    Service Added
-                </Heading>
-            </VStack>
-        );
-    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -68,21 +73,27 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle }) => {
                         <FormLabel>Date</FormLabel>
 
                         <input type="hidden" {...getFormFieldProps('date')} />
-                        <DatePicker onChange={(date) => setFormField('date', date)} initialDate={formData.date} />
+                        <DatePicker onChange={(date) => setFormField('date', date)} initialDate={parseDateISO(formData.date)} />
                     </FormControl>
                 </Box>
                 <Box flex={1}>
                     <FormControl mb={4} id="Notes" isRequired>
                         <FormLabel>Notes</FormLabel>
-                        <Textarea {...getFormFieldProps('notes')} />
+                        <Textarea ref={textareaRef} {...getFormFieldProps('notes')} />
                     </FormControl>
                     <FormControl mb={4} id="mileage" isRequired>
                         <FormLabel>Mileage</FormLabel>
-                        <Input {...getFormFieldProps('mileage')} />
+                        <InputGroup size="sm">
+                            <Input {...getFormFieldProps('mileage')} />
+                            <InputRightAddon>{vehicle.distanceUnit}</InputRightAddon>
+                        </InputGroup>
                     </FormControl>
                     <FormControl mb={4} id="cost">
                         <FormLabel>Cost</FormLabel>
-                        <Input {...getFormFieldProps('cost')} />
+                        <InputGroup size="sm">
+                            <InputLeftAddon>{getCurrencySymbol()}</InputLeftAddon>
+                            <Input {...getFormFieldProps('cost')} />
+                        </InputGroup>
                     </FormControl>
                 </Box>
             </SimpleGrid>

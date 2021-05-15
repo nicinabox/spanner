@@ -4,9 +4,10 @@ import {
     Flex, Heading, Skeleton, SkeletonText, Text, useColorModeValue,
 } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
+import { mutate } from 'hooks/useMutation';
 import { groupBy } from 'lodash';
 import Link from 'next/link';
-import { VehicleRecord } from 'queries/records';
+import { VehicleRecord, vehicleRecordPath } from 'queries/records';
 import React from 'react';
 import { parseDateISO } from 'utils/date';
 import { formatCurrency } from 'utils/number';
@@ -177,7 +178,16 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
 
                                         <Cell>
                                             <Link passHref href={`/vehicles/${vehicleId}/records/${record.id}/edit`}>
-                                                <Button as="a" size="sm" variant="link" colorScheme="brand">
+                                                <Button
+                                                    as="a"
+                                                    size="sm"
+                                                    variant="link"
+                                                    colorScheme="brand"
+                                                    onClick={() => {
+                                                        // Preload data for edit form
+                                                        mutate(vehicleRecordPath(vehicleId, record.id), record, false);
+                                                    }}
+                                                >
                                                     Edit
                                                 </Button>
                                             </Link>

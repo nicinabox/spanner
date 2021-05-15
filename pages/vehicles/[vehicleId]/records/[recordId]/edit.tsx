@@ -7,6 +7,7 @@ import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useRequest from 'hooks/useRequest';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import { VehicleRecord, vehicleRecordPath } from 'queries/records';
+import RecordForm from 'components/RecordForm';
 
 export interface EditPageProps {
     params: {
@@ -38,8 +39,10 @@ export const EditPage: React.FC<EditPageProps> = ({ params }) => {
         <Page
             Header={<PageHeader vehicle={vehicle} />}
         >
-            <Container>
-                {vehicleRecord?.notes}
+            <Container maxW={[null, 'container.sm']} p={0}>
+                {vehicle && (
+                    <RecordForm vehicle={vehicle} record={vehicleRecord} />
+                )}
             </Container>
         </Page>
     );

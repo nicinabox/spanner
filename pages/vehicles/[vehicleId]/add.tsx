@@ -1,21 +1,17 @@
 import {
-    HStack, Button, Container, Tab, TabPanel, TabPanels, Tabs, Spacer,
+    Container, HStack, TabPanel, TabPanels,
 } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import Link from 'next/link';
-import Header from 'components/Header';
-import Page from 'components/Page';
-import VehicleActionsMenu from 'components/VehicleActionsMenu';
-import React from 'react';
-import { Vehicle, vehiclePath } from 'queries/vehicles';
-import TabMenu from 'components/TabMenu';
-import NewServiceForm from 'components/RecordForm';
+import BackButton from 'components/BackButton';
+import LinkPreload from 'components/LinkPreload';
 import MileageAdjustmentForm from 'components/MileageAdjustmentForm';
 import NewReminderForm from 'components/NewReminderForm';
-import useRequest from 'hooks/useRequest';
-import LinkPreload from 'components/LinkPreload';
+import Page from 'components/Page';
+import RecordForm from 'components/RecordForm';
 import TabsHeader from 'components/TabsHeader';
-import BackButton from 'components/BackButton';
+import VehicleActionsMenu from 'components/VehicleActionsMenu';
+import useRequest from 'hooks/useRequest';
+import { Vehicle, vehiclePath } from 'queries/vehicles';
+import React from 'react';
 import { VehiclePageProps } from '../[vehicleId]';
 
 export type AddPageProps = VehiclePageProps
@@ -51,7 +47,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
                 <TabPanels>
                     <TabPanel p={0}>
                         <Container maxW={[null, 'container.sm']} p={0}>
-                            <NewServiceForm vehicle={vehicle} />
+                            <RecordForm vehicle={vehicle} />
                         </Container>
                     </TabPanel>
                     <TabPanel p={0}>
