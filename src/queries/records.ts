@@ -41,6 +41,11 @@ export async function updateRecord(api: AxiosInstance, vehicleId: RecordID, reco
     return data;
 }
 
+export async function destroyRecord(api: AxiosInstance, vehicleId: RecordID, recordId: RecordID) {
+    const { data } = await api.delete(vehicleRecordPath(vehicleId, recordId));
+    return data;
+}
+
 export async function createOrUpdateRecord(api: AxiosInstance, vehicleId: RecordID, params: VehicleRecordParams) {
     if (params.id) {
         return updateRecord(api, vehicleId, params as MutateParams<typeof params>);
