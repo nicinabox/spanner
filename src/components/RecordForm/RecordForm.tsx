@@ -1,19 +1,18 @@
 import {
-    Box, Button, FormControl, FormLabel, Heading, HStack, Input, InputGroup, InputLeftAddon, InputRightAddon, SimpleGrid, Textarea, VStack,
+    Box, FormControl, FormLabel, Input, InputGroup, InputLeftAddon, InputRightAddon, SimpleGrid, Textarea,
 } from '@chakra-ui/react';
-import { CheckCircleIcon } from '@chakra-ui/icons';
 import DatePicker from 'components/DatePicker';
-import useFormData from 'hooks/useFormData';
-import useMutation from 'hooks/useMutation';
-import * as records from 'queries/records';
-import { Vehicle } from 'queries/vehicles';
-import { formatDateISO, parseDateISO } from 'utils/date';
-import React, { useEffect } from 'react';
 import FormErrors from 'components/FormErrors';
 import SubmitButton from 'components/SubmitButton';
-import { useRouter } from 'next/router';
-import { getCurrencySymbol } from 'utils/number';
+import useFormData from 'hooks/useFormData';
+import useMutation from 'hooks/useMutation';
 import useTextareaResize from 'hooks/useTextareaResize';
+import { useRouter } from 'next/router';
+import * as records from 'queries/records';
+import { Vehicle } from 'queries/vehicles';
+import React, { useEffect } from 'react';
+import { formatDateISO, parseDateISO } from 'utils/date';
+import { getCurrencySymbol } from 'utils/number';
 
 export interface NewServiceFormProps {
     vehicle: Vehicle;

@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { RecordID } from './config';
+import { RecordID, MutateParams } from './config';
 import { VehicleReminder } from './reminders';
 
 export interface Vehicle {
@@ -22,14 +22,14 @@ export interface Vehicle {
 
 interface VehicleParams {
     id?: RecordID;
-    name: string;
-    vin: string;
-    notes: string;
-    position: number;
-    enableCost: boolean;
-    distanceUnit: 'mi' | 'km';
-    retired: boolean;
-    color: string | null;
+    name?: string;
+    vin?: string;
+    notes?: string;
+    position?: number;
+    enableCost?: boolean;
+    distanceUnit?: 'mi' | 'km';
+    retired?: boolean;
+    color?: string | null;
 }
 
 export const vehiclesPath = '/api/vehicles';
@@ -45,14 +45,21 @@ export async function fetchVehicle(api: AxiosInstance, vehicleId: RecordID) {
     return data;
 }
 
-export async function updateVehicle(api: AxiosInstance, vehicleId: RecordID, params: Partial<VehicleParams>) {
-    const { data } = await api.put(vehiclePath(vehicleId), params);
+export async function updateVehicle(api: AxiosInstance, params: MutateParams<VehicleParams>) {
+    const { data } = await api.put<Vehicle>(vehiclePath(params.id), params);
     return data;
 }
 
 export async function createVehicle(api: AxiosInstance, params: VehicleParams) {
-    const { data } = await api.post(vehiclesPath, params);
+    const { data } = await api.post<Vehicle>(vehiclesPath, params);
     return data;
+}
+
+export async function createOrUpdateVehicle(api: AxiosInstance, params: VehicleParams) {
+    if (params.id) {
+        return updateVehicle(api, params as MutateParams<typeof params>);
+    }
+    return createVehicle(api, params);
 }
 
 export async function destroyVehicle(api: AxiosInstance, vehicleId: RecordID) {

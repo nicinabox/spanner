@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { RecordID } from './config';
+import { RecordID, MutateParams } from './config';
 
 export interface VehicleRecord {
     id: number;
@@ -11,11 +11,11 @@ export interface VehicleRecord {
 
 export interface VehicleRecordParams {
     id?: RecordID;
-    date: string;
-    cost: string | null;
-    mileage: number;
-    notes: string;
-    recordType: 'mileage adjustment' | null;
+    date?: string;
+    cost?: string | null;
+    mileage?: number;
+    notes?: string;
+    recordType?: 'mileage adjustment' | null;
 }
 
 export const vehicleRecordsPath = (vehicleId: RecordID) => `/api/vehicles/${vehicleId}/records`;
@@ -36,15 +36,14 @@ export async function createRecord(api: AxiosInstance, vehicleId: RecordID, reco
     return data;
 }
 
-export async function updateRecord(api: AxiosInstance, vehicleId: RecordID, recordId: RecordID, record: Partial<VehicleRecordParams>) {
-    const { data } = await api.put<VehicleRecord>(vehicleRecordPath(vehicleId, recordId), record);
+export async function updateRecord(api: AxiosInstance, vehicleId: RecordID, record: MutateParams<VehicleRecordParams>) {
+    const { data } = await api.put<VehicleRecord>(vehicleRecordPath(vehicleId, record.id), record);
     return data;
 }
 
-export async function createOrUpdateRecord(api: AxiosInstance, vehicleId: RecordID, record: Partial<VehicleRecordParams>) {
-    if (record.id) {
-        const { id: recordId, ...restRecord } = record;
-        return updateRecord(api, vehicleId, recordId, restRecord);
+export async function createOrUpdateRecord(api: AxiosInstance, vehicleId: RecordID, params: VehicleRecordParams) {
+    if (params.id) {
+        return updateRecord(api, vehicleId, params as MutateParams<typeof params>);
     }
-    return createRecord(api, vehicleId, record as VehicleRecordParams);
+    return createRecord(api, vehicleId, params);
 }

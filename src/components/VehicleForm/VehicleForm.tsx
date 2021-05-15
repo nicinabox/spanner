@@ -6,13 +6,11 @@ import SubmitButton from 'components/SubmitButton';
 import useFormData from 'hooks/useFormData';
 import useMutation from 'hooks/useMutation';
 import { useRouter } from 'next/router';
-import {
-    createVehicle, destroyVehicle, updateVehicle, Vehicle,
-} from 'queries/vehicles';
+import * as vehicles from 'queries/vehicles';
 import React, { useEffect, useRef, useState } from 'react';
 
 export interface VehicleFormProps {
-    vehicle?: Vehicle;
+    vehicle?: vehicles.Vehicle;
 }
 
 export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
@@ -23,28 +21,24 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const onClose = () => setIsConfirmDeleteOpen(false);
 
     const { formData, getFormFieldProps, setFormData } = useFormData({
-        name: vehicle?.name ?? '',
-        vin: vehicle?.vin ?? '',
-        enableCost: vehicle?.enableCost ?? true,
-        distanceUnit: vehicle?.distanceUnit ?? 'mi',
+        name: '',
+        vin: '',
+        enableCost: true,
+        distanceUnit: 'mi',
+        ...vehicle,
     });
 
     useEffect(() => {
         if (vehicle) setFormData({ ...vehicle });
     }, [vehicle]);
 
-    const { mutate: createOrUpdateVehicle, isProcessing, error } = useMutation((api, params) => {
-        if (vehicle) {
-            return updateVehicle(api, vehicle.id, params);
-        }
-        return createVehicle(api, params);
-    }, {
+    const { mutate: createOrUpdateVehicle, isProcessing, error } = useMutation(vehicles.createOrUpdateVehicle, {
         onSuccess(nextVehicle) {
             router.push(`/vehicles/${nextVehicle.id}`);
         },
     });
 
-    const { mutate: destroyVehicleMutation } = useMutation(destroyVehicle, {
+    const { mutate: destroyVehicle } = useMutation(vehicles.destroyVehicle, {
         onSuccess() {
             router.push('/vehicles');
         },
@@ -53,7 +47,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const handleDeleteVehicle = (e) => {
         e.preventDefault();
         if (!vehicle) return;
-        destroyVehicleMutation(vehicle.id);
+        destroyVehicle(vehicle.id);
     };
 
     const handleSubmit = (e) => {

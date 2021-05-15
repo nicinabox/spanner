@@ -1,6 +1,6 @@
 import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import {
-    Text, Box, Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spacer, Skeleton,
+    Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Skeleton, Spacer, Text,
 } from '@chakra-ui/react';
 import VehicleColorIndicator from 'components/VehicleColorIndicator';
 import useMutation, { mutate } from 'hooks/useMutation';

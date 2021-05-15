@@ -3,6 +3,8 @@ import applyCaseMiddleware from 'axios-case-converter';
 
 export type RecordID = string | number;
 
+export type MutateParams<T extends { id?: RecordID }> = T & Required<Pick<T, 'id'>>
+
 const { PROXY_HOST } = process.env;
 const API_VERSION = 2;
 
