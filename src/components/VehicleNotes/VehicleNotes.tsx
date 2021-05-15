@@ -19,19 +19,19 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
 
     const { formData, getFormFieldProps, setFormField } = useFormData({
         notes: vehicle.notes ?? '',
+        id: vehicle.id,
     });
 
     const { mutate: updateVehicleMutation } = useMutation(updateVehicle, {
         onError() {
             setEditing(true);
-            mutate(vehiclePath(vehicle.id));
         },
     });
 
     const handleSaveNotes = () => {
         setEditing(false);
         mutate(vehiclePath(vehicle.id), { ...vehicle, ...formData }, false);
-        updateVehicleMutation(vehicle.id, formData);
+        updateVehicleMutation(formData);
     };
 
     return (
