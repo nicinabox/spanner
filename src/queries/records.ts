@@ -10,16 +10,22 @@ export interface VehicleRecord {
 
 export interface VehicleRecordParams {
     date: string;
-    cost?: string;
+    cost: string | null;
     mileage: number;
     notes: string;
-    recordType?: 'mileage adjustment';
+    recordType: 'mileage adjustment' | null;
 }
 
 export const vehicleRecordsPath = (vehicleId: string | number) => `/api/vehicles/${vehicleId}/records`;
+export const vehicleRecordPath = (vehicleId: string | number, recordId: string | number) => `/api/vehicles/${vehicleId}/records/${recordId}`;
 
 export async function fetchRecords(api: AxiosInstance, vehicleId: number | string) {
     const { data } = await api.get<VehicleRecord[]>(vehicleRecordsPath(vehicleId));
+    return data;
+}
+
+export async function fetchRecord(api: AxiosInstance, vehicleId: number | string, recordId: number | string) {
+    const { data } = await api.get<VehicleRecord>(vehicleRecordPath(vehicleId, recordId));
     return data;
 }
 

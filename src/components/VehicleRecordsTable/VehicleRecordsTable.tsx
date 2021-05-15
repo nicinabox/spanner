@@ -1,9 +1,11 @@
 import {
     Box,
+    Button,
     Flex, Heading, Skeleton, SkeletonText, Text, useColorModeValue,
 } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
 import { groupBy } from 'lodash';
+import Link from 'next/link';
 import { VehicleRecord } from 'queries/records';
 import React from 'react';
 import { parseDateISO } from 'utils/date';
@@ -12,6 +14,7 @@ import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
 export interface VehicleRecordsTableProps {
     records: VehicleRecord[] | undefined;
+    vehicleId: string;
     enableCost?: boolean;
     distanceUnit?: string;
     isLoaded?: boolean;
@@ -27,7 +30,7 @@ const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord): num
     return record.mileage - olderRecord.mileage;
 };
 
-const Row = ({ borderBottomColors = ['gray.200', 'gray.700'], ...props }) => {
+const Row = (props) => {
     const borderColor = useColorModeValue('gray.200', 'gray.700');
 
     return (
@@ -65,7 +68,9 @@ const FlexTable = (props) => (
     />
 );
 
-export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, enableCost = false, distanceUnit = 'mi' }) => {
+export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
+    records, vehicleId, enableCost = false, distanceUnit = 'mi',
+}) => {
     const reverseChronoRecords = sortRecordsNewestFirst(records ?? []);
     const recordsByYear = groupBy(reverseChronoRecords, (r) => new Date(r.date).getFullYear());
 
@@ -121,6 +126,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                                 <Cell>Mileage</Cell>
                                 {enableCost && <Cell>Cost</Cell>}
                                 <Cell>Notes</Cell>
+                                <Cell />
                             </Row>
 
                             {yearRecords.map((record, i) => {
@@ -167,6 +173,14 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
 
                                         <Cell basis={['100%', null]} w="100%">
                                             {record.notes}
+                                        </Cell>
+
+                                        <Cell>
+                                            <Link passHref href={`/vehicles/${vehicleId}/records/${record.id}/edit`}>
+                                                <Button as="a" size="sm" variant="link" colorScheme="brand">
+                                                    Edit
+                                                </Button>
+                                            </Link>
                                         </Cell>
                                     </Row>
                                 );
