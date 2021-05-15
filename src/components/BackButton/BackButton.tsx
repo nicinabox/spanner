@@ -1,16 +1,20 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Text, Button } from '@chakra-ui/react';
-import Link from 'next/link';
+import { Button } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 export interface BackButtonProps {
-    href: string;
 }
 
-export const BackButton: React.FC<BackButtonProps> = ({ href, children }) => (
-    <Link href={href} passHref>
+export const BackButton: React.FC<BackButtonProps> = ({ children }) => {
+    const router = useRouter();
+
+    return (
         <Button
-            as="a"
+            onClick={(e) => {
+                e.preventDefault();
+                router.back();
+            }}
             leftIcon={<ArrowBackIcon />}
             size="sm"
             variant="solid"
@@ -18,7 +22,7 @@ export const BackButton: React.FC<BackButtonProps> = ({ href, children }) => (
         >
             {children}
         </Button>
-    </Link>
-);
+    );
+};
 
 export default BackButton;

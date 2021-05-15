@@ -29,7 +29,7 @@ const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => (
             ]}
         LeftComponent={(
             <HStack spacing={2}>
-                <BackButton href={`/vehicles/${vehicle?.id}`}>
+                <BackButton>
                     Back
                 </BackButton>
                 <VehicleActionsMenu vehicle={vehicle} />

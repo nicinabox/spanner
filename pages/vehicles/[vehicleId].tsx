@@ -23,7 +23,7 @@ const PageHeader = ({ vehicle }) => (
         tabs={['Service', 'Notes']}
         LeftComponent={(
             <HStack spacing={2}>
-                <BackButton href="/">
+                <BackButton>
                     Vehicles
                 </BackButton>
 
