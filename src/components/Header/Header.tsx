@@ -15,7 +15,7 @@ export const Header: React.FC<HeaderProps> = ({
     const styles = useStyleConfig('Header');
 
     return (
-        <Box __css={styles} {...boxProps}>
+        <Box __css={styles} {...boxProps} shadow="md">
             {children || (
                 <Flex flexWrap="wrap" direction={['column', 'row']}>
                     <Flex flex={1} mr={2} py={2}>
