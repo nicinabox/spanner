@@ -164,7 +164,7 @@ DEPENDENCIES
   bugsnag
   byebug
   listen (~> 3.0.5)
-  pg (~> 0.18)
+  pg
   postmark-rails
   premailer-rails
   puma (~> 3.0)
@@ -176,5 +176,8 @@ DEPENDENCIES
   tzinfo-data
   whenever
 
+RUBY VERSION
+   ruby 2.7.3p183
+
 BUNDLED WITH
-   1.13.6
+   2.2.16
