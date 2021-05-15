@@ -69,6 +69,9 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
     const reverseChronoRecords = sortRecordsNewestFirst(records ?? []);
     const recordsByYear = groupBy(reverseChronoRecords, (r) => new Date(r.date).getFullYear());
 
+    const rowColorAlt = useColorModeValue('gray.50', 'gray.900');
+    const headerBorderColor = useColorModeValue('gray.300', 'gray.700');
+
     if (!records) {
         return (
             <FlexTable>
@@ -93,8 +96,6 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
         <>
             {Object.keys(recordsByYear).sort((a, b) => Number(b) - Number(a)).map((year) => {
                 const yearRecords = recordsByYear[year];
-                const rowColorAlt = useColorModeValue('gray.50', 'gray.900');
-                const headerBorderColor = useColorModeValue('gray.300', 'gray.700');
 
                 return (
                     <Box key={year}>
