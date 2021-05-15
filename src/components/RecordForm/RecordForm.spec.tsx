@@ -3,15 +3,15 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import vehicleFixture from '__fixtures__/vehicle';
-import NewServiceForm from '.';
+import RecordForm from '.';
 
-describe('NewServiceForm', () => {
+describe('RecordForm', () => {
     it('renders', () => {
         const props = {
             vehicle: {
                 ...vehicleFixture,
             },
         };
-        expect(() => render(<NewServiceForm {...props} />)).not.toThrow();
+        expect(() => render(<RecordForm {...props} />)).not.toThrow();
     });
 });

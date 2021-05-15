@@ -9,7 +9,7 @@ import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import React from 'react';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import TabMenu from 'components/TabMenu';
-import NewServiceForm from 'components/NewServiceForm';
+import NewServiceForm from 'components/RecordForm';
 import MileageAdjustmentForm from 'components/MileageAdjustmentForm';
 import NewReminderForm from 'components/NewReminderForm';
 import useRequest from 'hooks/useRequest';
