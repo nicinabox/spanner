@@ -1,4 +1,7 @@
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import {
+    Box, Input, useColorModeValue, useDisclosure,
+} from '@chakra-ui/react';
+import { intlFormat } from 'date-fns';
 import React, { useState } from 'react';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -10,6 +13,7 @@ export interface DatePickerProps {
 
 export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date(), onChange }) => {
     const [selectedDay, setSelectedDay] = useState(initialDate);
+    const { isOpen, onToggle } = useDisclosure();
 
     const hoverBg = useColorModeValue('brand.100', 'brand.900');
     const selectedBg = useColorModeValue('brand.primary', 'brand.100');
@@ -24,8 +28,26 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
         '.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover': {
             backgroundColor: hoverBg,
         },
+        '.DayPicker-Day': {
+            w: '2rem',
+            h: '2rem',
+            borderRadius: 6,
+        },
         '.DayPicker-Day--today': {
             color: todayColor,
+        },
+        '.DayPicker-wrapper': {
+            p: 0,
+            w: '100%',
+        },
+        '.DayPicker-Month': {
+            mx: 0,
+            w: '100%',
+            maxW: 300,
+        },
+        '.DayPicker-Caption > div': {
+            fontSize: 'sm',
+            fontWeight: 'bold',
         },
     };
 
@@ -34,10 +56,24 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
         onChange?.(date);
     };
 
+    const formatSelectedDate = () => {
+        return intlFormat(selectedDay, { month: 'short', day: 'numeric', year: 'numeric' });
+    };
+
     return (
-        <Box lineHeight={1.2} sx={styles}>
-            <DayPicker onDayClick={onDayClick} initialMonth={initialDate} selectedDays={selectedDay} />
-        </Box>
+        <>
+            <Input value={formatSelectedDate()} readOnly onClick={onToggle} />
+            <Box lineHeight={1.2} sx={styles}>
+                {isOpen && (
+                    <DayPicker
+                        onDayClick={onDayClick}
+                        initialMonth={initialDate}
+                        selectedDays={selectedDay}
+                        fixedWeeks
+                    />
+                )}
+            </Box>
+        </>
     );
 };
 

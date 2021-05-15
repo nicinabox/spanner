@@ -66,12 +66,12 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record 
                 <FormErrors errors={error.errors} />
             )}
 
-            <SimpleGrid columns={[1, 2]} spacing={2} templateColumns={['auto', '1fr 2fr']}>
+            <SimpleGrid spacing={[null, 7]} templateColumns={['auto', '1fr 2fr']}>
                 <Box>
                     <FormControl mb={4} id="date" isRequired>
                         <FormLabel>Date</FormLabel>
 
-                        <input type="hidden" {...getFormFieldProps('date')} />
+                        <Input type="hidden" {...getFormFieldProps('date')} />
                         <DatePicker onChange={(date) => setFormField('date', date)} initialDate={parseDateISO(formData.date)} />
                     </FormControl>
                 </Box>
