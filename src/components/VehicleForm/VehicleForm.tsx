@@ -1,13 +1,14 @@
 import {
-    FormControl, FormLabel, Input, FormHelperText, Button, Box, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Select, Radio, RadioGroup, Stack, Switch, Checkbox,
+    Box, Checkbox, FormControl, FormHelperText, FormLabel, Input, Radio, RadioGroup, Stack,
 } from '@chakra-ui/react';
+import DestroyButton from 'components/DestroyButton';
 import FormErrors from 'components/FormErrors';
 import SubmitButton from 'components/SubmitButton';
 import useFormData from 'hooks/useFormData';
 import useMutation from 'hooks/useMutation';
 import { useRouter } from 'next/router';
 import * as vehicles from 'queries/vehicles';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 
 export interface VehicleFormProps {
     vehicle?: vehicles.Vehicle;
@@ -15,10 +16,6 @@ export interface VehicleFormProps {
 
 export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const router = useRouter();
-    const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
-    const cancelDeleteRef = useRef<HTMLButtonElement>(null);
-
-    const onClose = () => setIsConfirmDeleteOpen(false);
 
     const { formData, getFormFieldProps, setFormData } = useFormData({
         name: '',
@@ -95,38 +92,11 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
 
             {Boolean(vehicle) && (
                 <Box mt={10}>
-                    <Button variant="outline" colorScheme="red" onClick={() => setIsConfirmDeleteOpen(true)}>
-                        Delete vehicle
-                    </Button>
-
-                    <AlertDialog
-                        isOpen={isConfirmDeleteOpen}
-                        leastDestructiveRef={cancelDeleteRef}
-                        onClose={onClose}
+                    <DestroyButton
+                        onConfirm={handleDeleteVehicle}
                     >
-                        <AlertDialogOverlay>
-                            <AlertDialogContent>
-                                <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                                    Delete &ldquo;
-                                    {vehicle?.name}
-                                    &rdquo;
-                                </AlertDialogHeader>
-
-                                <AlertDialogBody>
-                                    Are you sure? You can&apos;t undo this action afterwards.
-                                </AlertDialogBody>
-
-                                <AlertDialogFooter>
-                                    <Button ref={cancelDeleteRef} onClick={onClose}>
-                                        Cancel
-                                    </Button>
-                                    <Button colorScheme="red" onClick={handleDeleteVehicle} ml={3}>
-                                        Delete
-                                    </Button>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialogOverlay>
-                    </AlertDialog>
+                        Delete vehicle
+                    </DestroyButton>
                 </Box>
             )}
         </>
