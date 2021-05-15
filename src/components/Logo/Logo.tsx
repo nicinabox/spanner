@@ -8,7 +8,7 @@ export interface LogoProps {
 
 export const Logo: React.FC<LogoProps> = ({ height = 60 }) => (
     <Link href="/" display="inline-block">
-        <Box boxSize={height}>
+        <Box h={height}>
             <Img src="/assets/logo-white.png" alt="Spanner" />
         </Box>
     </Link>
