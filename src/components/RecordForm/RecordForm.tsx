@@ -82,14 +82,14 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record 
                     </FormControl>
                     <FormControl mb={4} id="mileage" isRequired>
                         <FormLabel>Mileage</FormLabel>
-                        <InputGroup size="sm">
+                        <InputGroup size="md">
                             <Input {...getFormFieldProps('mileage')} />
                             <InputRightAddon>{vehicle.distanceUnit}</InputRightAddon>
                         </InputGroup>
                     </FormControl>
                     <FormControl mb={4} id="cost">
                         <FormLabel>Cost</FormLabel>
-                        <InputGroup size="sm">
+                        <InputGroup size="md">
                             <InputLeftAddon>{getCurrencySymbol()}</InputLeftAddon>
                             <Input {...getFormFieldProps('cost')} />
                         </InputGroup>

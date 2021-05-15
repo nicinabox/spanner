@@ -66,7 +66,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle }) => 
 
             <FormControl mb={4} id="note" isRequired>
                 <FormLabel>Note</FormLabel>
-                <Input type="text" {...getFormFieldProps('notes')} />
+                <Input type="text" {...getFormFieldProps('notes')} autoFocus />
             </FormControl>
 
             <FormControl mb={4} id="reminderType">
