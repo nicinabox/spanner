@@ -22,7 +22,6 @@ export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params }) => {
         <Page
             Header={(
                 <Header
-                    columns={[1, 1, 3]}
                     LeftComponent={(
                         <HStack spacing={2}>
                             <Link href={`/vehicles/${vehicle?.id}`} passHref>

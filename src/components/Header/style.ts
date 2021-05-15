@@ -4,7 +4,7 @@ import theme from 'theme';
 export default {
     baseStyle: (props) => ({
         mb: 6,
-        p: 2,
+        px: 2,
         position: 'sticky',
         top: 0,
         zIndex: theme.zIndices.sticky,

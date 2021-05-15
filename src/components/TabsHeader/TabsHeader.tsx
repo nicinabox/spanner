@@ -1,5 +1,5 @@
 import {
-    Box, Spacer, Tab, TabList,
+    Tab, TabList,
 } from '@chakra-ui/react';
 import Header, { HeaderProps } from 'components/Header';
 import React from 'react';
@@ -11,12 +11,12 @@ export interface TabsHeaderProps extends HeaderProps {
 export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => (
     <Header
         CenterComponent={(
-            <TabList justifyContent={['start', 'center']} mt={[2, null, 0]}>
+            <TabList>
                 {tabs.map((tab) => (
                     <Tab key={tab} color="brand.100" width="max-content">{tab}</Tab>
                 ))}
             </TabList>
-              )}
+        )}
         {...props}
     />
 );

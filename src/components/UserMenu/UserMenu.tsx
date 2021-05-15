@@ -30,7 +30,7 @@ export const UserMenu: React.FC<UserMenuProps> = () => {
         <Menu>
             <Skeleton isLoaded={Boolean(user)}>
                 <MenuButton color="brand.100">
-                    <HStack spacing={2}>
+                    <HStack spacing={2} alignItems="center">
                         <Text>
                             {user?.email && shortenEmail(user.email)}
                         </Text>
