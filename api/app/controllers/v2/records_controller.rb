@@ -4,6 +4,10 @@ module V2
       render json: records.all.filter {|r| r.record_type != 'mileage adjustment' }
     end
 
+    def show
+      render json: records.find(params[:id])
+    end
+
     def create
       record = records.build(record_params)
 
