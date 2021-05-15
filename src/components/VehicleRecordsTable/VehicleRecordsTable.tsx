@@ -1,6 +1,6 @@
 import {
     Box,
-    Flex, Heading, Skeleton, SkeletonText, Text,
+    Flex, Heading, Skeleton, SkeletonText, Text, useColorModeValue,
 } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
 import { groupBy } from 'lodash';
@@ -27,17 +27,21 @@ const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord): num
     return record.mileage - olderRecord.mileage;
 };
 
-const Row = (props) => (
-    <Flex
-        py={[2, null, 0]}
-        display={['flex', null, 'table-row']}
-        flexFlow={['wrap', null, 'nowrap']}
-        alignItems="flex-start"
-        borderBottomColor="gray.200"
-        borderBottomWidth="1px"
-        {...props}
-    />
-);
+const Row = ({ borderBottomColors = ['gray.200', 'gray.700'], ...props }) => {
+    const borderColor = useColorModeValue('gray.200', 'gray.700');
+
+    return (
+        <Flex
+            py={[2, null, 0]}
+            display={['flex', null, 'table-row']}
+            flexFlow={['wrap', null, 'nowrap']}
+            alignItems="flex-start"
+            borderBottomColor={borderColor}
+            borderBottomWidth="1px"
+            {...props}
+        />
+    );
+};
 
 const Cell = (props) => (
     <Flex
@@ -89,6 +93,8 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
         <>
             {Object.keys(recordsByYear).sort((a, b) => Number(b) - Number(a)).map((year) => {
                 const yearRecords = recordsByYear[year];
+                const rowColorAlt = useColorModeValue('gray.50', 'gray.900');
+                const headerBorderColor = useColorModeValue('gray.300', 'gray.700');
 
                 return (
                     <Box key={year}>
@@ -96,8 +102,6 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                             size="md"
                             px={[0, null, 4]}
                             pb={2}
-                            borderBottomColor="gray.300"
-                            borderBottomWidth="1px"
                         >
                             {year}
                         </Heading>
@@ -106,7 +110,10 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                                 fontWeight="bold"
                                 fontSize="sm"
                                 color="gray.600"
-                                borderBottomColor="gray.300"
+                                borderTopWidth="1px"
+                                borderTopColor={headerBorderColor}
+                                borderBottomColor={headerBorderColor}
+                                bg={rowColorAlt}
                                 display={['none', null, 'table-row']}
                             >
                                 <Cell>Date</Cell>
@@ -120,7 +127,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ record
                                 const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
 
                                 return (
-                                    <Row key={record.id} bg={i % 2 ? 'gray.50' : 'white'}>
+                                    <Row key={record.id} bg={i % 2 ? rowColorAlt : 'transparent'}>
                                         <Cell
                                             whiteSpace="nowrap"
                                             fontWeight={['bold', null, 'inherit']}
