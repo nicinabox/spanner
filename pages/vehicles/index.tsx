@@ -37,14 +37,24 @@ const PageHeader = () => {
     );
 };
 
+const sortCreatedAtDesc = (a: Vehicle, b: Vehicle) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+};
+
+const sortPositionAsc = (a: Vehicle, b:Vehicle) => {
+    return (a.position ?? 0) - (b.position ?? 0);
+};
+
 const Vehicles: React.FC<VehiclesProps> = () => {
     const { data } = useRequest<Vehicle[]>(vehiclesPath);
 
     const [showRetired, setShowRetired] = useState(false);
 
-    const sortedVehicles = data?.sort((a, b) => (a.position ?? 0) - (b.position ?? 0)) || [];
-    const activeVehicles = sortedVehicles.filter((v) => !v.retired);
-    const retiredVehicles = sortedVehicles.filter((v) => v.retired);
+    const activeVehicles = data?.filter((v) => !v.retired)
+        .sort(sortPositionAsc) ?? [];
+
+    const retiredVehicles = data?.filter((v) => v.retired)
+        .sort(sortCreatedAtDesc) ?? [];
 
     return (
         <Page
