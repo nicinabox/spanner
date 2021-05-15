@@ -41,6 +41,14 @@ const sortCreatedAtDesc = (a: Vehicle, b: Vehicle) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
 };
 
+const sortAlphaAsc = (a: Vehicle, b: Vehicle) => {
+    const aName = a.name.toLowerCase();
+    const bName = b.name.toLowerCase();
+    if (aName < bName) return -1;
+    if (aName > bName) return 1;
+    return 0;
+};
+
 const sortPositionAsc = (a: Vehicle, b:Vehicle) => {
     return (a.position ?? 0) - (b.position ?? 0);
 };
@@ -51,7 +59,7 @@ const Vehicles: React.FC<VehiclesProps> = () => {
     const [showRetired, setShowRetired] = useState(false);
 
     const activeVehicles = data?.filter((v) => !v.retired)
-        .sort(sortPositionAsc) ?? [];
+        .sort(sortCreatedAtDesc) ?? [];
 
     const retiredVehicles = data?.filter((v) => v.retired)
         .sort(sortCreatedAtDesc) ?? [];
