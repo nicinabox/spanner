@@ -1,7 +1,13 @@
 import { useState } from 'react';
 
-export default function useFormData<T>(initialData: T, transformValue?: (fieldName: string, fieldValue: string) => string) {
-    const [formData, setFormData] = useState(initialData);
+const transformNullValues = <T extends Record<string, unknown>>(data: T) => {
+    return Object.keys(data).reduce<Record<string, unknown>>((acc, key) => {
+        return { ...acc, [key]: data[key] ?? '' };
+    }, {});
+};
+
+export default function useFormData<T extends Record<string, unknown>>(initialData: T, transformValue?: (fieldName: string, fieldValue: string) => string) {
+    const [formData, setFormData] = useState(transformNullValues(initialData) as T);
 
     const getInputValue = ({ target }) => {
         return target.type === 'checkbox' ? target.checked : target.value;
