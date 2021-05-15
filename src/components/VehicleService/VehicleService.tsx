@@ -43,14 +43,16 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
             )}
 
             <Flex mb={6}>
-                <HStack spacing={6}>
-                    <Link href={`/vehicles/${vehicleId}/add`} passHref>
-                        <Button as="a" colorScheme="brand" size="md" leftIcon={<AddIcon />}>
-                            Add...
-                        </Button>
-                    </Link>
-                </HStack>
-                <Spacer minW={[6, null]} />
+                {!vehicle?.retired && (
+                    <Flex>
+                        <Link href={`/vehicles/${vehicleId}/add`} passHref>
+                            <Button as="a" colorScheme="brand" size="md" leftIcon={<AddIcon />}>
+                                Add...
+                            </Button>
+                        </Link>
+                    </Flex>
+                )}
+                <Spacer minW={vehicle?.retired ? [null] : [4, null]} />
                 <Search onChangeText={handleSearch} />
             </Flex>
 

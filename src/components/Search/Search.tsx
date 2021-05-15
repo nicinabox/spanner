@@ -11,7 +11,7 @@ export const Search: React.FC<SearchProps> = ({ onChangeText }) => (
         colorScheme="gray"
         variant="filled"
         size="md"
-        maxWidth={['100%', 400]}
+        maxWidth={[null, 350]}
         onChange={(e) => {
             onChangeText(e.target.value);
         }}
