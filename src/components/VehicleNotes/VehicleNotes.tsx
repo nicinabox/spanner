@@ -36,7 +36,7 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
 
     return (
         <>
-            <Container maxW="container.xl" mb={6}>
+            <Container maxW="container.md" mb={6}>
                 <Flex direction="row-reverse">
                     {editing ? (
                         <HStack spacing={3}>
@@ -63,7 +63,7 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
                 </Flex>
             </Container>
 
-            <Container maxW="container.xl">
+            <Container maxW="container.md">
                 {editing && (
                     <Textarea
                         ref={textareaRef}
@@ -76,18 +76,18 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
                 {!editing && vehicle.notes && (
                     <MarkdownBody body={vehicle.notes} />
                 )}
-            </Container>
 
-            {!vehicle.notes && !editing && (
-                <Container maxW="container.xl">
-                    <Heading>
-                        You don&apos;t have any notes yet
-                    </Heading>
-                    <Text>
-                        Keep notes for those hard to remember things, like how to reset the clock.
-                    </Text>
-                </Container>
-            )}
+                {!vehicle.notes && !editing && (
+                    <>
+                        <Heading>
+                            You don&apos;t have any notes yet
+                        </Heading>
+                        <Text>
+                            Keep notes for those hard to remember things, like how to reset the clock.
+                        </Text>
+                    </>
+                )}
+            </Container>
         </>
     );
 };
