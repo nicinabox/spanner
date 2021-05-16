@@ -1,6 +1,6 @@
 import { AddIcon } from '@chakra-ui/icons';
 import {
-    Button, Container, Flex, Text,
+    Button, Container, Flex, Heading, Text,
 } from '@chakra-ui/react';
 import useRequest from 'hooks/useRequest';
 import Link from 'next/link';
@@ -47,6 +47,17 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                     </Flex>
                 );
             }))}
+
+            {Boolean(!vehicle?.reminders.length) && (
+                <>
+                    <Heading>
+                        No reminders yet
+                    </Heading>
+                    <Text>
+                        Use reminders to get notified of things on a date or mileage
+                    </Text>
+                </>
+            )}
         </Container>
     );
 };
