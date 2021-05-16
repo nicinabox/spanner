@@ -56,7 +56,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 <Search onChangeText={handleSearch} />
             </Flex>
 
-            {(anyLoading || Boolean(records?.length)) ? (
+            {anyLoading || Boolean(records?.length) ? (
                 <Box shadow={['none', 'lg', 'lg']} p={[0, 4]}>
                     <VehicleRecordsTable
                         vehicleId={vehicleId}
@@ -75,12 +75,12 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
             )}
 
             {Boolean(searchQuery && !queryResults.length) && (
-            <Box>
-                <Heading>
-                    No results
-                </Heading>
-                <Text>Try searching a date or note</Text>
-            </Box>
+                <Box>
+                    <Heading>
+                        No results
+                    </Heading>
+                    <Text>Try searching by date, mileage, or notes.</Text>
+                </Box>
             )}
         </Container>
     );

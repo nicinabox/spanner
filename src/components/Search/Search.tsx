@@ -7,7 +7,7 @@ export interface SearchProps {
 
 export const Search: React.FC<SearchProps> = ({ onChangeText }) => (
     <Input
-        placeholder="Search by date, mileage, or notes"
+        placeholder="Search"
         colorScheme="gray"
         variant="filled"
         size="md"
