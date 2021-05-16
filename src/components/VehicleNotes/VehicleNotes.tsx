@@ -37,28 +37,30 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
     return (
         <>
             <Container maxW="container.xl" mb={6}>
-                {editing ? (
-                    <HStack spacing={3}>
-                        <Button colorScheme="brand" size="sm" onClick={handleSaveNotes}>
-                            Save
+                <Flex direction="row-reverse">
+                    {editing ? (
+                        <HStack spacing={3}>
+                            <Button colorScheme="brand" size="sm" onClick={handleSaveNotes}>
+                                Save
+                            </Button>
+                            <Button
+                                colorScheme="brand"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                    setEditing(false);
+                                    setFormField('notes', vehicle.notes);
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                        </HStack>
+                    ) : (
+                        <Button colorScheme="brand" size="sm" leftIcon={<EditIcon />} onClick={() => setEditing(true)}>
+                            Edit
                         </Button>
-                        <Button
-                            colorScheme="brand"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                                setEditing(false);
-                                setFormField('notes', vehicle.notes);
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </HStack>
-                ) : (
-                    <Button colorScheme="brand" size="sm" leftIcon={<EditIcon />} onClick={() => setEditing(true)}>
-                        Edit
-                    </Button>
-                )}
+                    )}
+                </Flex>
             </Container>
 
             <Container maxW="container.xl">

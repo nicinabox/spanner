@@ -42,7 +42,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 <VehicleStats vehicle={vehicle} records={records} />
             )}
 
-            <Flex mb={6}>
+            <Flex mb={6} direction="row-reverse">
                 {!vehicle?.retired && (
                     <Flex>
                         <Link href={`/vehicles/${vehicleId}/add`} passHref>
