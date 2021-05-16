@@ -35,27 +35,9 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                                 {reminder.notes}
                             </Text>
 
-                            {reminder.reminderType === 'mileage' && (
+                            {reminder.mileage && (
                                 <Text fontSize="sm">
                                     {formatMileage(reminder.mileage, vehicle.distanceUnit)}
-                                </Text>
-                            )}
-                            {reminder.reminderType === 'date' && reminder.date && (
-                                <Text fontSize="sm">
-                                    {intlFormatDateISO(reminder.date)}
-                                </Text>
-                            )}
-                            {reminder.reminderType === 'date_or_mileage' && reminder.date && (
-                                <Text fontSize="sm">
-                                    {reminder.date ? intlFormatDateISO(reminder.date) : null}
-                                    {reminder.date && reminder.mileage && (
-                                    <>
-                                        {' '}
-                                        or
-                                        {' '}
-                                    </>
-                                )}
-                                    {reminder.mileage ? formatMileage(reminder.mileage, vehicle.distanceUnit) : null}
                                 </Text>
                             )}
                         </Flex>
