@@ -19,8 +19,8 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
 
     return (
         <Container>
-            <Flex mb={6}>
-                <Link href={`/vehicles/${vehicleId}/add?panelId=1`} passHref>
+            <Flex mb={6} direction="row-reverse">
+                <Link href={`/vehicles/${vehicleId}/add#panel=1`} passHref>
                     <Button as="a" colorScheme="brand" size="sm" leftIcon={<AddIcon />}>
                         Add
                     </Button>

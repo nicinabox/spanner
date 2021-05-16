@@ -1,10 +1,8 @@
 import {
-    Box,
-    Circle,
-    Tab, TabList,
+    Circle, Tab, TabList,
 } from '@chakra-ui/react';
 import Header, { HeaderProps } from 'components/Header';
-import { useRouter } from 'next/router';
+import { Router } from 'next/router';
 import React from 'react';
 
 type BadgeSentiment = 'neutral' | 'warning' | 'negative';
@@ -20,8 +18,6 @@ export interface TabsHeaderProps extends HeaderProps {
 }
 
 export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => {
-    const router = useRouter();
-
     const tabList = tabs.map((tab) => {
         if (typeof tab === 'string') {
             return { text: tab };
@@ -46,12 +42,9 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => {
                             color="brand.100"
                             width="max-content"
                             onClick={() => {
-                                router.push({
-                                    query: {
-                                        ...router.query,
-                                        panelId: i,
-                                    },
-                                });
+                                const as = `#panel=${i}`;
+                                window.location.hash = as;
+                                Router.events.emit('hashChangeStart', as);
                             }}
                         >
                             {tab.text}
