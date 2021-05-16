@@ -114,15 +114,17 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record 
                 <SubmitButton isProcessing={isProcessing} />
             </form>
 
-            <Box mt={10}>
-                <DestroyButton
-                    confirmTitle="Please confirm delete"
-                    confirmBody="You can't undo this action afterwards."
-                    onConfirm={handleDelete}
-                >
-                    Delete Record
-                </DestroyButton>
-            </Box>
+            {Boolean(record) && (
+                <Box mt={10}>
+                    <DestroyButton
+                        confirmTitle="Please confirm delete"
+                        confirmBody="You can't undo this action afterwards."
+                        onConfirm={handleDelete}
+                    >
+                        Delete Record
+                    </DestroyButton>
+                </Box>
+            )}
         </>
     );
 };
