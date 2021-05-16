@@ -6,6 +6,8 @@ import {
 import Interpunct from 'components/Interpunct';
 import { Vehicle } from 'queries/vehicles';
 import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
+import { getOverdueRemindersCount } from 'utils/reminders';
+import NumberBadge from 'components/NumberBadge';
 
 export interface VehicleItemProps {
     vehicle: Vehicle;
@@ -18,29 +20,31 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
         <LinkBox sx={styles}>
             <NextLink href={`/vehicles/${vehicle.id}`} passHref>
                 <LinkOverlay>
-                    <Flex>
-                        <Spacer maxW={2} />
-                        <Flex direction="column" minH={12}>
-                            <HStack spacing={2}>
-                                <Heading size="sm" color="brand.100">
-                                    {vehicle.name}
-                                </Heading>
-                            </HStack>
-                            <HStack divider={<Interpunct color="brand.300" fontSize="sm" />}>
-                                {Boolean(vehicle.estimatedMileage) && (
-                                    <Text color="brand.300" fontSize="sm">
-                                        ~
-                                        {formatEstimatedMileage(vehicle)}
-                                    </Text>
-                                )}
-                                {Boolean(vehicle.milesPerYear) && (
-                                    <Text color="brand.300" fontSize="sm">
-                                        {formatMilesPerYear(vehicle)}
-                                        /yr
-                                    </Text>
-                                )}
-                            </HStack>
+                    <Flex direction="column" minH={12}>
+                        <Flex justify="space-between">
+                            <Heading size="sm" color="brand.100">
+                                {vehicle.name}
+                            </Heading>
+                            {Boolean(getOverdueRemindersCount(vehicle.reminders)) && (
+                                <NumberBadge sentiment="negative">
+                                    {getOverdueRemindersCount(vehicle.reminders)}
+                                </NumberBadge>
+                            )}
                         </Flex>
+                        <HStack divider={<Interpunct color="brand.300" fontSize="sm" />}>
+                            {Boolean(vehicle.estimatedMileage) && (
+                                <Text color="brand.300" fontSize="sm">
+                                    ~
+                                    {formatEstimatedMileage(vehicle)}
+                                </Text>
+                            )}
+                            {Boolean(vehicle.milesPerYear) && (
+                                <Text color="brand.300" fontSize="sm">
+                                    {formatMilesPerYear(vehicle)}
+                                    /yr
+                                </Text>
+                            )}
+                        </HStack>
                     </Flex>
                 </LinkOverlay>
             </NextLink>

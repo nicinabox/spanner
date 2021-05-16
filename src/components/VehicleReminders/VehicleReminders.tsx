@@ -41,7 +41,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                                 </Text>
                             )}
                         </Flex>
-                        <Text color={isReminderOverdue(reminder) ? 'red' : 'black'}>
+                        <Text color={isReminderOverdue(reminder) ? 'red.500' : 'black'}>
                             {reminder.date ? intlFormatDateISO(reminder.date) : null}
                         </Text>
                     </Flex>

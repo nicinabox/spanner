@@ -25,7 +25,7 @@ const PageHeader = ({ vehicle, overDueReminders }) => (
         tabs={
             [
                 'Service',
-                { text: 'Reminders', badge: overDueReminders.length, badgeSentiment: 'warning' },
+                { text: 'Reminders', badge: overDueReminders.length, badgeSentiment: 'negative' },
                 'Notes',
             ]
         }
