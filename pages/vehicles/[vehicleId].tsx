@@ -5,11 +5,13 @@ import Page from 'components/Page';
 import TabsHeader from 'components/TabsHeader';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import VehicleNotes from 'components/VehicleNotes';
+import VehicleReminders from 'components/VehicleReminders';
 import VehicleService from 'components/VehicleService';
 import useRequest from 'hooks/useRequest';
 import { vehicleRecordsPath } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
+import { isReminderOverdue } from 'utils/reminders';
 import { authRedirect, withSession } from 'utils/session';
 
 export interface VehiclePageProps {
@@ -18,9 +20,15 @@ export interface VehiclePageProps {
     }
 }
 
-const PageHeader = ({ vehicle }) => (
+const PageHeader = ({ vehicle, overDueReminders }) => (
     <TabsHeader
-        tabs={['Service', 'Notes']}
+        tabs={
+            [
+                'Service',
+                { text: 'Reminders', badge: overDueReminders.length, badgeSentiment: 'warning' },
+                'Notes',
+            ]
+        }
         LeftComponent={(
             <HStack spacing={2}>
                 <BackButton href="/vehicles">
@@ -39,7 +47,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
     return (
         <Page
             p={0}
-            Header={<PageHeader vehicle={vehicle} />}
+            Header={<PageHeader vehicle={vehicle} overDueReminders={vehicle?.reminders.filter(isReminderOverdue) ?? []} />}
         >
             <LinkPreload path={[
                 vehiclePath(params.vehicleId),
@@ -51,7 +59,10 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
                 <TabPanel px={0}>
                     <VehicleService vehicleId={params.vehicleId} />
                 </TabPanel>
-                <TabPanel>
+                <TabPanel px={0}>
+                    <VehicleReminders vehicleId={params.vehicleId} />
+                </TabPanel>
+                <TabPanel px={0}>
                     {vehicle && (
                         <VehicleNotes vehicle={vehicle} />
                     )}

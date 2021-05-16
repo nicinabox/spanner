@@ -6,9 +6,12 @@ import {
 import Header, { HeaderProps } from 'components/Header';
 import React from 'react';
 
+type BadgeSentiment = 'neutral' | 'warning' | 'negative';
+
 interface Tab {
     text: string;
     badge?: string;
+    badgeSentiment?: BadgeSentiment
 }
 
 export interface TabsHeaderProps extends HeaderProps {
@@ -23,6 +26,13 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => {
         return tab;
     });
 
+    const getBadgeBg = (sentiment: BadgeSentiment | undefined) => {
+        if (sentiment === 'warning') return 'orange.300';
+        if (sentiment === 'negative') return 'red.200';
+        if (sentiment === 'neutral') return 'brand.200';
+        return 'brand.200';
+    };
+
     return (
         <Header
             CenterComponent={(
@@ -36,8 +46,9 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => {
                                     mr={-2}
                                     minW={5}
                                     px={2}
-                                    bg="brand.200"
+                                    bg={getBadgeBg(tab.badgeSentiment)}
                                     color="brand.500"
+                                    shadow="sm"
                                     fontSize="xs"
                                     fontWeight="900"
                                 >
