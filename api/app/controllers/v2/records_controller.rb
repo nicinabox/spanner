@@ -1,7 +1,7 @@
 module V2
   class RecordsController < ApplicationController
     def index
-      render json: records.all.filter {|r| r.record_type != 'mileage adjustment' }
+      render json: records.all
     end
 
     def show
