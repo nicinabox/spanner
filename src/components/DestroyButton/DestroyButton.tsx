@@ -6,7 +6,7 @@ import React, { useRef, useState } from 'react';
 export interface DestroyButtonProps {
     confirmTitle?: string;
     confirmBody?: string;
-    onConfirm: (event: React.MouseEventHandler<HTMLButtonElement>) => void;
+    onConfirm: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const DestroyButton: React.FC<DestroyButtonProps> = ({
