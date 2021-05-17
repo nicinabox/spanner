@@ -42,7 +42,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                             )}
                         </Flex>
                         <Text color={isReminderOverdue(reminder) ? 'red.500' : 'black'}>
-                            {reminder.date ? intlFormatDateISO(reminder.date) : null}
+                            {reminder.reminderDate ? intlFormatDateISO(reminder.reminderDate) : null}
                         </Text>
                     </Flex>
                 );

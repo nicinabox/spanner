@@ -6,6 +6,6 @@ export const getOverdueRemindersCount = (reminders: VehicleReminder[]) => {
 
 export const isReminderOverdue = (reminder: VehicleReminder) => {
     if (!reminder.date) return false;
-    const date = new Date(reminder.date);
+    const date = new Date(reminder.reminderDate);
     return new Date() > date;
 };
