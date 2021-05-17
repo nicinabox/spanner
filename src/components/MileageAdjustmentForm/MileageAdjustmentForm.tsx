@@ -11,17 +11,21 @@ import { Vehicle, vehiclePath } from 'queries/vehicles';
 import { formatEstimatedMileage } from 'utils/vehicle';
 import FormErrors from 'components/FormErrors';
 import SubmitButton from 'components/SubmitButton';
+import { useRouter } from 'next/router';
 
 export interface MileageAdjustmentFormProps {
     vehicle: Vehicle;
 }
 
 export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ vehicle }) => {
+    const router = useRouter();
+
     const {
-        mutate: mutateVehicleRecord, isProcessing, isComplete, error,
+        mutate: mutateVehicleRecord, isProcessing, error,
     } = useMutation(createRecord, {
         onSuccess() {
             mutate(vehiclePath(vehicle.id));
+            router.push(`/vehicles/${vehicle.id}`);
         },
     });
 
@@ -44,19 +48,6 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
             recordType: 'mileage adjustment',
         });
     };
-
-    if (isComplete) {
-        return (
-            <VStack spacing={6}>
-                <CheckCircleIcon boxSize={12} color="green" />
-                <Heading>
-                    Mileage updated to
-                    {' '}
-                    {formatEstimatedMileage(vehicle)}
-                </Heading>
-            </VStack>
-        );
-    }
 
     return (
         <form onSubmit={handleSubmit}>

@@ -8,6 +8,7 @@ import SubmitButton from 'components/SubmitButton';
 import { addMonths } from 'date-fns';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
+import { useRouter } from 'next/router';
 import { clientAPI } from 'queries/config';
 import * as reminders from 'queries/reminders';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
@@ -21,6 +22,7 @@ export interface NewReminderFormProps {
 }
 
 export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMileage }) => {
+    const router = useRouter();
     const [estimatedDate, setEstimatedDate] = useState<Date | null>(null);
 
     const { formData, getFormFieldProps, setFormField } = useFormData({
@@ -40,6 +42,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMi
     } = useMutation(reminders.createReminder, {
         onSuccess() {
             mutate(vehiclePath(vehicle.id));
+            router.push(`/vehicles/${vehicle.id}`);
         },
     });
 
@@ -74,17 +77,6 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMi
             date: formatDateISO(formData.date),
         });
     };
-
-    if (isComplete && !error) {
-        return (
-            <VStack spacing={6}>
-                <CheckCircleIcon boxSize={12} color="green" />
-                <Heading>
-                    Reminder Added
-                </Heading>
-            </VStack>
-        );
-    }
 
     return (
         <form onSubmit={handleSubmit}>
