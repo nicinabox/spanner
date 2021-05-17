@@ -11,7 +11,7 @@ import useSearchQuery from 'hooks/useSearchQuery';
 import { VehicleRecord, vehicleRecordsPath } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
-import { parseDateISO } from 'utils/date';
+import { parseDateUTC } from 'utils/date';
 import VehicleStats from 'components/VehicleStats';
 
 export interface VehicleServiceProps {
@@ -24,7 +24,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
 
     const { searchQuery, queryResults, setSearchQuery } = useSearchQuery(records, (item, query) => {
         const re = new RegExp(query, 'gi');
-        const date = intlFormat(parseDateISO(item.date), { month: 'short', year: 'numeric', day: 'numeric' });
+        const date = intlFormat(parseDateUTC(item.date), { month: 'short', year: 'numeric', day: 'numeric' });
 
         return re.test(item.notes) || re.test(date) || re.test(item.mileage.toString());
     });

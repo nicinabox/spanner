@@ -11,8 +11,8 @@ import useTextareaResize from 'hooks/useTextareaResize';
 import { useRouter } from 'next/router';
 import * as records from 'queries/records';
 import { Vehicle } from 'queries/vehicles';
-import React, { useEffect } from 'react';
-import { formatDateISO, parseDateISO } from 'utils/date';
+import React from 'react';
+import { formatDateISO, parseDateUTC } from 'utils/date';
 import { getCurrencySymbol } from 'utils/number';
 
 export interface NewServiceFormProps {
@@ -86,7 +86,7 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record 
                             <FormLabel>Date</FormLabel>
 
                             <Input type="hidden" {...getFormFieldProps('date')} />
-                            <DatePicker onChange={(date) => setFormField('date', date)} initialDate={parseDateISO(formData.date)} />
+                            <DatePicker initialDate={parseDateUTC(formData.date)} />
                         </FormControl>
                     </Box>
                     <Box flex={1}>

@@ -6,7 +6,7 @@ import useRequest from 'hooks/useRequest';
 import Link from 'next/link';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
-import { intlFormatDateISO } from 'utils/date';
+import { intlFormatDateUTC } from 'utils/date';
 import { isReminderOverdue } from 'utils/reminders';
 import { formatMileage } from 'utils/vehicle';
 
@@ -42,7 +42,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                             )}
                         </Flex>
                         <Text color={isReminderOverdue(reminder) ? 'red.500' : 'black'}>
-                            {reminder.reminderDate ? intlFormatDateISO(reminder.reminderDate) : null}
+                            {reminder.reminderDate ? intlFormatDateUTC(reminder.reminderDate) : null}
                         </Text>
                     </Flex>
                 );

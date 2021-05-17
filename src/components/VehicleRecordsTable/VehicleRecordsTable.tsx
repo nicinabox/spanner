@@ -9,7 +9,7 @@ import { groupBy } from 'lodash';
 import Link from 'next/link';
 import { VehicleRecord, vehicleRecordPath } from 'queries/records';
 import React from 'react';
-import { parseDateISO } from 'utils/date';
+import { parseDateUTC } from 'utils/date';
 import { formatCurrency } from 'utils/number';
 import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
@@ -142,7 +142,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                             fontSize={['sm', null, 'md']}
                                             mr={[3, null, 'auto']}
                                         >
-                                            {intlFormat(parseDateISO(record.date), { month: 'short', day: 'numeric' })}
+                                            {intlFormat(parseDateUTC(record.date), { month: 'short', day: 'numeric' })}
                                         </Cell>
 
                                         <Cell

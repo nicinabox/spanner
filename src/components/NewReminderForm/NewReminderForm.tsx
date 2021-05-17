@@ -13,7 +13,7 @@ import { clientAPI } from 'queries/config';
 import * as reminders from 'queries/reminders';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React, { useEffect, useState } from 'react';
-import { formatDateISO, intlFormatDate, parseDateISO } from 'utils/date';
+import { formatDateISO, intlFormatDate, parseDateUTC } from 'utils/date';
 import { formatMileage } from 'utils/vehicle';
 
 export interface NewReminderFormProps {
@@ -38,7 +38,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMi
     });
 
     const {
-        mutate: createReminderMutation, isProcessing, isComplete, error,
+        mutate: createReminderMutation, isProcessing, error,
     } = useMutation(reminders.createReminder, {
         onSuccess() {
             mutate(vehiclePath(vehicle.id));
@@ -50,7 +50,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMi
         const estimateReminderDate = async (params: reminders.EstimateReminderParams) => {
             try {
                 const { reminderDate } = await reminders.estimateReminderDate(clientAPI, vehicle.id, params);
-                setEstimatedDate(parseDateISO(reminderDate));
+                setEstimatedDate(parseDateUTC(reminderDate));
             } catch (err) {
                 console.error(err);
             }

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { VehicleRecord } from 'queries/records';
 import { Vehicle } from 'queries/vehicles';
 import React from 'react';
-import { parseDateISO } from 'utils/date';
+import { parseDateUTC } from 'utils/date';
 import { formatEstimatedMileage, formatMilesPerYear, sortRecordsOldestFirst } from 'utils/vehicle';
 
 export interface VehicleStatsProps {
@@ -41,7 +41,7 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) 
                 )}
                 {oldestRecord && (
                     <VehicleStat label="Since">
-                        {intlFormat(parseDateISO(oldestRecord?.date), { month: 'short', year: 'numeric', day: 'numeric' })}
+                        {intlFormat(parseDateUTC(oldestRecord?.date), { month: 'short', year: 'numeric', day: 'numeric' })}
                     </VehicleStat>
                 )}
                 <VehicleStat label="VIN">
