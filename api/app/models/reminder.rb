@@ -54,7 +54,8 @@ class Reminder < ApplicationRecord
   def estimate_date
     return unless can_estimate_date?
 
-    days = mileage / vehicle.miles_per_day
+    delta = mileage - vehicle.estimated_mileage
+    days = delta / vehicle.miles_per_day
     Date.today + days.days
   end
 end
