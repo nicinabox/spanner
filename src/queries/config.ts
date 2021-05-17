@@ -14,6 +14,10 @@ const paramsSerializer = (params) => {
     return qs.stringify(params, { arrayFormat: 'brackets' });
 };
 
+const getTimeZoneOffset = () => {
+    return (new Date().getTimezoneOffset() / 60) * -1;
+};
+
 export const createAPIRequest = (req?) => {
     let api;
 
@@ -26,6 +30,7 @@ export const createAPIRequest = (req?) => {
             paramsSerializer,
             headers: {
                 Accept: `application/vnd.api+json; version=${API_VERSION}`,
+                'Time-Zone-Offset': getTimeZoneOffset(),
                 Authorization,
             },
         });
@@ -38,6 +43,9 @@ export const createAPIRequest = (req?) => {
     } else {
         api = axios.create({
             paramsSerializer,
+            headers: {
+                'Time-Zone-Offset': getTimeZoneOffset(),
+            },
         });
     }
 
