@@ -20,11 +20,13 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
     return (
         <Container>
             <Flex mb={6} direction="row-reverse">
-                <Link href={`/vehicles/${vehicleId}/add#panel=1`} passHref>
-                    <Button as="a" colorScheme="brand" size="sm" leftIcon={<AddIcon />}>
-                        Add
-                    </Button>
-                </Link>
+                {!vehicle?.retired && (
+                    <Link href={`/vehicles/${vehicleId}/add#panel=1`} passHref>
+                        <Button as="a" colorScheme="brand" size="sm" leftIcon={<AddIcon />}>
+                            Add
+                        </Button>
+                    </Link>
+                )}
             </Flex>
 
             {vehicle?.reminders.map(((reminder) => {

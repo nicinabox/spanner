@@ -25,9 +25,9 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
                             <Heading size="sm" color="brand.100">
                                 {vehicle.name}
                             </Heading>
-                            {Boolean(getOverdueRemindersCount(vehicle.reminders)) && (
+                            {Boolean(getOverdueRemindersCount(vehicle)) && (
                                 <NumberBadge sentiment="negative">
-                                    {getOverdueRemindersCount(vehicle.reminders)}
+                                    {getOverdueRemindersCount(vehicle)}
                                 </NumberBadge>
                             )}
                         </Flex>

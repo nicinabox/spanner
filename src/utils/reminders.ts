@@ -1,7 +1,9 @@
 import { VehicleReminder } from 'queries/reminders';
+import { Vehicle } from 'queries/vehicles';
 
-export const getOverdueRemindersCount = (reminders: VehicleReminder[]) => {
-    return reminders.filter(isReminderOverdue).length;
+export const getOverdueRemindersCount = (vehicle: Vehicle) => {
+    if (vehicle.retired) return undefined;
+    return vehicle.reminders.filter(isReminderOverdue).length;
 };
 
 export const isReminderOverdue = (reminder: VehicleReminder) => {

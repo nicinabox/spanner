@@ -11,7 +11,7 @@ import useRequest from 'hooks/useRequest';
 import { vehicleRecordsPath } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
-import { isReminderOverdue } from 'utils/reminders';
+import { getOverdueRemindersCount } from 'utils/reminders';
 import { authRedirect, withSession } from 'utils/session';
 
 export interface VehiclePageProps {
@@ -20,12 +20,12 @@ export interface VehiclePageProps {
     }
 }
 
-const PageHeader = ({ vehicle, overDueReminders }) => (
+const PageHeader = ({ vehicle, overDueRemindersBadge }) => (
     <TabsHeader
         tabs={
             [
                 'Service',
-                { text: 'Reminders', badge: overDueReminders.length, badgeSentiment: 'negative' },
+                { text: 'Reminders', badge: overDueRemindersBadge, badgeSentiment: 'negative' },
                 'Notes',
             ]
         }
@@ -47,7 +47,7 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
     return (
         <Page
             p={0}
-            Header={<PageHeader vehicle={vehicle} overDueReminders={vehicle?.reminders.filter(isReminderOverdue) ?? []} />}
+            Header={<PageHeader vehicle={vehicle} overDueRemindersBadge={vehicle ? getOverdueRemindersCount(vehicle) : undefined} />}
         >
             <LinkPreload path={[
                 vehiclePath(params.vehicleId),
