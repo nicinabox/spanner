@@ -1,17 +1,17 @@
-import React from 'react';
 import {
-    Button, FormControl, FormHelperText, FormLabel, Input, VStack, Heading,
+    FormControl, FormHelperText, FormLabel, Input,
 } from '@chakra-ui/react';
-import { CheckCircleIcon } from '@chakra-ui/icons';
+import FormErrors from 'components/FormErrors';
+import SubmitButton from 'components/SubmitButton';
 import { format } from 'date-fns';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
+import { useRouter } from 'next/router';
 import { createRecord } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
+import React from 'react';
+import { mileageFieldHelpers } from 'utils/form';
 import { formatEstimatedMileage } from 'utils/vehicle';
-import FormErrors from 'components/FormErrors';
-import SubmitButton from 'components/SubmitButton';
-import { useRouter } from 'next/router';
 
 export interface MileageAdjustmentFormProps {
     vehicle: Vehicle;
@@ -29,14 +29,7 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
         },
     });
 
-    const { formData, getFormFieldProps } = useFormData({
-        mileage: '',
-    }, (fieldName, fieldValue) => {
-        if (fieldName === 'mileage') {
-            return fieldValue.replace(/\D/g, '');
-        }
-        return fieldValue;
-    });
+    const { formData, getFormFieldProps } = useFormData({ mileage: '' });
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -57,7 +50,7 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
 
             <FormControl mb={4} id="mileage" isRequired>
                 <FormLabel>Enter your current mileage</FormLabel>
-                <Input {...getFormFieldProps('mileage')} autoFocus />
+                <Input {...getFormFieldProps('mileage', mileageFieldHelpers)} autoFocus />
                 <FormHelperText>
                     Your estimated mileage is
                     {' '}

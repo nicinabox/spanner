@@ -1,48 +1,65 @@
-import { useState } from 'react';
+import { identity } from 'lodash';
+import { DependencyList, useEffect, useState } from 'react';
 
-const transformNullValues = <T extends Record<string, unknown>>(data: T) => {
+interface FieldHelpers {
+    parseValue?: (value: any) => any;
+    formatValue?: (value: any) => any;
+}
+
+const transformValues = <T extends Record<string, unknown>>(data: T) => {
     return Object.keys(data).reduce<Record<string, unknown>>((acc, key) => {
-        return { ...acc, [key]: data[key] ?? '' };
+        return {
+            ...acc,
+            [key]: data[key] ?? '',
+        };
     }, {});
 };
 
-export default function useFormData<T extends Record<string, unknown>>(initialData: T, transformValue?: (fieldName: string, fieldValue: string) => string) {
-    const [formData, setFormData] = useState(transformNullValues(initialData) as T);
+export default function useFormData<T extends Record<string, unknown>>(initialData: T, deps: DependencyList = []) {
+    const [formData, setFormData] = useState(transformValues(initialData) as T);
+    const [touchedData, setTouchedData] = useState<Partial<T>>({});
 
-    const getInputValue = ({ target }) => {
-        return target.type === 'checkbox' ? target.checked : target.value;
+    useEffect(() => {
+        setFormDataSafe({ ...initialData, ...touchedData });
+    }, deps);
+
+    const setFormDataSafe = (nextData: T) => {
+        setFormData(transformValues(nextData) as T);
     };
 
-    const handleFieldChange = (name: string, value: string) => {
-        setFormData({
-            ...formData,
-            [name]: transformValue?.(name, value) ?? value,
-        });
+    const getInputValue = (event) => {
+        if (event.target) {
+            const { target } = event;
+            return target.type === 'checkbox' ? target.checked : target.value;
+        }
+        return event;
     };
 
-    const getFormFieldProps = (name: string, handleGetValue = getInputValue) => {
-        const valueField = typeof formData[name] === 'boolean' ? 'isChecked' : 'value';
+    const getFormFieldProps = (name: string, {
+        parseValue = identity,
+        formatValue = identity,
+    }: FieldHelpers = {}) => {
+        const value = formData[name];
+        const valueField = typeof value === 'boolean' ? 'isChecked' : 'value';
 
         return {
             name,
-            [valueField]: formData[name],
-            onChange: (v) => {
-                handleFieldChange(name, handleGetValue(v));
+            [valueField]: formatValue(value),
+            onChange: (ev) => {
+                setFormField(name, parseValue(getInputValue(ev)));
             },
         };
     };
 
     const setFormField = (name: string, value: any) => {
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        setTouchedData({ ...touchedData, [name]: value });
+        setFormDataSafe({ ...formData, [name]: value });
     };
 
     return {
         getFormFieldProps,
         setFormField,
-        setFormData,
+        setFormData: setFormDataSafe,
         formData,
     };
 }
