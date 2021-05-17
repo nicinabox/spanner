@@ -3,14 +3,14 @@ import {
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
-import Header from 'components/Header';
-import Page from 'components/Page';
+import Header from 'components/common/Header';
+import Page from 'components/common/Page';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import React from 'react';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import useRequest from 'hooks/useRequest';
 import VehicleForm from 'components/VehicleForm';
-import LinkPreload from 'components/LinkPreload';
+import LinkPreload from 'components/common/LinkPreload';
 import { VehiclePageProps } from '../[vehicleId]';
 
 export type EditVehiclePageProps = VehiclePageProps

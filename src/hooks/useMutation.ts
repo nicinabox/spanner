@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AxiosInstance } from 'axios';
-import { APIError } from 'components/FormErrors';
+import { APIError } from 'components/common/FormErrors';
 import { clientAPI } from 'queries/config';
 
 export * from 'swr';

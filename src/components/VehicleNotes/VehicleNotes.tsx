@@ -3,7 +3,7 @@ import {
 } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import React, { useState } from 'react';
-import MarkdownBody from 'components/MarkdownBody';
+import MarkdownBody from 'components/common/MarkdownBody';
 import useTextareaResize from 'hooks/useTextareaResize';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';

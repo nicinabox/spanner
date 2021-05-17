@@ -2,11 +2,11 @@ import { AddIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Box, Button, Center, Flex, Heading, HStack, SimpleGrid,
 } from '@chakra-ui/react';
-import ColorModeButton from 'components/ColorModeButton';
-import Header from 'components/Header';
-import LinkPreload from 'components/LinkPreload';
+import ColorModeButton from 'components/common/ColorModeButton';
+import Header from 'components/common/Header';
+import LinkPreload from 'components/common/LinkPreload';
 import Logo from 'components/Logo';
-import Page from 'components/Page';
+import Page from 'components/common/Page';
 import UserMenu from 'components/UserMenu';
 import VehiclesList from 'components/VehiclesList';
 import useRequest from 'hooks/useRequest';

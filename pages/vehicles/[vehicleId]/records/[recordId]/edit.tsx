@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, HStack } from '@chakra-ui/react';
-import Page from 'components/Page';
-import Header from 'components/Header';
-import BackButton from 'components/BackButton';
+import Page from 'components/common/Page';
+import Header from 'components/common/Header';
+import BackButton from 'components/common/BackButton';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useRequest from 'hooks/useRequest';
 import { Vehicle, vehiclePath } from 'queries/vehicles';

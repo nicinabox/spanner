@@ -1,7 +1,7 @@
 import { HStack, TabPanel, TabPanels } from '@chakra-ui/react';
-import BackButton from 'components/BackButton';
-import LinkPreload from 'components/LinkPreload';
-import Page from 'components/Page';
+import BackButton from 'components/common/BackButton';
+import LinkPreload from 'components/common/LinkPreload';
+import Page from 'components/common/Page';
 import TabsHeader from 'components/TabsHeader';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import VehicleNotes from 'components/VehicleNotes';

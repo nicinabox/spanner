@@ -1,11 +1,11 @@
 import {
     Container, HStack, TabPanel, TabPanels,
 } from '@chakra-ui/react';
-import BackButton from 'components/BackButton';
-import LinkPreload from 'components/LinkPreload';
+import BackButton from 'components/common/BackButton';
+import LinkPreload from 'components/common/LinkPreload';
 import MileageAdjustmentForm from 'components/MileageAdjustmentForm';
 import NewReminderForm from 'components/NewReminderForm';
-import Page from 'components/Page';
+import Page from 'components/common/Page';
 import RecordForm from 'components/RecordForm';
 import TabsHeader from 'components/TabsHeader';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';

@@ -2,9 +2,9 @@ import { CheckCircleIcon } from '@chakra-ui/icons';
 import {
     Button, FormControl, FormLabel, Heading, Input, Select, VStack, Text, FormHelperText, NumberInput, NumberInputField,
 } from '@chakra-ui/react';
-import DatePicker from 'components/DatePicker';
-import FormErrors from 'components/FormErrors';
-import SubmitButton from 'components/SubmitButton';
+import DatePicker from 'components/common/DatePicker';
+import FormErrors from 'components/common/FormErrors';
+import SubmitButton from 'components/common/SubmitButton';
 import { addMonths } from 'date-fns';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';

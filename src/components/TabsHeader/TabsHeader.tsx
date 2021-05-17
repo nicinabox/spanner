@@ -1,8 +1,8 @@
 import {
     Tab, TabList,
 } from '@chakra-ui/react';
-import Header, { HeaderProps } from 'components/Header';
-import NumberBadge, { BadgeSentiment } from 'components/NumberBadge';
+import Header, { HeaderProps } from 'components/common/Header';
+import NumberBadge, { BadgeSentiment } from 'components/common/NumberBadge';
 import { Router } from 'next/router';
 import React from 'react';
 

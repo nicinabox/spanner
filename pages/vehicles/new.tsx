@@ -2,9 +2,9 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import {
     Button, Container, Heading, HStack,
 } from '@chakra-ui/react';
-import Header from 'components/Header';
+import Header from 'components/common/Header';
 import VehicleForm from 'components/VehicleForm';
-import Page from 'components/Page';
+import Page from 'components/common/Page';
 import Link from 'next/link';
 import React from 'react';
 import { withSession, authRedirect } from 'utils/session';

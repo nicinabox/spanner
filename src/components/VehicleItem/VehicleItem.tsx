@@ -3,11 +3,11 @@ import NextLink from 'next/link';
 import {
     Box, Button, Flex, Heading, HStack, Link, LinkBox, LinkOverlay, Spacer, Text, useStyleConfig,
 } from '@chakra-ui/react';
-import Interpunct from 'components/Interpunct';
+import Interpunct from 'components/common/Interpunct';
 import { Vehicle } from 'queries/vehicles';
 import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
 import { getOverdueRemindersCount } from 'utils/reminders';
-import NumberBadge from 'components/NumberBadge';
+import NumberBadge from 'components/common/NumberBadge';
 
 export interface VehicleItemProps {
     vehicle: Vehicle;

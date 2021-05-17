@@ -1,8 +1,8 @@
 import {
     FormControl, FormHelperText, FormLabel, Input,
 } from '@chakra-ui/react';
-import FormErrors from 'components/FormErrors';
-import SubmitButton from 'components/SubmitButton';
+import FormErrors from 'components/common/FormErrors';
+import SubmitButton from 'components/common/SubmitButton';
 import { format } from 'date-fns';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';

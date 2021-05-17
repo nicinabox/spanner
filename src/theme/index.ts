@@ -1,5 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
-import Header from 'components/Header/style';
+import Header from 'components/common/Header/style';
 import VehicleItem from 'components/VehicleItem/style';
 
 const brandShades = {
