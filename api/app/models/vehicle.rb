@@ -34,14 +34,14 @@ class Vehicle < ApplicationRecord
     return unless can_estimate_mpd?
 
     last_record = last_record_with_mileage
-    (last_record.mileage + weighted_averge_miles_per_day * elapsed_days(Time.now, last_record.date)).to_i
+    (last_record.mileage + weighted_averge_miles_per_day * elapsed_days(Time.now.beginning_of_day, last_record.date)).to_i
   end
 
   def estimated_next_record_date
     record = last_record_with_mileage
     return unless record
 
-    days = weighted_average_days_per_period + elapsed_days(Time.now, record.date)
+    days = weighted_average_days_per_period + elapsed_days(Time.now.beginning_of_day, record.date)
     record.date + days.days
   end
 
