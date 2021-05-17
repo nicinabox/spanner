@@ -27,7 +27,7 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record 
     const {
         formData, getFormFieldProps, setFormData, setFormField,
     } = useFormData({
-        date: new Date().toISOString(),
+        date: formatDateISO(new Date()),
         notes: '',
         mileage: vehicle.estimatedMileage,
         cost: '',
