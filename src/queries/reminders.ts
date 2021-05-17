@@ -1,16 +1,21 @@
 import { AxiosInstance } from 'axios';
+import { RecordID } from './config';
+
+export type ReminderType = '' | 'date_or_mileage' | 'mileage' | 'date';
 
 export interface VehicleReminder {
     id: string;
     notes: string;
     date: string;
     mileage: number;
-    reminderType: 'date_or_mileage' | 'mileage' | 'date';
-    remindeDate: string;
+    reminderType: ReminderType;
+    reminderDate: string;
     vehicleId: number;
 }
 
-type VehicleReminderParams = Pick<VehicleReminder, 'notes' | 'date' | 'mileage' | 'reminderType'>
+export type VehicleReminderParams = Pick<VehicleReminder, 'notes' | 'date' | 'mileage' | 'reminderType'>
+
+export type EstimateReminderParams = Pick<VehicleReminder, 'date' | 'mileage' | 'reminderType'>
 
 export const vehicleRemindersPath = (vehicleId: string | number) => `/api/vehicles/${vehicleId}/reminders`;
 
@@ -20,6 +25,15 @@ export function fetchReminders(api: AxiosInstance, vehicleId: string | number) {
 
 export function createReminder(api: AxiosInstance, vehicleId: string | number, reminder: VehicleReminderParams) {
     return api.post<VehicleReminder>(vehicleRemindersPath(vehicleId), reminder);
+}
+
+export async function estimateReminderDate(api: AxiosInstance, vehicleId: RecordID, reminder: EstimateReminderParams) {
+    const { data } = await api.get(`/api/vehicles/${vehicleId}/reminders/estimate_date`, {
+        params: {
+            reminder,
+        },
+    });
+    return data;
 }
 
 // export function destroyReminder(vehicleId, reminderId) {
@@ -34,13 +48,4 @@ export function createReminder(api: AxiosInstance, vehicleId: string | number, r
 //     vehicleId,
 //     reminderId,
 // })
-// }
-
-// export function estimateReminderDate(vehicleId, reminder) {
-// return get(
-//     `/vehicles/${vehicleId}/reminders/estimate_date`,
-//     { reminder },
-//     ESTIMATE_REMINDER_DATE,
-//     { vehicleId }
-// )
 // }

@@ -10,8 +10,10 @@ import RecordForm from 'components/RecordForm';
 import TabsHeader from 'components/TabsHeader';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useRequest from 'hooks/useRequest';
+import { VehicleRecord, vehicleRecordsPath } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
+import { sortRecordsNewestFirst } from 'utils/vehicle';
 import { VehiclePageProps } from '../[vehicleId]';
 
 export type AddPageProps = VehiclePageProps
@@ -36,6 +38,9 @@ const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => (
 
 export const AddPage: React.FC<AddPageProps> = ({ params }) => {
     const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
+    const { data: records } = useRequest<VehicleRecord[]>(vehicleRecordsPath(params.vehicleId));
+
+    const newestRecordMileage = records ? sortRecordsNewestFirst(records)[0].mileage : 0;
 
     return (
         <Page
@@ -52,7 +57,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
                     </TabPanel>
                     <TabPanel p={0}>
                         <Container maxW={[null, 'sm']} p={0}>
-                            <NewReminderForm vehicle={vehicle} />
+                            <NewReminderForm vehicle={vehicle} minMileage={newestRecordMileage} />
                         </Container>
                     </TabPanel>
                     <TabPanel p={0}>
