@@ -41,7 +41,7 @@ export const Page: React.FC<PageProps> = ({ children, Header, ...containerProps 
     }, []);
 
     return (
-        <Tabs colorScheme="brandInverted" size="sm" variant="soft-rounded" isLazy index={panel}>
+        <Tabs colorScheme="brandInverted" size="sm" variant="soft-rounded" isLazy lazyBehavior="keepMounted" index={panel}>
             <SimpleGrid templateRows="auto 1fr auto" minH="100vh">
                 {Header}
 
