@@ -3,11 +3,11 @@ import {
 } from '@chakra-ui/react';
 import BackButton from 'components/common/BackButton';
 import LinkPreload from 'components/common/LinkPreload';
-import MileageAdjustmentForm from 'components/MileageAdjustmentForm';
-import NewReminderForm from 'components/NewReminderForm';
+import MileageAdjustmentForm from 'components/forms/MileageAdjustmentForm';
+import NewReminderForm from 'components/forms/NewReminderForm';
 import Page from 'components/common/Page';
-import RecordForm from 'components/RecordForm';
-import TabsHeader from 'components/TabsHeader';
+import RecordForm from 'components/forms/RecordForm';
+import TabsHeader from 'components/common/TabsHeader';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useRequest from 'hooks/useRequest';
 import { VehicleRecord, vehicleRecordsPath } from 'queries/records';

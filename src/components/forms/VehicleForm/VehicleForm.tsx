@@ -1,7 +1,7 @@
 import {
     Box, Checkbox, FormControl, FormHelperText, FormLabel, Input, Radio, RadioGroup, Stack,
 } from '@chakra-ui/react';
-import DestroyButton from 'components/DestroyButton';
+import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
 import SubmitButton from 'components/common/SubmitButton';
 import useFormData from 'hooks/useFormData';

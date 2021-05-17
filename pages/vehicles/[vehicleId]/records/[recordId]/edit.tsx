@@ -7,7 +7,7 @@ import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useRequest from 'hooks/useRequest';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import { VehicleRecord, vehicleRecordPath } from 'queries/records';
-import RecordForm from 'components/RecordForm';
+import RecordForm from 'components/forms/RecordForm';
 
 export interface EditPageProps {
     params: {

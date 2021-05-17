@@ -1,6 +1,6 @@
-import { Container } from '@chakra-ui/react'
-import React from 'react'
-import LoginForm from '../src/components/LoginForm'
+import { Container } from '@chakra-ui/react';
+import React from 'react';
+import LoginForm from '../src/components/forms/LoginForm';
 import { withSession } from '../src/utils/session';
 
 export default function Home() {
@@ -8,10 +8,10 @@ export default function Home() {
         <Container>
             <LoginForm />
         </Container>
-    )
+    );
 }
 
-export const getServerSideProps = withSession(async function ({ req }) {
+export const getServerSideProps = withSession(async ({ req }) => {
     const session = req.session.get('session');
 
     if (session) {
@@ -20,10 +20,10 @@ export const getServerSideProps = withSession(async function ({ req }) {
                 destination: '/vehicles',
                 permanent: false,
             },
-        }
+        };
     }
 
     return {
-        props: {}
+        props: {},
     };
 });

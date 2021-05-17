@@ -2,7 +2,7 @@ import {
     Box, FormControl, FormLabel, Input, InputGroup, InputLeftAddon, InputRightAddon, SimpleGrid, Textarea,
 } from '@chakra-ui/react';
 import DatePicker from 'components/common/DatePicker';
-import DestroyButton from 'components/DestroyButton';
+import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
 import SubmitButton from 'components/common/SubmitButton';
 import useFormData from 'hooks/useFormData';

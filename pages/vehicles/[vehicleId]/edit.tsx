@@ -9,7 +9,7 @@ import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import React from 'react';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import useRequest from 'hooks/useRequest';
-import VehicleForm from 'components/VehicleForm';
+import VehicleForm from 'components/forms/VehicleForm';
 import LinkPreload from 'components/common/LinkPreload';
 import { VehiclePageProps } from '../[vehicleId]';
 
