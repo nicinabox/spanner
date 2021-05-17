@@ -35,7 +35,6 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => {
                             width="max-content"
                             onClick={() => {
                                 const as = `#panel=${i}`;
-                                window.location.hash = as;
                                 Router.events.emit('hashChangeStart', as);
                             }}
                         >
