@@ -37,7 +37,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
     };
 
     return (
-        <Container maxW="container.xl">
+        <Container maxW="container.lg">
             {vehicle && records && (
                 <VehicleStats vehicle={vehicle} records={records} />
             )}
@@ -56,15 +56,13 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 <Search onChangeText={handleSearch} />
             </Flex>
 
-            {anyLoading || Boolean(records?.length) ? (
-                <Box shadow={['none', 'lg', 'lg']} p={[0, 4]}>
-                    <VehicleRecordsTable
-                        vehicleId={vehicleId}
-                        records={recordsResults}
-                        enableCost={vehicle?.enableCost}
-                        distanceUnit={vehicle?.distanceUnit}
-                    />
-                </Box>
+            {(anyLoading || Boolean(records?.length)) ? (
+                <VehicleRecordsTable
+                    vehicleId={vehicleId}
+                    records={recordsResults}
+                    enableCost={vehicle?.enableCost}
+                    distanceUnit={vehicle?.distanceUnit}
+                />
             ) : (
                 <Box>
                     <Heading>

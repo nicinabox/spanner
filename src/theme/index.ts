@@ -14,8 +14,8 @@ const brandShades = {
     800: '#34315a',
     900: '#2a284a',
 };
-const shades = Object.keys(brandShades);
 
+const shades = Object.keys(brandShades);
 const invertedBrandShades = Object.values(brandShades).reverse().reduce((acc, value, i) => ({ ...acc, [shades[i]]: value }), {});
 
 export const colors = {
@@ -31,6 +31,13 @@ export const colors = {
 
 export default extendTheme({
     colors,
+    styles: {
+        global: (props) => ({
+            body: {
+                backgroundColor: props.colorMode === 'dark' ? 'gray.800' : 'gray.50',
+            },
+        }),
+    },
     config: {
         initialColorMode: 'light',
         useSystemColorMode: false,

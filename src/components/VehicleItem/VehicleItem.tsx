@@ -31,15 +31,14 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
                                 </NumberBadge>
                             )}
                         </Flex>
-                        <HStack divider={<Interpunct color="brand.300" fontSize="sm" />}>
+                        <HStack color="whiteAlpha.700" divider={<Interpunct fontSize="sm" />}>
                             {Boolean(vehicle.estimatedMileage) && (
-                                <Text color="brand.300" fontSize="sm">
-                                    ~
+                                <Text fontSize="sm">
                                     {formatEstimatedMileage(vehicle)}
                                 </Text>
                             )}
                             {Boolean(vehicle.milesPerYear) && (
-                                <Text color="brand.300" fontSize="sm">
+                                <Text fontSize="sm">
                                     {formatMilesPerYear(vehicle)}
                                     /yr
                                 </Text>

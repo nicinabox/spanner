@@ -5,7 +5,7 @@ interface InterpunctProps extends TextProps {
     spacing?: number;
 }
 
-export const Interpunct: React.FC<InterpunctProps> = ({ spacing = 1, ...props }) => (
+export const Interpunct: React.FC<InterpunctProps> = ({ spacing = 2, ...props }) => (
     <Text {...props} display="inline-block" ml={spacing} mr={spacing}>
         ·
     </Text>

@@ -4,6 +4,7 @@ import {
     Flex, Heading, Skeleton, SkeletonText, Text, useColorModeValue,
 } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
+import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import { groupBy } from 'lodash';
 import Link from 'next/link';
@@ -40,8 +41,8 @@ const Row = (props) => {
             display={['flex', null, 'table-row']}
             flexFlow={['wrap', null, 'nowrap']}
             alignItems="flex-start"
-            borderBottomColor={borderColor}
-            borderBottomWidth="1px"
+            // borderBottomColor={borderColor}
+            // borderBottomWidth={1}
             {...props}
         />
     );
@@ -64,7 +65,6 @@ const FlexTable = (props) => (
         direction="column"
         flexFlow="column nowrap"
         display={['flex', null, 'table']}
-        sx={{ borderCollapse: 'collapse' }}
         {...props}
     />
 );
@@ -74,9 +74,9 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
 }) => {
     const reverseChronoRecords = sortRecordsNewestFirst(records ?? []);
     const recordsByYear = groupBy(reverseChronoRecords, (r) => new Date(r.date).getFullYear());
+    const years = Object.keys(recordsByYear).sort((a, b) => Number(b) - Number(a));
 
-    const rowColorAlt = useColorModeValue('gray.50', 'gray.900');
-    const headerBorderColor = useColorModeValue('gray.300', 'gray.700');
+    const cm = useInlineColorMode();
 
     if (!records) {
         return (
@@ -100,28 +100,29 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
 
     return (
         <>
-            {Object.keys(recordsByYear).sort((a, b) => Number(b) - Number(a)).map((year) => {
+            {years.map((year) => {
                 const yearRecords = recordsByYear[year];
 
                 return (
-                    <Box key={year} mx={-4}>
+                    <Box key={year} shadow={['sm', 'md', 'md']} mx={[-4, 0]} bg={cm('white', 'whiteAlpha.200')}>
                         <Heading
-                            borderBottomWidth="1px"
-                            borderBottomColor={headerBorderColor}
+                            borderBottomWidth={1}
+                            borderBottomColor={cm('gray.200', 'whiteAlpha.200')}
                             size="md"
                             px={4}
-                            pb={2}
+                            py={3}
                         >
                             {year}
                         </Heading>
-                        <FlexTable mb={8}>
+
+                        <FlexTable mb={8} pb={2}>
                             <Row
                                 fontWeight="bold"
-                                fontSize="sm"
-                                color="gray.600"
-                                borderBottomColor={headerBorderColor}
-                                bg={rowColorAlt}
+                                fontSize="xs"
+                                color={cm('blackAlpha.600', 'whiteAlpha.600')}
+                                borderBottomColor={cm('gray.300', 'whiteAlpha.800')}
                                 display={['none', null, 'table-row']}
+                                textTransform="uppercase"
                             >
                                 <Cell>Date</Cell>
                                 <Cell>Mileage</Cell>
@@ -135,7 +136,11 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                 const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
 
                                 return (
-                                    <Row key={record.id} px={4} bg={i % 2 ? rowColorAlt : 'transparent'}>
+                                    <Row
+                                        key={record.id}
+                                        px={4}
+                                        bg={i % 2 ? 'transparent' : cm('gray.50', 'blackAlpha.400')}
+                                    >
                                         <Cell
                                             whiteSpace="nowrap"
                                             fontWeight={['bold', null, 'inherit']}
@@ -154,7 +159,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                         >
                                             {Boolean(Number(record.mileage)) && formatMileage(record.mileage, distanceUnit)}
                                             {deltaMileage !== undefined && (
-                                                <Text fontSize="xs" color="gray" ml={1}>
+                                                <Text fontSize="xs" color="whiteAlpha.600" ml={1}>
                                                     (+
                                                     {deltaMileage}
                                                     )
@@ -172,17 +177,18 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                             </Cell>
                                         )}
 
-                                        <Cell basis={['100%', null]} w="100%">
+                                        <Cell basis={['100%', null]} w="100%" py={[1, 2]}>
                                             {record.notes}
                                         </Cell>
 
-                                        <Cell>
+                                        <Cell justify="end" basis="100%">
                                             <Link passHref href={`/vehicles/${vehicleId}/records/${record.id}/edit`}>
                                                 <Button
                                                     as="a"
                                                     size="sm"
                                                     variant="link"
                                                     colorScheme="brand"
+                                                    py={[1, null]}
                                                     onClick={() => {
                                                         // Preload data for edit form
                                                         mutate(vehicleRecordPath(vehicleId, record.id), record, false);

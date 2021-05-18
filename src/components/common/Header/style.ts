@@ -8,7 +8,7 @@ export default {
         position: 'sticky',
         top: 0,
         zIndex: theme.zIndices.sticky,
-        bg: mode(`${props.colorScheme}.primary`, `${props.colorScheme}.900`)(props),
+        bg: mode(`${props.colorScheme}.primary`, `${props.colorScheme}.600`)(props),
     }),
     defaultProps: {
         colorScheme: 'brand',
