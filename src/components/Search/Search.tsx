@@ -22,8 +22,8 @@ export const Search: React.FC<SearchProps> = ({ onChangeText }) => {
             <Input
                 placeholder="Search"
                 colorScheme="gray"
-                bg={cm('blackAlpha.200', 'blackAlpha.600')}
-                _hover={{ bg: cm('blackAlpha.400', 'blackAlpha.900') }}
+                bg={cm('blackAlpha.200', 'blackAlpha.400')}
+                _hover={{ bg: cm('blackAlpha.400', 'blackAlpha.500') }}
                 _placeholder={{ color: cm('gray.600', 'gray.100') }}
                 variant="filled"
                 size="md"
