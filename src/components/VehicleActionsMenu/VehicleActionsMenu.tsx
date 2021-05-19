@@ -37,14 +37,23 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
 
     return (
         <Menu>
-            <Skeleton isLoaded={Boolean(vehicle)} fadeDuration={0} minW={100}>
-                <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="brand" size="sm">
+            <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                variant="ghost-header"
+                size="sm"
+                colorScheme="brandInverted"
+                color="white"
+            >
+                {vehicle ? (
                     <HStack spacing={2}>
                         <VehicleColorIndicator color={vehicle?.color} />
                         <Text>{vehicle?.name}</Text>
                     </HStack>
-                </MenuButton>
-            </Skeleton>
+                ) : (
+                    <Skeleton minW={140} minH={3} startColor="whiteAlpha.100" endColor="whiteAlpha.400" />
+                )}
+            </MenuButton>
 
             {vehicle && (
                 <MenuList>

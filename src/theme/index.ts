@@ -2,6 +2,8 @@ import { extendTheme } from '@chakra-ui/react';
 import Header from 'components/common/Header/style';
 import VehicleItem from 'components/VehicleItem/style';
 
+import Button from './components/Button';
+
 const brandShades = {
     50: '#f7f6fa',
     100: '#eeeef5',
@@ -49,5 +51,6 @@ export default extendTheme({
     components: {
         Header,
         VehicleItem,
+        Button,
     },
 });

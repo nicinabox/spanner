@@ -33,6 +33,7 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => {
                             key={tab.text}
                             color="brand.100"
                             width="max-content"
+                            mx={1}
                             onClick={() => {
                                 const as = `#panel=${i}`;
                                 Router.events.emit('hashChangeStart', as);

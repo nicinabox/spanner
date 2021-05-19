@@ -15,7 +15,7 @@ export const ColorModeButton: React.FC<ColorModeButtonProps> = () => {
         <IconButton
             onClick={toggleColorMode}
             colorScheme="brandInverted"
-            variant="ghost"
+            variant="ghost-header"
             aria-label={label}
             title={label}
             icon={<Icon />}

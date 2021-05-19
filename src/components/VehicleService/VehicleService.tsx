@@ -1,6 +1,6 @@
 import { AddIcon } from '@chakra-ui/icons';
 import {
-    Container, Flex, HStack, Button, Spacer, Box, Heading, Text,
+    Container, Flex, HStack, Button, Spacer, Box, Heading, Text, LightMode,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Search from 'components/Search';
@@ -45,11 +45,13 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
             <Flex mb={6} direction="row-reverse">
                 {!vehicle?.retired && (
                     <Flex>
-                        <Link href={`/vehicles/${vehicleId}/add`} passHref>
-                            <Button as="a" colorScheme="brand" size="md" leftIcon={<AddIcon />}>
-                                Add...
-                            </Button>
-                        </Link>
+                        <LightMode>
+                            <Link href={`/vehicles/${vehicleId}/add`} passHref>
+                                <Button as="a" colorScheme="brand" size="md" leftIcon={<AddIcon />} shadow="lg">
+                                    Add...
+                                </Button>
+                            </Link>
+                        </LightMode>
                     </Flex>
                 )}
                 <Spacer minW={vehicle?.retired ? [null] : [4, null]} />

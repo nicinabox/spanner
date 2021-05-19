@@ -1,13 +1,14 @@
-import React from 'react';
-import NextLink from 'next/link';
 import {
-    Box, Button, Flex, Heading, HStack, Link, LinkBox, LinkOverlay, Spacer, Text, useStyleConfig,
+    Flex, Heading, HStack, LinkBox, LinkOverlay, Text, useStyleConfig,
 } from '@chakra-ui/react';
 import Interpunct from 'components/common/Interpunct';
-import { Vehicle } from 'queries/vehicles';
-import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
-import { getOverdueRemindersCount } from 'utils/reminders';
 import NumberBadge from 'components/common/NumberBadge';
+import { mutate } from 'hooks/useMutation';
+import NextLink from 'next/link';
+import { Vehicle, vehiclePath } from 'queries/vehicles';
+import React from 'react';
+import { getOverdueRemindersCount } from 'utils/reminders';
+import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
 
 export interface VehicleItemProps {
     vehicle: Vehicle;
@@ -19,7 +20,10 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
     return (
         <LinkBox sx={styles}>
             <NextLink href={`/vehicles/${vehicle.id}`} passHref>
-                <LinkOverlay>
+                <LinkOverlay onClick={() => {
+                    mutate(vehiclePath(vehicle.id), vehicle, false);
+                }}
+                >
                     <Flex direction="column" minH={12}>
                         <Flex justify="space-between">
                             <Heading size="sm" color="brand.100">
