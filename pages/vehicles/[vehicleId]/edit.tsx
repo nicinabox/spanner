@@ -1,7 +1,6 @@
-import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Container, Heading, HStack } from '@chakra-ui/react';
+import BackButton from 'components/common/BackButton';
 import Header from 'components/common/Header';
-import LinkButton from 'components/common/LinkButton';
 import LinkPreload from 'components/common/LinkPreload';
 import Page from 'components/common/Page';
 import VehicleForm from 'components/forms/VehicleForm';
@@ -22,15 +21,9 @@ export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params }) => {
                 <Header
                     LeftComponent={(
                         <HStack spacing={2}>
-                            <LinkButton
-                                href={`/vehicles/${vehicle?.id}`}
-                                leftIcon={<ArrowBackIcon />}
-                                size="sm"
-                                variant="solid"
-                                colorScheme="gray"
-                            >
+                            <BackButton>
                                 Back
-                            </LinkButton>
+                            </BackButton>
                             <VehicleActionsMenu vehicle={vehicle} />
                         </HStack>
                       )}

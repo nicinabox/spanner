@@ -4,8 +4,10 @@ import {
 } from '@chakra-ui/react';
 import LinkButton from 'components/common/LinkButton';
 import useInlineColorMode from 'hooks/useInlineColorMode';
+import { mutate } from 'hooks/useMutation';
 import useRequest from 'hooks/useRequest';
 import Link from 'next/link';
+import { vehicleReminderPath } from 'queries/reminders';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
 import { intlFormatDateUTC } from 'utils/date';
@@ -44,8 +46,11 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                     >
                         <Flex align="center">
                             <Flex flex={2} direction="column">
-                                <Link href={`/vehicle/${vehicleId}/reminders/${reminder.id}`} passHref>
-                                    <LinkOverlay>
+                                <Link href={`/vehicles/${vehicleId}/reminders/${reminder.id}`} passHref>
+                                    <LinkOverlay onClick={() => {
+                                        mutate(vehicleReminderPath(vehicleId, reminder.id), reminder, false);
+                                    }}
+                                    >
                                         <Text>
                                             {reminder.notes}
                                         </Text>

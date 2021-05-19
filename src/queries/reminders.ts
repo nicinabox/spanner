@@ -17,13 +17,14 @@ export type VehicleReminderParams = Pick<VehicleReminder, 'notes' | 'date' | 'mi
 
 export type EstimateReminderParams = Pick<VehicleReminder, 'date' | 'mileage' | 'reminderType'>
 
-export const vehicleRemindersPath = (vehicleId: string | number) => `/api/vehicles/${vehicleId}/reminders`;
+export const vehicleRemindersPath = (vehicleId: RecordID) => `/api/vehicles/${vehicleId}/reminders`;
+export const vehicleReminderPath = (vehicleId: RecordID, reminderId: RecordID) => `/api/vehicles/${vehicleId}/reminders/${reminderId}`;
 
-export function fetchReminders(api: AxiosInstance, vehicleId: string | number) {
+export function fetchReminders(api: AxiosInstance, vehicleId: RecordID) {
     return api.get<VehicleReminder[]>(vehicleRemindersPath(vehicleId));
 }
 
-export function createReminder(api: AxiosInstance, vehicleId: string | number, reminder: VehicleReminderParams) {
+export function createReminder(api: AxiosInstance, vehicleId: RecordID, reminder: VehicleReminderParams) {
     return api.post<VehicleReminder>(vehicleRemindersPath(vehicleId), reminder);
 }
 
