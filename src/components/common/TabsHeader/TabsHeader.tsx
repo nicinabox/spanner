@@ -14,9 +14,10 @@ interface Tab {
 
 export interface TabsHeaderProps extends HeaderProps {
     tabs: (Tab | string)[];
+    hashchange?: boolean;
 }
 
-export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => {
+export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, hashchange = false, ...props }) => {
     const tabList = tabs.map((tab) => {
         if (typeof tab === 'string') {
             return { text: tab };
@@ -36,6 +37,7 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => {
                             mx={1}
                             onClick={() => {
                                 const as = `#panel=${i}`;
+                                if (hashchange) window.location.hash = as;
                                 Router.events.emit('hashChangeStart', as);
                             }}
                         >

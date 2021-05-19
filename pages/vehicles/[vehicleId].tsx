@@ -22,6 +22,7 @@ export interface VehiclePageProps {
 
 const PageHeader = ({ vehicle, overDueRemindersBadge }) => (
     <TabsHeader
+        hashchange
         tabs={
             [
                 'Service',
