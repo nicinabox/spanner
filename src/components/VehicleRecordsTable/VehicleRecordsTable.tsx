@@ -159,7 +159,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                         >
                                             {Boolean(Number(record.mileage)) && formatMileage(record.mileage, distanceUnit)}
                                             {deltaMileage !== undefined && (
-                                                <Text fontSize="xs" color="whiteAlpha.600" ml={1}>
+                                                <Text fontSize="xs" color={cm('blackAlpha.600', 'whiteAlpha.600')} ml={1}>
                                                     (+
                                                     {deltaMileage}
                                                     )
