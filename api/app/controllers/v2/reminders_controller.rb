@@ -8,6 +8,10 @@ module V2
       end
     end
 
+    def show
+      render json: reminders.find(params[:id])
+    end
+
     def create
       reminder = reminders.build(reminder_params)
 
