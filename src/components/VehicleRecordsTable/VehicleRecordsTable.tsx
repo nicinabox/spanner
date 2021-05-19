@@ -1,13 +1,11 @@
 import {
-    Box,
-    Button,
-    Flex, Heading, Skeleton, SkeletonText, Text, useColorModeValue,
+    Box, Flex, Heading, Skeleton, SkeletonText, Text, useColorModeValue,
 } from '@chakra-ui/react';
+import LinkButton from 'components/common/LinkButton';
 import { intlFormat } from 'date-fns';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import { groupBy } from 'lodash';
-import Link from 'next/link';
 import { VehicleRecord, vehicleRecordPath } from 'queries/records';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
@@ -182,21 +180,18 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                         </Cell>
 
                                         <Cell justify="end" basis="100%">
-                                            <Link passHref href={`/vehicles/${vehicleId}/records/${record.id}/edit`}>
-                                                <Button
-                                                    as="a"
-                                                    size="sm"
-                                                    variant="link"
-                                                    colorScheme="brand"
-                                                    py={[1, null]}
-                                                    onClick={() => {
-                                                        // Preload data for edit form
-                                                        mutate(vehicleRecordPath(vehicleId, record.id), record, false);
-                                                    }}
-                                                >
-                                                    Edit
-                                                </Button>
-                                            </Link>
+                                            <LinkButton
+                                                href={`/vehicles/${vehicleId}/records/${record.id}/edit`}
+                                                size="sm"
+                                                variant="link"
+                                                py={[1, null]}
+                                                onClick={() => {
+                                                    // Preload data for edit form
+                                                    mutate(vehicleRecordPath(vehicleId, record.id), record, false);
+                                                }}
+                                            >
+                                                Edit
+                                            </LinkButton>
                                         </Cell>
                                     </Row>
                                 );

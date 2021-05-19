@@ -1,13 +1,13 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import {
-    Button, Container, Heading, HStack,
+    Container, Heading, HStack,
 } from '@chakra-ui/react';
 import Header from 'components/common/Header';
 import VehicleForm from 'components/forms/VehicleForm';
 import Page from 'components/common/Page';
-import Link from 'next/link';
 import React from 'react';
 import { withSession, authRedirect } from 'utils/session';
+import LinkButton from 'components/common/LinkButton';
 
 export interface NewVehiclePageProps {
 }
@@ -18,17 +18,15 @@ export const NewVehiclePage: React.FC<NewVehiclePageProps> = () => (
             <Header
                 LeftComponent={(
                     <HStack spacing={2}>
-                        <Link href="/vehicles" passHref>
-                            <Button
-                                as="a"
-                                leftIcon={<ArrowBackIcon />}
-                                size="sm"
-                                variant="solid"
-                                colorScheme="gray"
-                            >
-                                Back
-                            </Button>
-                        </Link>
+                        <LinkButton
+                            href="/vehicles"
+                            leftIcon={<ArrowBackIcon />}
+                            size="sm"
+                            variant="solid"
+                            colorScheme="gray"
+                        >
+                            Back
+                        </LinkButton>
                     </HStack>
                       )}
             />

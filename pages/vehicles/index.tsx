@@ -10,10 +10,10 @@ import Page from 'components/common/Page';
 import UserMenu from 'components/UserMenu';
 import VehiclesList from 'components/VehiclesList';
 import useRequest from 'hooks/useRequest';
-import Link from 'next/link';
 import { Vehicle, vehiclesPath } from 'queries/vehicles';
 import React, { useState } from 'react';
 import { authRedirect, withSession } from 'utils/session';
+import LinkButton from 'components/common/LinkButton';
 
 interface VehiclesProps {
 }
@@ -77,11 +77,9 @@ const Vehicles: React.FC<VehiclesProps> = () => {
                 <Heading fontSize="xl">
                     Vehicles
                 </Heading>
-                <Link href="/vehicles/new" passHref>
-                    <Button as="a" leftIcon={<AddIcon />} size="xs" variant="ghost" colorScheme="brand">
-                        New Vehicle
-                    </Button>
-                </Link>
+                <LinkButton href="/vehicles/new" leftIcon={<AddIcon />} size="xs" variant="ghost">
+                    New Vehicle
+                </LinkButton>
             </HStack>
 
             <VehiclesList vehicles={activeVehicles} />

@@ -1,16 +1,14 @@
-import {
-    HStack, Button, Container, Tab, TabPanel, TabPanels, Tabs, Heading,
-} from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import Link from 'next/link';
+import { Container, Heading, HStack } from '@chakra-ui/react';
 import Header from 'components/common/Header';
-import Page from 'components/common/Page';
-import VehicleActionsMenu from 'components/VehicleActionsMenu';
-import React from 'react';
-import { Vehicle, vehiclePath } from 'queries/vehicles';
-import useRequest from 'hooks/useRequest';
-import VehicleForm from 'components/forms/VehicleForm';
+import LinkButton from 'components/common/LinkButton';
 import LinkPreload from 'components/common/LinkPreload';
+import Page from 'components/common/Page';
+import VehicleForm from 'components/forms/VehicleForm';
+import VehicleActionsMenu from 'components/VehicleActionsMenu';
+import useRequest from 'hooks/useRequest';
+import { Vehicle, vehiclePath } from 'queries/vehicles';
+import React from 'react';
 import { VehiclePageProps } from '../[vehicleId]';
 
 export type EditVehiclePageProps = VehiclePageProps
@@ -24,17 +22,15 @@ export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params }) => {
                 <Header
                     LeftComponent={(
                         <HStack spacing={2}>
-                            <Link href={`/vehicles/${vehicle?.id}`} passHref>
-                                <Button
-                                    as="a"
-                                    leftIcon={<ArrowBackIcon />}
-                                    size="sm"
-                                    variant="solid"
-                                    colorScheme="gray"
-                                >
-                                    Back
-                                </Button>
-                            </Link>
+                            <LinkButton
+                                href={`/vehicles/${vehicle?.id}`}
+                                leftIcon={<ArrowBackIcon />}
+                                size="sm"
+                                variant="solid"
+                                colorScheme="gray"
+                            >
+                                Back
+                            </LinkButton>
                             <VehicleActionsMenu vehicle={vehicle} />
                         </HStack>
                       )}

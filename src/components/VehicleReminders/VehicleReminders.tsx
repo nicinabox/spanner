@@ -1,9 +1,9 @@
 import { AddIcon } from '@chakra-ui/icons';
 import {
-    Button, Container, Flex, Heading, Text,
+    Container, Flex, Heading, Text,
 } from '@chakra-ui/react';
+import LinkButton from 'components/common/LinkButton';
 import useRequest from 'hooks/useRequest';
-import Link from 'next/link';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
 import { intlFormatDateUTC } from 'utils/date';
@@ -21,11 +21,9 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
         <Container>
             <Flex mb={6} direction="row-reverse">
                 {!vehicle?.retired && (
-                    <Link href={`/vehicles/${vehicleId}/add#panel=1`} passHref>
-                        <Button as="a" colorScheme="brand" size="sm" leftIcon={<AddIcon />}>
-                            Add
-                        </Button>
-                    </Link>
+                    <LinkButton href={`/vehicles/${vehicleId}/add#panel=1`} size="sm" leftIcon={<AddIcon />}>
+                        Add
+                    </LinkButton>
                 )}
             </Flex>
 

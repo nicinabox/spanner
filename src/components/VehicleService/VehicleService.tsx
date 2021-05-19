@@ -1,10 +1,11 @@
 import { AddIcon } from '@chakra-ui/icons';
 import {
-    Container, Flex, HStack, Button, Spacer, Box, Heading, Text, LightMode,
+    Box, Container, Flex, Heading, LightMode, Spacer, Text,
 } from '@chakra-ui/react';
-import Link from 'next/link';
+import LinkButton from 'components/common/LinkButton';
 import Search from 'components/Search';
 import VehicleRecordsTable from 'components/VehicleRecordsTable';
+import VehicleStats from 'components/VehicleStats';
 import { intlFormat } from 'date-fns';
 import useRequest from 'hooks/useRequest';
 import useSearchQuery from 'hooks/useSearchQuery';
@@ -12,7 +13,6 @@ import { VehicleRecord, vehicleRecordsPath } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
-import VehicleStats from 'components/VehicleStats';
 
 export interface VehicleServiceProps {
     vehicleId: string;
@@ -46,11 +46,9 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 {!vehicle?.retired && (
                     <Flex>
                         <LightMode>
-                            <Link href={`/vehicles/${vehicleId}/add`} passHref>
-                                <Button as="a" colorScheme="brand" size="md" leftIcon={<AddIcon />} shadow="lg">
-                                    Add...
-                                </Button>
-                            </Link>
+                            <LinkButton href={`/vehicles/${vehicleId}/add`} size="md" leftIcon={<AddIcon />} shadow="lg">
+                                Add...
+                            </LinkButton>
                         </LightMode>
                     </Flex>
                 )}
