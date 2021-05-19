@@ -1,4 +1,4 @@
-import { Circle, SquareProps, useColorModeValue } from '@chakra-ui/react';
+import { Circle, SquareProps } from '@chakra-ui/react';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import React from 'react';
 

@@ -27,7 +27,7 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, ...props }) => {
     return (
         <Header
             CenterComponent={(
-                <TabList>
+                <TabList py={2}>
                     {tabList.map((tab, i) => (
                         <Tab
                             key={tab.text}

@@ -22,7 +22,7 @@ export const Header: React.FC<HeaderProps> = ({
                         {LeftComponent}
                     </Flex>
 
-                    <Flex flex={1} py={2} justify={['center']}>
+                    <Flex flex={1} justify={['center']}>
                         {CenterComponent}
                     </Flex>
 
