@@ -13,7 +13,7 @@ import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import ReminderSummary from 'components/ReminderSummary';
 import { ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import RecordForm from 'components/forms/RecordForm';
-import useMutation, { mutate } from 'hooks/useMutation';
+import useMutation from 'hooks/useMutation';
 import * as reminders from 'queries/reminders';
 
 export interface ReminderPageProps {
@@ -84,7 +84,7 @@ export const ReminderPage: React.FC<ReminderPageProps> = ({ params, ...props }) 
                                 notes: reminder?.notes,
                             }}
                             onSuccess={() => {
-                                destroyReminder(params.vehicleId, params.reminderId);
+                                return destroyReminder(params.vehicleId, params.reminderId);
                             }}
                         />
                     </Box>

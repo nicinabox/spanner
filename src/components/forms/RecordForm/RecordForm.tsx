@@ -19,7 +19,7 @@ import { getCurrencySymbol } from 'utils/number';
 export interface NewServiceFormProps {
     vehicle: Vehicle;
     record?: Partial<records.VehicleRecord>;
-    onSuccess?: () => void;
+    onSuccess?: () => Promise<void> | void;
 }
 
 export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record, onSuccess }) => {
@@ -35,8 +35,8 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record,
     }, [record]);
 
     const { mutate: createOrUpdateRecord, isProcessing, error } = useMutation(records.createOrUpdateRecord, {
-        onSuccess() {
-            onSuccess?.();
+        onSuccess: async () => {
+            await onSuccess?.();
             router.push(`/vehicles/${vehicle.id}`);
         },
     });

@@ -38,7 +38,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMi
     } = useMutation(reminders.createReminder, {
         onSuccess() {
             mutate(vehiclePath(vehicle.id));
-            router.push(`/vehicles/${vehicle.id}`);
+            router.push(`/vehicles/${vehicle.id}#panel=1`);
         },
     });
 
