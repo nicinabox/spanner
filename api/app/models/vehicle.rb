@@ -32,6 +32,11 @@ class Vehicle < ApplicationRecord
 
   def estimated_mileage
     return unless can_estimate_mpd?
+    round_to(estimated_mileage_exact, 50)
+  end
+
+  def estimated_mileage_exact
+    return unless can_estimate_mpd?
 
     last_record = last_record_with_mileage
     (last_record.mileage + weighted_averge_miles_per_day * elapsed_days(Time.now.beginning_of_day, last_record.date)).to_i
@@ -46,6 +51,17 @@ class Vehicle < ApplicationRecord
   end
 
   def miles_per_year
+    return unless can_estimate_mpd?
+    projected_mileage = round_to(miles_per_year_exact, 500)
+
+    unless projected_mileage > 0
+      return miles_per_year_exact.round(-2)
+    end
+
+    projected_mileage
+  end
+
+  def miles_per_year_exact
     return unless can_estimate_mpd?
     (weighted_averge_miles_per_day * ONE_YEAR).to_i
   end
@@ -134,5 +150,9 @@ class Vehicle < ApplicationRecord
     total_weight = weights.inject(:+).to_f
 
     total_weight.nonzero? ? sum / total_weight : 0
+  end
+
+  def round_to(value, int)
+    (value / int.to_f).round * int
   end
 end
