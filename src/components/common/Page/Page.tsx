@@ -30,7 +30,7 @@ export const Page: React.FC<PageProps> = ({ children, Header, ...containerProps 
     useEffect(() => {
         const handler = (url: string) => {
             const params = parseHashParams(url);
-            setPanel(Number(params.panel));
+            setPanel(Number(params.panel) || 0);
         };
 
         Router.events.on('hashChangeStart', handler);
