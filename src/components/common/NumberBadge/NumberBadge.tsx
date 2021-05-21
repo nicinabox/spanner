@@ -18,8 +18,8 @@ const getBadgeColors = (sentiment: BadgeSentiment | undefined, cm) => {
 
     if (sentiment === 'negative') {
         return {
-            bg: cm('red.500', 'red.600'),
-            color: cm('brand.900', 'white'),
+            bg: cm('red.300', 'red.400'),
+            color: cm('red.900', 'red.900'),
         };
     }
 
