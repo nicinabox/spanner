@@ -1,3 +1,3 @@
 class RecordSerializer < ActiveModel::Serializer
-  attributes :id, :date, :cost, :mileage, :notes, :record_type
+  attributes :id, :created_at, :updated_at, :date, :cost, :mileage, :notes, :record_type
 end
