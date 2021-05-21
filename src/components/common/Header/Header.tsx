@@ -15,18 +15,18 @@ export const Header: React.FC<HeaderProps> = ({
     const styles = useStyleConfig('Header');
 
     return (
-        <Box __css={styles} {...boxProps} shadow="md">
+        <Box __css={styles} {...boxProps} shadow="md" maxW="100vw">
             {children || (
                 <Flex flexWrap="wrap" direction={['column', 'row']}>
                     <Flex flex={1} mr={2} py={2}>
                         {LeftComponent}
                     </Flex>
 
-                    <Flex flex={1} justify={['center']}>
+                    <Flex flex={1} justify={['start']} overflowX={['auto', 'inherit']} maxW="100%">
                         {CenterComponent}
                     </Flex>
 
-                    <Flex justify="flex-end" flex={1}>
+                    <Flex flex={1} justify="flex-end">
                         {RightComponent}
                     </Flex>
                 </Flex>

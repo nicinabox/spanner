@@ -28,31 +28,31 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, hashchange = false
     return (
         <Header
             CenterComponent={(
-                <TabList py={2}>
+                <TabList py={2} justifyContent="space-evenly" flex={1}>
                     {tabList.map((tab, i) => (
                         <Tab
                             key={tab.text}
                             color="brand.100"
                             width="max-content"
-                            mx={1}
+                            mx={[0, 1]}
                             onClick={() => {
-                                const as = `#panel=${i}`;
-                                if (hashchange) window.location.hash = as;
-                                Router.events.emit('hashChangeStart', as);
-                            }}
+                            const as = `#panel=${i}`;
+                            if (hashchange) window.location.hash = as;
+                            Router.events.emit('hashChangeStart', as);
+                        }}
                         >
                             {tab.text}
                             {Boolean(tab.badge) && (
-                                <NumberBadge
-                                    ml={2}
-                                    mr={-2}
-                                    sentiment={tab.badgeSentiment}
-                                >
-                                    {tab.badge}
-                                </NumberBadge>
-                            )}
+                            <NumberBadge
+                                ml={2}
+                                mr={-2}
+                                sentiment={tab.badgeSentiment}
+                            >
+                                {tab.badge}
+                            </NumberBadge>
+                        )}
                         </Tab>
-                    ))}
+                ))}
                 </TabList>
             )}
             {...props}
