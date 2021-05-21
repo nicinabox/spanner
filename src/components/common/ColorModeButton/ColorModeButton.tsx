@@ -3,9 +3,10 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import React from 'react';
 
 export interface ColorModeButtonProps {
+    variant?: string;
 }
 
-export const ColorModeButton: React.FC<ColorModeButtonProps> = () => {
+export const ColorModeButton: React.FC<ColorModeButtonProps> = ({ variant = 'ghost-header' }) => {
     const { toggleColorMode } = useColorMode();
     const Icon = useColorModeValue(MoonIcon, SunIcon);
     const nextMode = useColorModeValue('dark', 'light');
@@ -15,7 +16,7 @@ export const ColorModeButton: React.FC<ColorModeButtonProps> = () => {
         <IconButton
             onClick={toggleColorMode}
             colorScheme="brandInverted"
-            variant="ghost-header"
+            variant={variant}
             aria-label={label}
             title={label}
             icon={<Icon />}
