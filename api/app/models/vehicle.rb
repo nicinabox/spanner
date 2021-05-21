@@ -32,7 +32,13 @@ class Vehicle < ApplicationRecord
 
   def estimated_mileage
     return unless can_estimate_mpd?
-    round_to(estimated_mileage_exact, 50)
+    projected_mileage = round_to(estimated_mileage_exact, 50)
+
+    unless projected_mileage > 50
+      return estimated_mileage_exact.round(-1)
+    end
+
+    projected_mileage
   end
 
   def estimated_mileage_exact
