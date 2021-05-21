@@ -46,6 +46,10 @@ class Reminder < ApplicationRecord
       return estimate_date
     end
 
+    if date_reminder?
+      return date
+    end
+
     if date_or_mileage_reminder? and can_estimate_date?
       date < estimate_date ? date : estimate_date
     end
