@@ -63,15 +63,13 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
     return (
         <>
             <Input value={formatSelectedDate()} readOnly onClick={onToggle} />
-            <Box lineHeight={1.2} sx={styles}>
-                {isOpen && (
-                    <DayPicker
-                        onDayClick={onDayClick}
-                        initialMonth={initialDate}
-                        selectedDays={selectedDay}
-                        fixedWeeks
-                    />
-                )}
+            <Box lineHeight={1.2} sx={styles} display={[isOpen ? 'block' : 'none', 'block']}>
+                <DayPicker
+                    onDayClick={onDayClick}
+                    initialMonth={initialDate}
+                    selectedDays={selectedDay}
+                    fixedWeeks
+                />
             </Box>
         </>
     );
