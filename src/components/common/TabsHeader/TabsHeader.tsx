@@ -37,6 +37,8 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, hashchange = false
                             textTransform="capitalize"
                             mx={[0, 1]}
                             onClick={(e) => {
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore
                                 e.target.scrollIntoView({ behavior: 'smooth' });
 
                                 const as = `#panel=${i}`;
