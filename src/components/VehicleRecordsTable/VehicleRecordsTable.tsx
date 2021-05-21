@@ -31,16 +31,12 @@ const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord): num
 };
 
 const Row = (props) => {
-    const borderColor = useColorModeValue('gray.200', 'gray.700');
-
     return (
         <Flex
             py={[2, null, 0]}
             display={['flex', null, 'table-row']}
             flexFlow={['wrap', null, 'nowrap']}
             alignItems="flex-start"
-            // borderBottomColor={borderColor}
-            // borderBottomWidth={1}
             {...props}
         />
     );

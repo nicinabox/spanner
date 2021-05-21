@@ -18,13 +18,15 @@ export interface VehicleRemindersProps {
 }
 
 const sortDueSoonest = (a: VehicleReminder, b: VehicleReminder) => {
-    if (!b.reminderDate) return -1;
+    if (!a.reminderDate || !b.reminderDate) return -1;
     return getTime(a.reminderDate) - getTime(b.reminderDate);
 };
 
 export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(vehicleId));
+    const { data: vehicle, loading } = useRequest<Vehicle>(vehiclePath(vehicleId));
     const cm = useInlineColorMode();
+
+    const reminders = vehicle?.reminders.sort(sortDueSoonest) ?? [];
 
     return (
         <Container>
@@ -36,7 +38,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                 )}
             </Flex>
 
-            {vehicle?.reminders.sort(sortDueSoonest).map(((reminder) => {
+            {reminders.map(((reminder) => {
                 return (
                     <LinkBox
                         key={reminder.id}
@@ -75,7 +77,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                 );
             }))}
 
-            {Boolean(!vehicle?.reminders.length) && (
+            {Boolean(!reminders.length) && !loading && (
                 <>
                     <Heading>
                         No reminders yet
