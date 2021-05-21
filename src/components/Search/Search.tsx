@@ -17,14 +17,14 @@ export const Search: React.FC<SearchProps> = ({ onChangeText }) => {
             <InputLeftElement
                 pointerEvents="none"
             >
-                <SearchIcon color="gray.400" />
+                <SearchIcon color={cm('blackAlpha.500', 'whiteAlpha.500')} />
             </InputLeftElement>
             <Input
                 placeholder="Search"
                 colorScheme="gray"
                 bg={cm('blackAlpha.200', 'blackAlpha.400')}
                 _hover={{ bg: cm('blackAlpha.400', 'blackAlpha.500') }}
-                _placeholder={{ color: cm('blackAlpha.400', 'whiteAlpha.500') }}
+                _placeholder={{ color: cm('blackAlpha.500', 'whiteAlpha.500') }}
                 variant="filled"
                 size="md"
                 maxWidth={[null, 350]}
