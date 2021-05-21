@@ -66,7 +66,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
 
                                 <ReminderSummary
                                     reminder={reminder}
-                                    distanceUnit={vehicle.distanceUnit}
+                                    distanceUnit={vehicle?.distanceUnit}
                                     fontSize="sm"
                                 />
                             </Flex>
