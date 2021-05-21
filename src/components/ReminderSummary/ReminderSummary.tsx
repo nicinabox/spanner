@@ -8,7 +8,7 @@ import { formatMileage } from 'utils/vehicle';
 
 export interface ReminderSummaryProps extends TextProps {
     reminder: VehicleReminder | undefined;
-    distanceUnit: string;
+    distanceUnit: string | undefined;
 }
 
 export const ReminderSummary: React.FC<ReminderSummaryProps> = ({ reminder, distanceUnit = 'mi', ...textProps }) => {

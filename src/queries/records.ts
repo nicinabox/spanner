@@ -7,6 +7,8 @@ export interface VehicleRecord {
     date: string; // "2019-07-19T04:35:26.370Z"
     mileage: number;
     notes: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface VehicleRecordParams {

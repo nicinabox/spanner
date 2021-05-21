@@ -1,5 +1,6 @@
 import { VehicleRecord } from 'queries/records';
 import { Vehicle } from 'queries/vehicles';
+import { getTime } from './date';
 import { formatNumber } from './number';
 
 export function formatMileage(mileage: number | null, distanceUnit: string) {
@@ -16,9 +17,9 @@ export function formatMilesPerYear(vehicle: Vehicle) {
 
 export function sortRecordsNewestFirst(records: VehicleRecord[]) {
     return records.sort((a, b) => {
-        const byDate = new Date(b.date).getTime() - new Date(a.date).getTime();
+        const byDate = getTime(b.date) - getTime(a.date);
         if (byDate) return byDate;
-        return b.mileage - a.mileage;
+        return b.mileage - a.mileage || getTime(b.createdAt) - getTime(a.createdAt);
     });
 }
 

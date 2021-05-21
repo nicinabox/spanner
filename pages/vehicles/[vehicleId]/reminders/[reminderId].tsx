@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-    Text, Container, Flex, HStack, Heading, Skeleton, Button, Box,
+    Text, Container, Flex, HStack, Heading, Skeleton, Button, Box, Spacer, useDisclosure,
 } from '@chakra-ui/react';
 import Page from 'components/common/Page';
 import Header from 'components/common/Header';
@@ -10,10 +10,11 @@ import { VehicleReminder, vehicleReminderPath } from 'queries/reminders';
 import useRequest from 'hooks/useRequest';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
-import { intlFormatDateUTC } from 'utils/date';
-import { formatMileage } from 'utils/vehicle';
-import useInlineColorMode from 'hooks/useInlineColorMode';
 import ReminderSummary from 'components/ReminderSummary';
+import { ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import RecordForm from 'components/forms/RecordForm';
+import useMutation, { mutate } from 'hooks/useMutation';
+import * as reminders from 'queries/reminders';
 
 export interface ReminderPageProps {
     params: {
@@ -28,7 +29,7 @@ const PageHeader = ({ vehicle }) => {
             LeftComponent={(
                 <HStack spacing={2}>
                     <BackButton>
-                        Back
+                        Reminders
                     </BackButton>
                     <VehicleActionsMenu vehicle={vehicle} />
                 </HStack>
@@ -41,26 +42,53 @@ export const ReminderPage: React.FC<ReminderPageProps> = ({ params, ...props }) 
     const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
     const { data: reminder } = useRequest<VehicleReminder>(vehicleReminderPath(params.vehicleId, params.reminderId));
 
+    const { isOpen, onToggle } = useDisclosure();
+
+    const { mutate: destroyReminder } = useMutation(reminders.destroyReminder);
+
     return (
         <Page
             Header={<PageHeader vehicle={vehicle} />}
         >
-            <Container>
-                <Skeleton isLoaded={Boolean(reminder)}>
-                    <Heading size="lg" mb={4}>
-                        {reminder?.notes}
-                    </Heading>
-                </Skeleton>
+            <Container maxW="container.md">
+                <HStack my={4} justify="end">
+                    <Spacer />
+                    <Button size="sm" colorScheme="brand">Edit</Button>
+                </HStack>
 
-                {reminder && vehicle ? (
-                    <ReminderSummary reminder={reminder} distanceUnit={vehicle?.distanceUnit} />
-                ) : (
-                    <Skeleton h={3} />
-                )}
+                <Box mb={10}>
+                    <Skeleton isLoaded={Boolean(reminder)} minH={6} mb={2}>
+                        <Heading size="lg">
+                            {reminder?.notes}
+                        </Heading>
+                    </Skeleton>
 
-                <Box mt={6}>
-                    <Button>Convert to service</Button>
+                    <Skeleton isLoaded={Boolean(reminder)} minH={4}>
+                        <ReminderSummary reminder={reminder} distanceUnit={vehicle?.distanceUnit} />
+                    </Skeleton>
                 </Box>
+
+                <Button
+                    onClick={onToggle}
+                    rightIcon={isOpen ? <ChevronDownIcon /> : <ChevronRightIcon />}
+                    colorScheme="brand"
+                >
+                    Convert to service
+                </Button>
+
+                {isOpen && vehicle && (
+                    <Box mt={4}>
+                        <RecordForm
+                            vehicle={vehicle}
+                            record={{
+                                notes: reminder?.notes,
+                            }}
+                            onSuccess={() => {
+                                destroyReminder(params.vehicleId, params.reminderId);
+                            }}
+                        />
+                    </Box>
+                )}
             </Container>
         </Page>
     );

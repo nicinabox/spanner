@@ -1,5 +1,9 @@
 import { formatISO, intlFormat } from 'date-fns';
 
+export function getTime(date: string) {
+    return new Date(date).getTime();
+}
+
 export const formatDateISO = (date: Date) => formatISO(date, { representation: 'date' });
 
 export const parseDateUTC = (value: string) => {

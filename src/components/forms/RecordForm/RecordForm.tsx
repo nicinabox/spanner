@@ -18,10 +18,11 @@ import { getCurrencySymbol } from 'utils/number';
 
 export interface NewServiceFormProps {
     vehicle: Vehicle;
-    record?: records.VehicleRecord;
+    record?: Partial<records.VehicleRecord>;
+    onSuccess?: () => void;
 }
 
-export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record }) => {
+export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record, onSuccess }) => {
     const router = useRouter();
     const textareaRef = useTextareaResize();
 
@@ -35,6 +36,7 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record 
 
     const { mutate: createOrUpdateRecord, isProcessing, error } = useMutation(records.createOrUpdateRecord, {
         onSuccess() {
+            onSuccess?.();
             router.push(`/vehicles/${vehicle.id}`);
         },
     });
@@ -101,7 +103,7 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record 
                 <SubmitButton isProcessing={isProcessing} />
             </form>
 
-            {Boolean(record) && (
+            {Boolean(record?.id) && (
                 <Box mt={10}>
                     <DestroyButton
                         confirmTitle="Please confirm delete"

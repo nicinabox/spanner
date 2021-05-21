@@ -37,12 +37,10 @@ export async function estimateReminderDate(api: AxiosInstance, vehicleId: Record
     return data;
 }
 
-// export function destroyReminder(vehicleId, reminderId) {
-// return destroy(`/vehicles/${vehicleId}/reminders/${reminderId}`, null, DESTROY_REMINDER, {
-//     vehicleId,
-//     reminderId,
-// })
-// }
+export async function destroyReminder(api: AxiosInstance, vehicleId: RecordID, reminderId: RecordID) {
+    const { data } = await api.delete(`/api/vehicles/${vehicleId}/reminders/${reminderId}`);
+    return data;
+}
 
 // export function updateReminder(vehicleId, reminderId, params) {
 // return put(`/vehicles/${vehicleId}/reminders/${reminderId}`, params, UPDATE_REMINDER, {
