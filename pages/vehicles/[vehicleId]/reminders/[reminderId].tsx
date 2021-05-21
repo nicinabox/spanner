@@ -11,9 +11,9 @@ import useRequest from 'hooks/useRequest';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import { intlFormatDateUTC } from 'utils/date';
-import { isReminderOverdue } from 'utils/reminders';
 import { formatMileage } from 'utils/vehicle';
 import useInlineColorMode from 'hooks/useInlineColorMode';
+import ReminderSummary from 'components/ReminderSummary';
 
 export interface ReminderPageProps {
     params: {
@@ -41,23 +41,6 @@ export const ReminderPage: React.FC<ReminderPageProps> = ({ params, ...props }) 
     const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
     const { data: reminder } = useRequest<VehicleReminder>(vehicleReminderPath(params.vehicleId, params.reminderId));
 
-    const cm = useInlineColorMode();
-
-    const getReminderSummary = () => {
-        const date = reminder?.reminderDate && intlFormatDateUTC(reminder.reminderDate);
-        const mileage = reminder && vehicle && formatMileage(reminder.mileage, vehicle.distanceUnit);
-
-        let summary = 'Due';
-
-        if (!reminder?.reminderDate && !reminder?.mileage) return '';
-
-        if (date) summary += ` ${date}`;
-        if (date && reminder?.mileage) summary += ' on';
-        if (reminder?.mileage) summary += ` ${mileage}`;
-
-        return summary;
-    };
-
     return (
         <Page
             Header={<PageHeader vehicle={vehicle} />}
@@ -70,9 +53,7 @@ export const ReminderPage: React.FC<ReminderPageProps> = ({ params, ...props }) 
                 </Skeleton>
 
                 {reminder && vehicle ? (
-                    <Text>
-                        {getReminderSummary()}
-                    </Text>
+                    <ReminderSummary reminder={reminder} distanceUnit={vehicle?.distanceUnit} />
                 ) : (
                     <Skeleton h={3} />
                 )}

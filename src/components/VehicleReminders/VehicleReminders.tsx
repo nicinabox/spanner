@@ -1,8 +1,9 @@
 import { AddIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Container, Flex, Heading, LinkBox, LinkOverlay, StackDivider, Text, VStack,
+    Container, Flex, Heading, HStack, LinkBox, LinkOverlay, StackDivider, Text, VStack,
 } from '@chakra-ui/react';
 import LinkButton from 'components/common/LinkButton';
+import ReminderSummary from 'components/ReminderSummary';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import useRequest from 'hooks/useRequest';
@@ -57,15 +58,12 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                                     </LinkOverlay>
                                 </Link>
 
-                                {reminder.mileage && (
-                                    <Text fontSize="sm" color={cm('blackAlpha.600', 'whiteAlpha.600')}>
-                                        {formatMileage(reminder.mileage, vehicle.distanceUnit)}
-                                    </Text>
-                                )}
+                                <ReminderSummary
+                                    reminder={reminder}
+                                    distanceUnit={vehicle.distanceUnit}
+                                    fontSize="sm"
+                                />
                             </Flex>
-                            <Text color={isReminderOverdue(reminder) ? cm('red.500', 'red.600') : 'whiteAlpha'} ml={3}>
-                                {reminder.reminderDate ? intlFormatDateUTC(reminder.reminderDate) : null}
-                            </Text>
 
                             <ChevronRightIcon w={5} h={5} ml={2} color={cm('blackAlpha.600', 'whiteAlpha.600')} />
                         </Flex>
