@@ -6,8 +6,8 @@ export function getTime(date: string) {
 
 export const formatDateISO = (date: Date) => formatISO(date, { representation: 'date' });
 
-export const parseDateUTC = (value: string) => {
-    const date = new Date(value);
+export const parseDateUTC = (value: string | Date) => {
+    const date = value instanceof Date ? value : new Date(value);
     const tzOffset = date.getTimezoneOffset() / 60;
     date.setHours(date.getHours() + tzOffset);
     return date;

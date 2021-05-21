@@ -49,11 +49,7 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record,
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        createOrUpdateRecord(vehicle.id, {
-            ...formData,
-            date: formatDateISO(new Date(formData.date)),
-        });
+        createOrUpdateRecord(vehicle.id, formData);
     };
 
     const handleDelete = (e) => {
