@@ -11,6 +11,7 @@ import { createRecord } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
 import { mileageFieldHelpers } from 'utils/form';
+import lang from 'utils/lang';
 import { formatEstimatedMileage } from 'utils/vehicle';
 
 export interface MileageAdjustmentFormProps {
@@ -49,10 +50,18 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
             )}
 
             <FormControl mb={4} id="mileage" isRequired>
-                <FormLabel>Enter your current mileage</FormLabel>
+                <FormLabel>
+                    Enter your current
+                    {' '}
+                    {lang.mileageLabel[vehicle.distanceUnit]}
+                </FormLabel>
                 <Input {...getFormFieldProps('mileage', mileageFieldHelpers)} autoFocus />
                 <FormHelperText>
-                    Your estimated mileage is
+                    Your estimated
+                    {' '}
+                    {lang.mileageLabel[vehicle.distanceUnit]}
+                    {' '}
+                    is
                     {' '}
                     {formatEstimatedMileage(vehicle)}
                 </FormHelperText>

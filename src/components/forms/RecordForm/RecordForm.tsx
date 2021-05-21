@@ -8,12 +8,14 @@ import SubmitButton from 'components/common/SubmitButton';
 import useFormData from 'hooks/useFormData';
 import useMutation from 'hooks/useMutation';
 import useTextareaResize from 'hooks/useTextareaResize';
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import * as records from 'queries/records';
 import { Vehicle } from 'queries/vehicles';
 import React from 'react';
 import { formatDateISO, parseDateUTC } from 'utils/date';
 import { mileageFieldHelpers, costFieldHelpers } from 'utils/form';
+import lang from 'utils/lang';
 import { getCurrencySymbol } from 'utils/number';
 
 export interface NewServiceFormProps {
@@ -80,7 +82,7 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record,
                             <Textarea ref={textareaRef} {...getFormFieldProps('notes')} />
                         </FormControl>
                         <FormControl mb={4} id="mileage" isRequired>
-                            <FormLabel>Mileage</FormLabel>
+                            <FormLabel>{capitalize(lang.mileageLabel[vehicle.distanceUnit])}</FormLabel>
                             <InputGroup size="md">
                                 <Input {...getFormFieldProps('mileage', mileageFieldHelpers)} />
                                 <InputRightAddon>{vehicle.distanceUnit}</InputRightAddon>

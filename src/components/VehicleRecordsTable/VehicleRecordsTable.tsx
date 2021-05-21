@@ -5,10 +5,11 @@ import LinkButton from 'components/common/LinkButton';
 import { intlFormat } from 'date-fns';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
-import { groupBy } from 'lodash';
+import { capitalize, groupBy } from 'lodash';
 import { VehicleRecord, vehicleRecordPath } from 'queries/records';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
+import lang from 'utils/lang';
 import { formatCurrency } from 'utils/number';
 import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
@@ -119,7 +120,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                 textTransform="uppercase"
                             >
                                 <Cell>Date</Cell>
-                                <Cell>Mileage</Cell>
+                                <Cell whiteSpace="nowrap">{capitalize(lang.mileageLabel[distanceUnit])}</Cell>
                                 {enableCost && <Cell>Cost</Cell>}
                                 <Cell>Notes</Cell>
                                 <Cell />

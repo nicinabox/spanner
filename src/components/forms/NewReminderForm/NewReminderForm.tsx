@@ -8,6 +8,7 @@ import SubmitButton from 'components/common/SubmitButton';
 import { addMonths } from 'date-fns';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { clientAPI } from 'queries/config';
 import * as reminders from 'queries/reminders';
@@ -15,6 +16,7 @@ import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React, { useEffect, useState } from 'react';
 import { formatDateISO, intlFormatDate, parseDateUTC } from 'utils/date';
 import { formatMileageValue, mileageFieldHelpers } from 'utils/form';
+import lang from 'utils/lang';
 import { formatMileage } from 'utils/vehicle';
 
 export interface NewReminderFormProps {
@@ -105,7 +107,7 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMi
 
             {['mileage', 'date_or_mileage'].includes(formData.reminderType) && (
                 <FormControl mb={4} id="mileage" isRequired>
-                    <FormLabel>Mileage</FormLabel>
+                    <FormLabel>{capitalize(lang.mileageLabel[vehicle.distanceUnit])}</FormLabel>
                     <NumberInput min={minMileage} clampValueOnBlur={false} keepWithinRange={false}>
                         <NumberInputField {...getFormFieldProps('mileage', mileageFieldHelpers)} />
                     </NumberInput>

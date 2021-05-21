@@ -14,6 +14,7 @@ import { VehicleRecord, vehicleRecordsPath } from 'queries/records';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
 import { sortRecordsNewestFirst } from 'utils/vehicle';
+import lang from 'utils/lang';
 import { VehiclePageProps } from '../[vehicleId]';
 
 export type AddPageProps = VehiclePageProps
@@ -23,7 +24,7 @@ const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => (
         tabs={[
                 'Add Service',
                 'Add Reminder',
-                'Adjust Mileage',
+                `Adjust ${lang.mileageLabel[vehicle?.distanceUnit ?? 'mi']}`,
             ]}
         LeftComponent={(
             <HStack spacing={2}>
