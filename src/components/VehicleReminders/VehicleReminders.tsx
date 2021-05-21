@@ -41,9 +41,10 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                         px={4}
                         mb={3}
                         borderRadius={6}
-                        shadow="sm"
+                        shadow="base"
                         bg={cm('white', 'whiteAlpha.200')}
-                        _hover={{ bg: cm('blackAlpha.50', 'whiteAlpha.300') }}
+                        transition="shadow"
+                        _hover={{ bg: cm('gray.100', 'whiteAlpha.300') }}
                     >
                         <Flex align="center">
                             <Flex flex={2} direction="column">
