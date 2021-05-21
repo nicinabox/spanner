@@ -1,6 +1,6 @@
 import { AddIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Container, Flex, Heading, HStack, LinkBox, LinkOverlay, StackDivider, Text, VStack,
+    Container, Flex, Heading, LinkBox, LinkOverlay, Text,
 } from '@chakra-ui/react';
 import LinkButton from 'components/common/LinkButton';
 import ReminderSummary from 'components/ReminderSummary';
@@ -8,16 +8,19 @@ import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import useRequest from 'hooks/useRequest';
 import Link from 'next/link';
-import { vehicleReminderPath } from 'queries/reminders';
+import { VehicleReminder, vehicleReminderPath } from 'queries/reminders';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React from 'react';
-import { intlFormatDateUTC } from 'utils/date';
-import { isReminderOverdue } from 'utils/reminders';
-import { formatMileage } from 'utils/vehicle';
+import { getTime } from 'utils/date';
 
 export interface VehicleRemindersProps {
     vehicleId: string
 }
+
+const sortDueSoonest = (a: VehicleReminder, b: VehicleReminder) => {
+    if (!b.reminderDate) return -1;
+    return getTime(a.reminderDate) - getTime(b.reminderDate);
+};
 
 export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId }) => {
     const { data: vehicle } = useRequest<Vehicle>(vehiclePath(vehicleId));
@@ -33,7 +36,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                 )}
             </Flex>
 
-            {vehicle?.reminders.map(((reminder) => {
+            {vehicle?.reminders.sort(sortDueSoonest).map(((reminder) => {
                 return (
                     <LinkBox
                         key={reminder.id}
