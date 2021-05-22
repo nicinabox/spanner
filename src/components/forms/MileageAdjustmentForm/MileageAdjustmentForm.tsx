@@ -8,7 +8,7 @@ import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
 import { useRouter } from 'next/router';
 import { createRecord } from 'queries/records';
-import { Vehicle, vehiclePath } from 'queries/vehicles';
+import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { mileageFieldHelpers } from 'utils/form';
 import lang from 'utils/lang';
@@ -25,7 +25,7 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
         mutate: mutateVehicleRecord, isProcessing, error,
     } = useMutation(createRecord, {
         onSuccess() {
-            mutate(vehiclePath(vehicle.id));
+            mutate(vehicleAPIPath(vehicle.id));
             router.push(`/vehicles/${vehicle.id}`);
         },
     });

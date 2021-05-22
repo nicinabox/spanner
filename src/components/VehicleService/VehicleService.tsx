@@ -9,8 +9,8 @@ import VehicleStats from 'components/VehicleStats';
 import { intlFormat } from 'date-fns';
 import useRequest from 'hooks/useRequest';
 import useSearchQuery from 'hooks/useSearchQuery';
-import { VehicleRecord, vehicleRecordsPath } from 'queries/records';
-import { Vehicle, vehiclePath } from 'queries/vehicles';
+import { VehicleRecord, recordsAPIPath } from 'queries/records';
+import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
 
@@ -19,8 +19,8 @@ export interface VehicleServiceProps {
 }
 
 export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => {
-    const { data: vehicle, loading: vehicleLoading } = useRequest<Vehicle>(vehiclePath(vehicleId));
-    const { data: records, loading: recordsLoading } = useRequest<VehicleRecord[]>(vehicleRecordsPath(vehicleId));
+    const { data: vehicle, loading: vehicleLoading } = useRequest<Vehicle>(vehicleAPIPath(vehicleId));
+    const { data: records, loading: recordsLoading } = useRequest<VehicleRecord[]>(recordsAPIPath(vehicleId));
 
     const { searchQuery, queryResults, setSearchQuery } = useSearchQuery(records, (item, query) => {
         const re = new RegExp(query, 'gi');

@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react';
 
 import vehicleFixture from '__fixtures__/vehicle';
-import { vehicleRecordsPath } from 'queries/records';
+import { recordsAPIPath } from 'queries/records';
 import recordFixure from '__fixtures__/record';
 import VehicleService from '.';
 
@@ -19,7 +19,7 @@ describe('VehicleService', () => {
             .reply(200, vehicleFixture);
 
         nock(/localhost/)
-            .get(vehicleRecordsPath('123'))
+            .get(recordsAPIPath('123'))
             .reply(200, [recordFixure, { ...recordFixure, id: 2223, notes: 'Other note' }]);
     });
 
@@ -34,7 +34,7 @@ describe('VehicleService', () => {
 
     it('renders records when fully loaded', async () => {
         nock(/localhost/)
-            .get(vehicleRecordsPath('123'))
+            .get(recordsAPIPath('123'))
             .reply(200, [recordFixure]);
 
         render(<VehicleService vehicleId="123" />);

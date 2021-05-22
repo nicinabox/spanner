@@ -5,7 +5,7 @@ import Interpunct from 'components/common/Interpunct';
 import NumberBadge from 'components/common/NumberBadge';
 import { mutate } from 'hooks/useMutation';
 import NextLink from 'next/link';
-import { Vehicle, vehiclePath } from 'queries/vehicles';
+import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { getOverdueRemindersCount } from 'utils/reminders';
 import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
@@ -21,7 +21,7 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
         <LinkBox sx={styles}>
             <NextLink href={`/vehicles/${vehicle.id}`} passHref>
                 <LinkOverlay onClick={() => {
-                    mutate(vehiclePath(vehicle.id), vehicle, false);
+                    mutate(vehicleAPIPath(vehicle.id), vehicle, false);
                 }}
                 >
                     <Flex direction="column" minH={12}>

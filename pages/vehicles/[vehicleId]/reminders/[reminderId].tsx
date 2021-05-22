@@ -6,9 +6,9 @@ import {
 import Page from 'components/common/Page';
 import Header from 'components/common/Header';
 import BackButton from 'components/common/BackButton';
-import { VehicleReminder, vehicleReminderPath } from 'queries/reminders';
+import { VehicleReminder, reminderAPIPath } from 'queries/reminders';
 import useRequest from 'hooks/useRequest';
-import { Vehicle, vehiclePath } from 'queries/vehicles';
+import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import ReminderSummary from 'components/ReminderSummary';
 import { ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons';
@@ -39,8 +39,8 @@ const PageHeader = ({ vehicle }) => {
 };
 
 export const ReminderPage: React.FC<ReminderPageProps> = ({ params, ...props }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
-    const { data: reminder } = useRequest<VehicleReminder>(vehicleReminderPath(params.vehicleId, params.reminderId));
+    const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
+    const { data: reminder } = useRequest<VehicleReminder>(reminderAPIPath(params.vehicleId, params.reminderId));
 
     const { isOpen, onToggle } = useDisclosure();
 

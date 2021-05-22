@@ -11,7 +11,7 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { clientAPI, RecordID } from 'queries/config';
 import * as reminders from 'queries/reminders';
-import { DistanceUnit, vehiclePath } from 'queries/vehicles';
+import { DistanceUnit, vehicleAPIPath } from 'queries/vehicles';
 import React, { useEffect, useState } from 'react';
 import { formatDateISO, intlFormatDate, parseDateUTC } from 'utils/date';
 import { mileageFieldHelpers } from 'utils/form';
@@ -43,7 +43,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
         mutate: createReminderMutation, isProcessing, error,
     } = useMutation(reminders.createReminder, {
         onSuccess() {
-            mutate(vehiclePath(vehicleId));
+            mutate(vehicleAPIPath(vehicleId));
             router.push(`/vehicles/${vehicleId}#panel=1`);
         },
     });

@@ -10,8 +10,8 @@ import RecordForm from 'components/forms/RecordForm';
 import TabsHeader from 'components/common/TabsHeader';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useRequest from 'hooks/useRequest';
-import { VehicleRecord, vehicleRecordsPath } from 'queries/records';
-import { Vehicle, vehiclePath } from 'queries/vehicles';
+import { VehicleRecord, recordsAPIPath } from 'queries/records';
+import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { sortRecordsNewestFirst } from 'utils/vehicle';
 import lang from 'utils/lang';
@@ -38,8 +38,8 @@ const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => (
 );
 
 export const AddPage: React.FC<AddPageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehiclePath(params.vehicleId));
-    const { data: records } = useRequest<VehicleRecord[]>(vehicleRecordsPath(params.vehicleId));
+    const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
+    const { data: records } = useRequest<VehicleRecord[]>(recordsAPIPath(params.vehicleId));
 
     const newestRecordMileage = records ? sortRecordsNewestFirst(records)[0].mileage : 0;
 
@@ -47,7 +47,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
         <Page
             Header={<PageHeader vehicle={vehicle} />}
         >
-            <LinkPreload path={vehiclePath(params.vehicleId)} />
+            <LinkPreload path={vehicleAPIPath(params.vehicleId)} />
 
             {vehicle && (
                 <TabPanels>

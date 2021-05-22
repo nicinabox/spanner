@@ -20,31 +20,31 @@ export interface VehicleRecordParams {
     recordType?: 'mileage adjustment' | null;
 }
 
-export const vehicleRecordsPath = (vehicleId: RecordID) => `/api/vehicles/${vehicleId}/records`;
-export const vehicleRecordPath = (vehicleId: RecordID, recordId: RecordID) => `/api/vehicles/${vehicleId}/records/${recordId}`;
+export const recordsAPIPath = (vehicleId: RecordID) => `/api/vehicles/${vehicleId}/records`;
+export const recordAPIPath = (vehicleId: RecordID, recordId: RecordID) => `/api/vehicles/${vehicleId}/records/${recordId}`;
 
 export async function fetchRecords(api: AxiosInstance, vehicleId: RecordID) {
-    const { data } = await api.get<VehicleRecord[]>(vehicleRecordsPath(vehicleId));
+    const { data } = await api.get<VehicleRecord[]>(recordsAPIPath(vehicleId));
     return data;
 }
 
 export async function fetchRecord(api: AxiosInstance, vehicleId: RecordID, recordId: RecordID) {
-    const { data } = await api.get<VehicleRecord>(vehicleRecordPath(vehicleId, recordId));
+    const { data } = await api.get<VehicleRecord>(recordAPIPath(vehicleId, recordId));
     return data;
 }
 
 export async function createRecord(api: AxiosInstance, vehicleId: RecordID, record: VehicleRecordParams) {
-    const { data } = await api.post<VehicleRecord>(vehicleRecordsPath(vehicleId), record);
+    const { data } = await api.post<VehicleRecord>(recordsAPIPath(vehicleId), record);
     return data;
 }
 
 export async function updateRecord(api: AxiosInstance, vehicleId: RecordID, record: MutateParams<VehicleRecordParams>) {
-    const { data } = await api.put<VehicleRecord>(vehicleRecordPath(vehicleId, record.id), record);
+    const { data } = await api.put<VehicleRecord>(recordAPIPath(vehicleId, record.id), record);
     return data;
 }
 
 export async function destroyRecord(api: AxiosInstance, vehicleId: RecordID, recordId: RecordID) {
-    const { data } = await api.delete(vehicleRecordPath(vehicleId, recordId));
+    const { data } = await api.delete(recordAPIPath(vehicleId, recordId));
     return data;
 }
 

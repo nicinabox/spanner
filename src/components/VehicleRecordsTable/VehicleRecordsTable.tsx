@@ -6,7 +6,7 @@ import { intlFormat } from 'date-fns';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import { capitalize, groupBy } from 'lodash';
-import { VehicleRecord, vehicleRecordPath } from 'queries/records';
+import { VehicleRecord, recordAPIPath } from 'queries/records';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
 import lang from 'utils/lang';
@@ -184,7 +184,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                                 py={[1, null]}
                                                 onClick={() => {
                                                     // Preload data for edit form
-                                                    mutate(vehicleRecordPath(vehicleId, record.id), record, false);
+                                                    mutate(recordAPIPath(vehicleId, record.id), record, false);
                                                 }}
                                             >
                                                 Edit

@@ -7,7 +7,7 @@ import MarkdownBody from 'components/common/MarkdownBody';
 import useTextareaResize from 'hooks/useTextareaResize';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
-import { updateVehicle, Vehicle, vehiclePath } from 'queries/vehicles';
+import { updateVehicle, Vehicle, vehicleAPIPath } from 'queries/vehicles';
 
 export interface VehicleNotesProps {
     vehicle: Vehicle;
@@ -30,7 +30,7 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
 
     const handleSaveNotes = () => {
         setEditing(false);
-        mutate(vehiclePath(vehicle.id), { ...vehicle, ...formData }, false);
+        mutate(vehicleAPIPath(vehicle.id), { ...vehicle, ...formData }, false);
         updateVehicleMutation(formData);
     };
 
