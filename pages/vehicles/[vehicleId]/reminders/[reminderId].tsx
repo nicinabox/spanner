@@ -15,6 +15,8 @@ import { ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import RecordForm from 'components/forms/RecordForm';
 import useMutation from 'hooks/useMutation';
 import * as reminders from 'queries/reminders';
+import LinkButton from 'components/common/LinkButton';
+import { editReminderPath } from 'utils/resources';
 
 export interface ReminderPageProps {
     params: {
@@ -38,7 +40,7 @@ const PageHeader = ({ vehicle }) => {
     );
 };
 
-export const ReminderPage: React.FC<ReminderPageProps> = ({ params, ...props }) => {
+export const ReminderPage: React.FC<ReminderPageProps> = ({ params }) => {
     const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
     const { data: reminder } = useRequest<VehicleReminder>(reminderAPIPath(params.vehicleId, params.reminderId));
 
@@ -53,7 +55,9 @@ export const ReminderPage: React.FC<ReminderPageProps> = ({ params, ...props }) 
             <Container maxW="container.md">
                 <HStack my={4} justify="end">
                     <Spacer />
-                    <Button size="sm" colorScheme="brand">Edit</Button>
+                    <LinkButton href={editReminderPath(params.vehicleId, params.reminderId)} size="sm" colorScheme="brand">
+                        Edit
+                    </LinkButton>
                 </HStack>
 
                 <Box mb={10}>

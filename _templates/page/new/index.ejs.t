@@ -4,9 +4,9 @@ to: pages/<%= route %>.tsx
 import React from 'react';
 import Link from 'next/link';
 import { Container } from '@chakra-ui/react';
-import Page from 'components/Page';
-import Header from 'components/Header';
-import BackButton from 'components/BackButton';
+import Page from 'components/common/Page';
+import Header from 'components/common/Header';
+import BackButton from 'components/common/BackButton';
 
 export interface <%=name %>PageProps {
     params: {
@@ -14,7 +14,7 @@ export interface <%=name %>PageProps {
     }
 }
 
-const PageHeader = ({ vehicle }) => {
+const PageHeader = () => {
     return (
         <Header
             LeftComponent={(
@@ -29,13 +29,15 @@ const PageHeader = ({ vehicle }) => {
 };
 
 export const <%=name %>Page: React.FC<<%=name %>PageProps> = ({ params, ...props }) => {
+    const { data } = useRequest();
+
     return (
         <Page
             Header={<PageHeader />}
         >
-           <Container>
+            <Container>
                 TODO
-           </Container>
+            </Container>
         </Page>
     );
 };
