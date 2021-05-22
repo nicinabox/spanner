@@ -1,6 +1,5 @@
-import { CheckCircleIcon } from '@chakra-ui/icons';
 import {
-    Button, FormControl, FormLabel, Heading, Input, Select, VStack, Text, FormHelperText, NumberInput, NumberInputField,
+    FormControl, FormHelperText, FormLabel, Input, NumberInput, NumberInputField, Select, Text,
 } from '@chakra-ui/react';
 import DatePicker from 'components/common/DatePicker';
 import FormErrors from 'components/common/FormErrors';
@@ -15,7 +14,7 @@ import * as reminders from 'queries/reminders';
 import { Vehicle, vehiclePath } from 'queries/vehicles';
 import React, { useEffect, useState } from 'react';
 import { formatDateISO, intlFormatDate, parseDateUTC } from 'utils/date';
-import { formatMileageValue, mileageFieldHelpers } from 'utils/form';
+import { mileageFieldHelpers } from 'utils/form';
 import lang from 'utils/lang';
 import { formatMileage } from 'utils/vehicle';
 
@@ -24,7 +23,7 @@ export interface NewReminderFormProps {
     minMileage: number | undefined;
 }
 
-export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMileage }) => {
+export const ReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMileage }) => {
     const router = useRouter();
     const [estimatedDate, setEstimatedDate] = useState<Date | null>(null);
 
@@ -134,4 +133,4 @@ export const NewReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMi
     );
 };
 
-export default NewReminderForm;
+export default ReminderForm;

@@ -4,7 +4,7 @@ import {
 import BackButton from 'components/common/BackButton';
 import LinkPreload from 'components/common/LinkPreload';
 import MileageAdjustmentForm from 'components/forms/MileageAdjustmentForm';
-import NewReminderForm from 'components/forms/NewReminderForm';
+import ReminderForm from 'components/forms/ReminderForm';
 import Page from 'components/common/Page';
 import RecordForm from 'components/forms/RecordForm';
 import TabsHeader from 'components/common/TabsHeader';
@@ -58,7 +58,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
                     </TabPanel>
                     <TabPanel p={0}>
                         <Container maxW={[null, 'sm']} p={0}>
-                            <NewReminderForm vehicle={vehicle} minMileage={newestRecordMileage} />
+                            <ReminderForm vehicle={vehicle} minMileage={newestRecordMileage} />
                         </Container>
                     </TabPanel>
                     <TabPanel p={0}>
