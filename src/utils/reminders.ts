@@ -1,5 +1,8 @@
+import { VehicleRecord } from 'queries/records';
 import { VehicleReminder } from 'queries/reminders';
 import { Vehicle } from 'queries/vehicles';
+import { parseDateUTC } from './date';
+import { sortRecordsNewestFirst } from './records';
 
 export const getOverdueRemindersCount = (vehicle: Vehicle) => {
     if (vehicle.retired) return undefined;
@@ -8,6 +11,10 @@ export const getOverdueRemindersCount = (vehicle: Vehicle) => {
 
 export const isReminderOverdue = (reminder: VehicleReminder) => {
     if (!reminder.date) return false;
-    const date = new Date(reminder.reminderDate);
+    const date = parseDateUTC(reminder.reminderDate);
     return new Date() > date;
+};
+
+export const getNewestRecordMileage = (records: VehicleRecord[] | undefined) => {
+    return records?.sort(sortRecordsNewestFirst)[0] ?? 0;
 };

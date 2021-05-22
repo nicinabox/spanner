@@ -1,7 +1,9 @@
 import {
-    FormControl, FormHelperText, FormLabel, Input, NumberInput, NumberInputField, Select, Text,
+    Box,
+    FormControl, FormHelperText, FormLabel, Input, Select, Text,
 } from '@chakra-ui/react';
 import DatePicker from 'components/common/DatePicker';
+import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
 import SubmitButton from 'components/common/SubmitButton';
 import { addMonths } from 'date-fns';
@@ -16,14 +18,14 @@ import React, { useEffect, useState } from 'react';
 import { formatDateISO, intlFormatDate, parseDateUTC } from 'utils/date';
 import { mileageFieldHelpers } from 'utils/form';
 import lang from 'utils/lang';
-import { vehiclePath } from 'utils/resources';
+import { reminderPath, vehiclePath } from 'utils/resources';
 import { formatMileage } from 'utils/vehicle';
 
 export interface NewReminderFormProps {
     vehicleId: RecordID;
     minMileage: number | undefined;
     distanceUnit: DistanceUnit | undefined;
-    formValues?: Partial<reminders.VehicleReminderParams>;
+    formValues?: reminders.ReminderParams;
 }
 
 export const ReminderForm: React.FC<NewReminderFormProps> = ({
@@ -41,11 +43,21 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
     }, [formValues]);
 
     const {
-        mutate: createReminderMutation, isProcessing, error,
-    } = useMutation(reminders.createReminder, {
+        mutate: createOrUpdateReminder, isProcessing, error,
+    } = useMutation(reminders.createOrUpdateReminder, {
         onSuccess() {
             mutate(vehicleAPIPath(vehicleId));
-            router.push(`${vehiclePath(vehicleId)}#panel=1`);
+            if (formValues?.id) {
+                router.replace(`${reminderPath(vehicleId, formValues?.id)}`);
+            } else {
+                router.replace(`${vehiclePath(vehicleId)}#panel=1`);
+            }
+        },
+    });
+
+    const { mutate: destroyReminder } = useMutation(reminders.destroyReminder, {
+        onSuccess() {
+            router.replace(`${vehiclePath(vehicleId)}#panel=1`);
         },
     });
 
@@ -74,7 +86,13 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        createReminderMutation(vehicleId, formData);
+        createOrUpdateReminder(vehicleId, formData);
+    };
+
+    const handleDelete = (e) => {
+        e.preventDefault();
+        if (!formValues) return;
+        destroyReminder(vehicleId, formValues.id);
     };
 
     return (
@@ -109,9 +127,9 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
             {['mileage', 'date_or_mileage'].includes(formData.reminderType) && (
                 <FormControl mb={4} id="mileage" isRequired>
                     <FormLabel>{capitalize(lang.mileageLabel[distanceUnit])}</FormLabel>
-                    <NumberInput min={minMileage} clampValueOnBlur={false} keepWithinRange={false}>
-                        <NumberInputField {...getFormFieldProps('mileage', mileageFieldHelpers)} />
-                    </NumberInput>
+
+                    <Input type="text" {...getFormFieldProps('mileage', mileageFieldHelpers)} />
+
                     {minMileage && (
                         <FormHelperText>
                             Minimum
@@ -132,7 +150,17 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
 
             <SubmitButton isProcessing={isProcessing} />
 
-            {/* TODO: Destroy button */}
+            {Boolean(formValues?.id) && (
+                <Box mt={10}>
+                    <DestroyButton
+                        confirmTitle="Please confirm delete"
+                        confirmBody="You can't undo this action afterwards."
+                        onConfirm={handleDelete}
+                    >
+                        Delete Record
+                    </DestroyButton>
+                </Box>
+            )}
         </form>
     );
 };

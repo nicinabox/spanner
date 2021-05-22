@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { RecordID } from './config';
+import { MutateParams, RecordID } from './config';
 
 export type ReminderType = '' | 'date_or_mileage' | 'mileage' | 'date';
 
@@ -13,7 +13,7 @@ export interface VehicleReminder {
     vehicleId: number;
 }
 
-export type VehicleReminderParams = Pick<VehicleReminder, 'notes' | 'date' | 'mileage' | 'reminderType'>
+export type ReminderParams = Partial<Omit<VehicleReminder, 'vehicleId'>>;
 
 export type EstimateReminderParams = Pick<VehicleReminder, 'date' | 'mileage' | 'reminderType'>
 
@@ -24,8 +24,24 @@ export function fetchReminders(api: AxiosInstance, vehicleId: RecordID) {
     return api.get<VehicleReminder[]>(remindersAPIPath(vehicleId));
 }
 
-export function createReminder(api: AxiosInstance, vehicleId: RecordID, reminder: VehicleReminderParams) {
+export function createReminder(api: AxiosInstance, vehicleId: RecordID, reminder: ReminderParams) {
     return api.post<VehicleReminder>(remindersAPIPath(vehicleId), reminder);
+}
+
+export function updateReminder(api: AxiosInstance, vehicleId: RecordID, params: MutateParams<ReminderParams>) {
+    return api.put(reminderAPIPath(vehicleId, params.id), params);
+}
+
+export async function createOrUpdateReminder(api: AxiosInstance, vehicleId: RecordID, params: ReminderParams) {
+    if (params.id) {
+        return updateReminder(api, vehicleId, params as MutateParams<typeof params>);
+    }
+    return createReminder(api, vehicleId, params);
+}
+
+export async function destroyReminder(api: AxiosInstance, vehicleId: RecordID, reminderId: RecordID) {
+    const { data } = await api.delete(`/api/vehicles/${vehicleId}/reminders/${reminderId}`);
+    return data;
 }
 
 export async function estimateReminderDate(api: AxiosInstance, vehicleId: RecordID, reminder: EstimateReminderParams) {
@@ -36,15 +52,3 @@ export async function estimateReminderDate(api: AxiosInstance, vehicleId: Record
     });
     return data;
 }
-
-export async function destroyReminder(api: AxiosInstance, vehicleId: RecordID, reminderId: RecordID) {
-    const { data } = await api.delete(`/api/vehicles/${vehicleId}/reminders/${reminderId}`);
-    return data;
-}
-
-// export function updateReminder(vehicleId, reminderId, params) {
-// return put(`/vehicles/${vehicleId}/reminders/${reminderId}`, params, UPDATE_REMINDER, {
-//     vehicleId,
-//     reminderId,
-// })
-// }
