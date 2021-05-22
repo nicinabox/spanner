@@ -23,6 +23,7 @@
     "pages/**/*.{ts,tsx}": "eslint --fix"
   },
   "author": "Nic Haynes",
+  "cacheDirectories": [".next/cache"],
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@testing-library/jest-dom": "^5.12.0",
