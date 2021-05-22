@@ -18,16 +18,20 @@ export interface VehicleRemindersProps {
     vehicleId: string
 }
 
-const sortDueSoonest = (a: VehicleReminder, b: VehicleReminder) => {
-    if (!a.reminderDate || !b.reminderDate) return -1;
-    return getTime(a.reminderDate) - getTime(b.reminderDate);
+const sortByDueSoonest = (reminders: VehicleReminder[]) => {
+    return [...reminders].sort((a, b) => {
+        if (a.reminderDate && b.reminderDate) {
+            return getTime(a.reminderDate) - getTime(b.reminderDate);
+        }
+        return 1;
+    });
 };
 
 export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId }) => {
     const { data: vehicle, loading } = useRequest<Vehicle>(vehicleAPIPath(vehicleId));
     const cm = useInlineColorMode();
 
-    const reminders = vehicle?.reminders.sort(sortDueSoonest) ?? [];
+    const reminders = sortByDueSoonest(vehicle?.reminders ?? []);
 
     return (
         <Container>
