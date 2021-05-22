@@ -29,7 +29,7 @@ export interface NewReminderFormProps {
 }
 
 export const ReminderForm: React.FC<NewReminderFormProps> = ({
-    formValues, vehicleId, minMileage, distanceUnit = 'mi',
+    formValues, vehicleId, minMileage = 0, distanceUnit = 'mi',
 }) => {
     const router = useRouter();
     const [estimatedDate, setEstimatedDate] = useState<Date | null>(null);
@@ -73,7 +73,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
 
         const mileage = Number(formData.mileage);
 
-        if (mileage >= (minMileage ?? 0)) {
+        if (mileage > 0 && mileage >= minMileage) {
             estimateReminderDate({
                 mileage,
                 date: formData.date,
@@ -130,7 +130,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
 
                     <Input type="text" {...getFormFieldProps('mileage', mileageFieldHelpers)} />
 
-                    {minMileage && (
+                    {Boolean(minMileage) && (
                         <FormHelperText>
                             Minimum
                             {' '}
