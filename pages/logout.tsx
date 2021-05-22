@@ -1,8 +1,8 @@
-import { withSession } from "../src/utils/session";
+import { withSession } from '../src/utils/session';
 
 const Logout = () => null;
 
-export const getServerSideProps = withSession(async function ({ req, params }) {
+export const getServerSideProps = withSession(async ({ req, params }) => {
     req.session.destroy();
 
     return {
@@ -10,7 +10,7 @@ export const getServerSideProps = withSession(async function ({ req, params }) {
             destination: '/',
             permanent: false,
         },
-    }
-})
+    };
+});
 
 export default Logout;

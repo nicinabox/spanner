@@ -1,5 +1,13 @@
 module.exports = {
-    excludeFile: (str) => /\*.{spec,stories}.tsx?/.test(str),
+    webpack: (config, { dev }) => {
+        config.module.rules.push(
+            {
+                test: /\.(spec|stories)\.tsx?$/,
+                loader: 'ignore-loader',
+            },
+        );
+        return config;
+    },
 
     future: {
         webpack5: true,
