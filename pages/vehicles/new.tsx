@@ -8,6 +8,7 @@ import Page from 'components/common/Page';
 import React from 'react';
 import { withSession, authRedirect } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
+import { vehiclesPath } from 'utils/resources';
 
 export interface NewVehiclePageProps {
 }
@@ -19,7 +20,7 @@ export const NewVehiclePage: React.FC<NewVehiclePageProps> = () => (
                 LeftComponent={(
                     <HStack spacing={2}>
                         <LinkButton
-                            href="/vehicles"
+                            href={vehiclesPath()}
                             leftIcon={<ArrowBackIcon />}
                             size="sm"
                             variant="solid"

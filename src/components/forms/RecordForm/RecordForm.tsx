@@ -17,6 +17,7 @@ import { formatDateISO, parseDateUTC } from 'utils/date';
 import { mileageFieldHelpers, costFieldHelpers } from 'utils/form';
 import lang from 'utils/lang';
 import { getCurrencySymbol } from 'utils/number';
+import { vehiclePath } from 'utils/resources';
 
 export interface NewServiceFormProps {
     vehicle: Vehicle;
@@ -39,13 +40,13 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record,
     const { mutate: createOrUpdateRecord, isProcessing, error } = useMutation(records.createOrUpdateRecord, {
         onSuccess: async () => {
             await onSuccess?.();
-            router.push(`/vehicles/${vehicle.id}`);
+            router.push(vehiclePath(vehicle.id));
         },
     });
 
     const { mutate: destroyRecord } = useMutation(records.destroyRecord, {
         onSuccess() {
-            router.push(`/vehicles/${vehicle.id}`);
+            router.push(vehiclePath(vehicle.id));
         },
     });
 

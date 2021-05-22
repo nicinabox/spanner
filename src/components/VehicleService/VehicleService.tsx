@@ -13,6 +13,7 @@ import { VehicleRecord, recordsAPIPath } from 'queries/records';
 import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
+import { vehicleAddPath } from 'utils/resources';
 
 export interface VehicleServiceProps {
     vehicleId: string;
@@ -46,7 +47,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 {!vehicle?.retired && (
                     <Flex>
                         <LightMode>
-                            <LinkButton href={`/vehicles/${vehicleId}/add`} size="md" leftIcon={<AddIcon />} shadow="lg">
+                            <LinkButton href={vehicleAddPath(vehicleId)} size="md" leftIcon={<AddIcon />} shadow="lg">
                                 Add...
                             </LinkButton>
                         </LightMode>

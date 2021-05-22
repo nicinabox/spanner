@@ -12,6 +12,7 @@ import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { mileageFieldHelpers } from 'utils/form';
 import lang from 'utils/lang';
+import { vehiclePath } from 'utils/resources';
 import { formatEstimatedMileage } from 'utils/vehicle';
 
 export interface MileageAdjustmentFormProps {
@@ -26,7 +27,7 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
     } = useMutation(createRecord, {
         onSuccess() {
             mutate(vehicleAPIPath(vehicle.id));
-            router.push(`/vehicles/${vehicle.id}`);
+            router.push(vehiclePath(vehicle.id));
         },
     });
 

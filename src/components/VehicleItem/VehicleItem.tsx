@@ -8,6 +8,7 @@ import NextLink from 'next/link';
 import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { getOverdueRemindersCount } from 'utils/reminders';
+import { vehiclePath } from 'utils/resources';
 import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
 
 export interface VehicleItemProps {
@@ -19,7 +20,7 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
 
     return (
         <LinkBox sx={styles}>
-            <NextLink href={`/vehicles/${vehicle.id}`} passHref>
+            <NextLink href={vehiclePath(vehicle.id)} passHref>
                 <LinkOverlay onClick={() => {
                     mutate(vehicleAPIPath(vehicle.id), vehicle, false);
                 }}

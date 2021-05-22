@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { formatDateISO, intlFormatDate, parseDateUTC } from 'utils/date';
 import { mileageFieldHelpers } from 'utils/form';
 import lang from 'utils/lang';
+import { vehiclePath } from 'utils/resources';
 import { formatMileage } from 'utils/vehicle';
 
 export interface NewReminderFormProps {
@@ -44,7 +45,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
     } = useMutation(reminders.createReminder, {
         onSuccess() {
             mutate(vehicleAPIPath(vehicleId));
-            router.push(`/vehicles/${vehicleId}#panel=1`);
+            router.push(`${vehiclePath(vehicleId)}#panel=1`);
         },
     });
 

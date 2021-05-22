@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Container, Link } from '@chakra-ui/react';
+import { vehiclesPath } from 'utils/resources';
 import { ClientSession, signIn } from '../../src/queries/session';
 import { withSession } from '../../src/utils/session';
 import { createAPIRequest } from '../../src/queries/config';
@@ -15,7 +16,7 @@ const Login: React.FC<LoginProps> = ({ session, error }) => {
 
     useEffect(() => {
         if (session) {
-            router.replace('/vehicles');
+            router.replace(vehiclesPath());
         }
     }, [session]);
 

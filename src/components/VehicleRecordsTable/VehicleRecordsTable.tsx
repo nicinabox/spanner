@@ -11,6 +11,7 @@ import React from 'react';
 import { parseDateUTC } from 'utils/date';
 import lang from 'utils/lang';
 import { formatCurrency } from 'utils/number';
+import { editRecordPath } from 'utils/resources';
 import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
 export interface VehicleRecordsTableProps {
@@ -178,7 +179,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
 
                                         <Cell justify="end" basis="100%">
                                             <LinkButton
-                                                href={`/vehicles/${vehicleId}/records/${record.id}/edit`}
+                                                href={editRecordPath(vehicleId, record.id)}
                                                 size="sm"
                                                 variant="link"
                                                 py={[1, null]}

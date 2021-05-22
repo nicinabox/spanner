@@ -14,6 +14,7 @@ import { Vehicle, vehiclesAPIPath } from 'queries/vehicles';
 import React, { useState } from 'react';
 import { authRedirect, withSession } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
+import { newVehiclePath } from 'utils/resources';
 
 interface VehiclesProps {
 }
@@ -77,7 +78,7 @@ const Vehicles: React.FC<VehiclesProps> = () => {
                 <Heading fontSize="xl">
                     Vehicles
                 </Heading>
-                <LinkButton href="/vehicles/new" leftIcon={<AddIcon />} size="xs" variant="ghost">
+                <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} size="xs" variant="ghost">
                     New Vehicle
                 </LinkButton>
             </HStack>

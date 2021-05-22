@@ -12,6 +12,7 @@ import { VehicleReminder, reminderAPIPath } from 'queries/reminders';
 import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { getTime } from 'utils/date';
+import { reminderPath, vehicleAddPath } from 'utils/resources';
 
 export interface VehicleRemindersProps {
     vehicleId: string
@@ -32,7 +33,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
         <Container>
             <Flex mb={6} direction="row-reverse">
                 {!vehicle?.retired && (
-                    <LinkButton href={`/vehicles/${vehicleId}/add#panel=1`} size="sm" leftIcon={<AddIcon />}>
+                    <LinkButton href={`${vehicleAddPath(vehicleId)}#panel=1`} size="sm" leftIcon={<AddIcon />}>
                         Add
                     </LinkButton>
                 )}
@@ -53,7 +54,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                     >
                         <Flex align="center">
                             <Flex flex={2} direction="column">
-                                <Link href={`/vehicles/${vehicleId}/reminders/${reminder.id}`} passHref>
+                                <Link href={reminderPath(vehicleId, reminder.id)} passHref>
                                     <LinkOverlay onClick={() => {
                                         mutate(reminderAPIPath(vehicleId, reminder.id), reminder, false);
                                     }}

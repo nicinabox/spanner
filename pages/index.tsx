@@ -1,5 +1,6 @@
 import { Container } from '@chakra-ui/react';
 import React from 'react';
+import { vehiclesPath } from 'utils/resources';
 import LoginForm from '../src/components/forms/LoginForm';
 import { withSession } from '../src/utils/session';
 
@@ -17,7 +18,7 @@ export const getServerSideProps = withSession(async ({ req }) => {
     if (session) {
         return {
             redirect: {
-                destination: '/vehicles',
+                destination: vehiclesPath(),
                 permanent: false,
             },
         };

@@ -9,6 +9,7 @@ import useMutation from 'hooks/useMutation';
 import { useRouter } from 'next/router';
 import * as vehicles from 'queries/vehicles';
 import React, { useEffect } from 'react';
+import { vehiclePath, vehiclesPath } from 'utils/resources';
 
 export interface VehicleFormProps {
     vehicle?: vehicles.Vehicle;
@@ -31,13 +32,13 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
 
     const { mutate: createOrUpdateVehicle, isProcessing, error } = useMutation(vehicles.createOrUpdateVehicle, {
         onSuccess(nextVehicle) {
-            router.push(`/vehicles/${nextVehicle.id}`);
+            router.push(vehiclePath(nextVehicle.id));
         },
     });
 
     const { mutate: destroyVehicle } = useMutation(vehicles.destroyVehicle, {
         onSuccess() {
-            router.push('/vehicles');
+            router.push(vehiclesPath());
         },
     });
 

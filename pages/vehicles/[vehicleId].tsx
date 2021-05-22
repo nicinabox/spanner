@@ -12,6 +12,7 @@ import { recordsAPIPath } from 'queries/records';
 import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { getOverdueRemindersCount } from 'utils/reminders';
+import { vehiclesPath } from 'utils/resources';
 import { authRedirect, withSession } from 'utils/session';
 
 export interface VehiclePageProps {
@@ -32,7 +33,7 @@ const PageHeader = ({ vehicle, overDueRemindersBadge }) => (
         }
         LeftComponent={(
             <HStack spacing={2}>
-                <BackButton href="/vehicles">
+                <BackButton href={vehiclesPath()}>
                     Vehicles
                 </BackButton>
 
