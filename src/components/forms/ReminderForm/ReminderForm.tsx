@@ -9,9 +9,9 @@ import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import { clientAPI } from 'queries/config';
+import { clientAPI, RecordID } from 'queries/config';
 import * as reminders from 'queries/reminders';
-import { Vehicle, vehiclePath } from 'queries/vehicles';
+import { DistanceUnit, vehiclePath } from 'queries/vehicles';
 import React, { useEffect, useState } from 'react';
 import { formatDateISO, intlFormatDate, parseDateUTC } from 'utils/date';
 import { mileageFieldHelpers } from 'utils/form';
@@ -19,34 +19,39 @@ import lang from 'utils/lang';
 import { formatMileage } from 'utils/vehicle';
 
 export interface NewReminderFormProps {
-    vehicle: Vehicle;
+    vehicleId: RecordID;
     minMileage: number | undefined;
+    distanceUnit: DistanceUnit | undefined;
+    formValues?: Partial<reminders.VehicleReminderParams>;
 }
 
-export const ReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMileage }) => {
+export const ReminderForm: React.FC<NewReminderFormProps> = ({
+    formValues, vehicleId, minMileage, distanceUnit = 'mi',
+}) => {
     const router = useRouter();
     const [estimatedDate, setEstimatedDate] = useState<Date | null>(null);
 
     const { formData, getFormFieldProps, setFormField } = useFormData({
-        date: addMonths(new Date(), 6),
+        date: formatDateISO(addMonths(new Date(), 6)),
         notes: '',
         reminderType: '',
         mileage: '',
-    });
+        ...formValues,
+    }, [formValues]);
 
     const {
         mutate: createReminderMutation, isProcessing, error,
     } = useMutation(reminders.createReminder, {
         onSuccess() {
-            mutate(vehiclePath(vehicle.id));
-            router.push(`/vehicles/${vehicle.id}#panel=1`);
+            mutate(vehiclePath(vehicleId));
+            router.push(`/vehicles/${vehicleId}#panel=1`);
         },
     });
 
     useEffect(() => {
         const estimateReminderDate = async (params: reminders.EstimateReminderParams) => {
             try {
-                const { reminderDate } = await reminders.estimateReminderDate(clientAPI, vehicle.id, params);
+                const { reminderDate } = await reminders.estimateReminderDate(clientAPI, vehicleId, params);
                 setEstimatedDate(parseDateUTC(reminderDate));
             } catch (err) {
                 console.error(err);
@@ -58,7 +63,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMilea
         if (mileage >= (minMileage ?? 0)) {
             estimateReminderDate({
                 mileage,
-                date: formatDateISO(formData.date),
+                date: formData.date,
                 reminderType: formData.reminderType as reminders.ReminderType,
             });
         } else {
@@ -68,11 +73,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMilea
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        createReminderMutation(vehicle.id, {
-            ...formData,
-            date: formatDateISO(formData.date),
-        });
+        createReminderMutation(vehicleId, formData);
     };
 
     return (
@@ -100,13 +101,13 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMilea
                 <FormControl mb={4} id="date" isRequired>
                     <FormLabel>Date</FormLabel>
                     <input type="hidden" {...getFormFieldProps('date')} />
-                    <DatePicker initialDate={formData.date} onChange={(date) => setFormField('date', date)} />
+                    <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setFormField('date', date)} />
                 </FormControl>
             )}
 
             {['mileage', 'date_or_mileage'].includes(formData.reminderType) && (
                 <FormControl mb={4} id="mileage" isRequired>
-                    <FormLabel>{capitalize(lang.mileageLabel[vehicle.distanceUnit])}</FormLabel>
+                    <FormLabel>{capitalize(lang.mileageLabel[distanceUnit])}</FormLabel>
                     <NumberInput min={minMileage} clampValueOnBlur={false} keepWithinRange={false}>
                         <NumberInputField {...getFormFieldProps('mileage', mileageFieldHelpers)} />
                     </NumberInput>
@@ -114,7 +115,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMilea
                         <FormHelperText>
                             Minimum
                             {' '}
-                            {formatMileage(minMileage, vehicle.distanceUnit)}
+                            {formatMileage(minMileage, distanceUnit)}
                         </FormHelperText>
                     )}
                 </FormControl>
@@ -129,6 +130,8 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({ vehicle, minMilea
             )}
 
             <SubmitButton isProcessing={isProcessing} />
+
+            {/* TODO: Destroy button */}
         </form>
     );
 };

@@ -1,9 +1,9 @@
 import { VehicleRecord } from 'queries/records';
-import { Vehicle } from 'queries/vehicles';
+import { DistanceUnit, Vehicle } from 'queries/vehicles';
 import { getTime } from './date';
 import { formatNumber } from './number';
 
-export function formatMileage(mileage: number | null, distanceUnit: string) {
+export function formatMileage(mileage: number | null, distanceUnit: DistanceUnit = 'mi') {
     return `${formatNumber(mileage ?? 0)} ${distanceUnit}`;
 }
 

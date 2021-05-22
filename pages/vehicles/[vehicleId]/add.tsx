@@ -58,7 +58,11 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
                     </TabPanel>
                     <TabPanel p={0}>
                         <Container maxW={[null, 'sm']} p={0}>
-                            <ReminderForm vehicle={vehicle} minMileage={newestRecordMileage} />
+                            <ReminderForm
+                                vehicleId={params.vehicleId}
+                                distanceUnit={vehicle.distanceUnit}
+                                minMileage={newestRecordMileage}
+                            />
                         </Container>
                     </TabPanel>
                     <TabPanel p={0}>

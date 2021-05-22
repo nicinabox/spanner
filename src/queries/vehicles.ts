@@ -2,6 +2,8 @@ import { AxiosInstance } from 'axios';
 import { RecordID, MutateParams } from './config';
 import { VehicleReminder } from './reminders';
 
+export type DistanceUnit = 'mi' | 'km' | 'hr';
+
 export interface Vehicle {
     id: RecordID;
     name: string;
@@ -9,7 +11,7 @@ export interface Vehicle {
     notes: string;
     position: number | null;
     enableCost: boolean;
-    distanceUnit: 'mi' | 'km';
+    distanceUnit: DistanceUnit;
     retired: boolean;
     createdAt: string;
     milesPerDay: number | null;
@@ -27,7 +29,7 @@ interface VehicleParams {
     notes?: string;
     position?: number;
     enableCost?: boolean;
-    distanceUnit?: 'mi' | 'km';
+    distanceUnit?: DistanceUnit;
     retired?: boolean;
     color?: string | null;
 }
