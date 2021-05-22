@@ -40,13 +40,13 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record,
     const { mutate: createOrUpdateRecord, isProcessing, error } = useMutation(records.createOrUpdateRecord, {
         onSuccess: async () => {
             await onSuccess?.();
-            router.push(vehiclePath(vehicle.id));
+            router.replace(vehiclePath(vehicle.id));
         },
     });
 
     const { mutate: destroyRecord } = useMutation(records.destroyRecord, {
         onSuccess() {
-            router.push(vehiclePath(vehicle.id));
+            router.replace(vehiclePath(vehicle.id));
         },
     });
 

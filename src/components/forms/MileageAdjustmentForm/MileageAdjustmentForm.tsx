@@ -27,7 +27,7 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
     } = useMutation(createRecord, {
         onSuccess() {
             mutate(vehicleAPIPath(vehicle.id));
-            router.push(vehiclePath(vehicle.id));
+            router.replace(vehiclePath(vehicle.id));
         },
     });
 

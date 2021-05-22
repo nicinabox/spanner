@@ -32,13 +32,13 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
 
     const { mutate: createOrUpdateVehicle, isProcessing, error } = useMutation(vehicles.createOrUpdateVehicle, {
         onSuccess(nextVehicle) {
-            router.push(vehiclePath(nextVehicle.id));
+            router.replace(vehiclePath(nextVehicle.id));
         },
     });
 
     const { mutate: destroyVehicle } = useMutation(vehicles.destroyVehicle, {
         onSuccess() {
-            router.push(vehiclesPath());
+            router.replace(vehiclesPath());
         },
     });
 
