@@ -1,5 +1,5 @@
 import {
-    Box, Flex, Heading, Skeleton, SkeletonText, Text, useColorModeValue,
+    Box, Flex, Heading, Skeleton, SkeletonText, Text,
 } from '@chakra-ui/react';
 import LinkButton from 'components/common/LinkButton';
 import { intlFormat } from 'date-fns';
@@ -7,6 +7,7 @@ import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import { capitalize, groupBy } from 'lodash';
 import { VehicleRecord, recordAPIPath } from 'queries/records';
+import { DistanceUnit } from 'queries/vehicles';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
 import lang from 'utils/lang';
@@ -18,7 +19,7 @@ export interface VehicleRecordsTableProps {
     records: VehicleRecord[] | undefined;
     vehicleId: string;
     enableCost?: boolean;
-    distanceUnit?: string;
+    distanceUnit?: DistanceUnit;
     isLoaded?: boolean;
 }
 
