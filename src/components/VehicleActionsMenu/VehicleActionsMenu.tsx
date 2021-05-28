@@ -1,5 +1,6 @@
 import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import {
+    Box,
     Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Skeleton, Spacer, Text,
 } from '@chakra-ui/react';
 import VehicleColorIndicator from 'components/VehicleColorIndicator';
@@ -19,8 +20,9 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
 
     const handleUpdateVehicle = (nextOptions: Partial<Vehicle>) => {
         if (!vehicle) return;
+
         mutate(vehicleAPIPath(vehicle.id), { ...vehicle, ...nextOptions }, false);
-        updateVehicleMutation(vehicle.id, nextOptions);
+        updateVehicleMutation({ id: vehicle.id, ...nextOptions });
     };
 
     const debouncedUpdate = useCallback(debounce(handleUpdateVehicle, 200), [vehicle]);
@@ -66,14 +68,17 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                     <MenuItem closeOnSelect={false} as="label" htmlFor="color">
                         Change color
                         <Spacer />
-                        <input
-                            type="color"
-                            id="color"
-                            name="color"
-                            value={vehicle.color ?? ''}
-                            onClick={(e) => e.stopPropagation()}
-                            onChange={handleColorChange}
-                        />
+                        <Box display="none">
+                            <input
+                                type="color"
+                                id="color"
+                                name="color"
+                                value={vehicle.color ?? ''}
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={handleColorChange}
+                            />
+                        </Box>
+                        <VehicleColorIndicator color={vehicle?.color} />
                     </MenuItem>
 
                     <MenuItem
