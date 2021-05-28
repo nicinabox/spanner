@@ -43,7 +43,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
     if (isEmpty) {
         return (
             <EmptyState
-                heading="Log everything for your vehicle"
+                heading="Add your vehicle's history"
                 details="Try adding your purchase as the first record."
                 action={(
                     <LinkButton href={`${vehicleAddPath(vehicleId)}?${qs.stringify({ notes: 'Purchase' })}`} shadow="lg">

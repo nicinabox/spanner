@@ -18,8 +18,8 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
     if (isEmpty) {
         return (
             <EmptyState
-                heading="Notes are for hard to remember things"
-                details="Add notes for tire pressures, oil capacity, or how to reset the clock."
+                heading="Notes are for hard-to-remember things"
+                details="Add tire pressures, oil capacity, or how to reset the clock."
                 action={(
                     <Button colorScheme="brand" leftIcon={<EditIcon />} onClick={() => setEditing(true)} shadow="lg">
                         Edit Notes
