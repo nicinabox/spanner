@@ -9,6 +9,7 @@ import React from 'react';
 import { withSession, authRedirect } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
 import { vehiclesPath } from 'utils/resources';
+import BackButton from 'components/common/BackButton';
 
 export interface NewVehiclePageProps {
 }
@@ -19,15 +20,9 @@ export const NewVehiclePage: React.FC<NewVehiclePageProps> = () => (
             <Header
                 LeftComponent={(
                     <HStack spacing={2}>
-                        <LinkButton
-                            href={vehiclesPath()}
-                            leftIcon={<ArrowBackIcon />}
-                            size="sm"
-                            variant="solid"
-                            colorScheme="gray"
-                        >
+                        <BackButton>
                             Back
-                        </LinkButton>
+                        </BackButton>
                     </HStack>
                       )}
             />

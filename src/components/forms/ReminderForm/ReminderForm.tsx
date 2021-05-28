@@ -157,7 +157,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                         confirmBody="You can't undo this action afterwards."
                         onConfirm={handleDelete}
                     >
-                        Delete Record
+                        Delete reminder
                     </DestroyButton>
                 </Box>
             )}

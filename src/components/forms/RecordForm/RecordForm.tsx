@@ -19,13 +19,13 @@ import lang from 'utils/lang';
 import { getCurrencySymbol } from 'utils/number';
 import { vehiclePath } from 'utils/resources';
 
-export interface NewServiceFormProps {
+export interface RecordFormProps {
     vehicle: Vehicle;
     record?: Partial<records.VehicleRecord>;
     onSuccess?: () => Promise<void> | void;
 }
 
-export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record, onSuccess }) => {
+export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSuccess }) => {
     const router = useRouter();
     const textareaRef = useTextareaResize();
 
@@ -117,4 +117,4 @@ export const NewServiceForm: React.FC<NewServiceFormProps> = ({ vehicle, record,
     );
 };
 
-export default NewServiceForm;
+export default RecordForm;
