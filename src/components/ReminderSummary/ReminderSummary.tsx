@@ -26,7 +26,7 @@ export const ReminderSummary: React.FC<ReminderSummaryProps> = ({ reminder, dist
                 <Text as="span">{date}</Text>
             )}
 
-            {reminder.reminderType === 'date_or_mileage' && ' or '}
+            {reminder.reminderType === 'date_or_mileage' && reminder.reminderDate && ' or '}
             {reminder.reminderType === 'mileage' && ' at '}
 
             {reminder.mileage && (

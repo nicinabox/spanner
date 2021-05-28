@@ -65,7 +65,9 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
         const estimateReminderDate = async (params: reminders.EstimateReminderParams) => {
             try {
                 const { reminderDate } = await reminders.estimateReminderDate(clientAPI, vehicleId, params);
-                setEstimatedDate(parseDateUTC(reminderDate));
+                if (reminderDate) {
+                    setEstimatedDate(parseDateUTC(reminderDate));
+                }
             } catch (err) {
                 console.error(err);
             }
@@ -120,7 +122,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                 <FormControl mb={4} id="date" isRequired>
                     <FormLabel>Date</FormLabel>
                     <input type="hidden" {...getFormFieldProps('date')} />
-                    <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setFormField('date', date)} />
+                    <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setFormField('date', formatDateISO(date))} />
                 </FormControl>
             )}
 

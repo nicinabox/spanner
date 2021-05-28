@@ -29,7 +29,7 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
     const router = useRouter();
     const textareaRef = useTextareaResize();
 
-    const { formData, getFormFieldProps } = useFormData({
+    const { formData, getFormFieldProps, setFormField } = useFormData({
         date: formatDateISO(new Date()),
         mileage: vehicle.estimatedMileage,
         notes: '',
@@ -74,7 +74,7 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
                             <FormLabel>Date</FormLabel>
 
                             <Input type="hidden" {...getFormFieldProps('date')} />
-                            <DatePicker initialDate={parseDateUTC(formData.date)} />
+                            <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setFormField('date', formatDateISO(date))} />
                         </FormControl>
                     </Box>
                     <Box flex={1}>
