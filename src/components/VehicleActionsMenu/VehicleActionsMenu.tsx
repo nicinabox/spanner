@@ -9,7 +9,7 @@ import { debounce } from 'lodash';
 import Link from 'next/link';
 import { updateVehicle, Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React, { useCallback } from 'react';
-import { editVehiclePath } from 'utils/resources';
+import { editVehiclePath, vehicleImportPath } from 'utils/resources';
 
 export interface VehicleActionsMenuProps {
     vehicle: Vehicle | undefined;
@@ -105,7 +105,11 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
 
                     <MenuDivider />
 
-                    <MenuItem>Import records from CSV</MenuItem>
+                    <Link href={vehicleImportPath(vehicle.id)} passHref>
+                        <MenuItem as="a">
+                            Import records
+                        </MenuItem>
+                    </Link>
                     <MenuItem as="a" href={`${vehicleAPIPath(vehicle.id)}/export`} target="_blank">
                         Export records to CSV
                     </MenuItem>

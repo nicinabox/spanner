@@ -10,6 +10,8 @@ export const editVehiclePath = (vehicleId: RecordID) => `${vehiclePath(vehicleId
 
 export const vehicleAddPath = (vehicleId: RecordID) => `${vehiclePath(vehicleId)}/add`;
 
+export const vehicleImportPath = (vehicleId: RecordID) => `${vehiclePath(vehicleId)}/import`;
+
 export const editRecordPath = (vehicleId: RecordID, recordId: RecordID) => `${vehiclePath(vehicleId)}/records/${recordId}/edit`;
 
 export const reminderPath = (vehicleId: RecordID, reminderId: RecordID) => `${vehiclePath(vehicleId)}/reminders/${reminderId}`;
