@@ -1,5 +1,5 @@
 import {
-    Box, Center, Flex, Heading, Text,
+    Box, Center, Flex, Heading, LightMode, Text,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -20,7 +20,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ heading, details, action
 
                 {action && (
                     <Box mt={6}>
-                        {action}
+                        <LightMode>
+                            {action}
+                        </LightMode>
                     </Box>
                 )}
             </Flex>
