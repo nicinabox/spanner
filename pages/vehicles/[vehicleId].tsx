@@ -26,7 +26,7 @@ const PageHeader = ({ vehicle, overDueRemindersBadge }) => (
         hashchange
         tabs={
             [
-                'Service',
+                'History',
                 { text: 'Reminders', badge: overDueRemindersBadge, badgeSentiment: 'negative' },
                 'Notes',
             ]
