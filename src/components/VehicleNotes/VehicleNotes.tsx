@@ -1,13 +1,10 @@
-import {
-    Box, Button, Container, Flex, Heading, HStack, Spacer, Text, Textarea,
-} from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
-import React, { useState } from 'react';
+import { Button, Container, Flex } from '@chakra-ui/react';
+import EmptyState from 'components/common/EmptyState';
 import MarkdownBody from 'components/common/MarkdownBody';
-import useTextareaResize from 'hooks/useTextareaResize';
-import useFormData from 'hooks/useFormData';
-import useMutation, { mutate } from 'hooks/useMutation';
-import { updateVehicle, Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import NotesForm from 'components/forms/NotesForm';
+import { Vehicle } from 'queries/vehicles';
+import React, { useState } from 'react';
 
 export interface VehicleNotesProps {
     vehicle: Vehicle;
@@ -15,80 +12,44 @@ export interface VehicleNotesProps {
 
 export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
     const [editing, setEditing] = useState(false);
-    const textareaRef = useTextareaResize();
 
-    const { formData, getFormFieldProps, setFormField } = useFormData({
-        notes: vehicle.notes ?? '',
-        id: vehicle.id,
-    });
+    const isEmpty = !vehicle.notes && !editing;
 
-    const { mutate: updateVehicleMutation } = useMutation(updateVehicle, {
-        onError() {
-            setEditing(true);
-        },
-    });
-
-    const handleSaveNotes = () => {
-        setEditing(false);
-        mutate(vehicleAPIPath(vehicle.id), { ...vehicle, ...formData }, false);
-        updateVehicleMutation(formData);
-    };
+    if (isEmpty) {
+        return (
+            <EmptyState
+                heading="Notes are for hard to remember things"
+                details="Add notes for tire pressures, oil capacity, or how to reset the clock."
+                action={(
+                    <Button colorScheme="brand" leftIcon={<EditIcon />} onClick={() => setEditing(true)} shadow="lg">
+                        Edit Notes
+                    </Button>
+                )}
+            />
+        );
+    }
 
     return (
-        <>
-            <Container maxW="container.md" mb={6}>
-                <Flex direction="row-reverse">
-                    {editing ? (
-                        <HStack spacing={3}>
-                            <Button colorScheme="brand" size="sm" onClick={handleSaveNotes}>
-                                Save
-                            </Button>
-                            <Button
-                                colorScheme="brand"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => {
-                                    setEditing(false);
-                                    setFormField('notes', vehicle.notes);
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                        </HStack>
-                    ) : (
+        <Container maxW="container.md">
+            {editing ? (
+                <NotesForm
+                    formValues={vehicle}
+                    onError={() => setEditing(true)}
+                    onSuccess={() => setEditing(false)}
+                    onCancel={() => setEditing(false)}
+                />
+            ) : (
+                <>
+                    <Flex direction="row-reverse" mb={6}>
                         <Button colorScheme="brand" size="sm" leftIcon={<EditIcon />} onClick={() => setEditing(true)}>
                             Edit
                         </Button>
-                    )}
-                </Flex>
-            </Container>
+                    </Flex>
 
-            <Container maxW="container.md">
-                {editing && (
-                    <Textarea
-                        ref={textareaRef}
-                        sx={{ fontFamily: 'monospace' }}
-                        {...getFormFieldProps('notes')}
-                        minH="200px"
-                        autoFocus
-                    />
-                )}
-                {!editing && vehicle.notes && (
                     <MarkdownBody body={vehicle.notes} />
-                )}
-
-                {!vehicle.notes && !editing && (
-                    <>
-                        <Heading>
-                            You don&apos;t have any notes yet
-                        </Heading>
-                        <Text>
-                            Keep notes for those hard to remember things, like how to reset the clock.
-                        </Text>
-                    </>
-                )}
-            </Container>
-        </>
+                </>
+            )}
+        </Container>
     );
 };
 
