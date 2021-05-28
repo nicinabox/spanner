@@ -5,12 +5,13 @@ import React from 'react';
 
 export interface VehiclesListProps {
     vehicles: Vehicle[] | undefined;
+    loading?: boolean;
 }
 
-export const VehiclesList: React.FC<VehiclesListProps> = ({ vehicles }) => {
+export const VehiclesList: React.FC<VehiclesListProps> = ({ vehicles, loading = false }) => {
     return (
         <SimpleGrid columns={[1, 2, 3, 4]} spacing={5} mt={3}>
-            {!vehicles?.length && [1, 2].map((n) => (
+            {loading && [1, 2].map((n) => (
                 <Skeleton key={n} height="80px" />
             ))}
 

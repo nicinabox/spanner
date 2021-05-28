@@ -15,6 +15,7 @@ import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { sortRecordsNewestFirst } from 'utils/vehicle';
 import lang from 'utils/lang';
+import qs from 'qs';
 import { VehiclePageProps } from '../[vehicleId]';
 
 export type AddPageProps = VehiclePageProps
@@ -41,7 +42,8 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
     const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
     const { data: records } = useRequest<VehicleRecord[]>(recordsAPIPath(params.vehicleId));
 
-    const newestRecordMileage = records ? sortRecordsNewestFirst(records)[0].mileage : 0;
+    const newestRecordMileage = records ? sortRecordsNewestFirst(records)[0]?.mileage : 0;
+    const recordFormValues = qs.parse(window.location.search.replace('?', ''));
 
     return (
         <Page
@@ -53,7 +55,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
                 <TabPanels>
                     <TabPanel p={0}>
                         <Container maxW={[null, 'container.sm']} p={0}>
-                            <RecordForm vehicle={vehicle} />
+                            <RecordForm vehicle={vehicle} record={recordFormValues} />
                         </Container>
                     </TabPanel>
                     <TabPanel p={0}>

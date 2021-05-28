@@ -1,6 +1,6 @@
 import { AddIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Box, Button, Center, Flex, Heading, HStack, SimpleGrid,
+    Box, Button, Center, Flex, Heading, HStack, SimpleGrid, Text,
 } from '@chakra-ui/react';
 import ColorModeButton from 'components/common/ColorModeButton';
 import Header from 'components/common/Header';
@@ -15,6 +15,7 @@ import React, { useState } from 'react';
 import { authRedirect, withSession } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
 import { newVehiclePath } from 'utils/resources';
+import EmptyState from 'components/common/EmptyState';
 
 interface VehiclesProps {
 }
@@ -55,7 +56,7 @@ const sortPositionAsc = (a: Vehicle, b:Vehicle) => {
 };
 
 const Vehicles: React.FC<VehiclesProps> = () => {
-    const { data } = useRequest<Vehicle[]>(vehiclesAPIPath);
+    const { data, loading } = useRequest<Vehicle[]>(vehiclesAPIPath);
 
     const [showRetired, setShowRetired] = useState(false);
 
@@ -83,7 +84,18 @@ const Vehicles: React.FC<VehiclesProps> = () => {
                 </LinkButton>
             </HStack>
 
-            <VehiclesList vehicles={activeVehicles} />
+            <VehiclesList vehicles={activeVehicles} loading={loading} />
+
+            {!activeVehicles.length && !loading && (
+                <EmptyState
+                    heading="Add your first vehicle to get started"
+                    action={(
+                        <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} shadow="lg">
+                            New Vehicle
+                        </LinkButton>
+                      )}
+                />
+            )}
 
             <Box height={12} />
 
