@@ -1,6 +1,6 @@
 import { AddIcon } from '@chakra-ui/icons';
 import {
-    Box, Container, Flex, Heading, LightMode, Spacer, Text,
+    Box, Container, Flex, Heading, HStack, LightMode, Spacer, Text,
 } from '@chakra-ui/react';
 import EmptyState from 'components/common/EmptyState';
 import LinkButton from 'components/common/LinkButton';
@@ -15,7 +15,7 @@ import { VehicleRecord, recordsAPIPath } from 'queries/records';
 import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
-import { vehicleAddPath } from 'utils/resources';
+import { vehicleAddPath, vehicleImportPath } from 'utils/resources';
 
 export interface VehicleServiceProps {
     vehicleId: string;
@@ -46,10 +46,15 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 heading="Add your vehicle's history"
                 details="Try adding your purchase as the first record."
                 action={(
-                    <LinkButton href={`${vehicleAddPath(vehicleId)}?${qs.stringify({ notes: 'Purchase' })}`} shadow="lg">
-                        Add Purchase
-                    </LinkButton>
-                    )}
+                    <HStack spacing={6}>
+                        <LinkButton href={`${vehicleAddPath(vehicleId)}?${qs.stringify({ notes: 'Purchase' })}`} shadow="lg">
+                            Add Purchase
+                        </LinkButton>
+                        <LinkButton href={`${vehicleImportPath(vehicleId)}`} variant="ghost">
+                            Import History
+                        </LinkButton>
+                    </HStack>
+                )}
             />
         );
     }
