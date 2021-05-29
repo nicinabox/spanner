@@ -1,16 +1,28 @@
-import { identity } from 'lodash';
+import {
+    identity, isPlainObject, merge, set, get,
+} from 'lodash';
 import { DependencyList, useEffect, useState } from 'react';
 
 interface FieldHelpers {
     parseValue?: (value: any) => any;
     formatValue?: (value: any) => any;
+    valueProp?: string;
 }
 
 const transformValues = <T extends Record<string, unknown>>(data: T) => {
     return Object.keys(data).reduce<Record<string, unknown>>((acc, key) => {
+        const value = data[key];
+
+        if (isPlainObject(value)) {
+            return {
+                ...acc,
+                [key]: transformValues(value as Record<string, unknown>),
+            };
+        }
+
         return {
             ...acc,
-            [key]: data[key] ?? '',
+            [key]: value ?? '',
         };
     }, {});
 };
@@ -20,7 +32,7 @@ export default function useFormData<T extends Record<string, unknown>>(initialDa
     const [touchedData, setTouchedData] = useState<Partial<T>>({});
 
     useEffect(() => {
-        setFormDataSafe({ ...initialData, ...touchedData });
+        setFormDataSafe(merge({}, initialData, touchedData));
     }, deps);
 
     const setFormDataSafe = (nextData: T) => {
@@ -30,17 +42,28 @@ export default function useFormData<T extends Record<string, unknown>>(initialDa
     const getInputValue = (event) => {
         if (event.target) {
             const { target } = event;
-            return target.type === 'checkbox' ? target.checked : target.value;
+
+            if (target.type === 'checkbox') {
+                return target.checked;
+            }
+
+            if (target.type === 'file') {
+                return target.files;
+            }
+
+            return target.value;
         }
+
         return event;
     };
 
     const getFormFieldProps = (name: string, {
         parseValue = identity,
         formatValue = identity,
+        valueProp,
     }: FieldHelpers = {}) => {
-        const value = formData[name];
-        const valueField = typeof value === 'boolean' ? 'isChecked' : 'value';
+        const value = get(formData, name);
+        const valueField = valueProp || typeof value === 'boolean' ? 'isChecked' : 'value';
 
         return {
             name,
@@ -52,13 +75,20 @@ export default function useFormData<T extends Record<string, unknown>>(initialDa
     };
 
     const setFormField = (name: string, value: any) => {
-        setTouchedData({ ...touchedData, [name]: value });
-        setFormDataSafe({ ...formData, [name]: value });
+        const nextTouchedData = set({ ...touchedData }, name, value);
+        const nextFormData = set({ ...formData }, name, value);
+
+        setTouchedData(nextTouchedData);
+        setFormDataSafe(nextFormData);
     };
 
     return {
+        // deprecated
         getFormFieldProps,
         setFormField,
+
+        register: getFormFieldProps,
+        setValue: setFormField,
         setFormData: setFormDataSafe,
         formData,
     };
