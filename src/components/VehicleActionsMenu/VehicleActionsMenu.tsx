@@ -5,9 +5,11 @@ import {
 } from '@chakra-ui/react';
 import VehicleColorIndicator from 'components/VehicleColorIndicator';
 import useMutation, { mutate } from 'hooks/useMutation';
-import { debounce } from 'lodash';
+import { debounce, merge } from 'lodash';
 import Link from 'next/link';
-import { updateVehicle, Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import {
+    updateVehicle, Vehicle, vehicleAPIPath, VehicleParams,
+} from 'queries/vehicles';
 import React, { useCallback } from 'react';
 import { editVehiclePath, vehicleImportPath } from 'utils/resources';
 
@@ -18,11 +20,11 @@ export interface VehicleActionsMenuProps {
 export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle }) => {
     const { mutate: updateVehicleMutation } = useMutation(updateVehicle);
 
-    const handleUpdateVehicle = (nextOptions: Partial<Vehicle>) => {
+    const handleUpdateVehicle = (params: VehicleParams) => {
         if (!vehicle) return;
 
-        mutate(vehicleAPIPath(vehicle.id), { ...vehicle, ...nextOptions }, false);
-        updateVehicleMutation({ id: vehicle.id, ...nextOptions });
+        mutate(vehicleAPIPath(vehicle.id), merge({}, vehicle, params), false);
+        updateVehicleMutation({ id: vehicle.id, ...params });
     };
 
     const debouncedUpdate = useCallback(debounce(handleUpdateVehicle, 200), [vehicle]);
@@ -30,12 +32,6 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
     const handleColorChange = (e) => {
         const color = e.target.value;
         debouncedUpdate({ color });
-    };
-
-    const handlePrint = () => {
-        setTimeout(() => {
-            window.print();
-        }, 200);
     };
 
     return (
@@ -93,31 +89,13 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
 
                     <MenuDivider />
 
-                    <MenuItem
-                        onClick={() => handleUpdateVehicle({ enableCost: !vehicle.enableCost })}
-                        icon={vehicle.enableCost ? <CheckIcon /> : <Spacer />}
-                        iconSpacing={0}
-                        flexDir="row-reverse"
-                        closeOnSelect={false}
-                    >
-                        Show cost column
-                    </MenuItem>
-
-                    <MenuDivider />
-
                     <Link href={vehicleImportPath(vehicle.id)} passHref>
                         <MenuItem as="a">
-                            Import records
+                            Import history
                         </MenuItem>
                     </Link>
                     <MenuItem as="a" href={`${vehicleAPIPath(vehicle.id)}/export`} target="_blank">
-                        Export records to CSV
-                    </MenuItem>
-
-                    <MenuDivider />
-
-                    <MenuItem onClick={handlePrint}>
-                        Print
+                        Export history to CSV
                     </MenuItem>
                 </MenuList>
             )}

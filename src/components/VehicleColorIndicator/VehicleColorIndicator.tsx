@@ -8,13 +8,13 @@ export interface VehicleColorIndicatorProps {
 }
 
 export const VehicleColorIndicator: React.FC<VehicleColorIndicatorProps> = ({ color, size = 5 }) => {
-    if (!color) return null;
+    const bg = color || 'transparent';
 
-    const p = getColorPalette(color);
+    const p = getColorPalette(bg);
     const borderColor = useColorModeValue(p[400], p[900]);
 
     return (
-        <Box bg={color} borderColor={borderColor} borderWidth={1} w={size} h={size} borderRadius={size} />
+        <Box bg={bg} borderColor={borderColor} borderWidth={1} w={size} h={size} borderRadius={size} />
     );
 };
 

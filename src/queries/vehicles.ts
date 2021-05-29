@@ -10,7 +10,6 @@ export interface Vehicle {
     vin: string;
     notes: string;
     position: number | null;
-    enableCost: boolean;
     distanceUnit: DistanceUnit;
     retired: boolean;
     createdAt: string;
@@ -20,9 +19,16 @@ export interface Vehicle {
     squishVin: string;
     reminders: VehicleReminder[];
     color: string | null;
+    preferences: VehiclePreferences;
 }
 
-interface VehicleParams {
+export interface VehiclePreferences {
+    enableCost: boolean;
+    sendReminderEmails: boolean;
+    sendPromptForRecords: boolean;
+}
+
+export interface VehicleParams {
     id?: RecordID;
     name?: string;
     vin?: string;
@@ -32,6 +38,7 @@ interface VehicleParams {
     distanceUnit?: DistanceUnit;
     retired?: boolean;
     color?: string | null;
+    preferences?: Partial<VehiclePreferences>;
 }
 
 export const vehiclesAPIPath = '/api/vehicles';
@@ -48,7 +55,8 @@ export async function fetchVehicle(api: AxiosInstance, vehicleId: RecordID) {
 }
 
 export async function updateVehicle(api: AxiosInstance, params: MutateParams<VehicleParams>) {
-    const { data } = await api.put<Vehicle>(vehicleAPIPath(params.id), params);
+    const { id, ...updateParams } = params;
+    const { data } = await api.put<Vehicle>(vehicleAPIPath(id), updateParams);
     return data;
 }
 
