@@ -20,7 +20,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const router = useRouter();
 
     const { formData, register } = useFormData({
-        name: null,
+        name: '',
         vin: '',
         distanceUnit: 'mi',
         ...vehicle,

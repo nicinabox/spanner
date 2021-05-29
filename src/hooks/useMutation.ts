@@ -5,16 +5,18 @@ import { clientAPI } from 'queries/config';
 
 export * from 'swr';
 
-interface MutationCallbacks<T> {
+export interface MutationCallbacks<T> {
     onError?: (error: string) => void;
     onSuccess?: (data: T) => void;
 }
+
+export type MutationFn<T> = (api: AxiosInstance, ...args: any[]) => Promise<T>;
 
 interface APIReponseError {
     errors: APIError[];
 }
 
-export default function useMutation<T>(queryFn: (api: AxiosInstance, ...args: any[]) => Promise<T>, { onError, onSuccess }: MutationCallbacks<T> = {}) {
+export default function useMutation<T>(mutationFn: MutationFn<T>, { onError, onSuccess }: MutationCallbacks<T> = {}) {
     const [status, setStatus] = useState<'idle' | 'processing' | 'complete'>('idle');
     const [data, setData] = useState<T | undefined>();
     const [error, setError] = useState<Error | APIReponseError | undefined>();
@@ -30,7 +32,7 @@ export default function useMutation<T>(queryFn: (api: AxiosInstance, ...args: an
         setError(undefined);
 
         try {
-            const nextData = await queryFn(clientAPI, ...args);
+            const nextData = await mutationFn(clientAPI, ...args);
             setData(nextData);
             onSuccess?.(nextData);
         } catch (err) {

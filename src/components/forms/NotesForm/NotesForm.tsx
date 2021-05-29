@@ -20,7 +20,7 @@ export const NotesForm: React.FC<NotesFormProps> = ({
 }) => {
     const textareaRef = useTextareaResize();
 
-    const { formData, getFormFieldProps, setFormField } = useFormData({
+    const { formData, register, setValue } = useFormData({
         ...formValues,
     });
 
@@ -47,7 +47,7 @@ export const NotesForm: React.FC<NotesFormProps> = ({
                         size="sm"
                         disabled={isProcessing}
                         onClick={() => {
-                            setFormField('notes', formValues.notes);
+                            setValue('notes', formValues.notes);
                             onCancel();
                         }}
                     >
@@ -59,7 +59,7 @@ export const NotesForm: React.FC<NotesFormProps> = ({
             <Textarea
                 ref={textareaRef}
                 sx={{ fontFamily: 'monospace' }}
-                {...getFormFieldProps('notes')}
+                {...register('notes')}
                 minH="200px"
                 autoFocus
             />

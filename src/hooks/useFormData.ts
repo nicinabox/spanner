@@ -83,10 +83,6 @@ export default function useFormData<T extends Record<string, unknown>>(initialDa
     };
 
     return {
-        // deprecated
-        getFormFieldProps,
-        setFormField,
-
         register: getFormFieldProps,
         setValue: setFormField,
         setFormData: setFormDataSafe,

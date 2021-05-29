@@ -34,7 +34,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
     const router = useRouter();
     const [estimatedDate, setEstimatedDate] = useState<Date | null>(null);
 
-    const { formData, getFormFieldProps, setFormField } = useFormData({
+    const { formData, register, setValue } = useFormData({
         date: formatDateISO(addMonths(new Date(), 6)),
         notes: '',
         reminderType: '',
@@ -105,12 +105,12 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
 
             <FormControl mb={4} id="note" isRequired>
                 <FormLabel>Note</FormLabel>
-                <Input type="text" {...getFormFieldProps('notes')} autoFocus />
+                <Input type="text" {...register('notes')} autoFocus />
             </FormControl>
 
             <FormControl mb={4} id="reminderType">
                 <FormLabel>Remind me</FormLabel>
-                <Select {...getFormFieldProps('reminderType')}>
+                <Select {...register('reminderType')}>
                     <option value="">Don&apos;t remind me</option>
                     <option value="date_or_mileage">On a date or mileage, whichever is first</option>
                     <option value="date">On a date</option>
@@ -121,8 +121,8 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
             {['date', 'date_or_mileage'].includes(formData.reminderType) && (
                 <FormControl mb={4} id="date" isRequired>
                     <FormLabel>Date</FormLabel>
-                    <input type="hidden" {...getFormFieldProps('date')} />
-                    <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setFormField('date', formatDateISO(date))} />
+                    <input type="hidden" {...register('date')} />
+                    <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setValue('date', formatDateISO(date))} />
                 </FormControl>
             )}
 
@@ -130,7 +130,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                 <FormControl mb={4} id="mileage" isRequired>
                     <FormLabel>{capitalize(lang.mileageLabel[distanceUnit])}</FormLabel>
 
-                    <Input type="text" {...getFormFieldProps('mileage', mileageFieldHelpers)} />
+                    <Input {...register('mileage', mileageFieldHelpers)} inputmode="numeric" pattern="[0-9]*" />
 
                     {Boolean(minMileage) && (
                         <FormHelperText>

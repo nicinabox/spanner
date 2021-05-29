@@ -29,7 +29,7 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
     const router = useRouter();
     const textareaRef = useTextareaResize();
 
-    const { formData, getFormFieldProps, setFormField } = useFormData({
+    const { formData, register, setValue } = useFormData({
         date: formatDateISO(new Date()),
         mileage: vehicle.estimatedMileage,
         notes: '',
@@ -73,19 +73,19 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
                         <FormControl mb={4} id="date" isRequired>
                             <FormLabel>Date</FormLabel>
 
-                            <Input type="hidden" {...getFormFieldProps('date')} />
-                            <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setFormField('date', formatDateISO(date))} />
+                            <Input type="hidden" {...register('date')} />
+                            <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setValue('date', formatDateISO(date))} />
                         </FormControl>
                     </Box>
                     <Box flex={1}>
                         <FormControl mb={4} id="Notes" isRequired>
                             <FormLabel>Notes</FormLabel>
-                            <Textarea ref={textareaRef} {...getFormFieldProps('notes')} />
+                            <Textarea ref={textareaRef} {...register('notes')} />
                         </FormControl>
                         <FormControl mb={4} id="mileage" isRequired>
                             <FormLabel>{capitalize(lang.mileageLabel[vehicle.distanceUnit])}</FormLabel>
                             <InputGroup size="md">
-                                <Input {...getFormFieldProps('mileage', mileageFieldHelpers)} />
+                                <Input {...register('mileage', mileageFieldHelpers)} inputmode="numeric" pattern="[0-9]*" />
                                 <InputRightAddon>{vehicle.distanceUnit}</InputRightAddon>
                             </InputGroup>
                         </FormControl>
@@ -93,7 +93,7 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
                             <FormLabel>Cost</FormLabel>
                             <InputGroup size="md">
                                 <InputLeftAddon>{getCurrencySymbol()}</InputLeftAddon>
-                                <Input {...getFormFieldProps('cost', costFieldHelpers)} />
+                                <Input {...register('cost', costFieldHelpers)} inputmode="numeric" pattern="[0-9]*" />
                             </InputGroup>
                         </FormControl>
                     </Box>
