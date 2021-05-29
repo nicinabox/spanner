@@ -1,4 +1,8 @@
 class Vehicle < ApplicationRecord
+  store_accessor :preferences
+
+  serialize :preferences, VehiclePreferences
+
   validates_presence_of :name
 
   belongs_to :user
@@ -11,14 +15,14 @@ class Vehicle < ApplicationRecord
   WEIGHT_COEFFICIENT = 10
 
   def prompt_for_first_record!
-    return if !prompt_for_records || records.any?
+    return if !preferences.prompt_for_records || records.any?
 
     PromptUserMailer.add_first_record(user, self).deliver_later
-    # TODO: Fix this timing or let people opt out
-    # GoodJob.set(wait: 5.days).perform_later(self, 'prompt_for_first_record!')
   end
 
   def prompt_for_new_record!
+    return unless preferences.prompt_for_records
+
     date = estimated_next_record_date
     return unless date and date <= Date.today.beginning_of_day
 

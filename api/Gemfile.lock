@@ -46,6 +46,10 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     arel (7.1.4)
+    axiom-types (0.1.1)
+      descendants_tracker (~> 0.0.4)
+      ice_nine (~> 0.11.0)
+      thread_safe (~> 0.3, >= 0.3.1)
     browser (5.3.1)
     bugsnag (6.20.0)
       concurrent-ruby (~> 1.0)
@@ -54,10 +58,15 @@ GEM
     case_transform (0.2)
       activesupport
     chronic (0.10.2)
+    coercible (1.0.0)
+      descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.1.8)
     crass (1.0.6)
     css_parser (1.9.0)
       addressable
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
+    equalizer (0.0.11)
     erubis (2.7.0)
     ffi (1.15.0)
     globalid (0.4.2)
@@ -65,6 +74,7 @@ GEM
     htmlentities (4.3.4)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    ice_nine (0.11.2)
     json (2.5.1)
     jsonapi-renderer (0.2.2)
     listen (3.0.8)
@@ -149,6 +159,11 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
+    virtus (1.0.5)
+      axiom-types (~> 0.1)
+      coercible (~> 1.0)
+      descendants_tracker (~> 0.0, >= 0.0.3)
+      equalizer (~> 0.0, >= 0.0.9)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -174,6 +189,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
+  virtus
   whenever
 
 RUBY VERSION

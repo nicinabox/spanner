@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210425183733) do
+ActiveRecord::Schema.define(version: 20210529030151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "queue_classic_jobs", id: :bigserial, force: :cascade do |t|
     t.text     "q_name",                                null: false
@@ -91,6 +92,8 @@ ActiveRecord::Schema.define(version: 20210425183733) do
     t.string   "distance_unit",      default: "mi"
     t.boolean  "prompt_for_records", default: true
     t.string   "color"
+    t.hstore   "preferences"
+    t.index ["preferences"], name: "index_vehicles_on_preferences", using: :gin
     t.index ["user_id"], name: "index_vehicles_on_user_id", using: :btree
   end
 

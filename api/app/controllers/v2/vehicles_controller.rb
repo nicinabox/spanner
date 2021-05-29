@@ -62,7 +62,12 @@ module V2
         .require(:vehicle)
         .permit(
           :name, :vin, :notes, :position, :enable_cost, :distance_unit,
-          :retired, :import_file, :fuelly, :color
+          :retired, :import_file, :fuelly, :color,
+          preferences: [
+            :enable_cost,
+            :send_reminder_emails,
+            :send_prompt_for_records,
+          ]
         )
     end
   end
