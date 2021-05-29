@@ -8,7 +8,6 @@ const vehicleFixture: Vehicle = {
     squishVin: '',
     notes: '',
     position: 0,
-    enableCost: true,
     distanceUnit: 'mi',
     createdAt: '2019-03-16T05:00:00.000Z',
     milesPerDay: 0,
@@ -17,6 +16,11 @@ const vehicleFixture: Vehicle = {
     retired: false,
     color: null,
     reminders: [] as VehicleReminder[],
+    preferences: {
+        enableCost: true,
+        sendReminderEmails: true,
+        sendPromptForRecords: true,
+    },
 };
 
 export default vehicleFixture;
