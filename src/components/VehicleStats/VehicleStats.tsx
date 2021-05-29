@@ -1,5 +1,5 @@
 import {
-    Stat, StatLabel, StatNumber, StatHelpText, Flex, Box, HStack,
+    Stat, StatLabel, StatNumber, Box, HStack, Text,
 } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
 import Link from 'next/link';
@@ -47,7 +47,11 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) 
                     </VehicleStat>
                 )}
                 <VehicleStat label="VIN">
-                    {vehicle.vin || <Link href={editVehiclePath(vehicle.id)}>Add VIN...</Link>}
+                    {vehicle.vin || (
+                        <Link href={editVehiclePath(vehicle.id)} passHref>
+                            <Text as="a" color="brand.primary">Add VIN...</Text>
+                        </Link>
+                    )}
                 </VehicleStat>
             </HStack>
         </Box>

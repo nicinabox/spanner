@@ -1,11 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
-import { Container, HStack } from '@chakra-ui/react';
+import {
+    Text, Container, Heading, HStack, FormControl, FormLabel, Input, Alert, AlertIcon, Checkbox,
+} from '@chakra-ui/react';
 import Page from 'components/common/Page';
 import Header from 'components/common/Header';
 import BackButton from 'components/common/BackButton';
 import useRequest from 'hooks/useRequest';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { importRecords, Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import VehicleActionsMenu from 'components/VehicleActionsMenu';
+import useFormData from 'hooks/useFormData';
+import SubmitButton from 'components/common/SubmitButton';
+import useMutation, { mutate } from 'hooks/useMutation';
+import { useRouter } from 'next/router';
+import { vehiclePath } from 'utils/resources';
 
 export interface ImportRecordsPageProps {
     params: {
@@ -13,7 +21,7 @@ export interface ImportRecordsPageProps {
     }
 }
 
-const PageHeader = () => {
+const PageHeader = ({ vehicle }) => {
     return (
         <Header
             LeftComponent={(
@@ -21,6 +29,7 @@ const PageHeader = () => {
                     <BackButton>
                         Back
                     </BackButton>
+                    <VehicleActionsMenu vehicle={vehicle} />
                 </HStack>
             )}
         />
@@ -28,14 +37,69 @@ const PageHeader = () => {
 };
 
 export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({ params }) => {
+    const router = useRouter();
+
     const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
+
+    const { formData, getFormFieldProps, setFormField } = useFormData({
+        importFile: null,
+        fuelly: false,
+    });
+
+    const { mutate: importRecordsMutation, isProcessing } = useMutation(importRecords, {
+        onSuccess() {
+            mutate(vehicleAPIPath(params.vehicleId));
+            router.replace(vehiclePath(params.vehicleId));
+        },
+    });
+
+    const handleSubmit = (ev) => {
+        ev.preventDefault();
+        importRecordsMutation(params.vehicleId, formData);
+    };
 
     return (
         <Page
-            Header={<PageHeader />}
+            Header={<PageHeader vehicle={vehicle} />}
         >
-            <Container>
-                TODO
+            <Container maxW={[null, 'md']} p={0}>
+                <Heading mb={6}>
+                    Import History
+                </Heading>
+
+                <Alert status="info" mb={4}>
+                    <AlertIcon />
+                    Upload a .csv file with the headers: date, mileage, cost, notes
+                </Alert>
+
+                <form onSubmit={handleSubmit}>
+                    <FormControl id="importFile" mb={4}>
+                        <FormLabel>Upload csv</FormLabel>
+                        <Input
+                            name="importFile"
+                            type="file"
+                            p={2}
+                            height="auto"
+                            onChange={({ target }) => setFormField('importFile', target.files?.[0])}
+                            required
+                        />
+                    </FormControl>
+
+                    <FormControl id="fuelly" mb={4}>
+                        <Checkbox {...getFormFieldProps('fuelly')}>
+                            This data is from Fuelly
+                        </Checkbox>
+                    </FormControl>
+
+                    <Text color="red" mb={4}>
+                        ⚠️ This will replace all your existing records for this vehicle!
+                    </Text>
+
+                    <SubmitButton isProcessing={isProcessing}>
+                        Import
+                    </SubmitButton>
+                </form>
+
             </Container>
         </Page>
     );

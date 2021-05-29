@@ -69,19 +69,11 @@ export async function destroyVehicle(api: AxiosInstance, vehicleId: RecordID) {
     return data;
 }
 
-//   export function importRecords(vehicleId, params) {
-//     let data = new FormData()
-//     data.append('vehicle[import_file]', params.importFile)
-//     data.append('vehicle[fuelly]', params.fuelly)
+export async function importRecords(api: AxiosInstance, vehicleId: RecordID, params: { importFile: File, fuelly: boolean }) {
+    const body = new FormData();
+    body.append('vehicle[import_file]', params.importFile);
+    body.append('vehicle[fuelly]', `${params.fuelly}`);
 
-//     return (dispatch) => dispatch({
-//       types: createActionTypes(IMPORT_VEHICLE),
-//       type: IMPORT_VEHICLE,
-//       path: `/vehicles/${vehicleId}/import`,
-//       method: 'POST',
-//       body: data,
-//       params: {
-//         vehicleId
-//       }
-//     })
-//   }
+    const { data } = await api.post(`${vehicleAPIPath(vehicleId)}/import`, body);
+    return data;
+}
