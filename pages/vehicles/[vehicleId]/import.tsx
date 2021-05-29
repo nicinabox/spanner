@@ -41,7 +41,7 @@ export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({ params }) 
 
     const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
 
-    const { formData, getFormFieldProps, setFormField } = useFormData({
+    const { formData, register, setValue } = useFormData({
         importFile: null,
         fuelly: false,
     });
@@ -80,13 +80,13 @@ export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({ params }) 
                             type="file"
                             p={2}
                             height="auto"
-                            onChange={({ target }) => setFormField('importFile', target.files?.[0])}
+                            onChange={({ target }) => setValue('importFile', target.files?.[0])}
                             required
                         />
                     </FormControl>
 
                     <FormControl id="fuelly" mb={4}>
-                        <Checkbox {...getFormFieldProps('fuelly')}>
+                        <Checkbox {...register('fuelly')}>
                             This data is from Fuelly
                         </Checkbox>
                     </FormControl>

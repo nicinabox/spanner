@@ -57,7 +57,7 @@ export default function useFormData<T extends Record<string, unknown>>(initialDa
         return event;
     };
 
-    const getFormFieldProps = (name: string, {
+    const register = (name: string, {
         parseValue = identity,
         formatValue = identity,
         valueProp,
@@ -69,12 +69,12 @@ export default function useFormData<T extends Record<string, unknown>>(initialDa
             name,
             [valueField]: formatValue(value),
             onChange: (ev) => {
-                setFormField(name, parseValue(getInputValue(ev)));
+                setValue(name, parseValue(getInputValue(ev)));
             },
         };
     };
 
-    const setFormField = (name: string, value: any) => {
+    const setValue = (name: string, value: any) => {
         const nextTouchedData = set({ ...touchedData }, name, value);
         const nextFormData = set({ ...formData }, name, value);
 
@@ -83,8 +83,8 @@ export default function useFormData<T extends Record<string, unknown>>(initialDa
     };
 
     return {
-        register: getFormFieldProps,
-        setValue: setFormField,
+        register,
+        setValue,
         setFormData: setFormDataSafe,
         formData,
     };

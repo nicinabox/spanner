@@ -78,7 +78,7 @@ export const LoginForm: React.FC = () => {
                         </FormLabel>
                         <Flex>
                             <Input
-                                {...loginForm.getFormFieldProps('loginToken')}
+                                {...loginForm.register('loginToken')}
                                 autoFocus
                             />
                             <Button type="submit" colorScheme="brand" ml="4">Sign In</Button>
@@ -104,7 +104,7 @@ export const LoginForm: React.FC = () => {
                     </FormLabel>
                     <Flex>
                         <Input
-                            {...newSessionForm.getFormFieldProps('email')}
+                            {...newSessionForm.register('email')}
                             type="email"
                             placeholder={getPlaceholder()}
                             autoFocus
