@@ -20,30 +20,32 @@ function getPlaceholder() {
 export const LoginForm: React.FC = () => {
     const router = useRouter();
 
-    const [loginPending, setLoginPending] = useState(false);
+    const [loginStatus, setLoginStatus] = useState<'pendingEmail' | 'pendingLoginToken'>('pendingEmail');
+    const [pendingAuth, setPendingAuth] = useState(false);
 
     const newSessionForm = useFormData({ email: '' });
     const loginForm = useFormData({ loginToken: '' });
 
     const requestSession = useMutation(session.requestSession, {
         onSuccess() {
-            setLoginPending(true);
+            setLoginStatus('pendingLoginToken');
         },
     });
 
-    const handleRequestSession = async (event) => {
-        event.preventDefault();
+    const handleRequestSession = async (ev) => {
+        ev.preventDefault();
         requestSession.mutate(newSessionForm.formData.email);
     };
 
     const handleLogin = (ev) => {
         ev.preventDefault();
+        setPendingAuth(true);
         router.push(`/login/${loginForm.formData.loginToken}`);
     };
 
     const handleReset = () => {
         requestSession.reset();
-        setLoginPending(false);
+        setLoginStatus('pendingEmail');
     };
 
     if (requestSession.error) {
@@ -63,7 +65,7 @@ export const LoginForm: React.FC = () => {
         );
     }
 
-    if (loginPending) {
+    if (loginStatus === 'pendingLoginToken') {
         return (
             <Box p="4">
                 <Alert status="success" mb={6}>
@@ -81,7 +83,9 @@ export const LoginForm: React.FC = () => {
                                 {...loginForm.register('loginToken')}
                                 autoFocus
                             />
-                            <Button type="submit" colorScheme="brand" ml="4">Sign In</Button>
+                            <Button type="submit" colorScheme="brand" ml="4" isLoading={pendingAuth} disabled={pendingAuth}>
+                                Sign In
+                            </Button>
                         </Flex>
                     </FormControl>
                 </form>

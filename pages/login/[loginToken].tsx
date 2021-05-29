@@ -1,31 +1,31 @@
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Container, Link } from '@chakra-ui/react';
+import {
+    Box, Button, Center, Heading, Text,
+} from '@chakra-ui/react';
+import Link from 'next/link';
+import React from 'react';
 import { vehiclesPath } from 'utils/resources';
-import { ClientSession, signIn } from '../../src/queries/session';
-import { withSession } from '../../src/utils/session';
-import { createAPIRequest } from '../../src/queries/config';
+import { createAPIRequest } from 'queries/config';
+import { signIn } from 'queries/session';
+import { withSession } from 'utils/session';
 
 interface LoginProps {
-    session: ClientSession | null;
     error: string | null;
 }
 
-const Login: React.FC<LoginProps> = ({ session, error }) => {
-    const router = useRouter();
-
-    useEffect(() => {
-        if (session) {
-            router.replace(vehiclesPath());
-        }
-    }, [session]);
-
+const Login: React.FC<LoginProps> = ({ error }) => {
     if (error) {
         return (
-            <Container>
-                <p>{error}</p>
-                <Link href="/">Sign in again</Link>
-            </Container>
+            <Center height="100vh" flexDirection="column" textAlign="center">
+                <Box mb={6}>
+                    <Heading size="md">{error}</Heading>
+                </Box>
+
+                <Link href="/" passHref>
+                    <Button as="a" colorScheme="brand">
+                        Sign in again
+                    </Button>
+                </Link>
+            </Center>
         );
     }
 
@@ -33,7 +33,6 @@ const Login: React.FC<LoginProps> = ({ session, error }) => {
 };
 
 export const getServerSideProps = withSession(async ({ req, res, params }) => {
-    let session: ClientSession | null = null;
     let error: string | null = null;
 
     const api = createAPIRequest(req);
@@ -44,15 +43,18 @@ export const getServerSideProps = withSession(async ({ req, res, params }) => {
         req.session.set('session', data);
         await req.session.save();
 
-        const { authToken, ...clientSession } = data;
-        session = clientSession;
+        return {
+            redirect: {
+                destination: vehiclesPath(),
+                permanent: false,
+            },
+        };
     } catch (err) {
         error = err.response?.data?.error ?? err.toString();
     }
 
     return {
         props: {
-            session,
             error,
         },
     };
