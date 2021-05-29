@@ -39,7 +39,7 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({ tabs, hashchange = false
                             onClick={(e) => {
                                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                 // @ts-ignore
-                                e.target.scrollIntoView({ behavior: 'smooth' });
+                                e.target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
                                 const as = `#panel=${i}`;
                                 if (hashchange) window.location.hash = as;
