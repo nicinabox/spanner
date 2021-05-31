@@ -9,6 +9,10 @@ module.exports = {
         return config;
     },
 
+    env: {
+        BUGSNAG_API_KEY: process.env.BUGSNAG_API_KEY,
+    },
+
     future: {
         webpack5: true,
     },

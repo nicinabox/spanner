@@ -1248,15 +1248,58 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@bugsnag/browser@^7.10.1":
+  version "7.10.1"
+  resolved "https://registry.yarnpkg.com/@bugsnag/browser/-/browser-7.10.1.tgz#ac1c61b9cadc03020894d85870d3fd8596db5464"
+  integrity sha512-Yxm/DheT/NHX2PhadBDuafuHBhP547Iav6Y9jf+skBBSi1n0ZYkGhtVxh8ZWLgqz5W8MsJ0HFiLBqcg/mulSvQ==
+  dependencies:
+    "@bugsnag/core" "^7.10.0"
+
+"@bugsnag/core@^7.10.0":
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/@bugsnag/core/-/core-7.10.0.tgz#4b4856141a95a1feadb1afc74265dc6ad8d40cc0"
+  integrity sha512-sDa2nDxwsxHQx2/2/tsBWjYqH0TewCR8N/r5at6B+irwVkI0uts7Qc2JyqDTfiEiBXKVEXFK+fHTz1x9b8tsiA==
+  dependencies:
+    "@bugsnag/cuid" "^3.0.0"
+    "@bugsnag/safe-json-stringify" "^6.0.0"
+    error-stack-parser "^2.0.3"
+    iserror "0.0.2"
+    stack-generator "^2.0.3"
+
 "@bugsnag/cuid@^3.0.0":
   version "3.0.0"
   resolved "https://registry.npmjs.org/@bugsnag/cuid/-/cuid-3.0.0.tgz"
   integrity sha512-LOt8aaBI+KvOQGneBtpuCz3YqzyEAehd1f3nC5yr9TIYW1+IzYKa2xWS4EiMz5pPOnRPHkyyS5t/wmSmN51Gjg==
 
-"@bugsnag/safe-json-stringify@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@bugsnag/safe-json-stringify/-/safe-json-stringify-2.1.0.tgz"
-  integrity sha512-tE2cPhAq+WFnA9XrfMfP+u/6L63eH7+PmONMNSXtP6kPt/iUXnwkDsxc1Q6lUP1oM3LsmWBrxn+/93M8JE6fpA==
+"@bugsnag/js@^7.10.1":
+  version "7.10.1"
+  resolved "https://registry.yarnpkg.com/@bugsnag/js/-/js-7.10.1.tgz#60d08a8cfeac86f1e5741bfc7b2346e5df34fccb"
+  integrity sha512-1/MK/Bw2ViFx1hMG2TOX8MOq/LzT2VRd0VswknF4LYsZSgzohkRzz/hi6P2TSlLeapRs+bkDC6u2RCq4zYvyiA==
+  dependencies:
+    "@bugsnag/browser" "^7.10.1"
+    "@bugsnag/node" "^7.10.1"
+
+"@bugsnag/node@^7.10.1":
+  version "7.10.1"
+  resolved "https://registry.yarnpkg.com/@bugsnag/node/-/node-7.10.1.tgz#c392e2c31130a67d2aa25d81cb8b82f14255c33e"
+  integrity sha512-kpasrz/im5ljptt2JOqrjbOu4b0i5sAZOYU4L0psWXlD31/wXytk7im11QlNALdI8gZZBxIFsVo8ks6dR6mHzg==
+  dependencies:
+    "@bugsnag/core" "^7.10.0"
+    byline "^5.0.0"
+    error-stack-parser "^2.0.2"
+    iserror "^0.0.2"
+    pump "^3.0.0"
+    stack-generator "^2.0.3"
+
+"@bugsnag/plugin-react@^7.10.0":
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/@bugsnag/plugin-react/-/plugin-react-7.10.0.tgz#eef05c2d5d2cce45f622cce152d93cf777edf022"
+  integrity sha512-o0oHd2BfGxFAQTrc1/u0T5RtWntOaeUREnXOfnrX2obi6JthWCcn44YUyUQ0IklcoZ+IAcLy27GNDggs5LfIew==
+
+"@bugsnag/safe-json-stringify@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@bugsnag/safe-json-stringify/-/safe-json-stringify-6.0.0.tgz#22abdcd83e008c369902976730c34c150148a758"
+  integrity sha512-htzFO1Zc57S8kgdRK9mLcPVTW1BY2ijfH7Dk2CeZmspTWKdKqSo1iwmqrq2WtRjFlo8aRZYgLX0wFrDXF/9DLA==
 
 "@chakra-ui/accordion@1.3.0":
   version "1.3.0"
@@ -4712,14 +4755,6 @@ browserify-sign@^4.0.0:
     readable-stream "^3.6.0"
     safe-buffer "^5.2.0"
 
-browserify-versionify@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/browserify-versionify/-/browserify-versionify-1.0.6.tgz"
-  integrity sha1-qy3GHWoRnmJ77Eh1mNGYO3/bJ14=
-  dependencies:
-    find-root "^0.1.1"
-    through2 "0.6.3"
-
 browserify-zlib@0.2.0, browserify-zlib@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/browserify-zlib/-/browserify-zlib-0.2.0.tgz"
@@ -4800,22 +4835,15 @@ buffer@^4.3.0:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-bugsnag-js@^4.7.3:
-  version "4.7.3"
-  resolved "https://registry.npmjs.org/bugsnag-js/-/bugsnag-js-4.7.3.tgz"
-  integrity sha512-j9n6E45y8R0hx4A2IGkbOIEsDwRzZlhe+rtCfFo6RE6DgmTezeia+kqUMb4iitkSCZjEBMAPGhAe1l3vXfwbqQ==
-  dependencies:
-    "@bugsnag/cuid" "^3.0.0"
-    "@bugsnag/safe-json-stringify" "^2.1.0"
-    browserify-versionify "^1.0.6"
-    error-stack-parser "^2.0.2"
-    iserror "0.0.2"
-    stack-generator "^2.0.3"
-
 builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz"
   integrity sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug=
+
+byline@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/byline/-/byline-5.0.0.tgz#741c5216468eadc457b03410118ad77de8c1ddb1"
+  integrity sha1-dBxSFkaOrcRXsDQQEYrXfejB3bE=
 
 bytes@3.1.0:
   version "3.1.0"
@@ -6227,7 +6255,7 @@ error-ex@^1.2.0, error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
-error-stack-parser@^2.0.2, error-stack-parser@^2.0.6:
+error-stack-parser@^2.0.2, error-stack-parser@^2.0.3, error-stack-parser@^2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/error-stack-parser/-/error-stack-parser-2.0.6.tgz"
   integrity sha512-d51brTeqC+BHlwF0BhPtcYgF5nlzf9ZZ0ZIUQNZpc9ZB9qw5IJ2diTrBY9jlCJkTLITYPjmiX6OWCwH+fuyNgQ==
@@ -6897,11 +6925,6 @@ find-cache-dir@^2.0.0, find-cache-dir@^2.1.0:
     commondir "^1.0.1"
     make-dir "^2.0.0"
     pkg-dir "^3.0.0"
-
-find-root@^0.1.1:
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/find-root/-/find-root-0.1.2.tgz"
-  integrity sha1-mNImfP8ZFsyvJ0OzoO6oHXnX3NE=
 
 find-root@^1.1.0:
   version "1.1.0"
@@ -8349,11 +8372,6 @@ is-wsl@^2.1.1, is-wsl@^2.2.0:
   dependencies:
     is-docker "^2.0.0"
 
-isarray@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz"
-  integrity sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=
-
 isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz"
@@ -8364,7 +8382,7 @@ isarray@^2.0.5:
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-2.0.5.tgz#8af1e4c1221244cc62459faf38940d4e644a5723"
   integrity sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==
 
-iserror@0.0.2:
+iserror@0.0.2, iserror@^0.0.2:
   version "0.0.2"
   resolved "https://registry.npmjs.org/iserror/-/iserror-0.0.2.tgz"
   integrity sha1-vVNFH+L2aLnyQCwZZnh6qix8C/U=
@@ -11218,16 +11236,6 @@ read-pkg@^5.2.0:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-"readable-stream@>=1.0.33-1 <1.1.0-0":
-  version "1.0.34"
-  resolved "https://registry.npmjs.org/readable-stream/-/readable-stream-1.0.34.tgz"
-  integrity sha1-Elgg40vIQtLyqq+v5MKRbuMsFXw=
-  dependencies:
-    core-util-is "~1.0.0"
-    inherits "~2.0.1"
-    isarray "0.0.1"
-    string_decoder "~0.10.x"
-
 readable-stream@^3.1.1, readable-stream@^3.5.0, readable-stream@^3.6.0:
   version "3.6.0"
   resolved "https://registry.npmjs.org/readable-stream/-/readable-stream-3.6.0.tgz"
@@ -12301,11 +12309,6 @@ string_decoder@1.3.0, string_decoder@^1.0.0, string_decoder@^1.1.1:
   dependencies:
     safe-buffer "~5.2.0"
 
-string_decoder@~0.10.x:
-  version "0.10.31"
-  resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
-  integrity sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ=
-
 string_decoder@~1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-1.1.1.tgz"
@@ -12616,14 +12619,6 @@ throttle-debounce@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-3.0.1.tgz#32f94d84dfa894f786c9a1f290e7a645b6a19abb"
   integrity sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==
-
-through2@0.6.3:
-  version "0.6.3"
-  resolved "https://registry.npmjs.org/through2/-/through2-0.6.3.tgz"
-  integrity sha1-eVKS/enyVMKjaLOPnMXRvUZjr7Y=
-  dependencies:
-    readable-stream ">=1.0.33-1 <1.1.0-0"
-    xtend ">=4.0.0 <4.1.0-0"
 
 through2@^2.0.0:
   version "2.0.5"
@@ -13618,7 +13613,7 @@ xmlchars@^2.2.0:
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
 
-"xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@^4.0.1, xtend@^4.0.2, xtend@~4.0.1:
+xtend@^4.0.0, xtend@^4.0.1, xtend@^4.0.2, xtend@~4.0.1:
   version "4.0.2"
   resolved "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==

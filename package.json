@@ -58,6 +58,8 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "@bugsnag/js": "^7.10.1",
+    "@bugsnag/plugin-react": "^7.10.0",
     "@chakra-ui/icons": "^1.0.11",
     "@chakra-ui/react": "^1.5.1",
     "@chakra-ui/theme-tools": "^1.1.6",
@@ -69,7 +71,6 @@
     "@storybook/react": "^6.2.9",
     "axios": "^0.21.1",
     "axios-case-converter": "^0.7.0",
-    "bugsnag-js": "^4.7.3",
     "cookies": "^0.8.0",
     "date-fns": "^2.20.3",
     "emotion-theming": "^11.0.0",

@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { ChakraProvider, CSSReset } from '@chakra-ui/react';
 import theme from 'theme';
+import ErrorBoundary from 'components/common/ErrorBoundary';
 
 function App({ Component, pageProps }) {
     return (
@@ -39,7 +40,10 @@ function App({ Component, pageProps }) {
             </Head>
 
             <CSSReset />
-            <Component {...pageProps} />
+
+            <ErrorBoundary>
+                <Component {...pageProps} />
+            </ErrorBoundary>
         </ChakraProvider>
     );
 }
