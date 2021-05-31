@@ -16,8 +16,8 @@ export interface VehicleStatsProps {
     records: VehicleRecord[];
 }
 
-const VehicleStat = ({ label, children }) => (
-    <Stat minW="max-content">
+export const VehicleStat = ({ label, children, ...props }) => (
+    <Stat minW="max-content" {...props}>
         <StatLabel color="gray.500">{label}</StatLabel>
         <StatNumber fontSize={['lg', null, 'x-large']}>
             {children}

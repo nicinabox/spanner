@@ -16,6 +16,8 @@ import { authRedirect, withSession } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
 import { newVehiclePath } from 'utils/resources';
 import EmptyState from 'components/common/EmptyState';
+import { VehicleStat } from 'components/VehicleStats';
+import OverallStats from 'components/OverallStats';
 
 interface VehiclesProps {
 }
@@ -73,7 +75,9 @@ const Vehicles: React.FC<VehiclesProps> = () => {
         >
             <LinkPreload path={vehiclesAPIPath} />
 
-            <Box height={12} />
+            <Box my={6}>
+                <OverallStats activeVehicles={activeVehicles} />
+            </Box>
 
             <HStack spacing={4}>
                 <Heading fontSize="xl">
