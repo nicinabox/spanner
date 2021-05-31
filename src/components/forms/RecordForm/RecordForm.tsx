@@ -1,6 +1,7 @@
 import {
     Box, FormControl, FormLabel, Input, InputGroup, InputLeftAddon, InputRightAddon, SimpleGrid, Textarea,
 } from '@chakra-ui/react';
+import { ParsedQs } from 'qs';
 import DatePicker from 'components/common/DatePicker';
 import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
@@ -23,7 +24,7 @@ import DangerZone from 'components/common/DangerZone';
 
 export interface RecordFormProps {
     vehicle: Vehicle;
-    record?: Partial<records.VehicleRecord>;
+    record?: Partial<records.VehicleRecord> | ParsedQs;
     onSuccess?: () => Promise<void> | void;
 }
 

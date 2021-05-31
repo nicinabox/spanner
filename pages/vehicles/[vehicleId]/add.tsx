@@ -45,7 +45,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
     const { data: records } = useRequest<VehicleRecord[]>(recordsAPIPath(params.vehicleId));
 
     const newestRecordMileage = records ? sortRecordsNewestFirst(records)[0]?.mileage : 0;
-    const recordFormValues = isServer ? '' : qs.parse(window?.location.search.replace('?', ''));
+    const recordFormValues = isServer ? {} : qs.parse(window?.location.search.replace('?', ''));
 
     return (
         <Page
