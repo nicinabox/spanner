@@ -1,11 +1,12 @@
 import {
+    Alert,
     Box,
     FormControl, FormHelperText, FormLabel, Input, Select, Text,
 } from '@chakra-ui/react';
 import DatePicker from 'components/common/DatePicker';
 import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
-import SubmitButton from 'components/common/SubmitButton';
+import FormButton from 'components/common/FormButton';
 import { addMonths } from 'date-fns';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
@@ -20,6 +21,8 @@ import { mileageFieldHelpers } from 'utils/form';
 import lang from 'utils/lang';
 import { reminderPath, vehiclePath } from 'utils/resources';
 import { formatMileage } from 'utils/vehicle';
+import FormSection from 'components/common/FormSection';
+import DangerZone from 'components/common/DangerZone';
 
 export interface NewReminderFormProps {
     vehicleId: RecordID;
@@ -103,22 +106,23 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                 <FormErrors errors={error.errors} />
             )}
 
-            <FormControl mb={4} id="note" isRequired>
-                <FormLabel>Note</FormLabel>
-                <Input type="text" {...register('notes')} autoFocus />
-            </FormControl>
+            <FormSection>
+                <FormControl mb={4} id="note" isRequired>
+                    <FormLabel>Note</FormLabel>
+                    <Input type="text" {...register('notes')} autoFocus />
+                </FormControl>
 
-            <FormControl mb={4} id="reminderType">
-                <FormLabel>Remind me</FormLabel>
-                <Select {...register('reminderType')}>
-                    <option value="">Don&apos;t remind me</option>
-                    <option value="date_or_mileage">On a date or mileage, whichever is first</option>
-                    <option value="date">On a date</option>
-                    <option value="mileage">At a mileage</option>
-                </Select>
-            </FormControl>
+                <FormControl mb={4} id="reminderType">
+                    <FormLabel>Remind me</FormLabel>
+                    <Select {...register('reminderType')}>
+                        <option value="">Don&apos;t remind me</option>
+                        <option value="date_or_mileage">On a date or mileage, whichever is first</option>
+                        <option value="date">On a date</option>
+                        <option value="mileage">At a mileage</option>
+                    </Select>
+                </FormControl>
 
-            {['date', 'date_or_mileage'].includes(formData.reminderType) && (
+                {['date', 'date_or_mileage'].includes(formData.reminderType) && (
                 <FormControl mb={4} id="date" isRequired>
                     <FormLabel>Date</FormLabel>
                     <input type="hidden" {...register('date')} />
@@ -126,34 +130,35 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                 </FormControl>
             )}
 
-            {['mileage', 'date_or_mileage'].includes(formData.reminderType) && (
-                <FormControl mb={4} id="mileage" isRequired>
-                    <FormLabel>{capitalize(lang.mileageLabel[distanceUnit])}</FormLabel>
+                {['mileage', 'date_or_mileage'].includes(formData.reminderType) && (
+                    <FormControl mb={4} id="mileage" isRequired>
+                        <FormLabel>{capitalize(lang.mileageLabel[distanceUnit])}</FormLabel>
 
-                    <Input {...register('mileage', mileageFieldHelpers)} inputmode="numeric" pattern="[0-9]*" />
+                        <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9]*" />
 
-                    {Boolean(minMileage) && (
-                        <FormHelperText>
-                            Minimum
-                            {' '}
-                            {formatMileage(minMileage, distanceUnit)}
-                        </FormHelperText>
-                    )}
-                </FormControl>
-            )}
+                        {Boolean(minMileage) && (
+                            <FormHelperText>
+                                Minimum
+                                {' '}
+                                {formatMileage(minMileage, distanceUnit)}
+                            </FormHelperText>
+                        )}
+                    </FormControl>
+                )}
 
-            {estimatedDate && ['date_or_mileage', 'mileage'].includes(formData.reminderType) && (
-                <Text mb={4}>
-                    Estimated for
-                    {' '}
-                    {intlFormatDate(estimatedDate)}
-                </Text>
-            )}
+                {estimatedDate && ['date_or_mileage', 'mileage'].includes(formData.reminderType) && (
+                    <Alert status="info" variant="left-accent">
+                        Estimated for
+                        {' '}
+                        {intlFormatDate(estimatedDate)}
+                    </Alert>
+                )}
+            </FormSection>
 
-            <SubmitButton isProcessing={isProcessing} />
+            <FormButton type="submit" isProcessing={isProcessing} />
 
             {Boolean(formValues?.id) && (
-                <Box mt={10}>
+                <DangerZone>
                     <DestroyButton
                         confirmTitle="Please confirm delete"
                         confirmBody="You can't undo this action afterwards."
@@ -161,7 +166,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                     >
                         Delete reminder
                     </DestroyButton>
-                </Box>
+                </DangerZone>
             )}
         </form>
     );

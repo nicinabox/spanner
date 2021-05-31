@@ -2,11 +2,11 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import SubmitButton from '.';
+import FormSection from '.';
 
-describe('SubmitButton', () => {
+describe('FormSection', () => {
     it('renders', () => {
         const props = {};
-        expect(() => render(<SubmitButton {...props} />)).not.toThrow();
+        expect(() => render(<FormSection {...props} />)).not.toThrow();
     });
 });

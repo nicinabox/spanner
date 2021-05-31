@@ -3,7 +3,7 @@ import {
 } from '@chakra-ui/react';
 import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
-import SubmitButton from 'components/common/SubmitButton';
+import FormButton from 'components/common/FormButton';
 import VehicleColorIndicator from 'components/VehicleColorIndicator';
 import useFormData from 'hooks/useFormData';
 import useMutation from 'hooks/useMutation';
@@ -11,6 +11,8 @@ import { useRouter } from 'next/router';
 import * as vehicles from 'queries/vehicles';
 import React from 'react';
 import { vehiclePath, vehiclesPath } from 'utils/resources';
+import DangerZone from 'components/common/DangerZone';
+import FormSection from 'components/common/FormSection';
 
 export interface VehicleFormProps {
     vehicle?: vehicles.Vehicle;
@@ -62,91 +64,89 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                     <FormErrors errors={error.errors} />
                 )}
 
-                <FormControl id="name" mb={4} isRequired>
-                    <FormLabel>Name</FormLabel>
-                    <Input type="text" {...register('name')} />
-                </FormControl>
+                <FormSection>
+                    <FormControl id="name" mb={4} isRequired>
+                        <FormLabel>Name</FormLabel>
+                        <Input type="text" {...register('name')} />
+                    </FormControl>
 
-                <FormControl id="vin" mb={4}>
-                    <FormLabel>VIN</FormLabel>
-                    <Input type="text" {...register('vin')} />
-                    <FormHelperText>VIN is optional but recommended</FormHelperText>
-                </FormControl>
+                    <FormControl id="vin" mb={4}>
+                        <FormLabel>VIN</FormLabel>
+                        <Input type="text" {...register('vin')} />
+                        <FormHelperText>VIN is optional but recommended</FormHelperText>
+                    </FormControl>
 
-                <FormControl id="edit-color" mb={4}>
-                    <FormLabel>
-                        Color
-                        <Box mt={2}>
-                            <VehicleColorIndicator color={formData.color} size={10} />
+                    <FormControl id="edit-color" mb={4}>
+                        <FormLabel>
+                            Color
+                            <Box mt={2}>
+                                <VehicleColorIndicator color={formData.color} size={10} />
+                            </Box>
+                        </FormLabel>
+                        <Box display="none">
+                            <input
+                                id="edit-color"
+                                type="color"
+                                {...register('color')}
+                            />
                         </Box>
-                    </FormLabel>
-                    <Box display="none">
-                        <input
-                            id="edit-color"
-                            type="color"
-                            {...register('color')}
-                        />
-                    </Box>
-                </FormControl>
-
-                <FormControl id="distanceUnit" mb={4} isRequired>
-                    <FormLabel>Distance Unit</FormLabel>
-                    <RadioGroup {...register('distanceUnit')}>
-                        <Stack direction="row" spacing={4}>
-                            <Radio value="mi">miles</Radio>
-                            <Radio value="km">kilometers</Radio>
-                            <Radio value="hr">hours</Radio>
-                        </Stack>
-                    </RadioGroup>
-                </FormControl>
-
-                <Heading size="md" mb={3} mt={8}>
-                    Preferences
-                </Heading>
-
-                <Stack divider={<StackDivider borderColor="gray.200" />} mb={8}>
-                    <FormControl display="flex" alignItems="center">
-                        <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.enableCost">
-                            Enable cost
-                            <FormHelperText mt={0}>
-                                Show cost column in History and cost field in form.
-                            </FormHelperText>
-                        </FormLabel>
-                        <Switch {...register('preferences.enableCost')} />
                     </FormControl>
 
-                    <FormControl display="flex" alignItems="center">
-                        <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.sendReminderEmails">
-                            Send reminder emails
-                            <FormHelperText mt={0}>
-                                Receive an email for upcoming reminders 2 weeks before and on the due date.
-                            </FormHelperText>
-                        </FormLabel>
-                        <Switch {...register('preferences.sendReminderEmails')} />
+                    <FormControl id="distanceUnit" mb={4} isRequired>
+                        <FormLabel>Distance Unit</FormLabel>
+                        <RadioGroup {...register('distanceUnit')}>
+                            <Stack direction="row" spacing={4}>
+                                <Radio value="mi">miles</Radio>
+                                <Radio value="km">kilometers</Radio>
+                                <Radio value="hr">hours</Radio>
+                            </Stack>
+                        </RadioGroup>
                     </FormControl>
+                </FormSection>
 
-                    <FormControl display="flex" alignItems="center">
-                        <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.sendPromptForRecords">
-                            Send prompt for records
-                            <FormHelperText mt={0}>
-                                Receive an email asking if you recenty performed service based on your record history.
-                            </FormHelperText>
-                        </FormLabel>
-                        <Switch {...register('preferences.sendPromptForRecords')} />
-                    </FormControl>
-                </Stack>
+                <FormSection heading="Preferences">
+                    <Stack spacing={3} divider={<StackDivider borderColor="gray.200" />}>
+                        <FormControl display="flex" alignItems="center">
+                            <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.enableCost">
+                                Enable cost
+                                <FormHelperText mt={0}>
+                                    Show cost column in History and cost field in form.
+                                </FormHelperText>
+                            </FormLabel>
+                            <Switch colorScheme="brand" {...register('preferences.enableCost')} />
+                        </FormControl>
 
-                <SubmitButton isProcessing={isProcessing} />
+                        <FormControl display="flex" alignItems="center">
+                            <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.sendReminderEmails">
+                                Send reminder emails
+                                <FormHelperText mt={0}>
+                                    Receive an email for upcoming reminders 2 weeks before and on the due date.
+                                </FormHelperText>
+                            </FormLabel>
+                            <Switch colorScheme="brand" {...register('preferences.sendReminderEmails')} />
+                        </FormControl>
+
+                        <FormControl display="flex" alignItems="center">
+                            <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.sendPromptForRecords">
+                                Send prompt for records
+                                <FormHelperText mt={0}>
+                                    Receive an email asking if you recenty performed service based on your record history.
+                                </FormHelperText>
+                            </FormLabel>
+                            <Switch colorScheme="brand" {...register('preferences.sendPromptForRecords')} />
+                        </FormControl>
+                    </Stack>
+                </FormSection>
+
+                <FormButton type="submit" isProcessing={isProcessing} />
             </form>
 
             {Boolean(vehicle) && (
-                <Box mt={10}>
-                    <DestroyButton
-                        onConfirm={handleDeleteVehicle}
-                    >
+                <DangerZone>
+                    <DestroyButton onConfirm={handleDeleteVehicle}>
                         Delete vehicle
                     </DestroyButton>
-                </Box>
+                </DangerZone>
             )}
         </>
     );

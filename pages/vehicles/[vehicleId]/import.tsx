@@ -10,7 +10,7 @@ import useRequest from 'hooks/useRequest';
 import { importRecords, Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useFormData from 'hooks/useFormData';
-import SubmitButton from 'components/common/SubmitButton';
+import FormButton from 'components/common/FormButton';
 import useMutation, { mutate } from 'hooks/useMutation';
 import { useRouter } from 'next/router';
 import { vehiclePath } from 'utils/resources';
@@ -95,9 +95,9 @@ export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({ params }) 
                         ⚠️ This will replace all your existing records for this vehicle!
                     </Text>
 
-                    <SubmitButton isProcessing={isProcessing}>
+                    <FormButton type="submit" isProcessing={isProcessing}>
                         Import
-                    </SubmitButton>
+                    </FormButton>
                 </form>
 
             </Container>

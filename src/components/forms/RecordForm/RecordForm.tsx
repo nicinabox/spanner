@@ -4,7 +4,7 @@ import {
 import DatePicker from 'components/common/DatePicker';
 import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
-import SubmitButton from 'components/common/SubmitButton';
+import FormButton from 'components/common/FormButton';
 import useFormData from 'hooks/useFormData';
 import useMutation from 'hooks/useMutation';
 import useTextareaResize from 'hooks/useTextareaResize';
@@ -18,6 +18,8 @@ import { mileageFieldHelpers, costFieldHelpers } from 'utils/form';
 import lang from 'utils/lang';
 import { getCurrencySymbol } from 'utils/number';
 import { vehiclePath } from 'utils/resources';
+import FormSection from 'components/common/FormSection';
+import DangerZone from 'components/common/DangerZone';
 
 export interface RecordFormProps {
     vehicle: Vehicle;
@@ -68,50 +70,51 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
                     <FormErrors errors={error.errors} />
                 )}
 
-                <SimpleGrid spacing={[null, 7]} templateColumns={['auto', '1fr 2fr']}>
-                    <Box>
-                        <FormControl mb={4} id="date" isRequired>
-                            <FormLabel>Date</FormLabel>
+                <FormSection>
+                    <SimpleGrid spacing={[null, 7]} templateColumns={['auto', null, '1fr 2fr']}>
+                        <Box>
+                            <FormControl mb={4} id="date" isRequired>
+                                <FormLabel>Date</FormLabel>
 
-                            <Input type="hidden" {...register('date')} />
-                            <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setValue('date', formatDateISO(date))} />
-                        </FormControl>
-                    </Box>
-                    <Box flex={1}>
-                        <FormControl mb={4} id="Notes" isRequired>
-                            <FormLabel>Notes</FormLabel>
-                            <Textarea ref={textareaRef} {...register('notes')} />
-                        </FormControl>
-                        <FormControl mb={4} id="mileage" isRequired>
-                            <FormLabel>{capitalize(lang.mileageLabel[vehicle.distanceUnit])}</FormLabel>
-                            <InputGroup size="md">
-                                <Input {...register('mileage', mileageFieldHelpers)} inputmode="numeric" pattern="[0-9]*" />
-                                <InputRightAddon>{vehicle.distanceUnit}</InputRightAddon>
-                            </InputGroup>
-                        </FormControl>
-                        <FormControl mb={4} id="cost">
-                            <FormLabel>Cost</FormLabel>
-                            <InputGroup size="md">
-                                <InputLeftAddon>{getCurrencySymbol()}</InputLeftAddon>
-                                <Input {...register('cost', costFieldHelpers)} inputmode="numeric" pattern="[0-9]*" />
-                            </InputGroup>
-                        </FormControl>
-                    </Box>
-                </SimpleGrid>
-
-                <SubmitButton isProcessing={isProcessing} />
+                                <Input type="hidden" {...register('date')} />
+                                <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setValue('date', formatDateISO(date))} />
+                            </FormControl>
+                        </Box>
+                        <Box flex={1}>
+                            <FormControl mb={4} id="Notes" isRequired>
+                                <FormLabel>Notes</FormLabel>
+                                <Textarea ref={textareaRef} {...register('notes')} />
+                            </FormControl>
+                            <FormControl mb={4} id="mileage" isRequired>
+                                <FormLabel>{capitalize(lang.mileageLabel[vehicle.distanceUnit])}</FormLabel>
+                                <InputGroup size="md">
+                                    <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9]*" />
+                                    <InputRightAddon>{vehicle.distanceUnit}</InputRightAddon>
+                                </InputGroup>
+                            </FormControl>
+                            <FormControl mb={4} id="cost">
+                                <FormLabel>Cost</FormLabel>
+                                <InputGroup size="md">
+                                    <InputLeftAddon>{getCurrencySymbol()}</InputLeftAddon>
+                                    <Input {...register('cost', costFieldHelpers)} inputMode="numeric" pattern="[0-9]*" />
+                                </InputGroup>
+                            </FormControl>
+                        </Box>
+                    </SimpleGrid>
+                </FormSection>
+                <FormButton type="submit" isProcessing={isProcessing} />
             </form>
 
             {Boolean(record?.id) && (
-                <Box mt={10}>
+                <DangerZone>
                     <DestroyButton
                         confirmTitle="Please confirm delete"
                         confirmBody="You can't undo this action afterwards."
                         onConfirm={handleDelete}
                     >
-                        Delete Record
+                        Delete record
                     </DestroyButton>
-                </Box>
+                </DangerZone>
             )}
         </>
     );
