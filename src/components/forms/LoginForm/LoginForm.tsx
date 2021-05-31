@@ -46,6 +46,8 @@ export const LoginForm: React.FC = () => {
     const handleReset = () => {
         requestSession.reset();
         setLoginStatus('pendingEmail');
+        loginForm.setFormData({ loginToken: '' });
+        setPendingAuth(false);
     };
 
     if (requestSession.error) {

@@ -89,7 +89,7 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
                             <FormControl mb={4} id="mileage" isRequired>
                                 <FormLabel>{capitalize(lang.mileageLabel[vehicle.distanceUnit])}</FormLabel>
                                 <InputGroup size="md">
-                                    <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9]*" />
+                                    <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9,]*" />
                                     <InputRightAddon>{vehicle.distanceUnit}</InputRightAddon>
                                 </InputGroup>
                             </FormControl>
@@ -97,7 +97,7 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
                                 <FormLabel>Cost</FormLabel>
                                 <InputGroup size="md">
                                     <InputLeftAddon>{getCurrencySymbol()}</InputLeftAddon>
-                                    <Input {...register('cost', costFieldHelpers)} inputMode="numeric" pattern="[0-9]*" />
+                                    <Input {...register('cost', costFieldHelpers)} inputMode="numeric" pattern="[0-9,]*" />
                                 </InputGroup>
                             </FormControl>
                         </Box>

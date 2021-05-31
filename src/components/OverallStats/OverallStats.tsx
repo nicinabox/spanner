@@ -28,7 +28,7 @@ export const OverallStats: React.FC<OverallStatsProps> = ({ activeVehicles }) =>
                     }, 0);
 
                     return (
-                        <VehicleStat label={`Total ${distanceUnit} per year`} flex={0}>
+                        <VehicleStat key={distanceUnit} label={`Total ${distanceUnit} per year`} flex={0}>
                             {formatMileage(total, distanceUnit)}
                         </VehicleStat>
                     );

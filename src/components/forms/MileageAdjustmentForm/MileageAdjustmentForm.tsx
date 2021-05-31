@@ -58,7 +58,7 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
                         {' '}
                         {lang.mileageLabel[vehicle.distanceUnit]}
                     </FormLabel>
-                    <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9]*" autoFocus />
+                    <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9,]*" autoFocus />
                     <FormHelperText>
                         Your estimated
                         {' '}

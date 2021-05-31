@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Meta } from '@storybook/react';
 
-import { ErrorBoundary, ErrorBoundaryProps } from './ErrorBoundary';
+import { ErrorBoundary } from './ErrorBoundary';
 
-const Template: React.VFC<ErrorBoundaryProps> = (props) => <ErrorBoundary {...props} />;
+const Template: React.VFC = (props) => <ErrorBoundary {...props} />;
 
 export const Default = Template.bind({});
 Default.args = {

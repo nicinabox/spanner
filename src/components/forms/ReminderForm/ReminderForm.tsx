@@ -134,7 +134,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                     <FormControl mb={4} id="mileage" isRequired>
                         <FormLabel>{capitalize(lang.mileageLabel[distanceUnit])}</FormLabel>
 
-                        <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9]*" />
+                        <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9,]*" />
 
                         {Boolean(minMileage) && (
                             <FormHelperText>
