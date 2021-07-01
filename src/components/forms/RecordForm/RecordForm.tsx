@@ -86,7 +86,7 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
                                 <FormLabel>Notes</FormLabel>
                                 <Textarea ref={textareaRef} {...register('notes')} />
                             </FormControl>
-                            <FormControl mb={4} id="mileage" isRequired>
+                            <FormControl mb={4} id="mileage">
                                 <FormLabel>{capitalize(lang.mileageLabel[vehicle.distanceUnit])}</FormLabel>
                                 <InputGroup size="md">
                                     <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9,]*" />
