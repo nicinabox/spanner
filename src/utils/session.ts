@@ -13,6 +13,7 @@ const hashedSecret = crypto
 export const withSession = (handler) => withIronSession(handler, {
     password: hashedSecret,
     cookieName: 'session',
+    ttl: 2592000, // 30 days
     cookieOptions: {
         secure: process.env.NODE_ENV !== 'development',
     },
