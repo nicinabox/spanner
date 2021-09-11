@@ -1,6 +1,6 @@
 import { AddIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Container, Flex, Heading, LinkBox, LinkOverlay, Text,
+    Container, Flex, Heading, LinkBox, LinkOverlay, Skeleton, Text,
 } from '@chakra-ui/react';
 import EmptyState from 'components/common/EmptyState';
 import LinkButton from 'components/common/LinkButton';
@@ -35,6 +35,16 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
     const reminders = sortByDueSoonest(vehicle?.reminders ?? []);
 
     const isEmpty = !loading && !reminders.length;
+
+    if (loading) {
+        return (
+            <Container>
+                {[1, 2, 3].map((n) => (
+                    <Skeleton key={n} h={8} mb={3} />
+                ))}
+            </Container>
+        );
+    }
 
     if (isEmpty) {
         return (
