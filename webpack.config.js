@@ -52,7 +52,8 @@ module.exports = {
     new ExtractTextPlugin('style.css'),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+        'UPGRADE_URL': JSON.stringify(process.env.UPGRADE_URL || null),
       },
       '__DEV__': !isProduction
     })
