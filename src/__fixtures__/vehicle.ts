@@ -20,6 +20,7 @@ const vehicleFixture: Vehicle = {
         enableCost: true,
         sendReminderEmails: true,
         sendPromptForRecords: true,
+        showMileageAdjustmentRecords: true,
     },
 };
 
