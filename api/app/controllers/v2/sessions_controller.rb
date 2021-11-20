@@ -10,6 +10,7 @@ module V2
 
     def create
       email = params[:email].strip.downcase
+      host = params[:host]
       user = User.find_by_email email
 
       if not user
@@ -30,7 +31,7 @@ module V2
         if params[:platform] == 'mobile'
           LoginMailer.login_token(user).deliver_later
         else
-          LoginMailer.login_link(user).deliver_later
+          LoginMailer.login_link(user, host).deliver_later
         end
 
         render :success, status: 204

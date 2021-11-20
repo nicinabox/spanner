@@ -1,7 +1,13 @@
 class LoginMailer < ApplicationMailer
 
-  def login_link(user)
+  def login_link(user, host)
     @user = user
+    @url_options = {}
+
+    if host
+      @url_options = { host: host }
+    end
+
     mail to: @user.email, subject: subject
   end
 
