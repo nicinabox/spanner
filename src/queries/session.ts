@@ -28,6 +28,6 @@ export async function fetchUser(api: AxiosInstance) {
 }
 
 export async function requestSession(api: AxiosInstance, email: string) {
-    const { data } = await api.post('/api/sessions', { email });
+    const { data } = await api.post('/api/sessions', { email, host: window.location.origin });
     return data;
 }
