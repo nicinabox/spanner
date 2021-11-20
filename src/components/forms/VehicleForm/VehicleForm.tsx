@@ -1,5 +1,5 @@
 import {
-    Box, FormControl, FormHelperText, FormLabel, Heading, Input, Radio, RadioGroup, Stack, StackDivider, Switch, useColorModeValue,
+    Box, FormControl, FormHelperText, FormLabel, Heading, Input, LightMode, Radio, RadioGroup, Stack, StackDivider, Switch, useColorModeValue,
 } from '@chakra-ui/react';
 import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
@@ -114,7 +114,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                                     Show cost column in History and cost field in form.
                                 </FormHelperText>
                             </FormLabel>
-                            <Switch colorScheme="brand" {...register('preferences.enableCost')} />
+                            <Switch colorScheme="green" {...register('preferences.enableCost')} />
                         </FormControl>
 
                         <FormControl display="flex" alignItems="center">
@@ -124,7 +124,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                                     Receive an email for upcoming reminders 2 weeks before and on the due date.
                                 </FormHelperText>
                             </FormLabel>
-                            <Switch colorScheme="brand" {...register('preferences.sendReminderEmails')} />
+                            <Switch colorScheme="green" {...register('preferences.sendReminderEmails')} />
                         </FormControl>
 
                         <FormControl display="flex" alignItems="center">
@@ -134,7 +134,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                                     Receive an email asking if you recenty performed service based on your record history.
                                 </FormHelperText>
                             </FormLabel>
-                            <Switch colorScheme="brand" {...register('preferences.sendPromptForRecords')} />
+                            <Switch colorScheme="green" {...register('preferences.sendPromptForRecords')} />
                         </FormControl>
                     </Stack>
                 </FormSection>
