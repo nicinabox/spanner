@@ -1,5 +1,5 @@
 import {
-    Box, FormControl, FormHelperText, FormLabel, Heading, Input, Radio, RadioGroup, Stack, StackDivider, Switch,
+    Box, FormControl, FormHelperText, FormLabel, Heading, Input, Radio, RadioGroup, Stack, StackDivider, Switch, useColorModeValue,
 } from '@chakra-ui/react';
 import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
@@ -20,6 +20,7 @@ export interface VehicleFormProps {
 
 export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const router = useRouter();
+    const borderColor = useColorModeValue('gray.200', 'gray.600');
 
     const { formData, register } = useFormData({
         name: '',
@@ -105,7 +106,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                 </FormSection>
 
                 <FormSection heading="Preferences">
-                    <Stack spacing={3} divider={<StackDivider borderColor="gray.200" />}>
+                    <Stack spacing={4} divider={<StackDivider borderColor={borderColor} />}>
                         <FormControl display="flex" alignItems="center">
                             <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.enableCost">
                                 Enable cost
