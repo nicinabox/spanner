@@ -11,6 +11,9 @@ class HourlyJob < ApplicationJob
 
     users.each do |user|
       reminders = user.reminders.where(reminder_date: date.beginning_of_day..date.end_of_day)
+      reminders.select! do |r|
+        r.vehicle.preferences.send_reminder_emails
+      end
 
       if reminders.any?
         RemindersMailer.reminder_today(user, reminders).deliver_now

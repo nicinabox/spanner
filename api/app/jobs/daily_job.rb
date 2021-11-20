@@ -20,6 +20,9 @@ class DailyJob < ApplicationJob
   private
 
   def reminders_on(date)
-    Reminder.where(reminder_date: date.beginning_of_day..date.end_of_day)
+    reminders = Reminder.where(reminder_date: date.beginning_of_day..date.end_of_day)
+    reminders.select! do |r|
+      r.vehicle.preferences.send_reminder_emails
+    end
   end
 end
