@@ -67,6 +67,7 @@ module V2
             :enable_cost,
             :send_reminder_emails,
             :send_prompt_for_records,
+            :show_mileage_adjustment_records,
           ]
         )
     end
