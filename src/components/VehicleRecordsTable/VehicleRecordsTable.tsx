@@ -1,5 +1,6 @@
+import { UpDownIcon } from '@chakra-ui/icons';
 import {
-    Box, Flex, Heading, Skeleton, SkeletonText, Text,
+    Box, Button, Flex, Heading, Skeleton, SkeletonText, Text, useDisclosure,
 } from '@chakra-ui/react';
 import LinkButton from 'components/common/LinkButton';
 import { intlFormat } from 'date-fns';
@@ -7,8 +8,8 @@ import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import { capitalize, groupBy } from 'lodash';
 import { VehicleRecord, recordAPIPath } from 'queries/records';
-import { DistanceUnit } from 'queries/vehicles';
-import React from 'react';
+import { DistanceUnit, VehiclePreferences } from 'queries/vehicles';
+import React, { useEffect } from 'react';
 import { parseDateUTC } from 'utils/date';
 import lang from 'utils/lang';
 import { formatCurrency } from 'utils/number';
@@ -18,7 +19,7 @@ import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 export interface VehicleRecordsTableProps {
     records: VehicleRecord[] | undefined;
     vehicleId: string;
-    enableCost?: boolean;
+    preferences?: VehiclePreferences;
     distanceUnit?: DistanceUnit;
     isLoaded?: boolean;
 }
@@ -67,11 +68,23 @@ const FlexTable = (props) => (
 );
 
 export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
-    records, vehicleId, enableCost = false, distanceUnit = 'mi',
+    records, vehicleId, preferences = {}, distanceUnit = 'mi',
 }) => {
     const reverseChronoRecords = sortRecordsNewestFirst(records ?? []);
     const recordsByYear = groupBy(reverseChronoRecords, (r) => new Date(r.date).getFullYear());
     const years = Object.keys(recordsByYear).sort((a, b) => Number(b) - Number(a));
+    const { enableCost = false } = preferences;
+
+    const {
+        isOpen: showMileageAdjustmentRecords, onToggle: onToggleShowMileageAdjustment, onOpen, onClose,
+    } = useDisclosure({
+        defaultIsOpen: preferences.showMileageAdjustmentRecords ?? true,
+    });
+
+    useEffect(() => {
+        const goToState = preferences.showMileageAdjustmentRecords ? onOpen : onClose;
+        goToState();
+    }, [preferences.showMileageAdjustmentRecords]);
 
     const cm = useInlineColorMode();
 
@@ -98,7 +111,11 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
     return (
         <>
             {years.map((year) => {
-                const yearRecords = recordsByYear[year];
+                const allYearRecords = recordsByYear[year];
+                const filteredRecords = allYearRecords.filter((r) => r.recordType !== 'mileage adjustment');
+                const omittedCount = allYearRecords.length - filteredRecords.length;
+
+                const yearRecords = showMileageAdjustmentRecords ? allYearRecords : filteredRecords;
 
                 return (
                     <Box key={year} shadow={['sm', 'md', 'md']} mx={[-4, 0]} bg={cm('white', 'whiteAlpha.200')}>
@@ -109,7 +126,15 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                             px={4}
                             py={3}
                         >
-                            {year}
+                            <Flex justifyContent="space-between" align="center">
+                                {year}
+                                {!preferences.showMileageAdjustmentRecords && Boolean(omittedCount) && (
+                                    <Button rightIcon={<UpDownIcon />} size="xs" onClick={onToggleShowMileageAdjustment}>
+                                        {omittedCount}
+                                        {omittedCount > 1 ? 's' : ''}
+                                    </Button>
+                                )}
+                            </Flex>
                         </Heading>
 
                         <FlexTable mb={8} pb={2}>

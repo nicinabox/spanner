@@ -26,6 +26,7 @@ export interface VehiclePreferences {
     enableCost: boolean;
     sendReminderEmails: boolean;
     sendPromptForRecords: boolean;
+    showMileageAdjustmentRecords: boolean;
 }
 
 export interface VehicleParams {

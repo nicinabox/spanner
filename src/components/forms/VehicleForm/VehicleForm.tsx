@@ -136,6 +136,16 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                             </FormLabel>
                             <Switch colorScheme="green" {...register('preferences.sendPromptForRecords')} />
                         </FormControl>
+
+                        <FormControl display="flex" alignItems="center">
+                            <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.showMileageAdjustmentRecords">
+                                Show mileage adjustment records
+                                <FormHelperText mt={0}>
+                                    Show mileage adjustment records in History.
+                                </FormHelperText>
+                            </FormLabel>
+                            <Switch colorScheme="green" {...register('preferences.showMileageAdjustmentRecords')} />
+                        </FormControl>
                     </Stack>
                 </FormSection>
 

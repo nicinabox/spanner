@@ -83,8 +83,8 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 <VehicleRecordsTable
                     vehicleId={vehicleId}
                     records={recordsResults}
-                    enableCost={vehicle?.preferences.enableCost}
                     distanceUnit={vehicle?.distanceUnit}
+                    preferences={vehicle?.preferences}
                 />
             )}
 

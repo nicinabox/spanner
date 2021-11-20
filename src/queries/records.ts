@@ -1,6 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { RecordID, MutateParams } from './config';
 
+type RecordType = 'mileage adjustment' | null;
+
 export interface VehicleRecord {
     id: number;
     cost: string;
@@ -9,6 +11,7 @@ export interface VehicleRecord {
     notes: string;
     createdAt: string;
     updatedAt: string;
+    recordType?: RecordType;
 }
 
 export interface VehicleRecordParams {
@@ -17,7 +20,7 @@ export interface VehicleRecordParams {
     cost?: string | null;
     mileage?: number;
     notes?: string;
-    recordType?: 'mileage adjustment' | null;
+    recordType?: RecordType;
 }
 
 export const recordsAPIPath = (vehicleId: RecordID) => `/api/vehicles/${vehicleId}/records`;
