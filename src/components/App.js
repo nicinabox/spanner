@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Router from '../router'
+import UpgradeBanner from './UpgradeBanner'
 
 export class App extends Component {
   constructor(props) {
@@ -55,9 +56,15 @@ export class App extends Component {
   }
 
   render() {
-    return <Router
-      path={this.state.path}
-      params={this.state.params} />
+    return (
+      <div>
+        <UpgradeBanner />
+        <Router
+          path={this.state.path}
+          params={this.state.params}
+        />
+      </div>
+    )
   }
 }
 
