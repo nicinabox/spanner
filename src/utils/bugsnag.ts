@@ -6,3 +6,5 @@ Bugsnag.start({
     plugins: [new BugsnagPluginReact()],
     enabledReleaseStages: ['production'],
 });
+
+export default Bugsnag;

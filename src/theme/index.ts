@@ -41,7 +41,7 @@ export default extendTheme({
         }),
     },
     config: {
-        initialColorMode: 'light',
+        initialColorMode: 'system',
         useSystemColorMode: false,
     },
     fonts: {

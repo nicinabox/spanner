@@ -1,4 +1,6 @@
-import { useColorMode, IconButton, useColorModeValue } from '@chakra-ui/react';
+import {
+    useColorMode, IconButton, useColorModeValue, Tooltip,
+} from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import React from 'react';
 
@@ -13,15 +15,16 @@ export const ColorModeButton: React.FC<ColorModeButtonProps> = ({ variant = 'gho
     const label = `Switch to ${nextMode} mode`;
 
     return (
-        <IconButton
-            onClick={toggleColorMode}
-            colorScheme="brandInverted"
-            variant={variant}
-            aria-label={label}
-            title={label}
-            icon={<Icon />}
-            size="sm"
-        />
+        <Tooltip label={label}>
+            <IconButton
+                aria-label={label}
+                onClick={toggleColorMode}
+                colorScheme="brand"
+                variant={variant}
+                icon={<Icon />}
+                size="sm"
+            />
+        </Tooltip>
     );
 };
 
