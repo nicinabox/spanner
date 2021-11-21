@@ -31,6 +31,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
             enableCost: true,
             sendReminderEmails: true,
             sendPromptForRecords: true,
+            showMileageAdjustmentRecords: true,
             ...vehicle?.preferences,
         },
     }, [vehicle]);
