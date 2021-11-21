@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {
-    Input, Button, FormHelperText, FormControl, Flex, AlertIcon, Alert, Center, Box, FormLabel,
+    Input, Button, FormHelperText, FormControl, Flex, AlertIcon, Alert, Center, Box, FormLabel, Heading,
+    Text,
+    Divider,
 } from '@chakra-ui/react';
 import { sample } from 'lodash';
 import * as session from 'queries/session';
@@ -69,11 +71,26 @@ export const LoginForm: React.FC = () => {
 
     if (loginStatus === 'pendingLoginToken') {
         return (
-            <Box p="4">
-                <Alert status="success" mb={6}>
-                    <AlertIcon />
-                    Check your email for a login token.
-                </Alert>
+            <Box p={4}>
+                <Center flexDirection="column">
+                    <Heading size="md" mb={2}>
+                        Check your email
+                    </Heading>
+                    <Text>
+                        We sent an email to you at
+                        {' '}
+                        <strong>{newSessionForm.formData.email}</strong>
+                        . It has a magic link that will sign you in.
+                    </Text>
+                </Center>
+
+                <Divider my={8} />
+
+                <Center flexDirection="column">
+                    <Heading size="sm" mb={4}>
+                        Alternatively...
+                    </Heading>
+                </Center>
 
                 <form onSubmit={handleLogin}>
                     <FormControl>
@@ -86,13 +103,13 @@ export const LoginForm: React.FC = () => {
                                 autoFocus
                             />
                             <Button type="submit" colorScheme="brand" ml="4" isLoading={pendingAuth} disabled={pendingAuth}>
-                                Sign In
+                                Sign in
                             </Button>
                         </Flex>
                     </FormControl>
                 </form>
 
-                <Center mt="4">
+                <Center mt={8}>
                     <Button variant="outline" size="sm" onClick={handleReset}>
                         Try again
                     </Button>
@@ -102,7 +119,7 @@ export const LoginForm: React.FC = () => {
     }
 
     return (
-        <Box p="4">
+        <Box p={4}>
             <form onSubmit={handleRequestSession}>
                 <FormControl>
                     <FormLabel>

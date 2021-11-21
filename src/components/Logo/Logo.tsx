@@ -3,11 +3,12 @@ import { Box, Link } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export interface LogoProps {
-    height?: number
+    height?: number;
+    opacity?: number;
 }
 
-export const Logo: React.FC<LogoProps> = ({ height = 60 }) => (
-    <Link href="/" display="inline-block" opacity={0.5} _hover={{ opacity: 1 }}>
+export const Logo: React.FC<LogoProps> = ({ height = 60, opacity = 0.5 }) => (
+    <Link href="/" display="inline-block" opacity={opacity} _hover={{ opacity: 1 }}>
         <Box h={height}>
             <Img src="/assets/logo-white.png" alt="Spanner" />
         </Box>
