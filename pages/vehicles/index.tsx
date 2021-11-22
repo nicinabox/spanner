@@ -16,8 +16,9 @@ import { authRedirect, withSession } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
 import { newVehiclePath } from 'utils/resources';
 import EmptyState from 'components/common/EmptyState';
-import { VehicleStat } from 'components/VehicleStats';
 import OverallStats from 'components/OverallStats';
+import { VehicleSortStrategy } from 'utils/sortable';
+import VehicleSortMenu from 'components/VehicleSortMenu';
 
 interface VehiclesProps {
 }
@@ -41,32 +42,17 @@ const PageHeader = () => {
     );
 };
 
-const sortCreatedAtDesc = (a: Vehicle, b: Vehicle) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-};
-
-const sortAlphaAsc = (a: Vehicle, b: Vehicle) => {
-    const aName = a.name.toLowerCase();
-    const bName = b.name.toLowerCase();
-    if (aName < bName) return -1;
-    if (aName > bName) return 1;
-    return 0;
-};
-
-const sortPositionAsc = (a: Vehicle, b:Vehicle) => {
-    return (a.position ?? 0) - (b.position ?? 0);
-};
+const DEFAULT_SORT_STRATEGY = 'newest_first' as const;
 
 const Vehicles: React.FC<VehiclesProps> = () => {
     const { data, loading } = useRequest<Vehicle[]>(vehiclesAPIPath);
 
     const [showRetired, setShowRetired] = useState(false);
 
-    const activeVehicles = data?.filter((v) => !v.retired)
-        .sort(sortCreatedAtDesc) ?? [];
+    const activeVehicles = data?.filter((v) => !v.retired) ?? [];
+    const retiredVehicles = data?.filter((v) => v.retired) ?? [];
 
-    const retiredVehicles = data?.filter((v) => v.retired)
-        .sort(sortCreatedAtDesc) ?? [];
+    const [sortStrategy, setSortStrategy] = useState<VehicleSortStrategy>(DEFAULT_SORT_STRATEGY);
 
     return (
         <Page
@@ -79,16 +65,20 @@ const Vehicles: React.FC<VehiclesProps> = () => {
                 <OverallStats activeVehicles={activeVehicles} />
             </Box>
 
-            <HStack spacing={4}>
-                <Heading fontSize="xl">
-                    Vehicles
-                </Heading>
-                <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} size="xs" variant="ghost">
-                    New Vehicle
-                </LinkButton>
-            </HStack>
+            <Flex justify="space-between" direction={['column', 'row']}>
+                <HStack spacing={4}>
+                    <Heading fontSize="xl">
+                        Vehicles
+                    </Heading>
+                    <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} size="xs" variant="ghost">
+                        New Vehicle
+                    </LinkButton>
+                </HStack>
 
-            <VehiclesList vehicles={activeVehicles} loading={loading} />
+                <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} defaultSortStrategy={DEFAULT_SORT_STRATEGY} />
+            </Flex>
+
+            <VehiclesList vehicles={activeVehicles} loading={loading} sortStrategy={sortStrategy} />
 
             {!activeVehicles.length && !loading && (
                 <EmptyState
@@ -119,7 +109,7 @@ const Vehicles: React.FC<VehiclesProps> = () => {
             )}
 
             {showRetired && (
-                <VehiclesList vehicles={retiredVehicles} />
+                <VehiclesList vehicles={retiredVehicles} sortStrategy="newest_first" />
             )}
         </Page>
     );
