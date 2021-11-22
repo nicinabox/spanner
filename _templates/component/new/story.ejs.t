@@ -1,5 +1,5 @@
 ---
-to: src/components/<%= path %>/<%= name %>/<%= name %>.stories.tsx
+to: "<%= locals.path ? `src/components/${path}/${name}/${name}.stories.tsx` : `src/components/${name}/${name}.stories.tsx` %>"
 ---
 import React from 'react';
 
