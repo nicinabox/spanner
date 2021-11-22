@@ -31,7 +31,7 @@ const PageHeader = () => {
                     <Logo height={30} />
                 </Center>
                 <Flex justify="end">
-                    <HStack spacing={6}>
+                    <HStack spacing={4}>
                         <ColorModeButton />
                         <UserMenu />
                     </HStack>

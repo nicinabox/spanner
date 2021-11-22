@@ -29,19 +29,24 @@ export const UserMenu: React.FC<UserMenuProps> = () => {
     return (
         <Menu>
             <Skeleton isLoaded={Boolean(user)}>
-                <MenuButton colorScheme="brand" as={Button} size="sm" variant="ghost-header">
-                    <HStack spacing={2} alignItems="center">
-                        <Text>
-                            {user?.email && shortenEmail(user.email)}
-                        </Text>
-                        {user && (
+                <MenuButton
+                    rightIcon={
+                        user && (
                             <Image
                                 borderRadius="full"
                                 boxSize={6}
                                 src={gravatarUrl(user.email)}
                             />
-                        )}
-                    </HStack>
+                        )
+                    }
+                    colorScheme="brand"
+                    as={Button}
+                    size="sm"
+                    variant="ghost-header"
+                >
+                    <Text isTruncated maxW="100%" display={['none', 'block']}>
+                        {user?.email && shortenEmail(user.email)}
+                    </Text>
                 </MenuButton>
             </Skeleton>
             <MenuList>
