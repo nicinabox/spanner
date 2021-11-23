@@ -31,15 +31,15 @@ export function sortVehiclesOldestFirst(vehicles: Vehicle[]) {
 }
 
 export function sortVehiclesRemindersFirst(vehicles: Vehicle[]) {
-    return orderBy(vehicles, getOverdueRemindersCount, 'desc');
+    return orderBy(vehicles, [getOverdueRemindersCount, 'name'], ['desc', 'asc']);
 }
 
 export function sortVehiclesHighestMileageFirst(vehicles: Vehicle[]) {
-    return orderBy(vehicles, (v) => v.estimatedMileage ?? 0, 'desc');
+    return orderBy(vehicles, [(v) => v.estimatedMileage ?? 0, 'name'], ['desc', 'asc']);
 }
 
 export function sortVehiclesLowestMileageFirst(vehicles: Vehicle[]) {
-    return orderBy(vehicles, (v) => v.estimatedMileage ?? 0, 'asc');
+    return orderBy(vehicles, [(v) => v.estimatedMileage ?? 0, 'name'], ['asc', 'asc']);
 }
 
 export function sortVehiclesHighestMileageRateFirst(vehicles: Vehicle[]) {
