@@ -1,6 +1,6 @@
 import { AddIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Box, Button, Center, Flex, Heading, HStack, SimpleGrid, Text,
+    Box, Button, Center, Flex, Heading, HStack, SimpleGrid, Text, useBreakpointValue,
 } from '@chakra-ui/react';
 import ColorModeButton from 'components/common/ColorModeButton';
 import Header from 'components/common/Header';
@@ -11,7 +11,7 @@ import UserMenu from 'components/UserMenu';
 import VehiclesList from 'components/VehiclesList';
 import useRequest from 'hooks/useRequest';
 import { Vehicle, vehiclesAPIPath } from 'queries/vehicles';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import createPersistedState from 'use-persisted-state';
 import { authRedirect, withSession } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
@@ -19,7 +19,12 @@ import { newVehiclePath } from 'utils/resources';
 import EmptyState from 'components/common/EmptyState';
 import OverallStats from 'components/OverallStats';
 import { VehicleSortStrategy } from 'utils/sortable';
-import VehicleSortMenu from 'components/VehicleSortMenu';
+import dynamic from 'next/dynamic';
+
+const VehicleSortMenu = dynamic(
+    () => import('components/VehicleSortMenu'),
+    { ssr: false },
+);
 
 interface VehiclesProps {
 }
@@ -43,8 +48,6 @@ const PageHeader = () => {
     );
 };
 
-const DEFAULT_SORT_STRATEGY = 'newest_first' as const;
-
 const useSortStrategyState = createPersistedState('vehicleSortStrategy');
 
 const Vehicles: React.FC<VehiclesProps> = () => {
@@ -55,7 +58,9 @@ const Vehicles: React.FC<VehiclesProps> = () => {
     const activeVehicles = data?.filter((v) => !v.retired) ?? [];
     const retiredVehicles = data?.filter((v) => v.retired) ?? [];
 
-    const [sortStrategy, setSortStrategy] = useSortStrategyState<VehicleSortStrategy>(DEFAULT_SORT_STRATEGY);
+    const [sortStrategy, setSortStrategy] = useSortStrategyState<VehicleSortStrategy>('newest_first');
+
+    const newVehicleButtonSize = useBreakpointValue({ sm: 'xs', base: 'sm' });
 
     return (
         <Page
@@ -73,11 +78,11 @@ const Vehicles: React.FC<VehiclesProps> = () => {
                     <Heading fontSize="xl">
                         Vehicles
                     </Heading>
-                    <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} size="xs" variant="ghost">
+                    <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} size={newVehicleButtonSize} variant="ghost">
                         New Vehicle
                     </LinkButton>
                 </Flex>
-                <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} defaultSortStrategy={DEFAULT_SORT_STRATEGY} />
+                <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} />
             </Flex>
 
             <VehiclesList vehicles={activeVehicles} loading={loading} sortStrategy={sortStrategy} />
