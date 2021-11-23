@@ -68,17 +68,16 @@ const Vehicles: React.FC<VehiclesProps> = () => {
                 <OverallStats activeVehicles={activeVehicles} />
             </Box>
 
-            <Flex justify="space-between" direction={['column', 'row']}>
-                <Heading fontSize="xl">
-                    Vehicles
-                </Heading>
-                <HStack spacing={4}>
+            <Flex direction={['column', 'row']}>
+                <Flex flex={1} justify="space-between" align="center" mb={[2, 0]}>
+                    <Heading fontSize="xl">
+                        Vehicles
+                    </Heading>
                     <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} size="xs" variant="ghost">
                         New Vehicle
                     </LinkButton>
-
-                    <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} defaultSortStrategy={DEFAULT_SORT_STRATEGY} />
-                </HStack>
+                </Flex>
+                <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} defaultSortStrategy={DEFAULT_SORT_STRATEGY} />
             </Flex>
 
             <VehiclesList vehicles={activeVehicles} loading={loading} sortStrategy={sortStrategy} />
