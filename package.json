@@ -24,7 +24,8 @@
   },
   "author": "Nic Haynes",
   "cacheDirectories": [
-    ".next/cache"
+    ".next/cache",
+    "node_modules"
   ],
   "devDependencies": {
     "@babel/core": "^7.14.3",
