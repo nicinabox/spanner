@@ -68,8 +68,8 @@ const Vehicles: React.FC<VehiclesProps> = () => {
                 <OverallStats activeVehicles={activeVehicles} />
             </Box>
 
-            <Flex direction={['column', 'row']}>
-                <Flex flex={1} justify="space-between" align="center" mb={[2, 0]}>
+            <Flex direction={['column', 'row']} align={[null, 'center']}>
+                <Flex flex={1} justify="space-between" align="center" mb={[2, 0]} mr={[0, 2]}>
                     <Heading fontSize="xl">
                         Vehicles
                     </Heading>
