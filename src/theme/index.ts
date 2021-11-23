@@ -5,7 +5,7 @@ import VehicleItem from 'components/VehicleItem/style';
 import Button from './components/Button';
 
 const brandShades = {
-    50: '#f7f6fa',
+    50: '#ECEBF4',
     100: '#eeeef5',
     200: '#d5d4e5',
     300: '#bbb9d5',
