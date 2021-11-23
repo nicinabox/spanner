@@ -85,6 +85,7 @@
     "react-day-picker": "^7.4.10",
     "react-dom": "17.0.2",
     "swr": "^0.5.5",
-    "url-pattern": "^1.0.3"
+    "url-pattern": "^1.0.3",
+    "use-persisted-state": "^0.3.3"
   }
 }

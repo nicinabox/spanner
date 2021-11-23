@@ -11,7 +11,8 @@ import UserMenu from 'components/UserMenu';
 import VehiclesList from 'components/VehiclesList';
 import useRequest from 'hooks/useRequest';
 import { Vehicle, vehiclesAPIPath } from 'queries/vehicles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import createPersistedState from 'use-persisted-state';
 import { authRedirect, withSession } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
 import { newVehiclePath } from 'utils/resources';
@@ -44,6 +45,8 @@ const PageHeader = () => {
 
 const DEFAULT_SORT_STRATEGY = 'newest_first' as const;
 
+const useSortStrategyState = createPersistedState('vehicleSortStrategy');
+
 const Vehicles: React.FC<VehiclesProps> = () => {
     const { data, loading } = useRequest<Vehicle[]>(vehiclesAPIPath);
 
@@ -52,7 +55,7 @@ const Vehicles: React.FC<VehiclesProps> = () => {
     const activeVehicles = data?.filter((v) => !v.retired) ?? [];
     const retiredVehicles = data?.filter((v) => v.retired) ?? [];
 
-    const [sortStrategy, setSortStrategy] = useState<VehicleSortStrategy>(DEFAULT_SORT_STRATEGY);
+    const [sortStrategy, setSortStrategy] = useSortStrategyState<VehicleSortStrategy>(DEFAULT_SORT_STRATEGY);
 
     return (
         <Page
@@ -66,16 +69,16 @@ const Vehicles: React.FC<VehiclesProps> = () => {
             </Box>
 
             <Flex justify="space-between" direction={['column', 'row']}>
+                <Heading fontSize="xl">
+                    Vehicles
+                </Heading>
                 <HStack spacing={4}>
-                    <Heading fontSize="xl">
-                        Vehicles
-                    </Heading>
                     <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} size="xs" variant="ghost">
                         New Vehicle
                     </LinkButton>
-                </HStack>
 
-                <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} defaultSortStrategy={DEFAULT_SORT_STRATEGY} />
+                    <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} defaultSortStrategy={DEFAULT_SORT_STRATEGY} />
+                </HStack>
             </Flex>
 
             <VehiclesList vehicles={activeVehicles} loading={loading} sortStrategy={sortStrategy} />
