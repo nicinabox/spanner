@@ -1,6 +1,6 @@
-import { UpDownIcon } from '@chakra-ui/icons';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
-    Box, Button, Flex, Heading, Skeleton, SkeletonText, Text, useDisclosure,
+    Box, Button, Flex, Heading, Skeleton, SkeletonText, Text, Tooltip, useDisclosure,
 } from '@chakra-ui/react';
 import LinkButton from 'components/common/LinkButton';
 import { intlFormat } from 'date-fns';
@@ -129,10 +129,11 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                             <Flex justifyContent="space-between" align="center">
                                 {year}
                                 {!preferences.showMileageAdjustmentRecords && Boolean(omittedCount) && (
-                                    <Button rightIcon={<UpDownIcon />} size="xs" onClick={onToggleShowMileageAdjustment}>
-                                        {omittedCount}
-                                        {omittedCount > 1 ? 's' : ''}
-                                    </Button>
+                                    <Tooltip label={`${omittedCount} records ${showMileageAdjustmentRecords ? 'visible' : 'hidden'}`}>
+                                        <Button rightIcon={showMileageAdjustmentRecords ? <ViewIcon /> : <ViewOffIcon />} size="xs" onClick={onToggleShowMileageAdjustment}>
+                                            {omittedCount}
+                                        </Button>
+                                    </Tooltip>
                                 )}
                             </Flex>
                         </Heading>

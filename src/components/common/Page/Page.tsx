@@ -1,7 +1,6 @@
 import {
-    Badge, Box, Container, ContainerProps, HStack, SimpleGrid, Spacer, Tabs,
+    Badge, Box, Container, ContainerProps, Flex, HStack, SimpleGrid, Spacer, Tabs,
 } from '@chakra-ui/react';
-import useBuildId from 'hooks/useBuildId';
 import Router, { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import ColorModeButton from '../ColorModeButton';
@@ -21,7 +20,6 @@ export const parseHashParams = (url: string) => {
 export const Page: React.FC<PageProps> = ({ children, Header, ...containerProps }) => {
     const router = useRouter();
     const [panel, setPanel] = useState(0);
-    const buildId = useBuildId();
 
     useEffect(() => {
         const params = parseHashParams(router.asPath);
@@ -52,10 +50,10 @@ export const Page: React.FC<PageProps> = ({ children, Header, ...containerProps 
                     {children}
                 </Container>
 
-                <HStack p={4}>
-                    <Badge colorScheme="gray" textTransform="none">{['v3.next', buildId].filter(Boolean).join('.')}</Badge>
+                <Flex justify="space-between" align="center" p={4}>
                     <ColorModeButton variant="ghost" />
-                </HStack>
+                    <Badge colorScheme="gray" textTransform="none">v3.next</Badge>
+                </Flex>
             </SimpleGrid>
         </Tabs>
     );
