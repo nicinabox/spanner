@@ -14,6 +14,7 @@ import { formatEstimatedMileage, formatMilesPerYear, sortRecordsOldestFirst } fr
 export interface VehicleStatsProps {
     vehicle: Vehicle;
     records: VehicleRecord[];
+    isShared?: boolean;
 }
 
 export const VehicleStat = ({ label, children, ...props }) => (
@@ -25,7 +26,7 @@ export const VehicleStat = ({ label, children, ...props }) => (
     </Stat>
 );
 
-export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) => {
+export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records, isShared }) => {
     const [oldestRecord] = sortRecordsOldestFirst(records);
 
     return (
@@ -47,7 +48,7 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) 
                     </VehicleStat>
                 )}
                 <VehicleStat label="VIN">
-                    {vehicle.vin || (
+                    {vehicle.vin || isShared ? '--' : (
                         <Link href={editVehiclePath(vehicle.id)} passHref>
                             <Text as="a" color="brand.primary">Add VIN...</Text>
                         </Link>

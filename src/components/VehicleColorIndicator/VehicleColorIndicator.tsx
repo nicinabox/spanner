@@ -14,7 +14,7 @@ export const VehicleColorIndicator: React.FC<VehicleColorIndicatorProps> = ({ co
     const borderColor = useColorModeValue(p[400], p[900]);
 
     return (
-        <Box bg={bg} borderColor={borderColor} borderWidth={1} w={size} h={size} borderRadius={size} />
+        <Box bg={bg} borderColor={borderColor} borderWidth={1} w={size} h={size} borderRadius="full" />
     );
 };
 

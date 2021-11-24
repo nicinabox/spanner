@@ -1,9 +1,11 @@
 import {
+    Center,
     Container, Heading, TabPanel, TabPanels,
 } from '@chakra-ui/react';
 import LinkPreload from 'components/common/LinkPreload';
 import Page from 'components/common/Page';
 import TabsHeader from 'components/common/TabsHeader';
+import Logo from 'components/Logo';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import VehicleService from 'components/VehicleService';
 import useRequest from 'hooks/useRequest';
@@ -18,21 +20,23 @@ export interface VehiclePageProps {
     }
 }
 
+const isShared = true;
+
 const PageHeader = ({ vehicle }) => (
     <TabsHeader
         hashchange
         tabs={[]}
-        LeftComponent={(
-            <VehicleActionsMenu vehicle={vehicle} />
-        )}
+        CenterComponent={(
+            <Center flex={1} py={2}>
+                <Logo height={30} />
+            </Center>
+          )}
     />
 );
 
-const shareAPI = true;
-
 const VehicleSharePage: React.FC<VehiclePageProps> = ({ params }) => {
-    const vehicleAPI = vehicleAPIPath(params.vehicleId, shareAPI);
-    const recordsAPI = recordsAPIPath(params.vehicleId, shareAPI);
+    const vehicleAPI = vehicleAPIPath(params.vehicleId, isShared);
+    const recordsAPI = recordsAPIPath(params.vehicleId, isShared);
 
     const { data: vehicle, error } = useRequest<Vehicle>(vehicleAPI);
 
@@ -56,7 +60,7 @@ const VehicleSharePage: React.FC<VehiclePageProps> = ({ params }) => {
                     ) : (
                         <VehicleService
                             vehicleId={params.vehicleId}
-                            shareAPI={shareAPI}
+                            isShared={isShared}
                         />
                     )}
                 </TabPanel>

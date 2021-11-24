@@ -17,6 +17,7 @@ const vehicleFixture: Vehicle = {
     color: null,
     reminders: [] as VehicleReminder[],
     preferences: {
+        enableSharing: false,
         enableCost: true,
         sendReminderEmails: true,
         sendPromptForRecords: true,

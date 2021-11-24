@@ -5,6 +5,7 @@ import {
 import EmptyState from 'components/common/EmptyState';
 import LinkButton from 'components/common/LinkButton';
 import Search from 'components/Search';
+import VehicleColorIndicator from 'components/VehicleColorIndicator';
 import VehicleRecordsTable from 'components/VehicleRecordsTable';
 import VehicleStats from 'components/VehicleStats';
 import { intlFormat } from 'date-fns';
@@ -19,12 +20,12 @@ import { vehicleAddPath, vehicleImportPath } from 'utils/resources';
 
 export interface VehicleServiceProps {
     vehicleId: string;
-    shareAPI?: boolean;
+    isShared?: boolean;
 }
 
-export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, shareAPI = false }) => {
-    const { data: vehicle, loading: vehicleLoading } = useRequest<Vehicle>(vehicleAPIPath(vehicleId, shareAPI));
-    const { data: records, loading: recordsLoading } = useRequest<VehicleRecord[]>(recordsAPIPath(vehicleId, shareAPI));
+export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, isShared = false }) => {
+    const { data: vehicle, loading: vehicleLoading } = useRequest<Vehicle>(vehicleAPIPath(vehicleId, isShared));
+    const { data: records, loading: recordsLoading } = useRequest<VehicleRecord[]>(recordsAPIPath(vehicleId, isShared));
 
     const { searchQuery, queryResults, setSearchQuery } = useSearchQuery(records, (item, query) => {
         const re = new RegExp(query, 'gi');
@@ -41,7 +42,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, share
         setSearchQuery(text);
     };
 
-    if (isEmpty) {
+    if (isEmpty && !isShared) {
         return (
             <EmptyState
                 heading="Add your vehicle's history"
@@ -60,14 +61,30 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, share
         );
     }
 
+    if (isEmpty && isShared) {
+        return (
+            <EmptyState
+                heading="No history yet"
+                details="This vehicle is being shared but doesn't have any history yet."
+            />
+        );
+    }
+
     return (
         <Container maxW="container.lg">
+            {isShared && vehicle && (
+                <HStack spacing={2} mb={10}>
+                    <VehicleColorIndicator size={8} color={vehicle?.color} />
+                    <Heading size="lg">{vehicle?.name}</Heading>
+                </HStack>
+            )}
+
             {vehicle && records && (
-                <VehicleStats vehicle={vehicle} records={records} />
+                <VehicleStats vehicle={vehicle} records={records} isShared={isShared} />
             )}
 
             <Flex mb={6} direction="row-reverse">
-                {!vehicle?.retired && (
+                {!vehicle?.retired && !isShared && (
                     <Flex>
                         <LightMode>
                             <LinkButton href={vehicleAddPath(vehicleId)} size="md" leftIcon={<AddIcon />} shadow="lg">
@@ -76,7 +93,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, share
                         </LightMode>
                     </Flex>
                 )}
-                <Spacer minW={vehicle?.retired ? [null] : [4, null]} />
+                <Spacer minW={vehicle?.retired || isShared ? [null] : [4, null]} />
                 <Search onChangeText={handleSearch} />
             </Flex>
 
