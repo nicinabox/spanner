@@ -48,11 +48,11 @@ export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records, is
                     </VehicleStat>
                 )}
                 <VehicleStat label="VIN">
-                    {vehicle.vin || isShared ? '--' : (
+                    {vehicle.vin || (isShared ? '--' : (
                         <Link href={editVehiclePath(vehicle.id)} passHref>
                             <Text as="a" color="brand.primary">Add VIN...</Text>
                         </Link>
-                    )}
+                    ))}
                 </VehicleStat>
             </HStack>
         </Box>
