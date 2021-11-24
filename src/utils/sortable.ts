@@ -1,4 +1,4 @@
-import { orderBy, sortBy } from 'lodash';
+import { orderBy } from 'lodash';
 
 import { Vehicle } from 'queries/vehicles';
 import { getOverdueRemindersCount } from './reminders';
@@ -6,6 +6,8 @@ import { getOverdueRemindersCount } from './reminders';
 export type VehicleSortStrategy =
     | 'newest_first'
     | 'oldest_first'
+    | 'name_a_to_z'
+    | 'name_z_to_a'
     | 'reminders_first'
     | 'highest_mileage_first'
     | 'lowest_mileage_first'
@@ -15,6 +17,8 @@ export type VehicleSortStrategy =
 export const vehicleSortStrategy: Record<VehicleSortStrategy, (vehicles: Vehicle[]) => Vehicle[]> = {
     newest_first: sortVehiclesNewestFirst,
     oldest_first: sortVehiclesOldestFirst,
+    name_a_to_z: sortVehiclesNameAtoZ,
+    name_z_to_a: sortVehiclesNameZtoA,
     reminders_first: sortVehiclesRemindersFirst,
     highest_mileage_first: sortVehiclesHighestMileageFirst,
     lowest_mileage_first: sortVehiclesLowestMileageFirst,
@@ -28,6 +32,14 @@ export function sortVehiclesNewestFirst(vehicles: Vehicle[]) {
 
 export function sortVehiclesOldestFirst(vehicles: Vehicle[]) {
     return orderBy(vehicles, (v) => new Date(v.createdAt).getTime(), 'asc');
+}
+
+export function sortVehiclesNameAtoZ(vehicles: Vehicle[]) {
+    return orderBy(vehicles, 'name', 'asc');
+}
+
+export function sortVehiclesNameZtoA(vehicles: Vehicle[]) {
+    return orderBy(vehicles, 'name', 'desc');
 }
 
 export function sortVehiclesRemindersFirst(vehicles: Vehicle[]) {
