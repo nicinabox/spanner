@@ -1,9 +1,12 @@
 import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import {
-    Box,
-    Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Skeleton, Spacer, Text,
+    Box, Button, HStack, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuDivider, MenuItem, MenuList,
+    Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter,
+    ModalHeader, ModalOverlay, Skeleton, Spacer, Text,
+    useDisclosure,
 } from '@chakra-ui/react';
 import VehicleColorIndicator from 'components/VehicleColorIndicator';
+import VehicleShareSettings from 'components/VehicleShareSettings';
 import useMutation, { mutate } from 'hooks/useMutation';
 import { debounce, merge } from 'lodash';
 import Link from 'next/link';
@@ -19,6 +22,7 @@ export interface VehicleActionsMenuProps {
 
 export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle }) => {
     const { mutate: updateVehicleMutation } = useMutation(updateVehicle);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const handleUpdateVehicle = (params: VehicleParams) => {
         if (!vehicle) return;
@@ -35,71 +39,95 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
     };
 
     return (
-        <Menu>
-            <MenuButton
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                variant="ghost-header"
-                size="sm"
-                colorScheme="brandInverted"
-                color="white"
-            >
-                {vehicle ? (
-                    <HStack spacing={2}>
-                        <VehicleColorIndicator color={vehicle?.color} />
-                        <Text>{vehicle?.name}</Text>
-                    </HStack>
-                ) : (
-                    <Skeleton minW={140} minH={3} startColor="whiteAlpha.100" endColor="whiteAlpha.400" />
+        <>
+            <Menu>
+                <MenuButton
+                    as={Button}
+                    rightIcon={<ChevronDownIcon />}
+                    variant="ghost-header"
+                    size="sm"
+                    colorScheme="brandInverted"
+                    color="white"
+                >
+                    {vehicle ? (
+                        <HStack spacing={2}>
+                            <VehicleColorIndicator color={vehicle?.color} />
+                            <Text>{vehicle?.name}</Text>
+                        </HStack>
+                    ) : (
+                        <Skeleton minW={140} minH={3} startColor="whiteAlpha.100" endColor="whiteAlpha.400" />
+                    )}
+                </MenuButton>
+
+                {vehicle && (
+                    <MenuList>
+                        <Link href={editVehiclePath(vehicle.id)} passHref>
+                            <MenuItem as="a">
+                                Edit
+                            </MenuItem>
+                        </Link>
+                        <MenuItem closeOnSelect={false} as="label" htmlFor="color">
+                            Change color
+                            <Spacer />
+                            <Box display="none">
+                                <input
+                                    type="color"
+                                    id="color"
+                                    name="color"
+                                    value={vehicle.color ?? ''}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onChange={handleColorChange}
+                                />
+                            </Box>
+                            <VehicleColorIndicator color={vehicle?.color} />
+                        </MenuItem>
+
+                        <MenuItem
+                            onClick={() => handleUpdateVehicle({ retired: !vehicle.retired })}
+                            icon={vehicle.retired ? <CheckIcon /> : <Spacer />}
+                            iconSpacing={0}
+                            flexDir="row-reverse"
+                            closeOnSelect={false}
+                        >
+                            Mark retired
+                        </MenuItem>
+
+                        <MenuDivider />
+
+                        <MenuItem onClick={onOpen}>
+                            Share...
+                        </MenuItem>
+
+                        <MenuDivider />
+
+                        <Link href={vehicleImportPath(vehicle.id)} passHref>
+                            <MenuItem as="a">
+                                Import history
+                            </MenuItem>
+                        </Link>
+                        <MenuItem as="a" href={`${vehicleAPIPath(vehicle.id)}/export`} target="_blank">
+                            Export history to CSV
+                        </MenuItem>
+                    </MenuList>
                 )}
-            </MenuButton>
+            </Menu>
 
-            {vehicle && (
-                <MenuList>
-                    <Link href={editVehiclePath(vehicle.id)} passHref>
-                        <MenuItem as="a">
-                            Edit
-                        </MenuItem>
-                    </Link>
-                    <MenuItem closeOnSelect={false} as="label" htmlFor="color">
-                        Change color
-                        <Spacer />
-                        <Box display="none">
-                            <input
-                                type="color"
-                                id="color"
-                                name="color"
-                                value={vehicle.color ?? ''}
-                                onClick={(e) => e.stopPropagation()}
-                                onChange={handleColorChange}
-                            />
-                        </Box>
-                        <VehicleColorIndicator color={vehicle?.color} />
-                    </MenuItem>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Share</ModalHeader>
+                    <ModalCloseButton />
 
-                    <MenuItem
-                        onClick={() => handleUpdateVehicle({ retired: !vehicle.retired })}
-                        icon={vehicle.retired ? <CheckIcon /> : <Spacer />}
-                        iconSpacing={0}
-                        flexDir="row-reverse"
-                        closeOnSelect={false}
-                    >
-                        Mark retired
-                    </MenuItem>
+                    <ModalBody>
+                        {Boolean(vehicle) && (
+                            <VehicleShareSettings vehicle={vehicle!} />
+                        )}
+                    </ModalBody>
 
-                    <MenuDivider />
-
-                    <Link href={vehicleImportPath(vehicle.id)} passHref>
-                        <MenuItem as="a">
-                            Import history
-                        </MenuItem>
-                    </Link>
-                    <MenuItem as="a" href={`${vehicleAPIPath(vehicle.id)}/export`} target="_blank">
-                        Export history to CSV
-                    </MenuItem>
-                </MenuList>
-            )}
-        </Menu>
+                    <ModalFooter />
+                </ModalContent>
+            </Modal>
+        </>
     );
 };
 

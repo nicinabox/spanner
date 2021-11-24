@@ -11,7 +11,7 @@ import { intlFormat } from 'date-fns';
 import useRequest from 'hooks/useRequest';
 import useSearchQuery from 'hooks/useSearchQuery';
 import qs from 'qs';
-import { VehicleRecord, recordsAPIPath } from 'queries/records';
+import { recordsAPIPath, VehicleRecord } from 'queries/records';
 import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
@@ -19,11 +19,12 @@ import { vehicleAddPath, vehicleImportPath } from 'utils/resources';
 
 export interface VehicleServiceProps {
     vehicleId: string;
+    shareAPI?: boolean;
 }
 
-export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => {
-    const { data: vehicle, loading: vehicleLoading } = useRequest<Vehicle>(vehicleAPIPath(vehicleId));
-    const { data: records, loading: recordsLoading } = useRequest<VehicleRecord[]>(recordsAPIPath(vehicleId));
+export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, shareAPI = false }) => {
+    const { data: vehicle, loading: vehicleLoading } = useRequest<Vehicle>(vehicleAPIPath(vehicleId, shareAPI));
+    const { data: records, loading: recordsLoading } = useRequest<VehicleRecord[]>(recordsAPIPath(vehicleId, shareAPI));
 
     const { searchQuery, queryResults, setSearchQuery } = useSearchQuery(records, (item, query) => {
         const re = new RegExp(query, 'gi');

@@ -23,7 +23,7 @@ export interface VehicleRecordParams {
     recordType?: RecordType;
 }
 
-export const recordsAPIPath = (vehicleId: RecordID) => `/api/vehicles/${vehicleId}/records`;
+export const recordsAPIPath = (vehicleId: RecordID, share?: boolean) => `/api/vehicles/${vehicleId}/records${share ? '/share' : ''}`;
 export const recordAPIPath = (vehicleId: RecordID, recordId: RecordID) => `/api/vehicles/${vehicleId}/records/${recordId}`;
 
 export async function fetchRecords(api: AxiosInstance, vehicleId: RecordID) {
