@@ -22,6 +22,7 @@ export interface VehicleRecordsTableProps {
     preferences?: VehiclePreferences;
     distanceUnit?: DistanceUnit;
     isLoaded?: boolean;
+    isShared?: boolean;
 }
 
 const getNextRecordWithMileage = (record: VehicleRecord, arr: VehicleRecord[]): VehicleRecord | undefined => {
@@ -68,7 +69,7 @@ const FlexTable = (props) => (
 );
 
 export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
-    records, vehicleId, preferences = {}, distanceUnit = 'mi',
+    records, vehicleId, preferences = {}, distanceUnit = 'mi', isShared,
 }) => {
     const reverseChronoRecords = sortRecordsNewestFirst(records ?? []);
     const recordsByYear = groupBy(reverseChronoRecords, (r) => new Date(r.date).getFullYear());
@@ -205,18 +206,20 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                         </Cell>
 
                                         <Cell justify="end" basis="100%">
-                                            <LinkButton
-                                                href={editRecordPath(vehicleId, record.id)}
-                                                size="sm"
-                                                variant="link"
-                                                py={[1, null]}
-                                                onClick={() => {
-                                                    // Preload data for edit form
-                                                    mutate(recordAPIPath(vehicleId, record.id), record, false);
-                                                }}
-                                            >
-                                                Edit
-                                            </LinkButton>
+                                            {!isShared && (
+                                                <LinkButton
+                                                    href={editRecordPath(vehicleId, record.id)}
+                                                    size="sm"
+                                                    variant="link"
+                                                    py={[1, null]}
+                                                    onClick={() => {
+                                                        // Preload data for edit form
+                                                        mutate(recordAPIPath(vehicleId, record.id), record, false);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </LinkButton>
+                                            )}
                                         </Cell>
                                     </Row>
                                 );

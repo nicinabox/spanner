@@ -103,6 +103,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, isSha
                     records={recordsResults}
                     distanceUnit={vehicle?.distanceUnit}
                     preferences={vehicle?.preferences}
+                    isShared={isShared}
                 />
             )}
 
