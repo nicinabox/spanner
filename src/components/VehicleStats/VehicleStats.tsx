@@ -2,6 +2,7 @@ import {
     Stat, StatLabel, StatNumber, Box, HStack, Text,
 } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
+import usePageContext from 'hooks/usePageContext';
 import Link from 'next/link';
 import { VehicleRecord } from 'queries/records';
 import { Vehicle } from 'queries/vehicles';
@@ -14,7 +15,6 @@ import { formatEstimatedMileage, formatMilesPerYear, sortRecordsOldestFirst } fr
 export interface VehicleStatsProps {
     vehicle: Vehicle;
     records: VehicleRecord[];
-    isShared?: boolean;
 }
 
 export const VehicleStat = ({ label, children, ...props }) => (
@@ -26,7 +26,8 @@ export const VehicleStat = ({ label, children, ...props }) => (
     </Stat>
 );
 
-export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records, isShared }) => {
+export const VehicleStats: React.FC<VehicleStatsProps> = ({ vehicle, records }) => {
+    const { isShared } = usePageContext();
     const [oldestRecord] = sortRecordsOldestFirst(records);
 
     return (

@@ -9,6 +9,7 @@ import VehicleColorIndicator from 'components/VehicleColorIndicator';
 import VehicleRecordsTable from 'components/VehicleRecordsTable';
 import VehicleStats from 'components/VehicleStats';
 import { intlFormat } from 'date-fns';
+import usePageContext from 'hooks/usePageContext';
 import useRequest from 'hooks/useRequest';
 import useSearchQuery from 'hooks/useSearchQuery';
 import qs from 'qs';
@@ -20,10 +21,11 @@ import { vehicleAddPath, vehicleImportPath } from 'utils/resources';
 
 export interface VehicleServiceProps {
     vehicleId: string;
-    isShared?: boolean;
 }
 
-export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, isShared = false }) => {
+export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => {
+    const { isShared } = usePageContext();
+
     const { data: vehicle, loading: vehicleLoading } = useRequest<Vehicle>(vehicleAPIPath(vehicleId, isShared));
     const { data: records, loading: recordsLoading } = useRequest<VehicleRecord[]>(recordsAPIPath(vehicleId, isShared));
 
@@ -80,7 +82,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, isSha
             )}
 
             {vehicle && records && (
-                <VehicleStats vehicle={vehicle} records={records} isShared={isShared} />
+                <VehicleStats vehicle={vehicle} records={records} />
             )}
 
             <Flex mb={6} direction="row-reverse">
@@ -103,7 +105,6 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId, isSha
                     records={recordsResults}
                     distanceUnit={vehicle?.distanceUnit}
                     preferences={vehicle?.preferences}
-                    isShared={isShared}
                 />
             )}
 

@@ -6,6 +6,7 @@ import LinkButton from 'components/common/LinkButton';
 import { intlFormat } from 'date-fns';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
+import usePageContext from 'hooks/usePageContext';
 import { capitalize, groupBy } from 'lodash';
 import { VehicleRecord, recordAPIPath } from 'queries/records';
 import { DistanceUnit, VehiclePreferences } from 'queries/vehicles';
@@ -22,7 +23,6 @@ export interface VehicleRecordsTableProps {
     preferences?: VehiclePreferences;
     distanceUnit?: DistanceUnit;
     isLoaded?: boolean;
-    isShared?: boolean;
 }
 
 const getNextRecordWithMileage = (record: VehicleRecord, arr: VehicleRecord[]): VehicleRecord | undefined => {
@@ -69,8 +69,10 @@ const FlexTable = (props) => (
 );
 
 export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
-    records, vehicleId, preferences = {}, distanceUnit = 'mi', isShared,
+    records, vehicleId, preferences = {}, distanceUnit = 'mi',
 }) => {
+    const { isShared } = usePageContext();
+
     const reverseChronoRecords = sortRecordsNewestFirst(records ?? []);
     const recordsByYear = groupBy(reverseChronoRecords, (r) => new Date(r.date).getFullYear());
     const years = Object.keys(recordsByYear).sort((a, b) => Number(b) - Number(a));

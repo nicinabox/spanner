@@ -49,7 +49,12 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
     return (
         <Page
             p={0}
-            Header={<PageHeader vehicle={vehicle} overDueRemindersBadge={vehicle ? getOverdueRemindersCount(vehicle) : undefined} />}
+            Header={(
+                <PageHeader
+                    vehicle={vehicle}
+                    overDueRemindersBadge={vehicle ? getOverdueRemindersCount(vehicle) : undefined}
+                />
+              )}
         >
             <LinkPreload path={[
                 vehicleAPIPath(params.vehicleId),

@@ -1,5 +1,5 @@
 import {
-    Badge, Box, Container, ContainerProps, Flex, HStack, SimpleGrid, Spacer, Tabs,
+    Badge, Container, ContainerProps, Flex, SimpleGrid, Tabs,
 } from '@chakra-ui/react';
 import Router, { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import ColorModeButton from '../ColorModeButton';
 
 export interface PageProps extends ContainerProps {
     Header?: JSX.Element;
+    contextValue?: Record<string, unknown>;
 }
 
 export const parseHashParams = (url: string) => {
@@ -17,7 +18,11 @@ export const parseHashParams = (url: string) => {
     }, {});
 };
 
-export const Page: React.FC<PageProps> = ({ children, Header, ...containerProps }) => {
+export const PageContext = React.createContext<{ isShared?: boolean }>({});
+
+export const Page: React.FC<PageProps> = ({
+    children, contextValue, Header, ...containerProps
+}) => {
     const router = useRouter();
     const [panel, setPanel] = useState(0);
 
@@ -42,20 +47,22 @@ export const Page: React.FC<PageProps> = ({ children, Header, ...containerProps 
     }, []);
 
     return (
-        <Tabs colorScheme="brandInverted" size="sm" variant="soft-rounded" isLazy lazyBehavior="keepMounted" index={panel}>
-            <SimpleGrid templateRows="auto 1fr auto" minH="100vh">
-                {Header}
+        <PageContext.Provider value={contextValue ?? {}}>
+            <Tabs colorScheme="brandInverted" size="sm" variant="soft-rounded" isLazy lazyBehavior="keepMounted" index={panel}>
+                <SimpleGrid templateRows="auto 1fr auto" minH="100vh">
+                    {Header}
 
-                <Container maxW="none" mb={12} {...containerProps}>
-                    {children}
-                </Container>
+                    <Container maxW="none" mb={12} {...containerProps}>
+                        {children}
+                    </Container>
 
-                <Flex justify="space-between" align="center" p={4}>
-                    <ColorModeButton variant="ghost" />
-                    <Badge colorScheme="gray" textTransform="none">v3.next</Badge>
-                </Flex>
-            </SimpleGrid>
-        </Tabs>
+                    <Flex justify="space-between" align="center" p={4}>
+                        <ColorModeButton variant="ghost" />
+                        <Badge colorScheme="gray" textTransform="none">v3.next</Badge>
+                    </Flex>
+                </SimpleGrid>
+            </Tabs>
+        </PageContext.Provider>
     );
 };
 

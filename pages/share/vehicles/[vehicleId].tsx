@@ -44,6 +44,7 @@ const VehicleSharePage: React.FC<VehiclePageProps> = ({ params }) => {
         <Page
             p={0}
             Header={<PageHeader vehicle={vehicle} />}
+            contextValue={{ isShared }}
         >
             <LinkPreload path={[
                 vehicleAPI,
@@ -60,7 +61,6 @@ const VehicleSharePage: React.FC<VehiclePageProps> = ({ params }) => {
                     ) : (
                         <VehicleService
                             vehicleId={params.vehicleId}
-                            isShared={isShared}
                         />
                     )}
                 </TabPanel>
