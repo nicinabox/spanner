@@ -1,6 +1,7 @@
 class VehiclePreferences
     include Virtus.model
 
+    attribute :enable_sharing, Boolean, :default => false
     attribute :enable_cost, Boolean, :default => true
     attribute :send_reminder_emails, Boolean, :default => true
     attribute :send_prompt_for_records, Boolean, :default => true

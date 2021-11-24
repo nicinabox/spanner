@@ -1,11 +1,24 @@
 module V2
   class RecordsController < ApplicationController
+    skip_before_action :authenticate, only: [:share]
+
     def index
       render json: records.all
     end
 
     def show
       render json: records.find(params[:id])
+    end
+
+    def share
+      vehicle = Vehicle.find(params[:vehicle_id])
+
+      if vehicle.preferences.enable_sharing
+        records = vehicle.records.all
+        return render json: records
+      end
+
+      render_unauthorized
     end
 
     def create

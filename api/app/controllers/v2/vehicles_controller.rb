@@ -4,12 +4,24 @@ require 'exporter'
 
 module V2
   class VehiclesController < ApplicationController
+    skip_before_action :authenticate, only: [:share]
+
     def index
       render json: vehicles.all.order(:position)
     end
 
     def show
       render json: vehicles.find(params[:id])
+    end
+
+    def share
+      vehicle = Vehicle.find(params[:vehicle_id])
+
+      if vehicle.preferences.enable_sharing
+        return render json: vehicle
+      end
+
+      render_unauthorized
     end
 
     def create
@@ -64,6 +76,7 @@ module V2
           :name, :vin, :notes, :position, :enable_cost, :distance_unit,
           :retired, :import_file, :fuelly, :color,
           preferences: [
+            :enable_sharing,
             :enable_cost,
             :send_reminder_emails,
             :send_prompt_for_records,

@@ -14,6 +14,9 @@ Rails.application.routes.draw do
       get 'reminders/estimate_date', to: 'reminders#estimate_date'
       resources :reminders
 
+      get :share
+      get 'records/share', to: 'records#share'
+
       resources :records
 
       post :import
