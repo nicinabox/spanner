@@ -26,6 +26,18 @@ export const vehicleSortStrategy: Record<VehicleSortStrategy, (vehicles: Vehicle
     lowest_mileage_rate_first: sortVehiclesLowestMileageRateFirst,
 };
 
+export const vehicleSortStrategyToHuman: Record<VehicleSortStrategy, string> = {
+    newest_first: 'Newest first',
+    oldest_first: 'Oldest first',
+    name_a_to_z: 'Name A to Z',
+    name_z_to_a: 'Name Z to A',
+    reminders_first: 'Reminders first',
+    highest_mileage_first: 'Highest mileage first',
+    lowest_mileage_first: 'Lowest mileage first',
+    highest_mileage_rate_first: 'Highest mileage rate first',
+    lowest_mileage_rate_first: 'Lowest mileage rate first',
+};
+
 export function sortVehiclesNewestFirst(vehicles: Vehicle[]) {
     return orderBy(vehicles, (v) => new Date(v.createdAt).getTime(), 'desc');
 }
