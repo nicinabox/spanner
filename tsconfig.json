@@ -19,7 +19,10 @@
     "isolatedModules": true,
     "strictNullChecks": true,
     "jsx": "preserve",
-    "typeRoots": ["tsd"]
+    "typeRoots": [
+      "tsd"
+    ],
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
