@@ -41,8 +41,6 @@ module.exports = {
             devDependencies: ['jest.setup.ts', '**/*.spec.ts', '**/*.spec.tsx'],
         }],
 
-        'react/no-array-index-key': 'warn',
-
         'import/extensions': [
             'error',
             'ignorePackages',
@@ -58,6 +56,9 @@ module.exports = {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         }],
 
+        'react/no-array-index-key': 'warn',
+        'react/require-default-props': 'off',
+        'react/no-unused-prop-types': 'warn',
         'react/prop-types': 'off',
         'react/jsx-props-no-spreading': 'off',
         'react/jsx-indent-props': ['error', 4],
