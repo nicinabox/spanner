@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import marked from 'marked';
+import { marked } from 'marked';
 import Head from 'next/head';
 import React from 'react';
 

@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import marked from 'marked';
+import { marked } from 'marked';
 
 const contentDir = join(process.cwd(), '_content');
 
