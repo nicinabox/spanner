@@ -21,7 +21,7 @@ export const createAPIRequest = (req?) => {
 
     if (req) {
         const session = req.session.get('session');
-        const Authorization = session ? `Token ${session.authToken}` : null;
+        const Authorization = `Token ${session?.authToken}`;
 
         api = axios.create({
             baseURL: PROXY_HOST,
