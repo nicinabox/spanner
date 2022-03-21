@@ -10,8 +10,8 @@ import RecordForm from 'components/forms/RecordForm';
 import TabsHeader from 'components/common/TabsHeader';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useRequest from 'hooks/useRequest';
-import { VehicleRecord, recordsAPIPath } from 'queries/records';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { recordsAPIPath } from 'queries/records';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { sortRecordsNewestFirst } from 'utils/vehicle';
 import lang from 'utils/lang';
@@ -22,7 +22,7 @@ export type AddPageProps = VehiclePageProps
 
 const isServer = typeof window === 'undefined';
 
-const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => (
+const PageHeader: React.FC<{ vehicle?: API.Vehicle }> = ({ vehicle }) => (
     <TabsHeader
         tabs={[
                 'Add Service',
@@ -41,10 +41,10 @@ const PageHeader: React.FC<{ vehicle?: Vehicle }> = ({ vehicle }) => (
 );
 
 export const AddPage: React.FC<AddPageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
-    const { data: records } = useRequest<VehicleRecord[]>(recordsAPIPath(params.vehicleId));
+    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
+    const { data: records } = useRequest<API.Record[]>(recordsAPIPath(params.vehicleId));
 
-    const newestRecordMileage = records ? sortRecordsNewestFirst(records)[0]?.mileage : 0;
+    const newestRecordMileage: number = (records ? sortRecordsNewestFirst(records)[0]?.mileage : 0) ?? 0;
     const recordFormValues = isServer ? {} : qs.parse(window?.location.search.replace('?', ''));
 
     return (

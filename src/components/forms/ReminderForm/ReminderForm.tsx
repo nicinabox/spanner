@@ -13,9 +13,9 @@ import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import { clientAPI, RecordID } from 'queries/config';
+import { clientAPI } from 'queries/config';
 import * as reminders from 'queries/reminders';
-import { DistanceUnit, vehicleAPIPath } from 'queries/vehicles';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React, { useEffect, useState } from 'react';
 import { formatDateISO, intlFormatDate, parseDateUTC } from 'utils/date';
 import { mileageFieldHelpers } from 'utils/form';
@@ -26,9 +26,9 @@ import FormSection from 'components/common/FormSection';
 import DangerZone from 'components/common/DangerZone';
 
 export interface NewReminderFormProps {
-    vehicleId: RecordID;
-    minMileage: number | undefined;
-    distanceUnit: DistanceUnit | undefined;
+    vehicleId: API.RecordID;
+    minMileage?: number;
+    distanceUnit: API.DistanceUnit | undefined;
     formValues?: reminders.ReminderParams;
 }
 
@@ -83,7 +83,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
             estimateReminderDate({
                 mileage,
                 date: formData.date,
-                reminderType: formData.reminderType as reminders.ReminderType,
+                reminderType: formData.reminderType as API.ReminderType,
             });
         } else {
             setEstimatedDate(null);
@@ -123,15 +123,15 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                     </Select>
                 </FormControl>
 
-                {['date', 'date_or_mileage'].includes(formData.reminderType) && (
+                {['date', 'date_or_mileage'].includes(formData.reminderType as string) && (
                 <FormControl mb={4} id="date" isRequired>
                     <FormLabel>Date</FormLabel>
                     <input type="hidden" {...register('date')} />
-                    <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setValue('date', formatDateISO(date))} />
+                    <DatePicker initialDate={parseDateUTC(formData.date as string)} onChange={(date) => setValue('date', formatDateISO(date))} />
                 </FormControl>
             )}
 
-                {['mileage', 'date_or_mileage'].includes(formData.reminderType) && (
+                {['mileage', 'date_or_mileage'].includes(formData.reminderType as string) && (
                     <FormControl mb={4} id="mileage" isRequired>
                         <FormLabel>{capitalize(lang.mileageLabel[distanceUnit])}</FormLabel>
 
@@ -147,7 +147,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                     </FormControl>
                 )}
 
-                {estimatedDate && ['date_or_mileage', 'mileage'].includes(formData.reminderType) && (
+                {estimatedDate && ['date_or_mileage', 'mileage'].includes(formData.reminderType as string) && (
                     <Alert status="info" variant="left-accent">
                         Estimated for
                         {' '}

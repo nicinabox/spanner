@@ -1,6 +1,5 @@
 import { orderBy } from 'lodash';
 
-import { Vehicle } from 'queries/vehicles';
 import { getOverdueRemindersCount } from './reminders';
 
 export type VehicleSortStrategy =
@@ -14,7 +13,7 @@ export type VehicleSortStrategy =
     | 'highest_mileage_rate_first'
     | 'lowest_mileage_rate_first';
 
-export const vehicleSortStrategy: Record<VehicleSortStrategy, (vehicles: Vehicle[]) => Vehicle[]> = {
+export const vehicleSortStrategy: Record<VehicleSortStrategy, (vehicles: API.Vehicle[]) => API.Vehicle[]> = {
     newest_first: sortVehiclesNewestFirst,
     oldest_first: sortVehiclesOldestFirst,
     name_a_to_z: sortVehiclesNameAtoZ,
@@ -38,38 +37,38 @@ export const vehicleSortStrategyToHuman: Record<VehicleSortStrategy, string> = {
     lowest_mileage_rate_first: 'Lowest mileage rate first',
 };
 
-export function sortVehiclesNewestFirst(vehicles: Vehicle[]) {
+export function sortVehiclesNewestFirst(vehicles: API.Vehicle[]) {
     return orderBy(vehicles, (v) => new Date(v.createdAt).getTime(), 'desc');
 }
 
-export function sortVehiclesOldestFirst(vehicles: Vehicle[]) {
+export function sortVehiclesOldestFirst(vehicles: API.Vehicle[]) {
     return orderBy(vehicles, (v) => new Date(v.createdAt).getTime(), 'asc');
 }
 
-export function sortVehiclesNameAtoZ(vehicles: Vehicle[]) {
+export function sortVehiclesNameAtoZ(vehicles: API.Vehicle[]) {
     return orderBy(vehicles, 'name', 'asc');
 }
 
-export function sortVehiclesNameZtoA(vehicles: Vehicle[]) {
+export function sortVehiclesNameZtoA(vehicles: API.Vehicle[]) {
     return orderBy(vehicles, 'name', 'desc');
 }
 
-export function sortVehiclesRemindersFirst(vehicles: Vehicle[]) {
+export function sortVehiclesRemindersFirst(vehicles: API.Vehicle[]) {
     return orderBy(vehicles, [getOverdueRemindersCount, 'name'], ['desc', 'asc']);
 }
 
-export function sortVehiclesHighestMileageFirst(vehicles: Vehicle[]) {
+export function sortVehiclesHighestMileageFirst(vehicles: API.Vehicle[]) {
     return orderBy(vehicles, [(v) => v.estimatedMileage ?? 0, 'name'], ['desc', 'asc']);
 }
 
-export function sortVehiclesLowestMileageFirst(vehicles: Vehicle[]) {
+export function sortVehiclesLowestMileageFirst(vehicles: API.Vehicle[]) {
     return orderBy(vehicles, [(v) => v.estimatedMileage ?? 0, 'name'], ['asc', 'asc']);
 }
 
-export function sortVehiclesHighestMileageRateFirst(vehicles: Vehicle[]) {
+export function sortVehiclesHighestMileageRateFirst(vehicles: API.Vehicle[]) {
     return orderBy(vehicles, (v) => v.milesPerYear ?? 0, 'desc');
 }
 
-export function sortVehiclesLowestMileageRateFirst(vehicles: Vehicle[]) {
+export function sortVehiclesLowestMileageRateFirst(vehicles: API.Vehicle[]) {
     return orderBy(vehicles, (v) => v.milesPerYear ?? 0, 'asc');
 }

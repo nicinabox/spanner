@@ -4,7 +4,6 @@ import {
 } from '@chakra-ui/react';
 import crypto from 'crypto';
 import useRequest from 'hooks/useRequest';
-import { User } from 'queries/session';
 import React from 'react';
 
 export interface UserMenuProps {
@@ -24,7 +23,7 @@ const gravatarUrl = (email: string) => {
 };
 
 export const UserMenu: React.FC<UserMenuProps> = () => {
-    const { data: user } = useRequest<User>('/api/user');
+    const { data: user } = useRequest<API.User>('/api/user');
 
     return (
         <Menu>

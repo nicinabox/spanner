@@ -3,11 +3,10 @@ import { Button, Container, Flex } from '@chakra-ui/react';
 import EmptyState from 'components/common/EmptyState';
 import MarkdownBody from 'components/common/MarkdownBody';
 import NotesForm from 'components/forms/NotesForm';
-import { Vehicle } from 'queries/vehicles';
 import React, { useState } from 'react';
 
 export interface VehicleNotesProps {
-    vehicle: Vehicle;
+    vehicle: API.Vehicle;
 }
 
 export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {

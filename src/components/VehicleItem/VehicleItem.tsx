@@ -5,14 +5,14 @@ import Interpunct from 'components/common/Interpunct';
 import NumberBadge from 'components/common/NumberBadge';
 import { mutate } from 'hooks/useMutation';
 import NextLink from 'next/link';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { getOverdueRemindersCount } from 'utils/reminders';
 import { vehiclePath } from 'utils/resources';
 import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
 
 export interface VehicleItemProps {
-    vehicle: Vehicle;
+    vehicle: API.Vehicle;
 }
 
 export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {

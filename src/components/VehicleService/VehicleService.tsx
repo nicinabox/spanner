@@ -12,9 +12,10 @@ import { intlFormat } from 'date-fns';
 import usePageContext from 'hooks/usePageContext';
 import useRequest from 'hooks/useRequest';
 import useSearchQuery from 'hooks/useSearchQuery';
+import { toNumber } from 'lodash';
 import qs from 'qs';
-import { recordsAPIPath, VehicleRecord } from 'queries/records';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { recordsAPIPath } from 'queries/records';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
 import { vehicleAddPath, vehicleImportPath } from 'utils/resources';
@@ -26,14 +27,14 @@ export interface VehicleServiceProps {
 export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => {
     const { isShared } = usePageContext();
 
-    const { data: vehicle, loading: vehicleLoading } = useRequest<Vehicle>(vehicleAPIPath(vehicleId, isShared));
-    const { data: records, loading: recordsLoading } = useRequest<VehicleRecord[]>(recordsAPIPath(vehicleId, isShared));
+    const { data: vehicle, loading: vehicleLoading } = useRequest<API.Vehicle>(vehicleAPIPath(vehicleId, isShared));
+    const { data: records, loading: recordsLoading } = useRequest<API.Record[]>(recordsAPIPath(vehicleId, isShared));
 
     const { searchQuery, queryResults, setSearchQuery } = useSearchQuery(records, (item, query) => {
         const re = new RegExp(query, 'gi');
         const date = intlFormat(parseDateUTC(item.date), { month: 'short', year: 'numeric', day: 'numeric' });
 
-        return re.test(item.notes) || re.test(date) || re.test(item.mileage.toString());
+        return re.test(item.notes) || re.test(date) || re.test(toNumber(item.mileage).toString());
     });
 
     const anyLoading = vehicleLoading || recordsLoading;

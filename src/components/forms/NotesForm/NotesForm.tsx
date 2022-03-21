@@ -5,11 +5,11 @@ import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
 import useTextareaResize from 'hooks/useTextareaResize';
 import { MutateParams } from 'queries/config';
-import { updateVehicle, Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { updateVehicle, vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 
 export interface NotesFormProps {
-    formValues: MutateParams<Partial<Vehicle>>;
+    formValues: MutateParams<Partial<API.Vehicle>>;
     onSuccess: () => void;
     onError: () => void;
     onCancel: () => void;

@@ -4,8 +4,6 @@ import {
 import { intlFormat } from 'date-fns';
 import usePageContext from 'hooks/usePageContext';
 import Link from 'next/link';
-import { VehicleRecord } from 'queries/records';
-import { Vehicle } from 'queries/vehicles';
 import React from 'react';
 import { parseDateUTC } from 'utils/date';
 import lang from 'utils/lang';
@@ -13,8 +11,8 @@ import { editVehiclePath } from 'utils/resources';
 import { formatEstimatedMileage, formatMilesPerYear, sortRecordsOldestFirst } from 'utils/vehicle';
 
 export interface VehicleStatsProps {
-    vehicle: Vehicle;
-    records: VehicleRecord[];
+    vehicle: API.Vehicle;
+    records: API.Record[];
 }
 
 export const VehicleStat = ({ label, children, ...props }) => (

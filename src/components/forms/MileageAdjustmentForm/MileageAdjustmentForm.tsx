@@ -8,7 +8,7 @@ import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
 import { useRouter } from 'next/router';
 import { createRecord } from 'queries/records';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { mileageFieldHelpers } from 'utils/form';
 import lang from 'utils/lang';
@@ -17,7 +17,7 @@ import { formatEstimatedMileage } from 'utils/vehicle';
 import FormSection from 'components/common/FormSection';
 
 export interface MileageAdjustmentFormProps {
-    vehicle: Vehicle;
+    vehicle: API.Vehicle;
 }
 
 export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ vehicle }) => {

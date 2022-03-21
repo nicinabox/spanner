@@ -10,7 +10,7 @@ import Page from 'components/common/Page';
 import UserMenu from 'components/UserMenu';
 import VehiclesList from 'components/VehiclesList';
 import useRequest from 'hooks/useRequest';
-import { Vehicle, vehiclesAPIPath } from 'queries/vehicles';
+import { vehiclesAPIPath } from 'queries/vehicles';
 import React, { useState } from 'react';
 import createPersistedState from 'use-persisted-state';
 import { authRedirect, withSession } from 'utils/session';
@@ -51,7 +51,7 @@ const PageHeader = () => {
 const useSortStrategyState = createPersistedState('vehicleSortStrategy');
 
 const Vehicles: React.FC<VehiclesProps> = () => {
-    const { data, loading } = useRequest<Vehicle[]>(vehiclesAPIPath);
+    const { data, loading } = useRequest<API.Vehicle[]>(vehiclesAPIPath);
 
     const [showRetired, setShowRetired] = useState(false);
 

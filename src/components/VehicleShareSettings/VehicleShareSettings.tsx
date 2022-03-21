@@ -2,12 +2,11 @@ import React from 'react';
 import {
     Text, InputGroup, Input, InputRightElement, Button, useClipboard,
 } from '@chakra-ui/react';
-import { Vehicle } from 'queries/vehicles';
 import * as vehicles from 'queries/vehicles';
 import useMutation, { mutate } from 'hooks/useMutation';
 
 export interface VehicleShareSettingsProps {
-    vehicle: Vehicle;
+    vehicle: API.Vehicle;
 }
 
 export const VehicleShareSettings: React.FC<VehicleShareSettingsProps> = ({ vehicle }) => {

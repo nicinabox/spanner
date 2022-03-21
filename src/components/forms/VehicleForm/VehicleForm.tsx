@@ -15,7 +15,7 @@ import DangerZone from 'components/common/DangerZone';
 import FormSection from 'components/common/FormSection';
 
 export interface VehicleFormProps {
-    vehicle?: vehicles.Vehicle;
+    vehicle?: API.Vehicle;
 }
 
 export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {

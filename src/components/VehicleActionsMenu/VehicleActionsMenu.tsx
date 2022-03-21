@@ -11,13 +11,13 @@ import useMutation, { mutate } from 'hooks/useMutation';
 import { debounce, merge } from 'lodash';
 import Link from 'next/link';
 import {
-    updateVehicle, Vehicle, vehicleAPIPath, VehicleParams,
+    updateVehicle, vehicleAPIPath, VehicleParams,
 } from 'queries/vehicles';
 import React, { useCallback } from 'react';
 import { editVehiclePath, vehicleImportPath } from 'utils/resources';
 
 export interface VehicleActionsMenuProps {
-    vehicle: Vehicle | undefined;
+    vehicle: API.Vehicle | undefined;
 }
 
 export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle }) => {

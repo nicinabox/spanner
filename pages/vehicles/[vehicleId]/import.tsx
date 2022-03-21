@@ -7,7 +7,7 @@ import Page from 'components/common/Page';
 import Header from 'components/common/Header';
 import BackButton from 'components/common/BackButton';
 import useRequest from 'hooks/useRequest';
-import { importRecords, Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { importRecords, vehicleAPIPath } from 'queries/vehicles';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useFormData from 'hooks/useFormData';
 import FormButton from 'components/common/FormButton';
@@ -39,7 +39,7 @@ const PageHeader = ({ vehicle }) => {
 export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({ params }) => {
     const router = useRouter();
 
-    const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
+    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
 
     const { formData, register, setValue } = useFormData({
         importFile: null,

@@ -6,14 +6,14 @@ import Page from 'components/common/Page';
 import VehicleForm from 'components/forms/VehicleForm';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useRequest from 'hooks/useRequest';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { VehiclePageProps } from '../[vehicleId]';
 
 export type EditVehiclePageProps = VehiclePageProps
 
 export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
+    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
 
     return (
         <Page

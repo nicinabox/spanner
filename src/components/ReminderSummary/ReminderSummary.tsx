@@ -1,15 +1,13 @@
 import { Text, TextProps } from '@chakra-ui/react';
 import useInlineColorMode from 'hooks/useInlineColorMode';
-import { VehicleReminder } from 'queries/reminders';
-import { DistanceUnit } from 'queries/vehicles';
 import React from 'react';
 import { intlFormatDateUTC } from 'utils/date';
 import { isReminderOverdue } from 'utils/reminders';
 import { formatMileage } from 'utils/vehicle';
 
 export interface ReminderSummaryProps extends TextProps {
-    reminder: VehicleReminder | undefined;
-    distanceUnit: DistanceUnit | undefined;
+    reminder: API.Reminder | undefined;
+    distanceUnit: API.DistanceUnit | undefined;
 }
 
 export const ReminderSummary: React.FC<ReminderSummaryProps> = ({ reminder, distanceUnit = 'mi', ...textProps }) => {

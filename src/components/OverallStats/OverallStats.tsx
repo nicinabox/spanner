@@ -1,12 +1,11 @@
 import { Box, HStack } from '@chakra-ui/react';
 import { VehicleStat } from 'components/VehicleStats';
 import { groupBy } from 'lodash';
-import { DistanceUnit, Vehicle } from 'queries/vehicles';
 import React from 'react';
 import { formatMileage } from 'utils/vehicle';
 
 export interface OverallStatsProps {
-    activeVehicles: Vehicle[];
+    activeVehicles: API.Vehicle[];
 }
 
 // TODO:
@@ -22,7 +21,7 @@ export const OverallStats: React.FC<OverallStatsProps> = ({ activeVehicles }) =>
                     {activeVehicles.length}
                 </VehicleStat>
 
-                {Object.keys(vehiclesByDistanceUnit).map((distanceUnit: DistanceUnit) => {
+                {Object.keys(vehiclesByDistanceUnit).map((distanceUnit: API.DistanceUnit) => {
                     const total = vehiclesByDistanceUnit[distanceUnit].reduce((acc, vehicle) => {
                         return acc + (vehicle.milesPerYear ?? 0);
                     }, 0);

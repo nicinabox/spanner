@@ -5,12 +5,12 @@ import Page from 'components/common/Page';
 import Header from 'components/common/Header';
 import BackButton from 'components/common/BackButton';
 import useRequest from 'hooks/useRequest';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { vehicleAPIPath } from 'queries/vehicles';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import ReminderForm from 'components/forms/ReminderForm';
 import { getNewestRecordMileage } from 'utils/reminders';
-import { recordsAPIPath, VehicleRecord } from 'queries/records';
-import { reminderAPIPath, VehicleReminder } from 'queries/reminders';
+import { recordsAPIPath } from 'queries/records';
+import { reminderAPIPath } from 'queries/reminders';
 
 export interface EditReminderPageProps {
     params: {
@@ -35,9 +35,9 @@ const PageHeader = ({ vehicle }) => {
 };
 
 export const EditReminderPage: React.FC<EditReminderPageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
-    // const { data: records } = useRequest<VehicleRecord[]>(recordsAPIPath(params.vehicleId));
-    const { data: reminder } = useRequest<VehicleReminder>(reminderAPIPath(params.vehicleId, params.reminderId));
+    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
+    // const { data: records } = useRequest<API.Record[]>(recordsAPIPath(params.vehicleId));
+    const { data: reminder } = useRequest<API.Reminder>(reminderAPIPath(params.vehicleId, params.reminderId));
 
     // const newestRecordMileage = getNewestRecordMileage(records);
 
@@ -52,7 +52,6 @@ export const EditReminderPage: React.FC<EditReminderPageProps> = ({ params }) =>
                 <ReminderForm
                     vehicleId={params.vehicleId}
                     distanceUnit={vehicle?.distanceUnit}
-                    minMileage={undefined}
                     formValues={reminder}
                 />
             </Container>

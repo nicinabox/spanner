@@ -1,7 +1,4 @@
-import { VehicleReminder } from 'queries/reminders';
-import { Vehicle } from 'queries/vehicles';
-
-const vehicleFixture: Vehicle = {
+const vehicleFixture: API.Vehicle = {
     id: 1111,
     name: 'Vehicle Fixture',
     vin: '',
@@ -15,7 +12,7 @@ const vehicleFixture: Vehicle = {
     estimatedMileage: 0,
     retired: false,
     color: null,
-    reminders: [] as VehicleReminder[],
+    reminders: [] as API.Reminder[],
     preferences: {
         enableSharing: false,
         enableCost: true,

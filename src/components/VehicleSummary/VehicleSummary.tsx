@@ -1,13 +1,11 @@
 import { Text, useColorModeValue } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import { VehicleRecord } from 'queries/records';
-import { Vehicle } from 'queries/vehicles';
 import React from 'react';
 import { formatMilesPerYear, formatEstimatedMileage, sortRecordsOldestFirst } from 'utils/vehicle';
 
 export interface VehicleSummaryProps {
-    vehicle: Vehicle;
-    records: VehicleRecord[];
+    vehicle: API.Vehicle;
+    records: API.Record[];
 }
 
 export const VehicleSummary: React.FC<VehicleSummaryProps> = ({ vehicle, records }) => {

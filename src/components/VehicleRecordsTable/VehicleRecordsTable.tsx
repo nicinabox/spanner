@@ -8,8 +8,7 @@ import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import usePageContext from 'hooks/usePageContext';
 import { capitalize, groupBy } from 'lodash';
-import { VehicleRecord, recordAPIPath } from 'queries/records';
-import { DistanceUnit, VehiclePreferences } from 'queries/vehicles';
+import { recordAPIPath } from 'queries/records';
 import React, { useEffect } from 'react';
 import { parseDateUTC } from 'utils/date';
 import lang from 'utils/lang';
@@ -18,21 +17,20 @@ import { editRecordPath } from 'utils/resources';
 import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
 export interface VehicleRecordsTableProps {
-    records: VehicleRecord[] | undefined;
+    records: API.Record[] | undefined;
     vehicleId: string;
-    preferences?: VehiclePreferences;
-    distanceUnit?: DistanceUnit;
+    preferences?: API.VehiclePreferences;
+    distanceUnit?: API.DistanceUnit;
     isLoaded?: boolean;
 }
 
-const getNextRecordWithMileage = (record: VehicleRecord, arr: VehicleRecord[]): VehicleRecord | undefined => {
+const getNextRecordWithMileage = (record: API.Record, arr: API.Record[]): API.Record | undefined => {
     const idx = arr.findIndex((r) => r.id === record.id);
     return arr[idx + 1];
 };
 
-const getDeltaMileage = (record: VehicleRecord, olderRecord: VehicleRecord): number | undefined => {
-    if (!record.mileage) return undefined;
-    return record.mileage - olderRecord.mileage;
+const getDeltaMileage = (record: API.Record, olderRecord: API.Record): number => {
+    return (record?.mileage ?? 0) - (olderRecord?.mileage ?? 0);
 };
 
 const Row = (props) => {

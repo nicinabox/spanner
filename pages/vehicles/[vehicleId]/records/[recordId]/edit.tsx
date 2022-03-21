@@ -5,8 +5,8 @@ import Header from 'components/common/Header';
 import BackButton from 'components/common/BackButton';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import useRequest from 'hooks/useRequest';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
-import { VehicleRecord, recordAPIPath } from 'queries/records';
+import { vehicleAPIPath } from 'queries/vehicles';
+import { recordAPIPath } from 'queries/records';
 import RecordForm from 'components/forms/RecordForm';
 
 export interface EditPageProps {
@@ -32,8 +32,8 @@ const PageHeader = ({ vehicle }) => {
 };
 
 export const EditPage: React.FC<EditPageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
-    const { data: vehicleRecord } = useRequest<VehicleRecord>(recordAPIPath(params.vehicleId, params.recordId));
+    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
+    const { data: vehicleRecord } = useRequest<API.Record>(recordAPIPath(params.vehicleId, params.recordId));
 
     return (
         <Page

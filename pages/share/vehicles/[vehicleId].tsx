@@ -10,7 +10,7 @@ import VehicleActionsMenu from 'components/VehicleActionsMenu';
 import VehicleService from 'components/VehicleService';
 import useRequest from 'hooks/useRequest';
 import { recordsAPIPath } from 'queries/records';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { withSession } from 'utils/session';
 
@@ -38,7 +38,7 @@ const VehicleSharePage: React.FC<VehiclePageProps> = ({ params }) => {
     const vehicleAPI = vehicleAPIPath(params.vehicleId, isShared);
     const recordsAPI = recordsAPIPath(params.vehicleId, isShared);
 
-    const { data: vehicle, error } = useRequest<Vehicle>(vehicleAPI);
+    const { data: vehicle, error } = useRequest<API.Vehicle>(vehicleAPI);
 
     return (
         <Page

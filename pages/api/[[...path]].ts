@@ -1,5 +1,4 @@
 import httpProxy from 'http-proxy';
-import { Session } from 'queries/session';
 import { withSession } from 'utils/session';
 
 // eslint-disable-next-line prefer-destructuring
@@ -28,7 +27,7 @@ const proxyConfig = {
 const proxy = httpProxy.createProxyServer(proxyConfig);
 
 export default withSession((req, res) => {
-    const session: Session | undefined = req.session.get('session');
+    const session: API.Session | undefined = req.session.get('session');
 
     // Return a Promise to let Next.js know when we're done processing the request
     return new Promise((resolve, reject) => {

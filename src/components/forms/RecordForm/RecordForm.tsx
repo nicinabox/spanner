@@ -12,7 +12,6 @@ import useTextareaResize from 'hooks/useTextareaResize';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import * as records from 'queries/records';
-import { Vehicle } from 'queries/vehicles';
 import React from 'react';
 import { formatDateISO, parseDateUTC } from 'utils/date';
 import { mileageFieldHelpers, costFieldHelpers } from 'utils/form';
@@ -23,8 +22,8 @@ import FormSection from 'components/common/FormSection';
 import DangerZone from 'components/common/DangerZone';
 
 export interface RecordFormProps {
-    vehicle: Vehicle;
-    record?: Partial<records.VehicleRecord> | ParsedQs;
+    vehicle: API.Vehicle;
+    record?: Partial<API.Record> | ParsedQs;
     onSuccess?: () => Promise<void> | void;
 }
 

@@ -1,69 +1,40 @@
 import { AxiosInstance } from 'axios';
-import { RecordID, MutateParams } from './config';
-import { VehicleReminder } from './reminders';
-
-export type DistanceUnit = 'mi' | 'km' | 'hr';
-
-export interface Vehicle {
-    id: RecordID;
-    name: string;
-    vin: string;
-    notes: string;
-    position: number | null;
-    distanceUnit: DistanceUnit;
-    retired: boolean;
-    createdAt: string;
-    milesPerDay: number | null;
-    milesPerYear: number | null;
-    estimatedMileage: number;
-    squishVin: string;
-    reminders: VehicleReminder[];
-    color: string | null;
-    preferences: VehiclePreferences;
-}
-
-export interface VehiclePreferences {
-    enableSharing: boolean;
-    enableCost: boolean;
-    sendReminderEmails: boolean;
-    sendPromptForRecords: boolean;
-    showMileageAdjustmentRecords: boolean;
-}
+import { MutateParams } from './config';
 
 export interface VehicleParams {
-    id?: RecordID;
+    id?: API.RecordID;
     name?: string;
     vin?: string;
     notes?: string;
     position?: number;
     enableCost?: boolean;
-    distanceUnit?: DistanceUnit;
+    distanceUnit?: API.DistanceUnit;
     retired?: boolean;
     color?: string | null;
-    preferences?: Partial<VehiclePreferences>;
+    preferences?: Partial<API.VehiclePreferences>;
 }
 
 export const vehiclesAPIPath = '/api/vehicles';
-export const vehicleAPIPath = (vehicleId: RecordID, share?: boolean) => `/api/vehicles/${vehicleId}${share ? '/share' : ''}`;
+export const vehicleAPIPath = (vehicleId: API.RecordID, share?: boolean) => `/api/vehicles/${vehicleId}${share ? '/share' : ''}`;
 
 export async function fetchVehicles(api: AxiosInstance) {
-    const { data } = await api.get<Vehicle[]>(vehiclesAPIPath);
+    const { data } = await api.get<API.Vehicle[]>(vehiclesAPIPath);
     return data;
 }
 
-export async function fetchVehicle(api: AxiosInstance, vehicleId: RecordID) {
-    const { data } = await api.get<Vehicle>(vehicleAPIPath(vehicleId));
+export async function fetchVehicle(api: AxiosInstance, vehicleId: API.RecordID) {
+    const { data } = await api.get<API.Vehicle>(vehicleAPIPath(vehicleId));
     return data;
 }
 
 export async function updateVehicle(api: AxiosInstance, params: MutateParams<VehicleParams>) {
     const { id, ...updateParams } = params;
-    const { data } = await api.put<Vehicle>(vehicleAPIPath(id), updateParams);
+    const { data } = await api.put<API.Vehicle>(vehicleAPIPath(id), updateParams);
     return data;
 }
 
 export async function createVehicle(api: AxiosInstance, params: VehicleParams) {
-    const { data } = await api.post<Vehicle>(vehiclesAPIPath, params);
+    const { data } = await api.post<API.Vehicle>(vehiclesAPIPath, params);
     return data;
 }
 
@@ -74,12 +45,12 @@ export async function createOrUpdateVehicle(api: AxiosInstance, params: VehicleP
     return createVehicle(api, params);
 }
 
-export async function destroyVehicle(api: AxiosInstance, vehicleId: RecordID) {
+export async function destroyVehicle(api: AxiosInstance, vehicleId: API.RecordID) {
     const { data } = await api.delete(vehicleAPIPath(vehicleId));
     return data;
 }
 
-export async function importRecords(api: AxiosInstance, vehicleId: RecordID, params: { importFile: File, fuelly: boolean }) {
+export async function importRecords(api: AxiosInstance, vehicleId: API.RecordID, params: { importFile: File, fuelly: boolean }) {
     const body = new FormData();
     body.append('vehicle[import_file]', params.importFile);
     body.append('vehicle[fuelly]', `${params.fuelly}`);

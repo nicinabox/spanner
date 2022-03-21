@@ -9,8 +9,8 @@ import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import useRequest from 'hooks/useRequest';
 import Link from 'next/link';
-import { VehicleReminder, reminderAPIPath } from 'queries/reminders';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { reminderAPIPath } from 'queries/reminders';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { getTime } from 'utils/date';
 import { reminderPath, vehicleAddPath } from 'utils/resources';
@@ -19,7 +19,7 @@ export interface VehicleRemindersProps {
     vehicleId: string
 }
 
-const sortByDueSoonest = (reminders: VehicleReminder[]) => {
+const sortByDueSoonest = (reminders: API.Reminder[]) => {
     return [...reminders].sort((a, b) => {
         if (a.reminderDate && b.reminderDate) {
             return getTime(a.reminderDate) - getTime(b.reminderDate);
@@ -29,7 +29,7 @@ const sortByDueSoonest = (reminders: VehicleReminder[]) => {
 };
 
 export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId }) => {
-    const { data: vehicle, loading } = useRequest<Vehicle>(vehicleAPIPath(vehicleId));
+    const { data: vehicle, loading } = useRequest<API.Vehicle>(vehicleAPIPath(vehicleId));
     const cm = useInlineColorMode();
 
     const reminders = sortByDueSoonest(vehicle?.reminders ?? []);

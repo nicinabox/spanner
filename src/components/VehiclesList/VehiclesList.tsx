@@ -1,11 +1,10 @@
 import { SimpleGrid, Skeleton } from '@chakra-ui/react';
 import VehicleItem from 'components/VehicleItem';
-import { Vehicle } from 'queries/vehicles';
 import React from 'react';
 import { vehicleSortStrategy, VehicleSortStrategy } from 'utils/sortable';
 
 export interface VehiclesListProps {
-    vehicles: Vehicle[] | undefined;
+    vehicles: API.Vehicle[] | undefined;
     loading?: boolean;
     sortStrategy?: VehicleSortStrategy;
 }

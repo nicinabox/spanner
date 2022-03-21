@@ -9,7 +9,7 @@ import VehicleReminders from 'components/VehicleReminders';
 import VehicleService from 'components/VehicleService';
 import useRequest from 'hooks/useRequest';
 import { recordsAPIPath } from 'queries/records';
-import { Vehicle, vehicleAPIPath } from 'queries/vehicles';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { getOverdueRemindersCount } from 'utils/reminders';
 import { vehiclesPath } from 'utils/resources';
@@ -44,7 +44,7 @@ const PageHeader = ({ vehicle, overDueRemindersBadge }) => (
 );
 
 const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<Vehicle>(vehicleAPIPath(params.vehicleId));
+    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
 
     return (
         <Page
