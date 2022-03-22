@@ -14,6 +14,7 @@ module.exports = {
         'airbnb',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
+        'plugin:@next/next/recommended'
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -28,6 +29,7 @@ module.exports = {
         '@typescript-eslint',
     ],
     rules: {
+        'no-restricted-exports': 'off',
         'no-use-before-define': 'off',
         '@typescript-eslint/no-use-before-define': 'off',
 
@@ -63,6 +65,7 @@ module.exports = {
         'react/jsx-props-no-spreading': 'off',
         'react/jsx-indent-props': ['error', 4],
         'react/jsx-indent': ['error', 4],
+        'react/function-component-definition': 'off',
 
         'arrow-body-style': 'off',
 

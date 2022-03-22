@@ -1,5 +1,6 @@
-import { Container } from "@chakra-ui/react"
-import { getHtmlFromMarkdown } from "../src/utils/getContentFile";
+import React from 'react';
+import { Container } from '@chakra-ui/react';
+import { getHtmlFromMarkdown } from '../src/utils/getContentFile';
 
 const Terms = ({ html }) => {
     return (
@@ -7,7 +8,7 @@ const Terms = ({ html }) => {
             <div dangerouslySetInnerHTML={{ __html: html }} />
         </Container>
     );
-}
+};
 
 export async function getStaticProps() {
     const html = getHtmlFromMarkdown('terms.md');
@@ -16,7 +17,7 @@ export async function getStaticProps() {
         props: {
             html,
         },
-    }
+    };
 }
 
 export default Terms;

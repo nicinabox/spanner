@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "lint": "eslint src --ext .ts,.tsx",
+    "lint": "next lint",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest",
     "deploy": "git push ash-next next:master",
@@ -30,6 +30,7 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.14.3",
+    "@next/eslint-plugin-next": "^12.1.0",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^12.1.4",
     "@testing-library/react-hooks": "^7.0.2",

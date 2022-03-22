@@ -2,7 +2,7 @@ import {
     Badge, Container, ContainerProps, Flex, SimpleGrid, Tabs,
 } from '@chakra-ui/react';
 import Router, { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import ColorModeButton from '../ColorModeButton';
 
 export interface PageProps extends ContainerProps {
@@ -26,6 +26,8 @@ export const Page: React.FC<PageProps> = ({
     const router = useRouter();
     const [panel, setPanel] = useState(0);
 
+    const contextValueMemo = useMemo(() => contextValue ?? {}, [contextValue]);
+
     useEffect(() => {
         const params = parseHashParams(router.asPath);
         if (params.panel) {
@@ -47,7 +49,7 @@ export const Page: React.FC<PageProps> = ({
     }, []);
 
     return (
-        <PageContext.Provider value={contextValue ?? {}}>
+        <PageContext.Provider value={contextValueMemo}>
             <Tabs colorScheme="brandInverted" size="sm" variant="soft-rounded" isLazy lazyBehavior="keepMounted" index={panel}>
                 <SimpleGrid templateRows="auto 1fr auto" minH="100vh">
                     {Header}
