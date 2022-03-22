@@ -7,9 +7,10 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "next lint",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "next lint --fix",
     "test": "jest",
-    "deploy": "git push ash-next next:master",
+    "deploy": "git push ash",
+    "deploy:next": "git push ash-next next:master",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
