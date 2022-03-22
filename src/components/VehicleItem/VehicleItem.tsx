@@ -1,8 +1,10 @@
 import {
+    Box,
     Flex, Heading, HStack, LinkBox, LinkOverlay, Text, useStyleConfig,
 } from '@chakra-ui/react';
 import Interpunct from 'components/common/Interpunct';
 import NumberBadge from 'components/common/NumberBadge';
+import VehicleColorIndicator from 'components/VehicleColorIndicator';
 import { mutate } from 'hooks/useMutation';
 import NextLink from 'next/link';
 import { vehicleAPIPath } from 'queries/vehicles';
@@ -26,6 +28,10 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
                 }}
                 >
                     <Flex direction="column" minH={12}>
+                        <Box mb="2">
+                            <VehicleColorIndicator color={vehicle.color} size={7} />
+                        </Box>
+
                         <Flex justify="space-between">
                             <Heading size="sm" color="brand.100">
                                 {vehicle.name}
