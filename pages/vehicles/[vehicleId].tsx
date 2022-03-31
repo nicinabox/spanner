@@ -33,7 +33,7 @@ const PageHeader = ({ vehicle, overDueRemindersBadge }) => (
             ]
         }
         LeftComponent={(
-            <HStack spacing={2}>
+            <HStack spacing={2} minW={0}>
                 <BackButton href={vehiclesPath()}>
                     Vehicles
                 </BackButton>

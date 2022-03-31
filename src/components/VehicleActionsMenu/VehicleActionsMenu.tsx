@@ -52,7 +52,7 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                     {vehicle ? (
                         <HStack spacing={2}>
                             <VehicleColorIndicator color={vehicle?.color} />
-                            <Text>{vehicle?.name}</Text>
+                            <Text isTruncated>{vehicle?.name}</Text>
                         </HStack>
                     ) : (
                         <Skeleton minW={140} minH={3} startColor="whiteAlpha.100" endColor="whiteAlpha.400" />
