@@ -13,9 +13,7 @@
     "deploy:next": "git push ash-next next:master",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "start": "next start"
   },
   "engines": {
     "node": "16.13.1"
@@ -69,10 +67,6 @@
     "@chakra-ui/theme-tools": "^1.1.6",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
-    "@storybook/addon-actions": "^6.2.9",
-    "@storybook/addon-essentials": "^6.2.9",
-    "@storybook/addon-links": "^6.2.9",
-    "@storybook/react": "^6.2.9",
     "axios": "^0.26.1",
     "axios-case-converter": "^0.9.0",
     "cookies": "^0.8.0",
