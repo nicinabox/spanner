@@ -20,7 +20,7 @@ export const VehicleSortMenu: React.FC<VehicleSortMenuProps> = ({ sortStrategy, 
                 {' '}
                 {vehicleSortStrategyToHuman[sortStrategy]}
             </MenuButton>
-            <MenuList>
+            <MenuList zIndex={2}>
                 <MenuOptionGroup value={sortStrategy} type="radio" onChange={onChangeProp}>
                     {Object.keys(vehicleSortStrategy).map((value) => (
                         <MenuItemOption key={value} value={value}>
