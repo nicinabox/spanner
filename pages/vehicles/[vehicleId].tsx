@@ -4,16 +4,17 @@ import LinkPreload from 'components/common/LinkPreload';
 import Page from 'components/common/Page';
 import TabsHeader from 'components/common/TabsHeader';
 import VehicleActionsMenu from 'components/VehicleActionsMenu';
-import VehicleNotes from 'components/VehicleNotes';
-import VehicleReminders from 'components/VehicleReminders';
-import VehicleService from 'components/VehicleService';
 import useRequest from 'hooks/useRequest';
 import { recordsAPIPath } from 'queries/records';
 import { vehicleAPIPath } from 'queries/vehicles';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { getOverdueRemindersCount } from 'utils/reminders';
 import { vehiclesPath } from 'utils/resources';
 import { authRedirect, withSession } from 'utils/session';
+
+const VehicleService = React.lazy(() => import('components/VehicleService'));
+const VehicleReminders = React.lazy(() => import('components/VehicleReminders'));
+const VehicleNotes = React.lazy(() => import('components/VehicleNotes'));
 
 export interface VehiclePageProps {
     params: {
@@ -64,14 +65,20 @@ const VehiclePage: React.FC<VehiclePageProps> = ({ params }) => {
 
             <TabPanels>
                 <TabPanel px={0}>
-                    <VehicleService vehicleId={params.vehicleId} />
+                    <Suspense fallback={null}>
+                        <VehicleService vehicleId={params.vehicleId} />
+                    </Suspense>
                 </TabPanel>
                 <TabPanel px={0}>
-                    <VehicleReminders vehicleId={params.vehicleId} />
+                    <Suspense fallback={null}>
+                        <VehicleReminders vehicleId={params.vehicleId} />
+                    </Suspense>
                 </TabPanel>
                 <TabPanel px={0}>
                     {vehicle && (
-                        <VehicleNotes vehicle={vehicle} />
+                        <Suspense fallback={null}>
+                            <VehicleNotes vehicle={vehicle} />
+                        </Suspense>
                     )}
                 </TabPanel>
             </TabPanels>

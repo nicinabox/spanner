@@ -13,7 +13,7 @@ module.exports = {
         BUGSNAG_API_KEY: process.env.BUGSNAG_API_KEY,
     },
 
-    future: {
-        webpack5: true,
+    experimental: {
+        runtime: 'nodejs',
     },
 };
