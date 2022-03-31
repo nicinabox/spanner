@@ -13,3 +13,10 @@ build
 .DS_Store
 .env
 npm-debug.log
+yarn-error.log
+.vscode
+
+# nextjs
+legacy
+.next
+.env.local
