@@ -78,7 +78,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                         <FormHelperText>VIN is optional but recommended</FormHelperText>
                     </FormControl>
 
-                    <FormControl id="edit-color" mb={4}>
+                    <FormControl id="edit-color" mb={4} overflow="hidden">
                         <FormLabel>
                             Color
                             <Box mt={2}>
