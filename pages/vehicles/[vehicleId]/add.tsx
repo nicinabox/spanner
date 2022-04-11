@@ -56,12 +56,12 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
             {vehicle && (
                 <TabPanels>
                     <TabPanel p={0}>
-                        <Container maxW={[null, 'container.sm']} p={0}>
+                        <Container maxW={[null, 'container.md']} p={0}>
                             <RecordForm vehicle={vehicle} record={recordFormValues} />
                         </Container>
                     </TabPanel>
                     <TabPanel p={0}>
-                        <Container maxW={[null, 'sm']} p={0}>
+                        <Container maxW={[null, 'md']} p={0}>
                             <ReminderForm
                                 vehicleId={params.vehicleId}
                                 distanceUnit={vehicle.distanceUnit}
@@ -70,7 +70,7 @@ export const AddPage: React.FC<AddPageProps> = ({ params }) => {
                         </Container>
                     </TabPanel>
                     <TabPanel p={0}>
-                        <Container maxW={[null, 'sm']} p={0}>
+                        <Container maxW={[null, 'md']} p={0}>
                             <MileageAdjustmentForm vehicle={vehicle} />
                         </Container>
                     </TabPanel>

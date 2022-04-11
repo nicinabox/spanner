@@ -39,9 +39,9 @@ export const EditPage: React.FC<EditPageProps> = ({ params }) => {
         <Page
             Header={<PageHeader vehicle={vehicle} />}
         >
-            <Container maxW={[null, 'container.sm']} p={0}>
+            <Container maxW={[null, 'container.md']} p={0}>
                 <Heading mb={6}>
-                    Edit Reminder
+                    Edit Record
                 </Heading>
 
                 {vehicle && (
