@@ -8,6 +8,7 @@ import useInlineColorMode from 'hooks/useInlineColorMode';
 import { mutate } from 'hooks/useMutation';
 import usePageContext from 'hooks/usePageContext';
 import { capitalize, groupBy } from 'lodash';
+import { marked } from 'marked';
 import { recordAPIPath } from 'queries/records';
 import React, { useEffect } from 'react';
 import { parseDateUTC } from 'utils/date';
@@ -202,7 +203,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                                         )}
 
                                         <Cell basis={['100%', null]} w="100%" py={[1, 2]}>
-                                            {record.notes}
+                                            <div dangerouslySetInnerHTML={{ __html: marked.parse(record.notes) }} />
                                         </Cell>
 
                                         <Cell justify="end" basis="100%">
