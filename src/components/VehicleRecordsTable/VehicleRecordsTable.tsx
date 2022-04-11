@@ -31,7 +31,7 @@ const getNextRecordWithMileage = (record: API.Record, arr: API.Record[]): API.Re
 };
 
 const getDeltaMileage = (record: API.Record, olderRecord: API.Record): number => {
-    return (record?.mileage ?? 0) - (olderRecord?.mileage ?? 0);
+    return Math.max((record?.mileage ?? 0) - (olderRecord?.mileage ?? 0), 0);
 };
 
 const Row = (props) => {
