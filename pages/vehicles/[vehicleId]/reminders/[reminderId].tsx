@@ -86,7 +86,7 @@ export const ReminderPage: React.FC<ReminderPageProps> = ({ params }) => {
                             vehicle={vehicle}
                             record={{
                                 notes: reminder?.notes,
-                                mileage: reminder?.mileage,
+                                mileage: vehicle?.estimatedMileage,
                             }}
                             onSuccess={() => {
                                 return destroyReminder(params.vehicleId, params.reminderId);

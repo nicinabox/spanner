@@ -16,19 +16,28 @@ export const ReminderSummary: React.FC<ReminderSummaryProps> = ({ reminder, dist
     const date = reminder?.reminderDate && intlFormatDateUTC(reminder.reminderDate);
     const mileage = reminder && formatMileage(reminder.mileage, distanceUnit);
 
-    if (!reminder?.reminderDate && !reminder?.mileage) return null;
+    if (!reminder?.reminderDate && !reminder?.mileage) {
+        return (
+            <Text color={cm('blackAlpha.700', 'whiteAlpha.600')}>
+                No reminder set.
+            </Text>
+        );
+    }
 
     return (
         <Text {...textProps} color={isReminderOverdue(reminder) ? cm('red.500', 'red.300') : cm('blackAlpha.700', 'whiteAlpha.600')}>
+            Reminder scheduled for:
+            {' '}
+
             {date && (
-                <Text as="span">{date}</Text>
+                <Text as="strong">{date}</Text>
             )}
 
             {reminder.reminderType === 'date_or_mileage' && reminder.reminderDate && ' or '}
             {reminder.reminderType === 'mileage' && ' at '}
 
             {reminder.mileage && (
-                <Text as="span">{mileage}</Text>
+                <Text as="strong">{mileage}</Text>
             )}
         </Text>
     );
