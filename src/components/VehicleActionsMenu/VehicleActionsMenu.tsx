@@ -31,7 +31,7 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
         updateVehicleMutation({ id: vehicle.id, ...params });
     };
 
-    const debouncedUpdate = useCallback(debounce(handleUpdateVehicle, 200), [vehicle]);
+    const debouncedUpdate = useCallback(debounce(handleUpdateVehicle, 500), [vehicle]);
 
     const handleColorChange = (e) => {
         const color = e.target.value;
@@ -69,7 +69,7 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                         <MenuItem closeOnSelect={false} as="label" htmlFor="color">
                             Change color
                             <Spacer />
-                            <Box display="none">
+                            <Box position="absolute" left="-100%">
                                 <input
                                     type="color"
                                     id="color"

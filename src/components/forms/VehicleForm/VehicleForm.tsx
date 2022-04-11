@@ -85,7 +85,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                                 <VehicleColorIndicator color={formData.color} size={10} />
                             </Box>
                         </FormLabel>
-                        <Box display="none">
+                        <Box position="absolute" left="-100%">
                             <input
                                 id="edit-color"
                                 type="color"
