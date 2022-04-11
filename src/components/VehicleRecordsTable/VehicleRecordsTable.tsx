@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { parseDateUTC } from 'utils/date';
 import lang from 'utils/lang';
 import { formatCurrency } from 'utils/number';
+import pluralize from 'utils/pluralize';
 import { editRecordPath } from 'utils/resources';
 import { formatMileage, sortRecordsNewestFirst } from 'utils/vehicle';
 
@@ -131,7 +132,7 @@ export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
                             <Flex justifyContent="space-between" align="center">
                                 {year}
                                 {!preferences.showMileageAdjustmentRecords && Boolean(omittedCount) && (
-                                    <Tooltip label={`${omittedCount} records ${showMileageAdjustmentRecords ? 'visible' : 'hidden'}`}>
+                                    <Tooltip label={`${pluralize(omittedCount, 'record')} ${showMileageAdjustmentRecords ? 'visible' : 'hidden'}`}>
                                         <Button rightIcon={showMileageAdjustmentRecords ? <ViewIcon /> : <ViewOffIcon />} size="xs" onClick={onToggleShowMileageAdjustment}>
                                             {omittedCount}
                                         </Button>
