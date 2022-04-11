@@ -16,7 +16,7 @@
     "start": "next start"
   },
   "engines": {
-    "node": "~16.13.1"
+    "node": "^16.13.1"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": "eslint --fix",
