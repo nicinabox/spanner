@@ -80,7 +80,7 @@
     "next-iron-session": "^4.1.12",
     "qs": "^6.10.1",
     "react": "18.0.0",
-    "react-day-picker": "^7.4.10",
+    "react-day-picker": "^8.0.1",
     "react-dom": "18.0.0",
     "swr": "^1.2.2",
     "url-pattern": "^1.0.3",
