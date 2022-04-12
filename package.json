@@ -77,6 +77,7 @@
     "lodash": "^4.17.21",
     "marked": "^4.0.14",
     "next": "^12.1.4",
+    "next-build-id": "^3.0.0",
     "next-iron-session": "^4.1.12",
     "qs": "^6.10.1",
     "react": "18.0.0",

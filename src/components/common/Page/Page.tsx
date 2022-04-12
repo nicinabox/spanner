@@ -60,7 +60,10 @@ export const Page: React.FC<PageProps> = ({
 
                     <Flex justify="space-between" align="center" p={4}>
                         <ColorModeButton variant="ghost" />
-                        <Badge colorScheme="gray" textTransform="none">v3.next</Badge>
+                        <Badge colorScheme="gray" textTransform="none">
+                            v3.
+                            {process.env.CONFIG_BUILD_ID ?? 'next'}
+                        </Badge>
                     </Flex>
                 </SimpleGrid>
             </Tabs>
