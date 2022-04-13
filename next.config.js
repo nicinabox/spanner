@@ -6,7 +6,7 @@ module.exports = {
     webpack: (config, { dev, webpack, buildId }) => {
         config.plugins.push(
             new webpack.DefinePlugin({
-                'process.env.CONFIG_BUILD_ID': JSON.stringify(buildId.substr(0, 8)),
+                'process.env.CONFIG_BUILD_ID': JSON.stringify(dev ? buildId : buildId.substr(0, 8)),
             }),
         );
 
