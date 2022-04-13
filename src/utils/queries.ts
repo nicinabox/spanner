@@ -1,21 +1,13 @@
 import { AxiosInstance } from 'axios';
 import { createAPIRequest } from 'queries/config';
 
-interface InitialData<T> {
-    data?: T;
-    error?: string;
-}
-
-export const fetchInitialData = async <T>(
-    req, fetcher: (api: AxiosInstance) => Promise<T>,
-): Promise<InitialData<T>> => {
-    const api = createAPIRequest(req);
-
+export const prefetch = async <T>(req, handler: (api: AxiosInstance) => Promise<T>): Promise<[T | null, string | null]> => {
     try {
-        const data = await fetcher(api);
-        return { data };
+        const api = createAPIRequest(req);
+        const data = await handler(api);
+        return [data, null];
     } catch (err) {
         const error = err.response?.data?.error ?? err.toString();
-        return { error };
+        return [null, error];
     }
 };
