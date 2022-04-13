@@ -1,10 +1,10 @@
 import {
-    Box, Button, Center, Heading, Text,
+    Box, Button, Center, Heading,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import React from 'react';
 import { vehiclesPath } from 'utils/resources';
-import { createAPIRequest } from 'queries/config';
+import { prefetch } from 'utils/queries';
 import { signIn } from 'queries/session';
 import { withSession } from 'utils/session';
 
@@ -33,13 +33,9 @@ const Login: React.FC<LoginProps> = ({ error }) => {
 };
 
 export const getServerSideProps = withSession(async ({ req, res, params }) => {
-    let error: string | null = null;
+    const [data, error] = await prefetch(req, (api) => signIn(api, params.loginToken));
 
-    const api = createAPIRequest(req);
-
-    try {
-        const { data } = await signIn(api, params.loginToken);
-
+    if (data) {
         req.session.set('session', data);
         await req.session.save();
 
@@ -49,8 +45,6 @@ export const getServerSideProps = withSession(async ({ req, res, params }) => {
                 permanent: false,
             },
         };
-    } catch (err) {
-        error = err.response?.data?.error ?? err.toString();
     }
 
     return {
