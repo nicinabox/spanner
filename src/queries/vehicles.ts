@@ -22,8 +22,8 @@ export async function fetchVehicles(api: AxiosInstance) {
     return data;
 }
 
-export async function fetchVehicle(api: AxiosInstance, vehicleId: API.RecordID) {
-    const { data } = await api.get<API.Vehicle>(vehicleAPIPath(vehicleId));
+export async function fetchVehicle(api: AxiosInstance, vehicleId: API.RecordID, share?: boolean) {
+    const { data } = await api.get<API.Vehicle>(vehicleAPIPath(vehicleId, share));
     return data;
 }
 
