@@ -26,7 +26,7 @@ export const ReminderSummary: React.FC<ReminderSummaryProps> = ({ reminder, dist
 
     return (
         <Text {...textProps} color={isReminderOverdue(reminder) ? cm('red.500', 'red.300') : cm('blackAlpha.700', 'whiteAlpha.600')}>
-            Reminder scheduled for:
+            Reminder scheduled for
             {' '}
 
             {date && (

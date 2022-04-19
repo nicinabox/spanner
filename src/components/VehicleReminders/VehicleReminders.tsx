@@ -64,8 +64,8 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
         <Container>
             <Flex mb={6} direction="row-reverse">
                 {!vehicle?.retired && (
-                    <LinkButton href={`${vehicleAddPath(vehicleId)}#panel=1`} size="sm" leftIcon={<AddIcon />}>
-                        Add
+                    <LinkButton href={`${vehicleAddPath(vehicleId)}#panel=1`} size="md" leftIcon={<AddIcon />}>
+                        New
                     </LinkButton>
                 )}
             </Flex>
@@ -74,8 +74,8 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                 return (
                     <LinkBox
                         key={reminder.id}
-                        py={3}
-                        px={4}
+                        py={4}
+                        px={5}
                         mb={3}
                         borderRadius={6}
                         shadow="base"
@@ -90,7 +90,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                                         mutate(reminderAPIPath(vehicleId, reminder.id), reminder, false);
                                     }}
                                     >
-                                        <Text>
+                                        <Text fontSize="lg">
                                             {reminder.notes}
                                         </Text>
                                     </LinkOverlay>
@@ -103,7 +103,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                                 />
                             </Flex>
 
-                            <ChevronRightIcon w={5} h={5} ml={2} color={cm('blackAlpha.600', 'whiteAlpha.600')} />
+                            <ChevronRightIcon w={6} h={6} ml={2} color={cm('blackAlpha.600', 'whiteAlpha.600')} />
                         </Flex>
                     </LinkBox>
                 );

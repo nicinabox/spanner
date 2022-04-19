@@ -1,8 +1,11 @@
 import { EditIcon } from '@chakra-ui/icons';
-import { Button, Container, Flex } from '@chakra-ui/react';
+import {
+    Box, Button, Container, Flex,
+} from '@chakra-ui/react';
 import EmptyState from 'components/common/EmptyState';
 import MarkdownBody from 'components/common/MarkdownBody';
 import NotesForm from 'components/forms/NotesForm';
+import useInlineColorMode from 'hooks/useInlineColorMode';
 import React, { useState } from 'react';
 
 export interface VehicleNotesProps {
@@ -11,6 +14,7 @@ export interface VehicleNotesProps {
 
 export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
     const [editing, setEditing] = useState(false);
+    const cm = useInlineColorMode();
 
     const isEmpty = !vehicle.notes && !editing;
 
@@ -29,18 +33,19 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
     }
 
     return (
-        <Container maxW="container.md">
-            {editing ? (
-                <NotesForm
-                    formValues={vehicle}
-                    onError={() => setEditing(true)}
-                    onSuccess={() => setEditing(false)}
-                    onCancel={() => setEditing(false)}
-                />
+        <Container maxW="container.lg">
+            <Box shadow={['sm', 'md', 'md']} p={[4, 10]} mx={[-4, null]} bg={cm('white', 'whiteAlpha.200')}>
+                {editing ? (
+                    <NotesForm
+                        formValues={vehicle}
+                        onError={() => setEditing(true)}
+                        onSuccess={() => setEditing(false)}
+                        onCancel={() => setEditing(false)}
+                    />
             ) : (
                 <>
                     <Flex direction="row-reverse" mb={6}>
-                        <Button colorScheme="brand" size="sm" leftIcon={<EditIcon />} onClick={() => setEditing(true)}>
+                        <Button colorScheme="brand" size="md" leftIcon={<EditIcon />} onClick={() => setEditing(true)}>
                             Edit
                         </Button>
                     </Flex>
@@ -48,6 +53,7 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
                     <MarkdownBody body={vehicle.notes} />
                 </>
             )}
+            </Box>
         </Container>
     );
 };

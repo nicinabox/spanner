@@ -15,7 +15,7 @@ export const VehicleColorIndicator: React.FC<VehicleColorIndicatorProps> = ({ co
     const background = `linear-gradient(0deg, ${p[600]} 50%, ${bg} 50%)`;
 
     return (
-        <Box bg={background} borderRadius="full" borderWidth={borderWidth} borderColor="whiteAlpha.300" w={size} h={size} />
+        <Box bg={background} borderRadius="full" borderWidth={borderWidth} borderColor={p[400]} w={size} h={size} />
     );
 };
 

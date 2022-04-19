@@ -55,7 +55,7 @@ export const ReminderPage: React.FC<ReminderPageProps> = ({ params }) => {
             <Container maxW={[null, 'container.md']} p={0}>
                 <HStack my={4} justify="end">
                     <Spacer />
-                    <LinkButton href={editReminderPath(params.vehicleId, params.reminderId)} size="sm" colorScheme="brand">
+                    <LinkButton href={editReminderPath(params.vehicleId, params.reminderId)} size="md" colorScheme="brand">
                         Edit
                     </LinkButton>
                 </HStack>

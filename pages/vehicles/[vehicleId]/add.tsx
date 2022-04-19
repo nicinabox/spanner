@@ -25,8 +25,8 @@ const isServer = typeof window === 'undefined';
 const PageHeader: React.FC<{ vehicle?: API.Vehicle }> = ({ vehicle }) => (
     <TabsHeader
         tabs={[
-                'Add Service',
-                'Add Reminder',
+                'New Service',
+                'New Reminder',
                 `Adjust ${lang.mileageLabel[vehicle?.distanceUnit ?? 'mi']}`,
             ]}
         LeftComponent={(

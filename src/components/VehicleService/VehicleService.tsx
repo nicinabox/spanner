@@ -91,7 +91,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                     <Flex>
                         <LightMode>
                             <LinkButton href={vehicleAddPath(vehicleId)} size="md" leftIcon={<AddIcon />} shadow="lg">
-                                Add...
+                                New...
                             </LinkButton>
                         </LightMode>
                     </Flex>
