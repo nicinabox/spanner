@@ -1,13 +1,29 @@
 import { AxiosInstance } from 'axios';
 import { createAPIRequest } from 'queries/config';
 
-export const prefetch = async <T>(req, handler: (api: AxiosInstance) => Promise<T>): Promise<[T | null, string | null]> => {
-    try {
+export const fetcher = (path: string, options?) => async (req) => {
+    const api = createAPIRequest(req);
+    const { data } = await api.get(path, options);
+    return data;
+};
+
+export const prefetch = async <T>(req, pathOrHandler: string | ((api: AxiosInstance) => Promise<T>), options?): Promise<{ data?: T, error?: any }> => {
+    let result;
+
+    if (typeof pathOrHandler === 'string') {
+        const path = pathOrHandler;
+        result = fetcher(path, options)(req);
+    } else {
         const api = createAPIRequest(req);
-        const data = await handler(api);
-        return [data, null];
+        const handler = pathOrHandler;
+        result = handler(api);
+    }
+
+    try {
+        const data = await result;
+        return { data };
     } catch (err) {
         const error = err.response?.data?.error ?? err.toString();
-        return [null, error];
+        return { error };
     }
 };

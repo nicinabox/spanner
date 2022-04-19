@@ -8,8 +8,9 @@ import useRequest from 'hooks/useRequest';
 import { vehicleAPIPath } from 'queries/vehicles';
 import { recordAPIPath } from 'queries/records';
 import RecordForm from 'components/forms/RecordForm';
+import { VehiclePageProps } from '../..';
 
-export interface EditPageProps {
+export interface EditPageProps extends VehiclePageProps {
     params: {
         vehicleId: string;
         recordId: string;

@@ -2,8 +2,9 @@ import { AxiosInstance } from 'axios';
 
 export type ClientSession = Omit<API.Session, 'authToken'>
 
-export function signIn(api: AxiosInstance, token: string) {
-    return api.get<API.Session>(`/login/${token}`);
+export async function signIn(api: AxiosInstance, token: string) {
+    const { data } = await api.get<API.Session>(`/login/${token}`);
+    return data;
 }
 
 export async function fetchUser(api: AxiosInstance) {
