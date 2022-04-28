@@ -8,6 +8,7 @@ import { formatEstimatedMileage, formatMilesPerYear } from 'utils/vehicle';
 import { formatDuration, intervalToDuration, intlFormat } from 'date-fns';
 import { parseDateUTC } from 'utils/date';
 import { editVehiclePath } from 'utils/resources';
+import { capitalize } from 'lodash';
 
 export const Stat = ({ label, children, ...props }) => (
     <ChakraStat minW="max-content" {...props}>
@@ -25,8 +26,9 @@ export const EstimatedMileageStat = ({ vehicle }) => vehicle.estimatedMileage &&
 );
 
 export const YearlyMileageStat = ({ vehicle }) => vehicle.milesPerYear && (
-    <Stat label={`Yearly ${lang.mileageLabel[vehicle.distanceUnit]}`}>
+    <Stat label={`${capitalize(lang.mileageLabel[vehicle.distanceUnit])} rate`}>
         {formatMilesPerYear(vehicle)}
+        /yr
     </Stat>
 );
 
