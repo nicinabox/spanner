@@ -36,16 +36,13 @@ const PageHeader = ({ vehicle }) => {
 
 export const EditReminderPage: React.FC<EditReminderPageProps> = ({ params }) => {
     const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
-    // const { data: records } = useRequest<API.Record[]>(recordsAPIPath(params.vehicleId));
     const { data: reminder } = useRequest<API.Reminder>(reminderAPIPath(params.vehicleId, params.reminderId));
-
-    // const newestRecordMileage = getNewestRecordMileage(records);
 
     return (
         <Page
             Header={<PageHeader vehicle={vehicle} />}
         >
-            <Container maxW={[null, 'sm']} p={0}>
+            <Container maxW={[null, 'md']} p={0}>
                 <Heading mb={6}>
                     Edit Reminder
                 </Heading>

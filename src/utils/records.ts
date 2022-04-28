@@ -20,3 +20,23 @@ export const sortRecordsOldestFirst = (a: API.Record, b: API.Record) => {
 export const getNewestRecord = (records: API.Record[]) => {
     return records.sort(sortRecordsNewestFirst)[0];
 };
+
+export const getNextRecordWithMileage = (record: API.Record, arr: API.Record[]): API.Record | undefined => {
+    const currIdx = arr.findIndex((r) => r.id === record.id);
+    let idx = currIdx + 1;
+    let nextRecord;
+
+    while (idx < arr.length) {
+        if (arr[idx]?.mileage) {
+            nextRecord = arr[idx];
+            break;
+        }
+        idx += 1;
+    }
+
+    return nextRecord;
+};
+
+export const getDeltaMileage = (record: API.Record | undefined, olderRecord: API.Record | undefined): number => {
+    return Math.max((record?.mileage ?? 0) - (olderRecord?.mileage ?? 0), 0);
+};

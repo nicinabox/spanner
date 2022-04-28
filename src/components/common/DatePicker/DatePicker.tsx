@@ -2,9 +2,10 @@ import {
     Box, Input, useColorModeValue, useDisclosure,
 } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
+import useInlineColorMode from 'hooks/useInlineColorMode';
 import React, { useState } from 'react';
-import DayPicker from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
 
 export interface DatePickerProps {
     onChange?: (date: Date) => void;
@@ -15,40 +16,20 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
     const [selectedDay, setSelectedDay] = useState(initialDate);
     const { isOpen, onToggle } = useDisclosure();
 
-    const hoverBg = useColorModeValue('brand.100', 'brand.900');
-    const selectedBg = useColorModeValue('brand.primary', 'brand.100');
-    const selectedColor = useColorModeValue('white', 'black');
-    const todayColor = useColorModeValue('cyan.500', 'cyan.500');
+    const cm = useInlineColorMode();
 
-    const styles = {
-        '.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)': {
-            backgroundColor: selectedBg,
-            color: selectedColor,
+    const sx = {
+        '.rdp': {
+            margin: '1rem 0',
         },
-        '.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover': {
-            backgroundColor: hoverBg,
+        caption: {
+            fontSize: 'var(--chakra-fontSizes-sm)',
         },
-        '.DayPicker-Day': {
-            w: '2rem',
-            h: '2rem',
-            borderRadius: 6,
-        },
-        '.DayPicker-Day--today': {
-            color: todayColor,
-        },
-        '.DayPicker-wrapper': {
-            p: 0,
-            w: '100%',
-        },
-        '.DayPicker-Month': {
-            mx: 0,
-            w: '100%',
-            maxW: 300,
-        },
-        '.DayPicker-Caption > div': {
-            fontSize: 'sm',
-            fontWeight: 'bold',
-        },
+        '--rdp-background-color': cm('colors.blackAlpha.200', 'colors.blackAlpha.400'),
+        '--rdp-accent-color': cm('colors.brand.500', 'colors.brand.500'),
+
+        '--rdp-outline': '2px solid var(--chakra-colors-blue-500)',
+        '--rdp-outline-selected': `2px solid var(${cm('--chakra-colors-blackAlpha-500', '--chakra-colors-whiteAlpha-400')})`,
     };
 
     const onDayClick = (date: Date) => {
@@ -63,11 +44,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
     return (
         <>
             <Input value={formatSelectedDate()} readOnly onClick={onToggle} />
-            <Box lineHeight={1.2} sx={styles} display={[isOpen ? 'block' : 'none', 'block']}>
+            <Box lineHeight={1.2} display={[isOpen ? 'block' : 'none', 'block']} sx={sx}>
                 <DayPicker
                     onDayClick={onDayClick}
-                    initialMonth={initialDate}
-                    selectedDays={selectedDay}
+                    defaultMonth={initialDate}
+                    selected={selectedDay}
                     fixedWeeks
                 />
             </Box>

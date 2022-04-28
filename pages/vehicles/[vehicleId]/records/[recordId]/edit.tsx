@@ -8,8 +8,9 @@ import useRequest from 'hooks/useRequest';
 import { vehicleAPIPath } from 'queries/vehicles';
 import { recordAPIPath } from 'queries/records';
 import RecordForm from 'components/forms/RecordForm';
+import { VehiclePageProps } from '../..';
 
-export interface EditPageProps {
+export interface EditPageProps extends VehiclePageProps {
     params: {
         vehicleId: string;
         recordId: string;
@@ -39,9 +40,9 @@ export const EditPage: React.FC<EditPageProps> = ({ params }) => {
         <Page
             Header={<PageHeader vehicle={vehicle} />}
         >
-            <Container maxW={[null, 'container.sm']} p={0}>
+            <Container maxW={[null, 'container.md']} p={0}>
                 <Heading mb={6}>
-                    Edit Reminder
+                    Edit Record
                 </Heading>
 
                 {vehicle && (

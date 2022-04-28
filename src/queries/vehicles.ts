@@ -14,6 +14,14 @@ export interface VehicleParams {
     preferences?: Partial<API.VehiclePreferences>;
 }
 
+export const defaultPrefs: API.VehiclePreferences = {
+    enableSharing: true,
+    enableCost: true,
+    sendReminderEmails: true,
+    sendPromptForRecords: true,
+    showMileageAdjustmentRecords: true,
+};
+
 export const vehiclesAPIPath = '/api/vehicles';
 export const vehicleAPIPath = (vehicleId: API.RecordID, share?: boolean) => `/api/vehicles/${vehicleId}${share ? '/share' : ''}`;
 
@@ -22,8 +30,8 @@ export async function fetchVehicles(api: AxiosInstance) {
     return data;
 }
 
-export async function fetchVehicle(api: AxiosInstance, vehicleId: API.RecordID) {
-    const { data } = await api.get<API.Vehicle>(vehicleAPIPath(vehicleId));
+export async function fetchVehicle(api: AxiosInstance, vehicleId: API.RecordID, share?: boolean) {
+    const { data } = await api.get<API.Vehicle>(vehicleAPIPath(vehicleId, share));
     return data;
 }
 

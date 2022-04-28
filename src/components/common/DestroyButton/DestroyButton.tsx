@@ -1,5 +1,6 @@
 import {
     AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button,
+    Text,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import FormButton from '../FormButton';
@@ -23,7 +24,7 @@ export const DestroyButton: React.FC<DestroyButtonProps> = ({
 
     return (
         <>
-            <FormButton variant="outline" size="sm" colorScheme="red" onClick={() => setIsConfirmDeleteOpen(true)}>
+            <FormButton variant="outline" size="md" colorScheme="gray" onClick={() => setIsConfirmDeleteOpen(true)}>
                 {children}
             </FormButton>
 

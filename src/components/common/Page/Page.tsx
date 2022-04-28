@@ -3,11 +3,13 @@ import {
 } from '@chakra-ui/react';
 import Router, { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
+import { SWRConfig } from 'swr';
 import ColorModeButton from '../ColorModeButton';
 
 export interface PageProps extends ContainerProps {
     Header?: JSX.Element;
     contextValue?: Record<string, unknown>;
+    fallback?: Record<string, any>;
 }
 
 export const parseHashParams = (url: string) => {
@@ -21,7 +23,7 @@ export const parseHashParams = (url: string) => {
 export const PageContext = React.createContext<{ isShared?: boolean }>({});
 
 export const Page: React.FC<PageProps> = ({
-    children, contextValue, Header, ...containerProps
+    children, contextValue, Header, fallback = {}, ...containerProps
 }) => {
     const router = useRouter();
     const [panel, setPanel] = useState(0);
@@ -50,20 +52,25 @@ export const Page: React.FC<PageProps> = ({
 
     return (
         <PageContext.Provider value={contextValueMemo}>
-            <Tabs colorScheme="brandInverted" size="sm" variant="soft-rounded" isLazy lazyBehavior="keepMounted" index={panel}>
-                <SimpleGrid templateRows="auto 1fr auto" minH="100vh">
-                    {Header}
+            <SWRConfig value={{ fallback, revalidateOnMount: false }}>
+                <Tabs colorScheme="brandInverted" size="sm" variant="soft-rounded" isLazy lazyBehavior="keepMounted" index={panel}>
+                    <SimpleGrid templateRows="auto 1fr auto" minH="100vh">
+                        {Header}
 
-                    <Container maxW="none" mb={12} {...containerProps}>
-                        {children}
-                    </Container>
+                        <Container maxW="none" mb={12} {...containerProps}>
+                            {children}
+                        </Container>
 
-                    <Flex justify="space-between" align="center" p={4}>
-                        <ColorModeButton variant="ghost" />
-                        <Badge colorScheme="gray" textTransform="none">v3.next</Badge>
-                    </Flex>
-                </SimpleGrid>
-            </Tabs>
+                        <Flex justify="space-between" align="center" p={4}>
+                            <ColorModeButton variant="ghost" />
+                            <Badge colorScheme="gray" textTransform="none">
+                                v3.
+                                {process.env.CONFIG_BUILD_ID ?? 'next'}
+                            </Badge>
+                        </Flex>
+                    </SimpleGrid>
+                </Tabs>
+            </SWRConfig>
         </PageContext.Provider>
     );
 };

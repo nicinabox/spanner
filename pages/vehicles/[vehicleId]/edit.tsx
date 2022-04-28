@@ -32,7 +32,7 @@ export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params }) => {
         >
             <LinkPreload path={vehicleAPIPath(params.vehicleId)} />
 
-            <Container maxW={[null, 'md']} p={0}>
+            <Container maxW={[null, 'lg']} p={0}>
                 <Heading mb={6}>
                     Edit
                     {' '}

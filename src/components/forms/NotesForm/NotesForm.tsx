@@ -38,13 +38,13 @@ export const NotesForm: React.FC<NotesFormProps> = ({
         <>
             <Flex direction="row-reverse" mb={6}>
                 <HStack spacing={3}>
-                    <Button colorScheme="brand" size="sm" onClick={handleSaveNotes} isLoading={isProcessing}>
+                    <Button colorScheme="brand" size="md" onClick={handleSaveNotes} isLoading={isProcessing}>
                         Save
                     </Button>
                     <Button
                         colorScheme="brand"
                         variant="ghost"
-                        size="sm"
+                        size="md"
                         disabled={isProcessing}
                         onClick={() => {
                             setValue('notes', formValues.notes);
