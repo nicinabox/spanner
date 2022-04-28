@@ -8,6 +8,8 @@ import pluralize from 'utils/pluralize';
 import { capitalize } from 'lodash';
 import lang from 'utils/lang';
 import { Cell, FlexTable, Row } from 'components/VehicleRecordsTable/VehicleRecordsTable';
+import { getDeltaMileage, getNextRecordWithMileage } from 'utils/records';
+import { defaultPrefs } from 'queries/vehicles';
 import RecordRow from '../RecordRow';
 
 export interface RecordGroupProps {
@@ -19,17 +21,8 @@ export interface RecordGroupProps {
     distanceUnit?: API.DistanceUnit;
 }
 
-const getNextRecordWithMileage = (record: API.Record, arr: API.Record[]): API.Record | undefined => {
-    const idx = arr.findIndex((r) => r.id === record.id);
-    return arr[idx + 1];
-};
-
-const getDeltaMileage = (record: API.Record | undefined, olderRecord: API.Record | undefined): number => {
-    return Math.max((record?.mileage ?? 0) - (olderRecord?.mileage ?? 0), 0);
-};
-
 export const RecordGroup: React.FC<RecordGroupProps> = ({
-    records: recordsProp, recordsNewestFirst, heading, vehicleId, preferences = {}, distanceUnit = 'mi',
+    records: recordsProp, recordsNewestFirst, heading, vehicleId, preferences = defaultPrefs, distanceUnit = 'mi',
 }) => {
     const {
         isOpen: showMileageAdjustmentRecords, onToggle: onToggleShowMileageAdjustment, onOpen, onClose,

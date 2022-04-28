@@ -14,6 +14,14 @@ export interface VehicleParams {
     preferences?: Partial<API.VehiclePreferences>;
 }
 
+export const defaultPrefs: API.VehiclePreferences = {
+    enableSharing: true,
+    enableCost: true,
+    sendReminderEmails: true,
+    sendPromptForRecords: true,
+    showMileageAdjustmentRecords: true,
+};
+
 export const vehiclesAPIPath = '/api/vehicles';
 export const vehicleAPIPath = (vehicleId: API.RecordID, share?: boolean) => `/api/vehicles/${vehicleId}${share ? '/share' : ''}`;
 
