@@ -4,13 +4,12 @@ import {
 } from '@chakra-ui/react';
 import ColorModeButton from 'components/common/ColorModeButton';
 import Header from 'components/common/Header';
-import LinkPreload from 'components/common/LinkPreload';
 import Logo from 'components/Logo';
 import Page from 'components/common/Page';
 import UserMenu from 'components/UserMenu';
 import VehiclesList from 'components/VehiclesList';
 import { vehiclesAPIPath } from 'queries/vehicles';
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import createPersistedState from 'use-persisted-state';
 import { authRedirect, withSession } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
@@ -19,8 +18,9 @@ import EmptyState from 'components/common/EmptyState';
 import OverallStats from 'components/OverallStats';
 import { VehicleSortStrategy } from 'utils/sortable';
 import { prefetch } from 'utils/queries';
+import dynamic from 'next/dynamic';
 
-const VehicleSortMenu = React.lazy(
+const VehicleSortMenu = dynamic(
     () => import('components/VehicleSortMenu'),
 );
 
@@ -83,9 +83,7 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
                         New Vehicle
                     </LinkButton>
                 </Flex>
-                <Suspense>
-                    <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} />
-                </Suspense>
+                <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} />
             </Flex>
 
             <VehiclesList vehicles={activeVehicles} sortStrategy={sortStrategy} />
