@@ -2,73 +2,66 @@ import { orderBy } from 'lodash';
 
 import { getOverdueRemindersCount } from './reminders';
 
-export type VehicleSortStrategy =
-    | 'newest_first'
-    | 'oldest_first'
-    | 'name_a_to_z'
-    | 'name_z_to_a'
-    | 'reminders_first'
-    | 'highest_mileage_first'
-    | 'lowest_mileage_first'
-    | 'highest_mileage_rate_first'
-    | 'lowest_mileage_rate_first';
+export type Sortable = [VehicleSortStrategy, Order];
 
-export const vehicleSortStrategy: Record<VehicleSortStrategy, (vehicles: API.Vehicle[]) => API.Vehicle[]> = {
-    newest_first: sortVehiclesNewestFirst,
-    oldest_first: sortVehiclesOldestFirst,
-    name_a_to_z: sortVehiclesNameAtoZ,
-    name_z_to_a: sortVehiclesNameZtoA,
-    reminders_first: sortVehiclesRemindersFirst,
-    highest_mileage_first: sortVehiclesHighestMileageFirst,
-    lowest_mileage_first: sortVehiclesLowestMileageFirst,
-    highest_mileage_rate_first: sortVehiclesHighestMileageRateFirst,
-    lowest_mileage_rate_first: sortVehiclesLowestMileageRateFirst,
+export type Order = 'asc' | 'desc';
+
+export type VehicleSortStrategy =
+    | 'created_at'
+    | 'name'
+    | 'reminders'
+    | 'mileage'
+    | 'mileage_rate';
+
+export const vehicleSortStrategy: Record<
+VehicleSortStrategy,
+(vehicles: API.Vehicle[], order: Order) => API.Vehicle[]
+> = {
+    created_at: sortByCreatedAt,
+    name: sortByName,
+    reminders: sortByReminders,
+    mileage: sortByMileage,
+    mileage_rate: sortByMileageRate,
 };
 
 export const vehicleSortStrategyToHuman: Record<VehicleSortStrategy, string> = {
-    newest_first: 'Newest first',
-    oldest_first: 'Oldest first',
-    name_a_to_z: 'Name A to Z',
-    name_z_to_a: 'Name Z to A',
-    reminders_first: 'Reminders first',
-    highest_mileage_first: 'Highest mileage first',
-    lowest_mileage_first: 'Lowest mileage first',
-    highest_mileage_rate_first: 'Highest mileage rate first',
-    lowest_mileage_rate_first: 'Lowest mileage rate first',
+    name: 'Name',
+    created_at: 'Created',
+    reminders: 'Reminders',
+    mileage: 'Mileage',
+    mileage_rate: 'Mileage Rate',
 };
 
-export function sortVehiclesNewestFirst(vehicles: API.Vehicle[]) {
-    return orderBy(vehicles, (v) => new Date(v.createdAt).getTime(), 'desc');
+export const vehicleSortOrderToHuman: Record<VehicleSortStrategy, [string, string]> = {
+    created_at: ['Oldest', 'Newest'],
+    name: ['A to Z', 'Z to A'],
+    reminders: ['Fewest', 'Most'],
+    mileage: ['Lowest', 'Highest'],
+    mileage_rate: ['Lowest', 'Highest'],
+};
+
+export const orderToHuman = ([sortStrategy, order]: Sortable) => {
+    const [asc, desc] = vehicleSortOrderToHuman[sortStrategy];
+    const options = { asc, desc };
+    return options[order];
+};
+
+export function sortByCreatedAt(vehicles: API.Vehicle[], order: Order) {
+    return orderBy(vehicles, (v) => new Date(v.createdAt).getTime(), order);
 }
 
-export function sortVehiclesOldestFirst(vehicles: API.Vehicle[]) {
-    return orderBy(vehicles, (v) => new Date(v.createdAt).getTime(), 'asc');
+export function sortByName(vehicles: API.Vehicle[], order: Order) {
+    return orderBy(vehicles, 'name', order);
 }
 
-export function sortVehiclesNameAtoZ(vehicles: API.Vehicle[]) {
-    return orderBy(vehicles, 'name', 'asc');
+export function sortByReminders(vehicles: API.Vehicle[], order: Order) {
+    return orderBy(vehicles, [getOverdueRemindersCount, 'name'], [order, 'asc']);
 }
 
-export function sortVehiclesNameZtoA(vehicles: API.Vehicle[]) {
-    return orderBy(vehicles, 'name', 'desc');
+export function sortByMileage(vehicles: API.Vehicle[], order: Order) {
+    return orderBy(vehicles, [(v) => v.estimatedMileage ?? 0, 'name'], [order, 'asc']);
 }
 
-export function sortVehiclesRemindersFirst(vehicles: API.Vehicle[]) {
-    return orderBy(vehicles, [getOverdueRemindersCount, 'name'], ['desc', 'asc']);
-}
-
-export function sortVehiclesHighestMileageFirst(vehicles: API.Vehicle[]) {
-    return orderBy(vehicles, [(v) => v.estimatedMileage ?? 0, 'name'], ['desc', 'asc']);
-}
-
-export function sortVehiclesLowestMileageFirst(vehicles: API.Vehicle[]) {
-    return orderBy(vehicles, [(v) => v.estimatedMileage ?? 0, 'name'], ['asc', 'asc']);
-}
-
-export function sortVehiclesHighestMileageRateFirst(vehicles: API.Vehicle[]) {
-    return orderBy(vehicles, (v) => v.milesPerYear ?? 0, 'desc');
-}
-
-export function sortVehiclesLowestMileageRateFirst(vehicles: API.Vehicle[]) {
-    return orderBy(vehicles, (v) => v.milesPerYear ?? 0, 'asc');
+export function sortByMileageRate(vehicles: API.Vehicle[], order: Order) {
+    return orderBy(vehicles, (v) => v.milesPerYear ?? 0, order);
 }

@@ -16,7 +16,7 @@ import LinkButton from 'components/common/LinkButton';
 import { newVehiclePath } from 'utils/resources';
 import EmptyState from 'components/common/EmptyState';
 import OverallStats from 'components/OverallStats';
-import { VehicleSortStrategy } from 'utils/sortable';
+import { Sortable } from 'utils/sortable';
 import { prefetch } from 'utils/queries';
 import dynamic from 'next/dynamic';
 
@@ -49,7 +49,7 @@ const PageHeader = () => {
     );
 };
 
-const useSortStrategyState = createPersistedState('vehicleSortStrategy');
+const useSortableVehicles = createPersistedState('vehicleSortStrategyV2');
 
 const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
     const { vehicles } = fallback;
@@ -60,7 +60,7 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
     const retiredVehicles = vehicles.filter((v) => v.retired);
 
     // TODO: implement user prefs api
-    const [sortStrategy, setSortStrategy] = useSortStrategyState<VehicleSortStrategy>('newest_first');
+    const [sortable, setSortable] = useSortableVehicles<Sortable>(['created_at', 'asc']);
 
     const newVehicleButtonSize = useBreakpointValue({ sm: 'xs', base: 'sm' });
 
@@ -83,10 +83,10 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
                         New Vehicle
                     </LinkButton>
                 </Flex>
-                <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} />
+                <VehicleSortMenu sortable={sortable} onChange={setSortable} />
             </Flex>
 
-            <VehiclesList vehicles={activeVehicles} sortStrategy={sortStrategy} />
+            <VehiclesList vehicles={activeVehicles} sortable={sortable} />
 
             {!activeVehicles.length && (
                 <EmptyState
