@@ -117,7 +117,7 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
             )}
 
             {showRetired && (
-                <VehiclesList vehicles={retiredVehicles} sortStrategy="newest_first" />
+                <VehiclesList vehicles={retiredVehicles} sortable={['created_at', 'desc']} />
             )}
         </Page>
     );
