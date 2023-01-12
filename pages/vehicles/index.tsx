@@ -4,29 +4,30 @@ import {
 } from '@chakra-ui/react';
 import ColorModeButton from 'components/common/ColorModeButton';
 import Header from 'components/common/Header';
-import LinkPreload from 'components/common/LinkPreload';
 import Logo from 'components/Logo';
 import Page from 'components/common/Page';
 import UserMenu from 'components/UserMenu';
 import VehiclesList from 'components/VehiclesList';
 import { vehiclesAPIPath } from 'queries/vehicles';
-import React, { Suspense, useState } from 'react';
-import createPersistedState from 'use-persisted-state';
+import React, { useState } from 'react';
 import { authRedirect, withSession } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
 import { newVehiclePath } from 'utils/resources';
 import EmptyState from 'components/common/EmptyState';
 import OverallStats from 'components/OverallStats';
-import { VehicleSortStrategy } from 'utils/sortable';
 import { prefetch } from 'utils/queries';
+import dynamic from 'next/dynamic';
+import { userAPIPath } from 'queries/user';
+import useRequest, { update } from 'hooks/useRequest';
 
-const VehicleSortMenu = React.lazy(
+const VehicleSortMenu = dynamic(
     () => import('components/VehicleSortMenu'),
 );
 
 interface VehiclesProps {
     fallback: {
-        vehicles: API.Vehicle[];
+        [vehiclesAPIPath]: API.Vehicle[];
+        [userAPIPath]: API.User;
     }
 }
 
@@ -49,18 +50,31 @@ const PageHeader = () => {
     );
 };
 
-const useSortStrategyState = createPersistedState('vehicleSortStrategy');
-
 const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
-    const { vehicles } = fallback;
+    const { mutate, data: user } = useRequest<API.User>(userAPIPath, { fallback });
+    const { data: vehicles = [] } = useRequest<API.Vehicle[]>(vehiclesAPIPath, {
+        fallback,
+    });
 
     const [showRetired, setShowRetired] = useState(false);
 
     const activeVehicles = vehicles.filter((v) => !v.retired);
     const retiredVehicles = vehicles.filter((v) => v.retired);
 
-    // TODO: implement user prefs api
-    const [sortStrategy, setSortStrategy] = useSortStrategyState<VehicleSortStrategy>('newest_first');
+    const sortable = user?.preferences.vehiclesSortOrder ?? ['created_at', 'desc'];
+
+    const setSortable = async (vehiclesSortOrder: API.Sortable) => {
+        if (!user) return;
+
+        const data = {
+            preferences: {
+                vehiclesSortOrder,
+            },
+        };
+
+        const res = await update(userAPIPath, data);
+        mutate(res, { revalidate: false });
+    };
 
     const newVehicleButtonSize = useBreakpointValue({ sm: 'xs', base: 'sm' });
 
@@ -83,12 +97,10 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
                         New Vehicle
                     </LinkButton>
                 </Flex>
-                <Suspense>
-                    <VehicleSortMenu sortStrategy={sortStrategy} onChange={setSortStrategy} />
-                </Suspense>
+                <VehicleSortMenu sortable={sortable} onChange={setSortable} />
             </Flex>
 
-            <VehiclesList vehicles={activeVehicles} sortStrategy={sortStrategy} />
+            <VehiclesList vehicles={activeVehicles} sortable={sortable} />
 
             {!activeVehicles.length && (
                 <EmptyState
@@ -119,7 +131,7 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
             )}
 
             {showRetired && (
-                <VehiclesList vehicles={retiredVehicles} sortStrategy="newest_first" />
+                <VehiclesList vehicles={retiredVehicles} sortable={['created_at', 'desc']} />
             )}
         </Page>
     );
@@ -129,12 +141,14 @@ export const getServerSideProps = withSession(async ({ req }) => {
     const redirect = authRedirect(req);
     if (redirect) return redirect;
 
-    const { data: vehicles } = await prefetch(req, vehiclesAPIPath);
+    const { data: user = null } = await prefetch(req, userAPIPath);
+    const { data: vehicles = null } = await prefetch(req, vehiclesAPIPath);
 
     return {
         props: {
             fallback: {
-                vehicles,
+                [vehiclesAPIPath]: vehicles,
+                [userAPIPath]: user,
             },
         },
     };

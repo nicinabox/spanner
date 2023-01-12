@@ -52,7 +52,7 @@ export const Page: React.FC<PageProps> = ({
 
     return (
         <PageContext.Provider value={contextValueMemo}>
-            <SWRConfig value={{ fallback, revalidateOnMount: false }}>
+            <SWRConfig value={{ fallback, revalidateOnMount: true }}>
                 <Tabs colorScheme="brandInverted" size="sm" variant="soft-rounded" isLazy lazyBehavior="keepMounted" index={panel}>
                     <SimpleGrid templateRows="auto 1fr auto" minH="100vh">
                         {Header}

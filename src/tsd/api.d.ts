@@ -1,6 +1,10 @@
 declare namespace API {
     type RecordID = string | number;
 
+    type Sortable = [VehicleSortStrategy, Order];
+
+    type Order = 'asc' | 'desc';
+
     type DistanceUnit = 'mi' | 'km' | 'hr';
 
     type RecordType = 'mileage adjustment';
@@ -47,6 +51,9 @@ declare namespace API {
         createdAt: string;
         updatedAt: string;
         timeZoneOffset: string | null;
+        preferences: {
+            vehiclesSortOrder: Sortable;
+        }
     }
 
     interface VehiclePreferences {
