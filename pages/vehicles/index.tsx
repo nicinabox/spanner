@@ -10,15 +10,15 @@ import UserMenu from 'components/UserMenu';
 import VehiclesList from 'components/VehiclesList';
 import { vehiclesAPIPath } from 'queries/vehicles';
 import React, { useState } from 'react';
-import createPersistedState from 'use-persisted-state';
 import { authRedirect, withSession } from 'utils/session';
 import LinkButton from 'components/common/LinkButton';
 import { newVehiclePath } from 'utils/resources';
 import EmptyState from 'components/common/EmptyState';
 import OverallStats from 'components/OverallStats';
-import { Sortable } from 'utils/sortable';
 import { prefetch } from 'utils/queries';
 import dynamic from 'next/dynamic';
+import { userAPIPath } from 'queries/user';
+import useRequest, { update } from 'hooks/useRequest';
 
 const VehicleSortMenu = dynamic(
     () => import('components/VehicleSortMenu'),
@@ -26,7 +26,8 @@ const VehicleSortMenu = dynamic(
 
 interface VehiclesProps {
     fallback: {
-        vehicles: API.Vehicle[];
+        [vehiclesAPIPath]: API.Vehicle[];
+        [userAPIPath]: API.User;
     }
 }
 
@@ -49,18 +50,31 @@ const PageHeader = () => {
     );
 };
 
-const useSortableVehicles = createPersistedState('vehicleSortStrategyV2');
-
 const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
-    const { vehicles } = fallback;
+    const { mutate, data: user } = useRequest<API.User>(userAPIPath, { fallback });
+    const { data: vehicles = [] } = useRequest<API.Vehicle[]>(vehiclesAPIPath, {
+        fallback,
+    });
 
     const [showRetired, setShowRetired] = useState(false);
 
     const activeVehicles = vehicles.filter((v) => !v.retired);
     const retiredVehicles = vehicles.filter((v) => v.retired);
 
-    // TODO: implement user prefs api
-    const [sortable, setSortable] = useSortableVehicles<Sortable>(['created_at', 'asc']);
+    const sortable = user?.preferences.vehiclesSortOrder ?? ['created_at', 'desc'];
+
+    const setSortable = async (vehiclesSortOrder: API.Sortable) => {
+        if (!user) return;
+
+        const data = {
+            preferences: {
+                vehiclesSortOrder,
+            },
+        };
+
+        const res = await update(userAPIPath, data);
+        mutate(res, { revalidate: false });
+    };
 
     const newVehicleButtonSize = useBreakpointValue({ sm: 'xs', base: 'sm' });
 
@@ -127,12 +141,14 @@ export const getServerSideProps = withSession(async ({ req }) => {
     const redirect = authRedirect(req);
     if (redirect) return redirect;
 
-    const { data: vehicles } = await prefetch(req, vehiclesAPIPath);
+    const { data: user = null } = await prefetch(req, userAPIPath);
+    const { data: vehicles = null } = await prefetch(req, vehiclesAPIPath);
 
     return {
         props: {
             fallback: {
-                vehicles,
+                [vehiclesAPIPath]: vehicles,
+                [userAPIPath]: user,
             },
         },
     };

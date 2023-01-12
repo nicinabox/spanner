@@ -4,14 +4,13 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import {
-    Order,
     orderToHuman,
     vehicleSortOrderToHuman, vehicleSortStrategy, VehicleSortStrategy, vehicleSortStrategyToHuman,
 } from 'utils/sortable';
 
 export interface VehicleSortMenuProps {
-    onChange: (value: [VehicleSortStrategy, Order]) => void;
-    sortable: [VehicleSortStrategy, Order];
+    onChange: (value: [VehicleSortStrategy, API.Order]) => void;
+    sortable: [VehicleSortStrategy, API.Order];
 }
 
 export const VehicleSortMenu: React.FC<VehicleSortMenuProps> = ({
@@ -46,7 +45,7 @@ export const VehicleSortMenu: React.FC<VehicleSortMenuProps> = ({
                 <MenuOptionGroup
                     value={sortOrder}
                     type="radio"
-                    onChange={(v) => onChangeProp([sortStrategy, v as Order])}
+                    onChange={(v) => onChangeProp([sortStrategy, v as API.Order])}
                 >
                     {vehicleSortOrderToHuman[sortStrategy].map((order, i) => (
                         <MenuItemOption

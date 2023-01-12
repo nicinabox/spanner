@@ -2,10 +2,6 @@ import { orderBy } from 'lodash';
 
 import { getOverdueRemindersCount } from './reminders';
 
-export type Sortable = [VehicleSortStrategy, Order];
-
-export type Order = 'asc' | 'desc';
-
 export type VehicleSortStrategy =
     | 'created_at'
     | 'name'
@@ -15,7 +11,7 @@ export type VehicleSortStrategy =
 
 export const vehicleSortStrategy: Record<
 VehicleSortStrategy,
-(vehicles: API.Vehicle[], order: Order) => API.Vehicle[]
+(vehicles: API.Vehicle[], order: API.Order) => API.Vehicle[]
 > = {
     created_at: sortByCreatedAt,
     name: sortByName,
@@ -40,28 +36,28 @@ export const vehicleSortOrderToHuman: Record<VehicleSortStrategy, [string, strin
     mileage_rate: ['Lowest', 'Highest'],
 };
 
-export const orderToHuman = ([sortStrategy, order]: Sortable) => {
+export const orderToHuman = ([sortStrategy, order]: API.Sortable) => {
     const [asc, desc] = vehicleSortOrderToHuman[sortStrategy];
     const options = { asc, desc };
     return options[order];
 };
 
-export function sortByCreatedAt(vehicles: API.Vehicle[], order: Order) {
+export function sortByCreatedAt(vehicles: API.Vehicle[], order: API.Order) {
     return orderBy(vehicles, (v) => new Date(v.createdAt).getTime(), order);
 }
 
-export function sortByName(vehicles: API.Vehicle[], order: Order) {
+export function sortByName(vehicles: API.Vehicle[], order: API.Order) {
     return orderBy(vehicles, 'name', order);
 }
 
-export function sortByReminders(vehicles: API.Vehicle[], order: Order) {
+export function sortByReminders(vehicles: API.Vehicle[], order: API.Order) {
     return orderBy(vehicles, [getOverdueRemindersCount, 'name'], [order, 'asc']);
 }
 
-export function sortByMileage(vehicles: API.Vehicle[], order: Order) {
+export function sortByMileage(vehicles: API.Vehicle[], order: API.Order) {
     return orderBy(vehicles, [(v) => v.estimatedMileage ?? 0, 'name'], [order, 'asc']);
 }
 
-export function sortByMileageRate(vehicles: API.Vehicle[], order: Order) {
+export function sortByMileageRate(vehicles: API.Vehicle[], order: API.Order) {
     return orderBy(vehicles, (v) => v.milesPerYear ?? 0, order);
 }
