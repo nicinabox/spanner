@@ -35,7 +35,14 @@ class Vehicle < ApplicationRecord
   end
 
   def estimated_mileage
-    return unless can_estimate_mpd?
+    unless can_estimate_mpd?
+      if first_record_with_mileage.nil?
+        return
+      else
+        return first_record_with_mileage.mileage
+      end
+    end
+
     projected_mileage = round_to(estimated_mileage_exact, 50)
 
     unless projected_mileage > 50
