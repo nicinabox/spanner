@@ -1,3 +1,3 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :demo_account?, :can_access_analytics?
+  attributes :id, :email, :time_zone_offset, :created_at, :updated_at, :demo_account?, :can_access_analytics?, :preferences
 end

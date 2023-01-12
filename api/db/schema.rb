@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210529030151) do
+ActiveRecord::Schema.define(version: 20230109013025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20210529030151) do
     t.datetime "login_token_valid_until"
     t.string   "mongo_id"
     t.string   "time_zone_offset"
+    t.json     "preferences"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
   end
 

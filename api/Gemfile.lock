@@ -144,6 +144,8 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    schema2type (0.4.0)
+      activesupport
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -186,6 +188,7 @@ DEPENDENCIES
   queue_classic (~> 3.1.0)
   rails (~> 5.0.0, >= 5.0.0.1)
   rails_12factor
+  schema2type
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data

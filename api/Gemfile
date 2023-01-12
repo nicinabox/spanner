@@ -29,6 +29,7 @@ gem 'premailer-rails'
 gem 'browser'
 gem 'bugsnag'
 gem 'virtus'
+gem 'schema2type'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   validates_presence_of :email
 
+  store_accessor :preferences
+
+  serialize :preferences, ::UserPreferences
+
   has_many :sessions, dependent: :destroy
   has_many :vehicles, dependent: :destroy
   has_many :reminders, through: :vehicles
