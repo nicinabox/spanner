@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import LinkButton from 'components/common/LinkButton';
 import { Cell, Row } from 'components/VehicleRecordsTable/VehicleRecordsTable';
 import { intlFormat } from 'date-fns';
@@ -72,7 +72,14 @@ export const RecordRow: React.FC<RecordRowProps> = ({
             )}
 
             <Cell basis={['100%', null]} w="100%" py={[1, 2]}>
-                <div dangerouslySetInnerHTML={{ __html: marked.parse(record.notes) }} />
+                <Box
+                    sx={{
+                        ul: {
+                            marginLeft: 'var(--chakra-space-4)',
+                        },
+                    }}
+                    dangerouslySetInnerHTML={{ __html: marked(record.notes) }}
+                />
             </Cell>
 
             <Cell justify="end" basis="100%">
