@@ -22,42 +22,50 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
 
     return (
         <LinkBox sx={styles}>
-            <NextLink href={vehiclePath(vehicle.id)} passHref>
-                <LinkOverlay onClick={() => {
-                    mutate(vehicleAPIPath(vehicle.id), vehicle, false);
-                }}
-                >
-                    <Flex direction="column" minH={12}>
-                        <Box mb="2">
-                            <VehicleColorIndicator color={vehicle.color} size={7} />
-                        </Box>
+            <LinkOverlay
+                as={NextLink}
+                passHref
+                href={vehiclePath(vehicle.id)}
+                onClick={() => {
+                        mutate(vehicleAPIPath(vehicle.id), vehicle, false);
+                    }}
+            >
+                <Flex direction="column" minH={12}>
+                    <Box mb="2">
+                        <VehicleColorIndicator
+                            color={vehicle.color}
+                            size={7}
+                        />
+                    </Box>
 
-                        <Flex justify="space-between">
-                            <Heading size="sm" color="brand.100">
-                                {vehicle.name}
-                            </Heading>
-                            {Boolean(getOverdueRemindersCount(vehicle)) && (
-                                <NumberBadge sentiment="negative">
-                                    {getOverdueRemindersCount(vehicle)}
-                                </NumberBadge>
+                    <Flex justify="space-between">
+                        <Heading size="sm" color="brand.100">
+                            {vehicle.name}
+                        </Heading>
+                        {Boolean(getOverdueRemindersCount(vehicle)) && (
+                        <NumberBadge sentiment="negative">
+                            {getOverdueRemindersCount(vehicle)}
+                        </NumberBadge>
                             )}
-                        </Flex>
-                        <HStack color="whiteAlpha.700" divider={<Interpunct fontSize="sm" />}>
-                            {Boolean(vehicle.estimatedMileage) && (
-                                <Text fontSize="sm">
-                                    {formatEstimatedMileage(vehicle)}
-                                </Text>
-                            )}
-                            {Boolean(vehicle.milesPerYear) && (
-                                <Text fontSize="sm">
-                                    {formatMilesPerYear(vehicle)}
-                                    /yr
-                                </Text>
-                            )}
-                        </HStack>
                     </Flex>
-                </LinkOverlay>
-            </NextLink>
+                    <HStack
+                        color="whiteAlpha.700"
+                        divider={<Interpunct fontSize="sm" />}
+                    >
+                        {Boolean(vehicle.estimatedMileage) && (
+                        <Text fontSize="sm">
+                            {formatEstimatedMileage(vehicle)}
+                        </Text>
+                            )}
+                        {Boolean(vehicle.milesPerYear) && (
+                        <Text fontSize="sm">
+                            {formatMilesPerYear(vehicle)}
+                            /yr
+                        </Text>
+                            )}
+                    </HStack>
+                </Flex>
+            </LinkOverlay>
         </LinkBox>
     );
 };

@@ -85,16 +85,23 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                     >
                         <Flex align="center">
                             <Flex flex={2} direction="column">
-                                <Link href={reminderPath(vehicleId, reminder.id)} passHref>
-                                    <LinkOverlay onClick={() => {
-                                        mutate(reminderAPIPath(vehicleId, reminder.id), reminder, false);
+                                <LinkOverlay
+                                    as={Link}
+                                    href={reminderPath(vehicleId, reminder.id)}
+                                    passHref
+                                    onClick={() => {
+                                        mutate(
+                                            reminderAPIPath(
+                                                vehicleId,
+                                                reminder.id,
+                                            ),
+                                            reminder,
+                                            false,
+                                        );
                                     }}
-                                    >
-                                        <Text fontSize="lg">
-                                            {reminder.notes}
-                                        </Text>
-                                    </LinkOverlay>
-                                </Link>
+                                >
+                                    <Text fontSize="lg">{reminder.notes}</Text>
+                                </LinkOverlay>
 
                                 <ReminderSummary
                                     reminder={reminder}
@@ -103,7 +110,12 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                                 />
                             </Flex>
 
-                            <ChevronRightIcon w={6} h={6} ml={2} color={cm('blackAlpha.600', 'whiteAlpha.600')} />
+                            <ChevronRightIcon
+                                w={6}
+                                h={6}
+                                ml={2}
+                                color={cm('blackAlpha.600', 'whiteAlpha.600')}
+                            />
                         </Flex>
                     </LinkBox>
                 );
