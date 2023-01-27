@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import { sessionOptions } from 'config/session';
 import { withIronSessionSsr, withIronSessionApiRoute } from 'iron-session/next';
 import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next/types';
 
@@ -8,22 +8,6 @@ declare module 'iron-session' {
     }
 }
 
-if (!process.env.CLIENT_SECRET) {
-    throw new Error('CLIENT_SECRET not set');
-}
-
-const password = crypto
-    .createHash('sha256')
-    .update(process.env.CLIENT_SECRET)
-    .digest('hex');
-
-const sessionOptions = {
-    password,
-    cookieName: 'session',
-    ttl: 5184000, // 60 days
-};
-
-// export const withSession = (handler) => withIronSessionSsr(handler, sessionOptions);
 export function withSession<
     P extends { [key: string]: unknown } = { [key: string]: unknown }
 >(
