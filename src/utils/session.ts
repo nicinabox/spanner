@@ -1,26 +1,27 @@
 import crypto from 'crypto';
-import { withIronSession } from 'next-iron-session';
+import { withIronSessionSsr, withIronSessionApiRoute } from 'iron-session/next';
 
 if (!process.env.CLIENT_SECRET) {
     throw new Error('CLIENT_SECRET not set');
 }
 
-const hashedSecret = crypto
+const password = crypto
     .createHash('sha256')
     .update(process.env.CLIENT_SECRET)
     .digest('hex');
 
-export const withSession = (handler) => withIronSession(handler, {
-    password: hashedSecret,
+const sessionOptions = {
+    password,
     cookieName: 'session',
     ttl: 5184000, // 60 days
-    cookieOptions: {
-        secure: process.env.NODE_ENV !== 'development',
-    },
-});
+};
+
+export const withSession = (handler) => withIronSessionSsr(handler, sessionOptions);
+
+export const withAPISession = (handler) => withIronSessionApiRoute(handler, sessionOptions);
 
 export const authRedirect = (req) => {
-    const session = req.session.get('session');
+    const { session } = req.session;
 
     if (session) return undefined;
 

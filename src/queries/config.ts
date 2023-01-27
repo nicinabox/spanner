@@ -20,7 +20,7 @@ export const createAPIRequest = (req?) => {
     let api;
 
     if (req) {
-        const session = req.session.get('session');
+        const { session } = req.session;
         const Authorization = `Token ${session?.authToken}`;
 
         api = axios.create({

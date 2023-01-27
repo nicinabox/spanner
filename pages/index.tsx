@@ -25,7 +25,7 @@ export default function Home() {
 }
 
 export const getServerSideProps = withSession(async ({ req }) => {
-    const session = req.session.get('session');
+    const { session } = req.session;
 
     if (session) {
         return {

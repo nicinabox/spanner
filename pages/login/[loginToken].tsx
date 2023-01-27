@@ -36,7 +36,7 @@ export const getServerSideProps = withSession(async ({ req, res, params }) => {
     const { data, error } = await prefetch(req, (api) => signIn(api, params.loginToken));
 
     if (data) {
-        req.session.set('session', data);
+        req.session.session = data;
         await req.session.save();
 
         return {
