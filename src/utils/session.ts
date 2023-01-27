@@ -1,5 +1,12 @@
 import crypto from 'crypto';
 import { withIronSessionSsr, withIronSessionApiRoute } from 'iron-session/next';
+import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next/types';
+
+declare module 'iron-session' {
+    interface IronSessionData {
+        session?: API.Session;
+    }
+}
 
 if (!process.env.CLIENT_SECRET) {
     throw new Error('CLIENT_SECRET not set');
@@ -16,9 +23,18 @@ const sessionOptions = {
     ttl: 5184000, // 60 days
 };
 
-export const withSession = (handler) => withIronSessionSsr(handler, sessionOptions);
+// export const withSession = (handler) => withIronSessionSsr(handler, sessionOptions);
+export function withSession<
+    P extends { [key: string]: unknown } = { [key: string]: unknown }
+>(
+    handler: (
+        context: GetServerSidePropsContext
+    ) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>,
+) {
+    return withIronSessionSsr(handler, sessionOptions);
+}
 
-export const withAPISession = (handler) => withIronSessionApiRoute(handler, sessionOptions);
+export const withAPISession = (handler: NextApiHandler) => withIronSessionApiRoute(handler, sessionOptions);
 
 export const authRedirect = (req) => {
     const { session } = req.session;
