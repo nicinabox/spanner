@@ -1,5 +1,5 @@
 import httpProxy from 'http-proxy';
-import { withSession } from 'utils/session';
+import { withAPISession, withSession } from 'utils/session';
 
 // eslint-disable-next-line prefer-destructuring
 const PROXY_HOST = process.env.PROXY_HOST;
@@ -26,8 +26,8 @@ const proxyConfig = {
 
 const proxy = httpProxy.createProxyServer(proxyConfig);
 
-export default withSession((req, res) => {
-    const session: API.Session | undefined = req.session.get('session');
+export default withAPISession((req, res) => {
+    const { session }: { session: API.Session | undefined } = req.session;
 
     // Return a Promise to let Next.js know when we're done processing the request
     return new Promise((resolve, reject) => {
