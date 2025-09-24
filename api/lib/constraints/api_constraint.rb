@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiConstraint
   attr_reader :version
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V2
   class UsersController < ApplicationController
     def index
@@ -15,10 +17,9 @@ module V2
       params
         .require(:user)
         .permit(:email, :time_zone_offset,
-          preferences: [
-            vehicles_sort_order: []
-          ]
-        )
+                preferences: [
+                  vehicles_sort_order: []
+                ])
     end
   end
 end

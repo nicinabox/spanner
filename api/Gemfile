@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '3.4.6'
@@ -22,25 +24,27 @@ gem 'puma'
 # gem 'rack-cors'
 
 gem 'active_model_serializers'
-gem 'postmark-rails'
-gem 'queue_classic', '>= 4.0.0'
-gem 'whenever', :require => false
-gem 'premailer-rails'
+gem 'base64'
+gem 'benchmark'
+gem 'bigdecimal'
 gem 'browser'
 gem 'bugsnag'
-gem 'virtus'
-gem 'schema2type'
+gem 'csv'
 gem 'fiddle'
 gem 'mutex_m'
-gem 'base64'
-gem 'bigdecimal'
 gem 'ostruct'
-gem 'benchmark'
-gem 'csv'
+gem 'postmark-rails'
+gem 'premailer-rails'
+gem 'queue_classic', '>= 4.0.0'
+gem 'schema2type'
+gem 'virtus'
+gem 'whenever', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'rubocop'
+  gem 'rubocop-rails'
 end
 
 group :development do

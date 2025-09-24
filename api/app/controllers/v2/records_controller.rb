@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V2
   class RecordsController < ApplicationController
     skip_before_action :authenticate, only: [:share]

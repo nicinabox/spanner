@@ -1,19 +1,22 @@
+# frozen_string_literal: true
+
 namespace :db do
   desc 'Pull production db to development'
-  task :pull => [:dump, :restore]
+  task pull: %i[dump restore]
 
-  task :dump do
-    dumpfile = "#{Rails.root}/tmp/latest.dump"
+  task dump: :environment do
+    dumpfile = Rails.root.join('tmp/latest.dump').to_s
     puts 'Dumping production database...'
 
-    production = Rails.application.config.database_configuration['production']
-    system "ssh -t root@#{ENV['PRODUCTION_SERVER_ADDRESS']} 'dokku postgres:export spanner-api' > #{dumpfile}"
+    Rails.application.config.database_configuration['production']
+    system "ssh -t root@#{ENV.fetch('PRODUCTION_SERVER_ADDRESS',
+                                    nil)} 'dokku postgres:export spanner-api' > #{dumpfile}"
     puts 'Done!'
   end
 
-  task :restore do
+  task restore: :environment do
     dev = Rails.application.config.database_configuration['development']
-    dumpfile = "#{Rails.root}/tmp/latest.dump"
+    dumpfile = Rails.root.join('tmp/latest.dump').to_s
 
     puts 'Restoring on development database...'
     system "pg_restore --verbose --clean --no-acl --no-owner -h localhost -U #{dev['username']} -d #{dev['database']} #{dumpfile}"

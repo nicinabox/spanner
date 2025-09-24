@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
-  validates_presence_of :email
+  validates :email, presence: true
 
   store_accessor :preferences
 
@@ -46,6 +48,6 @@ class User < ApplicationRecord
   end
 
   def last_seen
-    sessions.order('last_seen').last.last_seen
+    sessions.order(:last_seen).last.last_seen
   end
 end

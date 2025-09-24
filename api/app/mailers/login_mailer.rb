@@ -1,5 +1,6 @@
-class LoginMailer < ApplicationMailer
+# frozen_string_literal: true
 
+class LoginMailer < ApplicationMailer
   def login_link(user, url_options)
     @user = user
     @url_options = url_options

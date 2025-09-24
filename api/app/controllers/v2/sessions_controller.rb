@@ -1,8 +1,10 @@
-require "browser"
+# frozen_string_literal: true
+
+require 'browser'
 
 module V2
   class SessionsController < ApplicationController
-    skip_before_action :authenticate, only: [:create, :login]
+    skip_before_action :authenticate, only: %i[create login]
 
     def index
       render json: current_user.sessions
@@ -11,21 +13,19 @@ module V2
     def create
       email = params[:email].strip.downcase
       host = params[:host]
-      user = User.find_by_email email
+      user = User.find_by email: email
 
-      if not user
+      unless user
         user = User.create! email: email, time_zone_offset: time_zone_offset
         PromptUserMailer.add_first_vehicle(user).deliver_later wait: 5.minutes
       end
 
-      if user.demo_account?
-        return head :no_content
-      end
+      return head :no_content if user.demo_account?
 
       if user
         user.update!(
           login_token: SecureRandom.urlsafe_base64,
-          login_token_valid_until: Time.now + 15.minutes
+          login_token_valid_until: 15.minutes.from_now
         )
 
         if params[:platform] == 'mobile'
@@ -34,7 +34,7 @@ module V2
           LoginMailer.login_link(user, host: host).deliver_later
         end
 
-        render :success, status: 204
+        render :success, status: :no_content
       else
         respond_with_errors(user)
       end
@@ -42,7 +42,7 @@ module V2
 
     def login
       user = User.where(login_token: params[:login_token])
-                 .where('login_token_valid_until > ?', Time.now)
+                 .where('login_token_valid_until > ?', Time.zone.now)
                  .first
 
       if user
@@ -52,7 +52,7 @@ module V2
         unless user.demo_account?
           user.update!(
             login_token: nil,
-            login_token_valid_until: 1.year.ago,
+            login_token_valid_until: 1.year.ago
           )
         end
 
@@ -60,9 +60,9 @@ module V2
           ip: remote_ip,
           description: name || browser.name,
           user_agent: request.user_agent,
-          last_seen: Time.now,
+          last_seen: Time.zone.now,
           auth_token: SecureRandom.urlsafe_base64(24),
-          auth_token_valid_until: Time.now + 2.months,
+          auth_token_valid_until: 2.months.from_now
         )
         session.save
         session.user.update!(time_zone_offset: time_zone_offset)
@@ -75,10 +75,10 @@ module V2
 
     def destroy
       session = current_user.sessions.find(params[:id])
-      if session
-        session.destroy!
-        head :no_content
-      end
+      return unless session
+
+      session.destroy!
+      head :no_content
     end
   end
 end

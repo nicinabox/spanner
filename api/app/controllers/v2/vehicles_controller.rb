@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'tempfile'
 require 'importer'
 require 'exporter'
@@ -7,7 +9,7 @@ module V2
     skip_before_action :authenticate, only: [:share]
 
     def index
-      render json: vehicles.all.order(:position)
+      render json: vehicles.order(:position)
     end
 
     def show
@@ -17,9 +19,7 @@ module V2
     def share
       vehicle = Vehicle.find(params[:vehicle_id])
 
-      if vehicle.preferences.enable_sharing
-        return render json: vehicle
-      end
+      return render json: vehicle if vehicle.preferences.enable_sharing
 
       render_unauthorized
     end
@@ -61,7 +61,7 @@ module V2
       Exporter.records(vehicle, tempfile)
 
       send_file tempfile,
-        filename: vehicle.name + '.csv'
+                filename: "#{vehicle.name}.csv"
     end
 
     private
@@ -76,12 +76,12 @@ module V2
         .permit(
           :name, :vin, :notes, :position, :enable_cost, :distance_unit,
           :retired, :import_file, :fuelly, :color,
-          preferences: [
-            :enable_sharing,
-            :enable_cost,
-            :send_reminder_emails,
-            :send_prompt_for_records,
-            :show_mileage_adjustment_records,
+          preferences: %i[
+            enable_sharing
+            enable_cost
+            send_reminder_emails
+            send_prompt_for_records
+            show_mileage_adjustment_records
           ]
         )
     end

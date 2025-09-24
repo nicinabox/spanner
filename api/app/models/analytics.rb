@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Analytics
-  def initialize(start_date, end_date = Time.now)
+  def initialize(start_date, end_date = Time.zone.now)
     @start_date = start_date
     @end_date = end_date
   end
@@ -14,33 +16,33 @@ class Analytics
     User.joins(:sessions)
         .select(user_fields)
         .where(sessions: {
-          last_seen: @start_date..@end_date
-        })
+                 last_seen: @start_date..@end_date
+               })
         .distinct
         .order(created_at: :desc)
   end
 
   def active_mobile_users
     User.joins(:sessions)
-        .where("sessions.description LIKE ?", "%Spanner%")
+        .where('sessions.description LIKE ?', '%Spanner%')
         .where(sessions: {
-          last_seen: @start_date..@end_date
-        })
+                 last_seen: @start_date..@end_date
+               })
         .distinct
         .order(created_at: :desc)
   end
 
   def total_mobile_users
     User.joins(:sessions)
-        .where("sessions.description LIKE ?", "%Spanner%")
+        .where('sessions.description LIKE ?', '%Spanner%')
         .distinct
         .order(created_at: :desc)
   end
 
   def new_vehicles
     Vehicle.unscoped
-          .where(created_at: @start_date..@end_date)
-          .order(created_at: :desc)
+           .where(created_at: @start_date..@end_date)
+           .order(created_at: :desc)
   end
 
   def new_reminders
@@ -56,7 +58,8 @@ class Analytics
   end
 
   private
+
   def user_fields
-    [:id, :email, :created_at, :updated_at]
+    %i[id email created_at updated_at]
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V2
   class RemindersController < ApplicationController
     def index

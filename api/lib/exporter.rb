@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 class Exporter
   def self.records(vehicle, file)
     CSV.open(file, 'wb', force_quotes: true) do |csv|
-      csv << ['date', 'cost', 'mileage', 'notes']
+      csv << %w[date cost mileage notes]
 
       vehicle.records.each do |r|
         csv << [r.date, r.cost, r.mileage, r.notes]
@@ -15,12 +17,12 @@ class Exporter
     CSV.open(file, 'wb', force_quotes: true) do |csv|
       records.each do |r|
         notes = r.notes
-          .gsub(/\W+/, ' ')
-          .gsub(/\r?\n+/, '')
-          .downcase
-          .strip
+                 .gsub(/\W+/, ' ')
+                 .gsub(/\r?\n+/, '')
+                 .downcase
+                 .strip
 
-        next unless notes.present?
+        next if notes.blank?
 
         csv << [notes]
       end

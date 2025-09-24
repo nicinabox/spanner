@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 class Importer
   def self.records(vehicle, string)
     rows = CSV.parse(string, { headers: true })
     vehicle.records.delete_all
-    vehicle.records.create!(rows.map { |r| r.to_h })
+    vehicle.records.create!(rows.map(&:to_h))
   end
 
   def self.fuelly(vehicle, string)

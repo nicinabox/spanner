@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Vehicle < ApplicationRecord
   store_accessor :preferences
 
-  validates_presence_of :name
+  validates :name, presence: true
 
   belongs_to :user
   has_many :reminders, dependent: :destroy
@@ -33,30 +35,27 @@ class Vehicle < ApplicationRecord
     return unless preferences.prompt_for_records
 
     date = estimated_next_record_date
-    return unless date and date <= Date.today.beginning_of_day
+    return unless date && (date <= Time.zone.today.beginning_of_day)
 
     PromptUserMailer.add_record(user, self).deliver_later
   end
 
   def squish_vin
     return unless vin? && vin.size > 10
+
     vin[0..7] + vin[9..10]
   end
 
   def estimated_mileage
     unless can_estimate_mpd?
-      if first_record_with_mileage.nil?
-        return
-      else
-        return first_record_with_mileage.mileage
-      end
+      return if first_record_with_mileage.nil?
+
+      return first_record_with_mileage.mileage
     end
 
     projected_mileage = round_to(estimated_mileage_exact, 50)
 
-    unless projected_mileage > 50
-      return estimated_mileage_exact.round(-1)
-    end
+    return estimated_mileage_exact.round(-1) unless projected_mileage > 50
 
     projected_mileage
   end
@@ -65,45 +64,46 @@ class Vehicle < ApplicationRecord
     return unless can_estimate_mpd?
 
     last_record = last_record_with_mileage
-    (last_record.mileage + weighted_averge_miles_per_day * elapsed_days(Time.now.beginning_of_day, last_record.date)).to_i
+    (last_record.mileage + (weighted_averge_miles_per_day * elapsed_days(Time.zone.now.beginning_of_day,
+                                                                         last_record.date))).to_i
   end
 
   def estimated_next_record_date
     record = last_record_with_mileage
     return unless record
 
-    days = weighted_average_days_per_period + elapsed_days(Time.now.beginning_of_day, record.date)
+    days = weighted_average_days_per_period + elapsed_days(Time.zone.now.beginning_of_day, record.date)
     record.date + days.days
   end
 
   def miles_per_year
     return unless can_estimate_mpd?
+
     projected_mileage = round_to(miles_per_year_exact, 500)
 
-    unless projected_mileage > 0
-      return miles_per_year_exact.round(-2)
-    end
+    return miles_per_year_exact.round(-2) unless projected_mileage.positive?
 
     projected_mileage
   end
 
   def miles_per_year_exact
     return unless can_estimate_mpd?
+
     (weighted_averge_miles_per_day * ONE_YEAR).to_i
   end
 
   def periods
     @periods ||= begin
       selected = records
-        .unscope(:order)
-        .where('mileage > 0')
-        .limit(WEIGHT_COEFFICIENT)
-        .order('date DESC')
-        .pluck(:date, :mileage)
+                 .unscope(:order)
+                 .where('mileage > 0')
+                 .limit(WEIGHT_COEFFICIENT)
+                 .order(date: :desc)
+                 .pluck(:date, :mileage)
 
       results = selected.each_with_index.map do |r, i|
         previous = selected[i + 1]
-        next if !previous
+        next unless previous
 
         n = selected.size - i
         weight = n * (n - 1) / 2
@@ -118,7 +118,7 @@ class Vehicle < ApplicationRecord
           elapsed_miles: elapsed_miles,
           miles_per_day: elapsed_miles / period_elapsed_days,
           weight: weight,
-          weighted_miles_per_day: (elapsed_miles / period_elapsed_days) * weight,
+          weighted_miles_per_day: (elapsed_miles / period_elapsed_days) * weight
         }
       end.compact
 
@@ -132,14 +132,14 @@ class Vehicle < ApplicationRecord
 
   def weighted_average_days_per_period
     days = periods.map { |p| p[:elapsed_days] * p[:weight] }
-    weights = periods.map { |p| p[:weight] }
+    weights = periods.pluck(:weight)
 
     weighted_average(days, weights)
   end
 
   def weighted_averge_miles_per_day
-    miles = periods.map { |p| p[:weighted_miles_per_day] }
-    weights = periods.map { |p| p[:weight] }
+    miles = periods.pluck(:weighted_miles_per_day)
+    weights = periods.pluck(:weight)
 
     weighted_average(miles, weights)
   end
@@ -171,6 +171,7 @@ class Vehicle < ApplicationRecord
   end
 
   private
+
   def weighted_average(values, weights)
     sum = values.inject(:+).to_f
     total_weight = weights.inject(:+).to_f

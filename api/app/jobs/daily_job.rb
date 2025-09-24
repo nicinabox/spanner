@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DailyJob < ApplicationJob
   def perform
     upcoming_reminders
@@ -20,7 +22,7 @@ class DailyJob < ApplicationJob
   private
 
   def reminders_on(date)
-    reminders = Reminder.where(reminder_date: date.beginning_of_day..date.end_of_day)
+    reminders = Reminder.where(reminder_date: date.all_day)
     reminders.select! do |r|
       r.vehicle.preferences.send_reminder_emails
     end
