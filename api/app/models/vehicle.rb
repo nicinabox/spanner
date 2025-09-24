@@ -1,7 +1,7 @@
 class Vehicle < ApplicationRecord
   store_accessor :preferences
 
-  serialize :preferences, ::VehiclePreferences
+  attribute :preferences, :vehicle_preferences, default: {}
 
   validates_presence_of :name
 

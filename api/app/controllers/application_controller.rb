@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
 
   rescue_from StandardError do |e|
     logger.debug e
-    Bugsnag.notify(e) unless ENV['development']
+    Bugsnag.notify(e)
     respond_with_error(e.message, status: 500)
   end
 

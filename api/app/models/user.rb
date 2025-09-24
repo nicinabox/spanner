@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   store_accessor :preferences
 
-  serialize :preferences, ::UserPreferences
+  attribute :preferences, :user_preferences, default: {}
 
   has_many :sessions, dependent: :destroy
   has_many :vehicles, dependent: :destroy

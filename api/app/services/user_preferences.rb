@@ -1,4 +1,3 @@
-
 class UserPreferences
     include Virtus.model
 
