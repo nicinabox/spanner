@@ -35,12 +35,13 @@ module V2
 
     def update
       vehicle = vehicles.find(params[:id])
-      vehicle.update_attributes!(vehicle_params)
+      vehicle.update!(vehicle_params)
       render json: vehicle
     end
 
     def destroy
       vehicles.destroy(params[:id])
+      head :no_content
     end
 
     def import

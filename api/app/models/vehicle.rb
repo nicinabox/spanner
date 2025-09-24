@@ -1,8 +1,6 @@
 class Vehicle < ApplicationRecord
   store_accessor :preferences
 
-  attribute :preferences, :vehicle_preferences, default: {}
-
   validates_presence_of :name
 
   belongs_to :user
@@ -13,6 +11,17 @@ class Vehicle < ApplicationRecord
 
   ONE_YEAR = 365
   WEIGHT_COEFFICIENT = 10
+
+  def preferences
+    @preferences ||= VehiclePreferences.new(super || {})
+  end
+
+  def preferences=(value)
+    # Accepts either a VehiclePreferences object or a hash
+    prefs_hash = value.is_a?(VehiclePreferences) ? value.to_hash : value
+    super(prefs_hash)
+    @preferences = VehiclePreferences.new(prefs_hash)
+  end
 
   def prompt_for_first_record!
     return if !preferences.prompt_for_records || records.any?

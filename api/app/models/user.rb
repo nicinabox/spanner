@@ -3,14 +3,23 @@ class User < ApplicationRecord
 
   store_accessor :preferences
 
-  attribute :preferences, :user_preferences, default: {}
-
   has_many :sessions, dependent: :destroy
   has_many :vehicles, dependent: :destroy
   has_many :reminders, through: :vehicles
   has_many :records, through: :vehicles
 
   before_save { |user| user.email = user.email.strip.downcase }
+
+  def preferences
+    @preferences ||= UserPreferences.new(super || {})
+  end
+
+  def preferences=(value)
+    # Accepts either a UserPreferences object or a hash
+    prefs_hash = value.is_a?(UserPreferences) ? value.to_hash : value
+    super(prefs_hash)
+    @preferences = UserPreferences.new(prefs_hash)
+  end
 
   def self.expired_sessions
     includes(:sessions).where(sessions: { user_id: nil })

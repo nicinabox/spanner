@@ -8,6 +8,6 @@ class VehicleTest < ActiveSupport::TestCase
 
   test "miles_per_year" do
     vehicle = Vehicle.first
-    assert_equal 36487, vehicle.miles_per_year
+    assert_equal 36_500, vehicle.miles_per_year
   end
 end

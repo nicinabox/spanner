@@ -5,7 +5,7 @@ module V2
     end
 
     def update
-      current_user.update_attributes!(user_params)
+      current_user.update!(user_params)
       render json: current_user
     end
 

@@ -19,7 +19,7 @@ module V2
       end
 
       if user.demo_account?
-        return render :success, status: 204
+        return head :no_content
       end
 
       if user
@@ -31,7 +31,7 @@ module V2
         if params[:platform] == 'mobile'
           LoginMailer.login_token(user).deliver_later
         else
-          LoginMailer.login_link(user, host).deliver_later
+          LoginMailer.login_link(user, host: host).deliver_later
         end
 
         render :success, status: 204
@@ -65,7 +65,7 @@ module V2
           auth_token_valid_until: Time.now + 2.months,
         )
         session.save
-        session.user.update_attributes(time_zone_offset: time_zone_offset)
+        session.user.update!(time_zone_offset: time_zone_offset)
 
         render json: session
       else
@@ -77,7 +77,7 @@ module V2
       session = current_user.sessions.find(params[:id])
       if session
         session.destroy!
-        render :success, status: 204
+        head :no_content
       end
     end
   end

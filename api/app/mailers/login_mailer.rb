@@ -1,13 +1,8 @@
 class LoginMailer < ApplicationMailer
 
-  def login_link(user, host)
+  def login_link(user, url_options)
     @user = user
-    @url_options = {}
-
-    if host
-      @url_options = { host: host }
-    end
-
+    @url_options = url_options
     mail to: @user.email, subject: subject
   end
 
@@ -17,6 +12,7 @@ class LoginMailer < ApplicationMailer
   end
 
   private
+
   def subject
     "Sign in to Spanner (expires #{expires_time})"
   end
@@ -24,6 +20,6 @@ class LoginMailer < ApplicationMailer
   def expires_time
     now = Time.now.in_time_zone @user.time_zone
     time = now + 15.minutes
-    time.to_s(:short)
+    time.to_fs :short
   end
 end

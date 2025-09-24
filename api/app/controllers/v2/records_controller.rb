@@ -31,7 +31,7 @@ module V2
     def update
       record = records.find(params[:id])
 
-      record.update_attributes!(record_params)
+      record.update!(record_params)
       render json: record
     end
 
@@ -39,7 +39,7 @@ module V2
       record = records.find(params[:id])
 
       record.destroy!
-      render :success
+      head :no_content
     end
 
     private

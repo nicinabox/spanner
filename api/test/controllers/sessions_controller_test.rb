@@ -2,11 +2,7 @@ require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   test "request new session" do
-    post sessions_url, http_options.merge({
-      params: {
-        email: 'nic@test'
-      }
-    })
+    post sessions_url, params: { email: 'nic@test' }, headers: http_options[:headers]
     assert User.last.email == 'nic@test'
     assert User.last.login_token_valid_until > Time.now
   end
@@ -19,7 +15,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       login_token_valid_until: Time.now + 15.minutes
     })
 
-    get login_url(login_token: login_token), http_options
+    get login_url(login_token: login_token), headers: http_options[:headers]
     assert_not_empty response_body['auth_token']
   end
 end

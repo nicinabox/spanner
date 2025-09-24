@@ -54,13 +54,13 @@ class ApplicationController < ActionController::API
                        .first
 
       if session
-        session.update_attributes(
+        session.update(
           ip: remote_ip,
           last_seen: Time.now,
           auth_token_valid_until: Time.now + 2.months
         )
 
-        session.user.update_attributes(time_zone_offset: time_zone_offset)
+        session.user.update(time_zone_offset: time_zone_offset)
 
         @current_session = session
         @current_user = session.user
