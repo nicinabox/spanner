@@ -106,6 +106,10 @@ GEM
     date (3.4.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     drb (2.2.3)
     erb (5.0.2)
     erubi (1.13.1)
@@ -337,6 +341,7 @@ DEPENDENCIES
   bugsnag
   byebug
   csv
+  dotenv-rails
   fiddle
   listen (~> 3.7)
   mutex_m

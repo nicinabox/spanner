@@ -36,11 +36,11 @@ class User < ApplicationRecord
   end
 
   def demo_account?
-    email == 'demo@spanner'
+    email == ENV['DEMO_USER']
   end
 
   def can_access_analytics?
-    ['nic@nicinabox.com'].include? email
+    [ENV['ANALYTICS_USER']].include? email
   end
 
   def active_sessions?
