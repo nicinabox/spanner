@@ -11,13 +11,13 @@ class User < ApplicationRecord
   before_save { |user| user.email = user.email.strip.downcase }
 
   def preferences
-    @preferences ||= UserPreferences.new(super || {})
+    @preferences ||= UserPreferences.new(self[:preferences] || {})
   end
 
   def preferences=(value)
     # Accepts either a UserPreferences object or a hash
     prefs_hash = value.is_a?(UserPreferences) ? value.to_hash : value
-    super(prefs_hash)
+    self[:preferences] = prefs_hash
     @preferences = UserPreferences.new(prefs_hash)
   end
 

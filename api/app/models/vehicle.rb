@@ -13,13 +13,13 @@ class Vehicle < ApplicationRecord
   WEIGHT_COEFFICIENT = 10
 
   def preferences
-    @preferences ||= VehiclePreferences.new(super || {})
+    @preferences ||= VehiclePreferences.new(self[:preferences] || {})
   end
 
   def preferences=(value)
     # Accepts either a VehiclePreferences object or a hash
     prefs_hash = value.is_a?(VehiclePreferences) ? value.to_hash : value
-    super(prefs_hash)
+    self[:preferences] = prefs_hash
     @preferences = VehiclePreferences.new(prefs_hash)
   end
 
