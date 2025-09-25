@@ -23,10 +23,12 @@ module V2
       return head :no_content if user.demo_account?
 
       if user
+        login_token = SecureRandom.urlsafe_base64
         user.update!(
-          login_token: SecureRandom.urlsafe_base64,
+          login_token: login_token,
           login_token_valid_until: 15.minutes.from_now
         )
+        puts "Login token for user #{user.email}: #{login_token}" if Rails.env.development?
 
         if params[:platform] == 'mobile'
           LoginMailer.login_token(user).deliver_later
