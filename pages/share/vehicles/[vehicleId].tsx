@@ -1,6 +1,4 @@
-import {
-    Center, TabPanel, TabPanels,
-} from '@chakra-ui/react';
+import { Center, TabPanel, TabPanels } from '@chakra-ui/react';
 import LinkPreload from 'components/common/LinkPreload';
 import Page from 'components/common/Page';
 import TabsHeader from 'components/common/TabsHeader';
@@ -16,11 +14,11 @@ import { withSession } from 'utils/session';
 export interface VehiclePageProps {
     params: {
         vehicleId: string;
-    }
+    };
     fallback: {
         vehicle: API.Vehicle;
         records: API.Record[];
-    }
+    };
 }
 
 const isShared = true;
@@ -55,9 +53,7 @@ const VehicleSharePage: React.FC<VehiclePageProps> = ({ params, fallback }) => {
         >
             <TabPanels>
                 <TabPanel px={0}>
-                    <VehicleService
-                        vehicleId={params.vehicleId}
-                    />
+                    <VehicleService vehicleId={params.vehicleId} />
                 </TabPanel>
             </TabPanels>
         </Page>
@@ -68,10 +64,12 @@ export const getServerSideProps = withSession(async ({ req, params }) => {
     let fallback = {};
 
     const apiPaths = [
-        vehicleAPIPath(params.vehicleId, isShared),
-        recordsAPIPath(params.vehicleId, isShared),
+        vehicleAPIPath(params?.vehicleId as string, isShared),
+        recordsAPIPath(params?.vehicleId as string, isShared),
     ];
-    const [_vehicle, _records] = await Promise.allSettled(apiPaths.map((path) => prefetch(req, path)));
+    const [_vehicle, _records] = await Promise.allSettled(
+        apiPaths.map((path) => prefetch(req, path)),
+    );
 
     if (_vehicle.status === 'fulfilled') {
         const { data: vehicle, error } = _vehicle.value;
