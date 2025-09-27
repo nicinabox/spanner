@@ -14,7 +14,8 @@ module.exports = {
         'airbnb',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
-        'plugin:@next/next/recommended'
+        'plugin:@next/next/recommended',
+        'prettier',
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -24,10 +25,7 @@ module.exports = {
         ecmaVersion: 12,
         sourceType: 'module',
     },
-    plugins: [
-        'react',
-        '@typescript-eslint',
-    ],
+    plugins: ['react', '@typescript-eslint'],
     rules: {
         'no-restricted-exports': 'off',
         'no-use-before-define': 'off',
@@ -39,9 +37,16 @@ module.exports = {
 
         '@typescript-eslint/explicit-module-boundary-types': 'off',
 
-        'import/no-extraneous-dependencies': ['error', {
-            devDependencies: ['jest.setup.ts', '**/*.spec.ts', '**/*.spec.tsx'],
-        }],
+        'import/no-extraneous-dependencies': [
+            'error',
+            {
+                devDependencies: [
+                    'jest.setup.ts',
+                    '**/*.spec.ts',
+                    '**/*.spec.tsx',
+                ],
+            },
+        ],
 
         'import/extensions': [
             'error',
@@ -54,9 +59,12 @@ module.exports = {
             },
         ],
 
-        'react/jsx-filename-extension': ['error', {
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        }],
+        'react/jsx-filename-extension': [
+            'error',
+            {
+                extensions: ['.js', '.jsx', '.ts', '.tsx'],
+            },
+        ],
 
         'react/no-array-index-key': 'warn',
         'react/require-default-props': 'off',
@@ -70,7 +78,11 @@ module.exports = {
         'arrow-body-style': 'off',
 
         indent: 'off',
-        '@typescript-eslint/indent': ['error', 4, { ignoredNodes: ['JSXElement *', 'JSXElement'] }],
+        '@typescript-eslint/indent': [
+            'error',
+            4,
+            { ignoredNodes: ['JSXElement *', 'JSXElement'] },
+        ],
 
         'import/prefer-default-export': 'off',
         'max-len': 'off',
