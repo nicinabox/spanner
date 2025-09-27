@@ -7,8 +7,6 @@ const secureCookie = JSON.parse(
         String(process.env.NODE_ENV === 'production'),
 );
 
-console.log('secureCookie', secureCookie);
-
 export const sessionOptions = {
     password: process.env.CLIENT_SECRET,
     cookieName: 'session',
