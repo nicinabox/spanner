@@ -3,29 +3,30 @@
 include ErrorSerializer
 
 class ApplicationController < ActionController::API
+  include ErrorLogging
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
   before_action :authenticate
   before_bugsnag_notify :add_user_info_to_bugsnag
 
   rescue_from StandardError do |e|
-    logger.debug e
+    log_exception(e)
     Bugsnag.notify(e)
     respond_with_error(e.message, status: 500)
   end
 
   rescue_from ActiveRecord::RecordNotFound do |e|
-    logger.debug e
+    log_exception(e)
     respond_with_error(e.message, status: :not_found)
   end
 
-  rescue_from ActiveRecord::RecordInvalid do |invalid|
-    logger.debug invalid
-    respond_with_errors(invalid.record)
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    log_exception(e)
+    respond_with_errors(e.record)
   end
 
   rescue_from ActionController::ParameterMissing do |e|
-    logger.debug e
+    log_exception(e)
     respond_with_error(e.message, status: :unprocessable_entity)
   end
 
