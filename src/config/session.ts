@@ -2,11 +2,18 @@ if (!process.env.CLIENT_SECRET) {
     throw new Error('CLIENT_SECRET not set');
 }
 
+const secureCookie = JSON.parse(
+    process.env.USE_SECURE_COOKIE ??
+        String(process.env.NODE_ENV === 'production'),
+);
+
+console.log('secureCookie', secureCookie);
+
 export const sessionOptions = {
     password: process.env.CLIENT_SECRET,
     cookieName: 'session',
-    ttl: 5184000, // 60 days
+    ttl: 5_184_000, // 60 days
     cookieOptions: {
-        secure: process.env.USE_SECURE_COOKIE === 'true',
+        secure: secureCookie,
     },
 };
