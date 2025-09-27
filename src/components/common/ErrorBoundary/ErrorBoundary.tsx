@@ -1,16 +1,21 @@
 import React from 'react';
-import Bugsnag from '@bugsnag/js';
 import { Container, Heading, Text } from '@chakra-ui/react';
-import 'utils/bugsnag';
+import bugsnag from 'utils/bugsnag';
 
-const BugsnagErrorBoundary = Bugsnag.getPlugin('react')!.createErrorBoundary(React);
+const BugsnagErrorBoundary = bugsnag
+    ?.getPlugin('react')
+    ?.createErrorBoundary(React);
 
-export const ErrorBoundary: React.FC = ({ children }) => {
-    return (
-        <BugsnagErrorBoundary FallbackComponent={ErrorView}>
-            {children}
-        </BugsnagErrorBoundary>
-    );
+export const ErrorBoundary = ({ children }) => {
+    if (BugsnagErrorBoundary) {
+        return (
+            <BugsnagErrorBoundary FallbackComponent={ErrorView}>
+                {children}
+            </BugsnagErrorBoundary>
+        );
+    }
+
+    return children;
 };
 
 const ErrorView = () => {
