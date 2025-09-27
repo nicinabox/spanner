@@ -3,14 +3,14 @@
 require 'csv'
 
 class Importer
-  def self.records(vehicle, string)
-    rows = CSV.parse(string, { headers: true })
+  def self.records(vehicle, contents)
+    rows = CSV.parse(contents, headers: true)
     vehicle.records.delete_all
     vehicle.records.create!(rows.map(&:to_h))
   end
 
-  def self.fuelly(vehicle, string)
-    rows = CSV.parse(string, { headers: true }).map do |row|
+  def self.fuelly(vehicle, contents)
+    rows = CSV.parse(contents, headers: true).map do |row|
       {
         mileage: row[' odometer'],
         cost: row[' price'],
