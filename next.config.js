@@ -1,5 +1,12 @@
 module.exports = {
-    generateBuildId: () => new Date().getTime().toString(),
+    generateBuildId: () => {
+        const now = new Date();
+        return [
+            now.getFullYear(),
+            String(now.getMonth() + 1).padStart(2, '0'),
+            String(now.getDay()).padStart(2, '0'),
+        ].join('');
+    },
 
     webpack: (config, { dev, webpack, buildId }) => {
         config.plugins.push(
@@ -8,12 +15,10 @@ module.exports = {
             }),
         );
 
-        config.module.rules.push(
-            {
-                test: /\.(spec|stories)\.tsx?$/,
-                loader: 'ignore-loader',
-            },
-        );
+        config.module.rules.push({
+            test: /\.(spec|stories)\.tsx?$/,
+            loader: 'ignore-loader',
+        });
         return config;
     },
 
