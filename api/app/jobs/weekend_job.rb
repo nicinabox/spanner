@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WeekendJob < ApplicationJob
+  queue_as :low_priority
+
   def perform
     prompt_to_add_new_record
   end

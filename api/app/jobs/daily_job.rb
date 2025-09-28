@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DailyJob < ApplicationJob
+  queue_as :low_priority
+
   def perform
     upcoming_reminders
     delete_expired_sessions

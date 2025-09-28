@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class HourlyJob < ApplicationJob
+  queue_as :low_priority
+
   def perform
     today_reminders_in_timezone
   end
