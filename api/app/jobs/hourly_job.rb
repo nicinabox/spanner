@@ -13,7 +13,7 @@ class HourlyJob < ApplicationJob
 
     users.each do |user|
       reminders = user.reminders.where(reminder_date: date.all_day)
-      reminders.select! do |r|
+      reminders = reminders.select do |r|
         r.vehicle.preferences.send_reminder_emails
       end
 
