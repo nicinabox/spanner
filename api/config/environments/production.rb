@@ -4,6 +4,12 @@ Rails.application.configure do
 
   # Settings specified here will take precedence over those in config/application.rb.
 
+  if ENV["ALLOWED_HOSTS"]
+    ENV["ALLOWED_HOSTS"].split(",").each do |host|
+      config.hosts << host.strip
+    end
+  end
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 
