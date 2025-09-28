@@ -1,6 +1,13 @@
+import { WarningTwoIcon } from '@chakra-ui/icons';
 import {
     Box,
-    Flex, Heading, HStack, LinkBox, LinkOverlay, Text, useStyleConfig,
+    Flex,
+    Heading,
+    HStack,
+    LinkBox,
+    LinkOverlay,
+    Text,
+    useStyleConfig,
 } from '@chakra-ui/react';
 import Interpunct from 'components/common/Interpunct';
 import NumberBadge from 'components/common/NumberBadge';
@@ -27,15 +34,12 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
                 passHref
                 href={vehiclePath(vehicle.id)}
                 onClick={() => {
-                        mutate(vehicleAPIPath(vehicle.id), vehicle, false);
-                    }}
+                    mutate(vehicleAPIPath(vehicle.id), vehicle, false);
+                }}
             >
                 <Flex direction="column" minH={12}>
                     <Box mb="2">
-                        <VehicleColorIndicator
-                            color={vehicle.color}
-                            size={7}
-                        />
+                        <VehicleColorIndicator color={vehicle.color} size={7} />
                     </Box>
 
                     <Flex justify="space-between">
@@ -43,26 +47,27 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
                             {vehicle.name}
                         </Heading>
                         {Boolean(getOverdueRemindersCount(vehicle)) && (
-                        <NumberBadge sentiment="negative">
-                            {getOverdueRemindersCount(vehicle)}
-                        </NumberBadge>
-                            )}
+                            <NumberBadge sentiment="warning" gap={1}>
+                                <WarningTwoIcon />
+                                {getOverdueRemindersCount(vehicle)}
+                            </NumberBadge>
+                        )}
                     </Flex>
                     <HStack
                         color="whiteAlpha.700"
                         divider={<Interpunct fontSize="sm" />}
                     >
                         {Boolean(vehicle.estimatedMileage) && (
-                        <Text fontSize="sm">
-                            {formatEstimatedMileage(vehicle)}
-                        </Text>
-                            )}
+                            <Text fontSize="sm">
+                                {formatEstimatedMileage(vehicle)}
+                            </Text>
+                        )}
                         {Boolean(vehicle.milesPerYear) && (
-                        <Text fontSize="sm">
-                            {formatMilesPerYear(vehicle)}
-                            /yr
-                        </Text>
-                            )}
+                            <Text fontSize="sm">
+                                {formatMilesPerYear(vehicle)}
+                                /yr
+                            </Text>
+                        )}
                     </HStack>
                 </Flex>
             </LinkOverlay>

@@ -5,14 +5,14 @@ import React from 'react';
 export type BadgeSentiment = 'neutral' | 'warning' | 'negative';
 
 export interface NumberBadgeProps extends SquareProps {
-    sentiment?: BadgeSentiment
+    sentiment?: BadgeSentiment;
 }
 
 const getBadgeColors = (sentiment: BadgeSentiment | undefined, cm) => {
     if (sentiment === 'warning') {
         return {
             bg: 'orange.300',
-            color: 'white',
+            color: 'orange.900',
         };
     }
 
@@ -29,7 +29,11 @@ const getBadgeColors = (sentiment: BadgeSentiment | undefined, cm) => {
     };
 };
 
-export const NumberBadge: React.FC<NumberBadgeProps> = ({ children, sentiment, ...circleProps }) => {
+export const NumberBadge: React.FC<NumberBadgeProps> = ({
+    children,
+    sentiment,
+    ...circleProps
+}) => {
     const cm = useInlineColorMode();
     const colors = getBadgeColors(sentiment, cm);
 

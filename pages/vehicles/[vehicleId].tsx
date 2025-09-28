@@ -12,6 +12,7 @@ import { vehiclesPath } from 'utils/resources';
 import { authRedirect, withSession } from 'utils/session';
 import dynamic from 'next/dynamic';
 import useRequest from 'hooks/useRequest';
+import { WarningTwoIcon } from '@chakra-ui/icons';
 
 const VehicleService = dynamic(() => import('components/VehicleService'));
 const VehicleReminders = dynamic(() => import('components/VehicleReminders'));
@@ -34,8 +35,8 @@ const PageHeader = ({ vehicle, overDueRemindersBadge }) => (
             'History',
             {
                 text: 'Reminders',
-                badge: overDueRemindersBadge,
-                badgeSentiment: 'negative',
+                children: [<WarningTwoIcon />, overDueRemindersBadge],
+                badgeSentiment: 'warning',
             },
             'Notes',
         ]}
