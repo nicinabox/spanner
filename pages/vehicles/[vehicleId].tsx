@@ -35,7 +35,9 @@ const PageHeader = ({ vehicle, overDueRemindersBadge }) => (
             'History',
             {
                 text: 'Reminders',
-                children: [<WarningTwoIcon />, overDueRemindersBadge],
+                children: overDueRemindersBadge
+                    ? [<WarningTwoIcon />, overDueRemindersBadge]
+                    : null,
                 badgeSentiment: 'warning',
             },
             'Notes',
