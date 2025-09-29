@@ -42,12 +42,16 @@ export const VehicleItem: React.FC<VehicleItemProps> = ({ vehicle }) => {
                         <VehicleColorIndicator color={vehicle.color} size={7} />
                     </Box>
 
-                    <Flex justify="space-between">
+                    <Flex justify="space-between" gap={4}>
                         <Heading size="sm" color="brand.100">
                             {vehicle.name}
                         </Heading>
                         {Boolean(getOverdueRemindersCount(vehicle)) && (
-                            <NumberBadge sentiment="warning" gap={1}>
+                            <NumberBadge
+                                sentiment="warning"
+                                gap={1}
+                                alignSelf="start"
+                            >
                                 <WarningTwoIcon />
                                 {getOverdueRemindersCount(vehicle)}
                             </NumberBadge>
