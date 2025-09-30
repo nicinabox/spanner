@@ -18,16 +18,7 @@ function App({ Component, pageProps }) {
                     content="The easiest way keep service records for all your vehicles."
                 />
                 {}
-                <meta
-                    name="theme-color"
-                    content={theme.colors.brand.primary}
-                    media="(prefers-color-scheme: light)"
-                />
-                <meta
-                    name="theme-color"
-                    content={theme.colors.brand['600']}
-                    media="(prefers-color-scheme: dark)"
-                />
+                <meta name="theme-color" content={theme.colors.brand.primary} />
             </Head>
 
             <CSSReset />
