@@ -21,15 +21,6 @@ export const ColorModeButton: React.FC<ColorModeButtonProps> = ({
     const nextMode = useColorModeValue('dark', 'light');
     const label = `Switch to ${nextMode} mode`;
 
-    const headerStyles = useStyleConfig('Header');
-    const headerBg = useToken('colors', headerStyles.bg as string);
-
-    useEffect(() => {
-        document
-            .querySelector('meta[name="theme-color"]')
-            ?.setAttribute('content', headerBg);
-    }, [headerBg]);
-
     return (
         <Tooltip label={label}>
             <IconButton

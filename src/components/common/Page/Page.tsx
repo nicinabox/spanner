@@ -6,6 +6,8 @@ import {
     SimpleGrid,
     Spacer,
     Tabs,
+    useStyleConfig,
+    useToken,
 } from '@chakra-ui/react';
 import Router, { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -38,6 +40,15 @@ export const Page: React.FC<PageProps> = ({
     const [panel, setPanel] = useState(0);
 
     const contextValueMemo = useMemo(() => contextValue ?? {}, [contextValue]);
+
+    const headerStyles = useStyleConfig('Header');
+    const headerBg = useToken('colors', headerStyles.bg as string);
+
+    useEffect(() => {
+        document
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute('content', headerBg);
+    }, [headerBg]);
 
     useEffect(() => {
         const params = parseHashParams(router.asPath);
