@@ -1,8 +1,24 @@
 import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import {
-    Box, Button, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList,
-    Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter,
-    ModalHeader, ModalOverlay, Skeleton, Spacer, Text,
+    Badge,
+    Box,
+    Button,
+    HStack,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Skeleton,
+    Spacer,
+    Text,
     useDisclosure,
 } from '@chakra-ui/react';
 import VehicleColorIndicator from 'components/VehicleColorIndicator';
@@ -10,9 +26,7 @@ import VehicleShareSettings from 'components/VehicleShareSettings';
 import useMutation, { mutate } from 'hooks/useMutation';
 import { debounce, merge } from 'lodash';
 import Link from 'next/link';
-import {
-    updateVehicle, vehicleAPIPath, VehicleParams,
-} from 'queries/vehicles';
+import { updateVehicle, vehicleAPIPath, VehicleParams } from 'queries/vehicles';
 import React, { useCallback } from 'react';
 import { editVehiclePath, vehicleImportPath } from 'utils/resources';
 
@@ -20,7 +34,9 @@ export interface VehicleActionsMenuProps {
     vehicle: API.Vehicle | undefined;
 }
 
-export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle }) => {
+export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({
+    vehicle,
+}) => {
     const { mutate: updateVehicleMutation } = useMutation(updateVehicle);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -31,7 +47,9 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
         updateVehicleMutation({ id: vehicle.id, ...params });
     };
 
-    const debouncedUpdate = useCallback(debounce(handleUpdateVehicle, 500), [vehicle]);
+    const debouncedUpdate = useCallback(debounce(handleUpdateVehicle, 500), [
+        vehicle,
+    ]);
 
     const handleColorChange = (e) => {
         const color = e.target.value;
@@ -55,18 +73,25 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                             <Text isTruncated>{vehicle?.name}</Text>
                         </HStack>
                     ) : (
-                        <Skeleton minW={140} minH={3} startColor="whiteAlpha.100" endColor="whiteAlpha.400" />
+                        <Skeleton
+                            minW={140}
+                            minH={3}
+                            startColor="whiteAlpha.100"
+                            endColor="whiteAlpha.400"
+                        />
                     )}
                 </MenuButton>
 
                 {vehicle && (
                     <MenuList>
                         <Link href={editVehiclePath(vehicle.id)} passHref>
-                            <MenuItem as="a">
-                                Edit
-                            </MenuItem>
+                            <MenuItem as="a">Edit</MenuItem>
                         </Link>
-                        <MenuItem closeOnSelect={false} as="label" htmlFor="color">
+                        <MenuItem
+                            closeOnSelect={false}
+                            as="label"
+                            htmlFor="color"
+                        >
                             Change color
                             <Spacer />
                             <Box position="absolute" left="-100%">
@@ -83,7 +108,11 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
                         </MenuItem>
 
                         <MenuItem
-                            onClick={() => handleUpdateVehicle({ retired: !vehicle.retired })}
+                            onClick={() =>
+                                handleUpdateVehicle({
+                                    retired: !vehicle.retired,
+                                })
+                            }
                             icon={vehicle.retired ? <CheckIcon /> : <Spacer />}
                             iconSpacing={0}
                             flexDir="row-reverse"
@@ -96,16 +125,31 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({ vehicle 
 
                         <MenuItem onClick={onOpen}>
                             Share...
+                            <Spacer />
+                            <Badge
+                                variant="subtle"
+                                colorScheme={
+                                    vehicle.preferences.enableSharing
+                                        ? 'orange'
+                                        : 'green'
+                                }
+                            >
+                                {vehicle.preferences.enableSharing
+                                    ? 'Public'
+                                    : 'Private'}
+                            </Badge>
                         </MenuItem>
 
                         <MenuDivider />
 
                         <Link href={vehicleImportPath(vehicle.id)} passHref>
-                            <MenuItem as="a">
-                                Import history
-                            </MenuItem>
+                            <MenuItem as="a">Import history</MenuItem>
                         </Link>
-                        <MenuItem as="a" href={`${vehicleAPIPath(vehicle.id)}/export`} target="_blank">
+                        <MenuItem
+                            as="a"
+                            href={`${vehicleAPIPath(vehicle.id)}/export`}
+                            target="_blank"
+                        >
                             Export history to CSV
                         </MenuItem>
                     </MenuList>

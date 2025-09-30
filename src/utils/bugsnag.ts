@@ -1,10 +1,15 @@
-import Bugsnag from '@bugsnag/js';
+import Bugsnag, { Client } from '@bugsnag/js';
 import BugsnagPluginReact from '@bugsnag/plugin-react';
 
-Bugsnag.start({
-    apiKey: process.env.BUGSNAG_API_KEY as string,
-    plugins: [new BugsnagPluginReact()],
-    enabledReleaseStages: ['production'],
-});
+// eslint-disable-next-line
+let bugsnagClient: Client | undefined;
 
-export default Bugsnag;
+if (process.env.BUGSNAG_API_KEY) {
+    bugsnagClient = Bugsnag.start({
+        apiKey: process.env.BUGSNAG_API_KEY,
+        plugins: [new BugsnagPluginReact()],
+        enabledReleaseStages: ['production'],
+    });
+}
+
+export default bugsnagClient;

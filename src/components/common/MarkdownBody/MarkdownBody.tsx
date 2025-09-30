@@ -8,24 +8,53 @@ export interface MarkdownBodyProps {
 }
 
 const styles = {
+    '&': {
+        backgroundColor: 'transparent',
+    },
+    '& tbody': {
+        width: '100%',
+    },
+    '& a': {
+        color: 'brand.primary',
+        textDecoration: 'underline',
+    },
+    '& table tr': {
+        backgroundColor: 'transparent',
+    },
+    '& table tr:nth-of-type(2n), & thead': {
+        backgroundColor: 'brand.100',
+    },
     '.chakra-ui-dark &': {
         color: 'white',
     },
-    '.chakra-ui-dark & tr': {
-        backgroundColor: 'gray.800',
+    '.chakra-ui-dark & a': {
+        color: 'brandInverted.primary',
+        textDecoration: 'underline',
     },
-    '.chakra-ui-dark & tr:nth-of-type(2n)': {
-        backgroundColor: 'gray.700',
+    '.chakra-ui-dark & tr:nth-of-type(2n), .chakra-ui-dark & thead': {
+        backgroundColor: 'gray.800',
     },
 };
 
-export const MarkdownBody: React.FC<MarkdownBodyProps> = ({ body }) => (
-    <>
-        <Head>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" integrity="sha512-Oy18vBnbSJkXTndr2n6lDMO5NN31UljR8e/ICzVPrGpSud4Gkckb8yUpqhKuUNoE+o9gAb4O/rAxxw1ojyUVzg==" crossOrigin="anonymous" />
-        </Head>
-        <Box className="markdown-body" sx={styles} fontFamily="inherit" dangerouslySetInnerHTML={{ __html: marked(body) }} />
-    </>
-);
+export const MarkdownBody: React.FC<MarkdownBodyProps> = ({ body }) => {
+    return (
+        <>
+            <Head>
+                <link
+                    rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
+                    integrity="sha512-BrOPA520KmDMqieeM7XFe6a3u3Sb3F1JBaQnrIAmWg3EYrciJ+Qqe6ZcKCdfPv26rGcgTrJnZ/IdQEct8h3Zhw=="
+                    crossOrigin="anonymous"
+                />
+            </Head>
+            <Box
+                className="markdown-body"
+                sx={styles}
+                fontFamily="inherit"
+                dangerouslySetInnerHTML={{ __html: marked(body) }}
+            />
+        </>
+    );
+};
 
 export default MarkdownBody;

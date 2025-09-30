@@ -9,8 +9,16 @@ function App({ Component, pageProps }) {
         <ChakraProvider theme={theme}>
             <Head>
                 <title>Spanner</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta name="description" content="The easiest way keep service records for all your vehicles." />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+                <meta
+                    name="description"
+                    content="The easiest way keep service records for all your vehicles."
+                />
+                {}
+                <meta name="theme-color" content={theme.colors.brand.primary} />
             </Head>
 
             <CSSReset />

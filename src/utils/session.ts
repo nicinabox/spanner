@@ -1,28 +1,36 @@
-import crypto from 'crypto';
-import { withIronSession } from 'next-iron-session';
+import { sessionOptions } from 'config/session';
+import { withIronSessionSsr, withIronSessionApiRoute } from 'iron-session/next';
+import {
+    GetServerSidePropsContext,
+    GetServerSidePropsResult,
+    NextApiHandler,
+} from 'next/types';
 
-if (!process.env.CLIENT_SECRET) {
-    throw new Error('CLIENT_SECRET not set');
+declare module 'iron-session' {
+    interface IronSessionData {
+        session?: API.Session;
+    }
 }
 
-const hashedSecret = crypto
-    .createHash('sha256')
-    .update(process.env.CLIENT_SECRET)
-    .digest('hex');
+export function withSession<
+    P extends { [key: string]: unknown } = { [key: string]: unknown },
+>(
+    handler: (
+        context: GetServerSidePropsContext,
+    ) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>,
+) {
+    return withIronSessionSsr(handler, sessionOptions);
+}
 
-export const withSession = (handler) => withIronSession(handler, {
-    password: hashedSecret,
-    cookieName: 'session',
-    ttl: 5184000, // 60 days
-    cookieOptions: {
-        secure: process.env.NODE_ENV !== 'development',
-    },
-});
+export const withAPISession = (handler: NextApiHandler) =>
+    withIronSessionApiRoute(handler, sessionOptions);
 
 export const authRedirect = (req) => {
-    const session = req.session.get('session');
+    const { session } = req.session;
 
     if (session) return undefined;
+
+    req.session.destroy();
 
     return {
         redirect: {

@@ -67,8 +67,10 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
         if (!user) return;
 
         const data = {
-            preferences: {
-                vehiclesSortOrder,
+            user: {
+                preferences: {
+                    vehiclesSortOrder,
+                },
             },
         };
 

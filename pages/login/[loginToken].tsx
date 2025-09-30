@@ -33,10 +33,12 @@ const Login: React.FC<LoginProps> = ({ error }) => {
 };
 
 export const getServerSideProps = withSession(async ({ req, res, params }) => {
-    const { data, error } = await prefetch(req, (api) => signIn(api, params.loginToken));
+    const { data, error } = await prefetch(req, (api) => {
+        return signIn(api, params?.loginToken as string);
+    });
 
     if (data) {
-        req.session.set('session', data);
+        req.session.session = data;
         await req.session.save();
 
         return {
