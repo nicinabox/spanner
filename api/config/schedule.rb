@@ -19,8 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-# app_name = 'spanner-api'
-# run = "dokku /usr/bin/dokku run #{app_name}"
 run = ENV['RUN_JOB_COMMAND'] || "bundle exec"
 
 every :monday, at: '5am' do

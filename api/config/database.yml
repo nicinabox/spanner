@@ -81,4 +81,3 @@ test:
 #
 production:
   <<: *default
-  database: <%= ENV['POSTGRESQL_URL'] %>
