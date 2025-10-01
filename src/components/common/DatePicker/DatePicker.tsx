@@ -1,6 +1,4 @@
-import {
-    Box, Input, useColorModeValue, useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Input, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import React, { useState } from 'react';
@@ -9,10 +7,13 @@ import 'react-day-picker/dist/style.css';
 
 export interface DatePickerProps {
     onChange?: (date: Date) => void;
-    initialDate?: Date
+    initialDate?: Date;
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date(), onChange }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({
+    initialDate = new Date(),
+    onChange,
+}) => {
     const [selectedDay, setSelectedDay] = useState(initialDate);
     const { isOpen, onToggle } = useDisclosure();
 
@@ -21,15 +22,35 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
     const sx = {
         '.rdp': {
             margin: '1rem 0',
+            '--rdp-background-color': cm(
+                'colors.blackAlpha.200',
+                'colors.blackAlpha.400',
+            ),
+            '--rdp-accent-color': cm('colors.brand.500', 'colors.brand.500'),
+
+            '--rdp-outline': '2px solid var(--chakra-colors-blue-500)',
+            '--rdp-outline-selected': `2px solid var(${cm('--chakra-colors-blackAlpha-500', '--chakra-colors-whiteAlpha-400')})`,
+        },
+        '.rdp-month': {
+            flex: 1,
+        },
+        '.rdp-table': {
+            maxWidth: '100%',
+            width: '100%',
+        },
+        '.rdp-day_outside': {
+            color: `var(${cm('--chakra-colors-blackAlpha-500', '--chakra-colors-whiteAlpha-500')})`,
+            opacity: 1,
+        },
+        '.rdp-day_outside.rdp-day_selected': {
+            color: 'white',
+        },
+        thead: {
+            color: `var(${cm('--chakra-colors-blackAlpha-500', '--chakra-colors-whiteAlpha-500')})`,
         },
         caption: {
             fontSize: 'var(--chakra-fontSizes-sm)',
         },
-        '--rdp-background-color': cm('colors.blackAlpha.200', 'colors.blackAlpha.400'),
-        '--rdp-accent-color': cm('colors.brand.500', 'colors.brand.500'),
-
-        '--rdp-outline': '2px solid var(--chakra-colors-blue-500)',
-        '--rdp-outline-selected': `2px solid var(${cm('--chakra-colors-blackAlpha-500', '--chakra-colors-whiteAlpha-400')})`,
     };
 
     const onDayClick = (date: Date) => {
@@ -38,18 +59,27 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate = new Date()
     };
 
     const formatSelectedDate = () => {
-        return intlFormat(selectedDay, { month: 'short', day: 'numeric', year: 'numeric' });
+        return intlFormat(selectedDay, {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        });
     };
 
     return (
         <>
             <Input value={formatSelectedDate()} readOnly onClick={onToggle} />
-            <Box lineHeight={1.2} display={[isOpen ? 'block' : 'none', 'block']} sx={sx}>
+            <Box
+                lineHeight={1.2}
+                display={[isOpen ? 'block' : 'none', 'block']}
+                sx={sx}
+            >
                 <DayPicker
                     onDayClick={onDayClick}
                     defaultMonth={initialDate}
                     selected={selectedDay}
                     fixedWeeks
+                    showOutsideDays
                 />
             </Box>
         </>
