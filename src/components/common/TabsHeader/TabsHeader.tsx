@@ -39,6 +39,11 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({
                         <Tab
                             key={tab.text}
                             color="brand.100"
+                            _hover={{
+                                '&:not([aria-selected="true"])': {
+                                    background: 'brand.700',
+                                },
+                            }}
                             width="max-content"
                             textTransform="capitalize"
                             mx={[0, 1]}
