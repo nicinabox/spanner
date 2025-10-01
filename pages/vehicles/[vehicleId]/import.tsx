@@ -1,7 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-    Text, Container, Heading, HStack, FormControl, FormLabel, Input, Alert, AlertIcon, Checkbox,
+    Text,
+    Container,
+    Heading,
+    HStack,
+    FormControl,
+    FormLabel,
+    Input,
+    Alert,
+    AlertIcon,
+    Checkbox,
 } from '@chakra-ui/react';
 import Page from 'components/common/Page';
 import Header from 'components/common/Header';
@@ -18,40 +27,45 @@ import { vehiclePath } from 'utils/resources';
 export interface ImportRecordsPageProps {
     params: {
         vehicleId: string;
-    }
+    };
 }
 
 const PageHeader = ({ vehicle }) => {
     return (
         <Header
-            LeftComponent={(
+            LeftComponent={
                 <HStack spacing={2}>
-                    <BackButton>
-                        Back
-                    </BackButton>
+                    <BackButton>Back</BackButton>
                     <VehicleActionsMenu vehicle={vehicle} />
                 </HStack>
-            )}
+            }
         />
     );
 };
 
-export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({ params }) => {
+export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({
+    params,
+}) => {
     const router = useRouter();
 
-    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
+    const { data: vehicle } = useRequest<API.Vehicle>(
+        vehicleAPIPath(params.vehicleId),
+    );
 
     const { formData, register, setValue } = useFormData({
         importFile: null,
         fuelly: false,
     });
 
-    const { mutate: importRecordsMutation, isProcessing } = useMutation(importRecords, {
-        onSuccess() {
-            mutate(vehicleAPIPath(params.vehicleId));
-            router.replace(vehiclePath(params.vehicleId));
+    const { mutate: importRecordsMutation, isProcessing } = useMutation(
+        importRecords,
+        {
+            onSuccess() {
+                mutate(vehicleAPIPath(params.vehicleId));
+                router.replace(vehiclePath(params.vehicleId));
+            },
         },
-    });
+    );
 
     const handleSubmit = (ev) => {
         ev.preventDefault();
@@ -59,17 +73,14 @@ export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({ params }) 
     };
 
     return (
-        <Page
-            Header={<PageHeader vehicle={vehicle} />}
-        >
+        <Page Header={<PageHeader vehicle={vehicle} />}>
             <Container maxW={[null, 'md']} p={0}>
-                <Heading mb={6}>
-                    Import History
-                </Heading>
+                <Heading mb={6}>Import History</Heading>
 
                 <Alert status="info" mb={4}>
                     <AlertIcon />
-                    Upload a .csv file with the headers: date, mileage, cost, notes
+                    Upload a .csv file with the headers: date, mileage, cost,
+                    notes
                 </Alert>
 
                 <form onSubmit={handleSubmit}>
@@ -80,7 +91,9 @@ export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({ params }) 
                             type="file"
                             p={2}
                             height="auto"
-                            onChange={({ target }) => setValue('importFile', target.files?.[0])}
+                            onChange={({ target }) =>
+                                setValue('importFile', target.files?.[0])
+                            }
                             required
                         />
                     </FormControl>
@@ -91,15 +104,15 @@ export const ImportRecordsPage: React.FC<ImportRecordsPageProps> = ({ params }) 
                         </Checkbox>
                     </FormControl>
 
-                    <Text color="red" mb={4}>
-                        ⚠️ This will replace all your existing records for this vehicle!
+                    <Text color="red.300" mb={4}>
+                        ⚠️ This will replace all your existing records for this
+                        vehicle!
                     </Text>
 
                     <FormButton type="submit" isProcessing={isProcessing}>
                         Import
                     </FormButton>
                 </form>
-
             </Container>
         </Page>
     );
