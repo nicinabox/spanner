@@ -87,22 +87,20 @@ rails test        # Run tests
 rails db:migrate  # Run database migrations
 ```
 
-## Configuration
+## Setup
 
 ### Environment Variables
 
 #### Web Application
 Create a `.env.local` file in the `web` directory:
-```env
-SESSION_SECRET=your_session_secret
-```
+```sh
+cp .env.example .env.local
 
-#### API Application
-Create a `.env` file in the `api` directory:
-```env
-DATABASE_URL=postgresql://username:password@localhost/spanner_development
-RAILS_ENV=development
-SECRET_KEY_BASE=your_secret_key_base
+# Generate a client secret
+openssl rand -base64 32
+
+# Update .env.local
+CLIENT_SECRET=your_session_secret
 ```
 
 ## Testing
