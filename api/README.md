@@ -1,6 +1,6 @@
-# spanner-api
+# api
 
-## API
+## Authentication
 
 All authenticated routes require version in `Accepts` header:
 
