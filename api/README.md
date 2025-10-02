@@ -42,21 +42,3 @@ Returns current user sessions
 ### POST /vehicles/:vehicle_id/reminders
 ### PUT /vehicles/:vehicle_id/reminders/:id
 ### DELETE /vehicles/:vehicle_id/reminders/:id
-
-## Jobs
-
-With dokku you need to manage cron manually.
-
-Locally:
-
-    whenever | pbcopy
-
-Server:
-
-    vim /etc/cron.d/spanner-job
-
-`grep CRON /var/log/syslog` to see the output log for troubleshooting.
-
-## Deploy
-
-    git push ash master
