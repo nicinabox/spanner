@@ -1,5 +1,4 @@
 import {
-    HStack,
     Image,
     Skeleton,
     Menu,
@@ -14,8 +13,6 @@ import crypto from 'crypto';
 import useRequest from 'hooks/useRequest';
 import React from 'react';
 
-export interface UserMenuProps {}
-
 const shortenEmail = (value: string) => {
     const [match] = /.+@/.exec(value) || [value];
     return match;
@@ -26,7 +23,7 @@ const gravatarUrl = (email: string) => {
     return `https://www.gravatar.com/avatar/${hash}.jpg?default=identicon`;
 };
 
-export const UserMenu: React.FC<UserMenuProps> = () => {
+export const UserMenu: React.FC = () => {
     const { data: user } = useRequest<API.User>('/api/user');
 
     return (

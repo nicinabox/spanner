@@ -1,4 +1,4 @@
-import { Box, Input, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Box, Input, useDisclosure } from '@chakra-ui/react';
 import { intlFormat } from 'date-fns';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import React, { useState } from 'react';

@@ -5,6 +5,7 @@ import { getHtmlFromMarkdown } from '../src/utils/getContentFile';
 const Terms = ({ html }) => {
     return (
         <Container maxW="container.md">
+            {/* eslint-disable-next-line react/no-danger */}
             <div dangerouslySetInnerHTML={{ __html: html }} />
         </Container>
     );

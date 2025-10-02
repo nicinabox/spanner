@@ -28,6 +28,7 @@ class AppErrorBoundary extends React.Component<
     }
 
     componentDidCatch(error, errorInfo) {
+        // eslint-disable-next-line no-console
         console.log({ error, errorInfo });
         this.state = { error, info: errorInfo };
     }

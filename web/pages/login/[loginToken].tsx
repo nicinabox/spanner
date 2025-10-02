@@ -30,7 +30,7 @@ const Login: React.FC<LoginProps> = ({ error }) => {
     return <p>Signing in...</p>;
 };
 
-export const getServerSideProps = withSession(async ({ req, res, params }) => {
+export const getServerSideProps = withSession(async ({ req, params }) => {
     const { data, error } = await prefetch(req, (api) => {
         return signIn(api, params?.loginToken as string);
     });

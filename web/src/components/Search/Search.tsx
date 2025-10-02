@@ -1,10 +1,5 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import {
-    Input,
-    InputGroup,
-    InputLeftElement,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import React from 'react';
 

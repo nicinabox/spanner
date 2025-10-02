@@ -1,13 +1,10 @@
 import {
     Alert,
-    AlertIcon,
-    Box,
     FormControl,
     FormHelperText,
     FormLabel,
     Input,
     Select,
-    Text,
 } from '@chakra-ui/react';
 import DatePicker from 'components/common/DatePicker';
 import DestroyButton from 'components/common/DestroyButton';
@@ -92,6 +89,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                     setEstimatedDate(parseDateUTC(reminderDate));
                 }
             } catch (err) {
+                // eslint-disable-next-line no-console
                 console.error(err);
             }
         };

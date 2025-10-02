@@ -1,9 +1,9 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-export interface DangerZoneProps {}
-
-export const DangerZone: React.FC<DangerZoneProps> = ({ children }) => {
+export const DangerZone: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => {
     const dividerBg = useColorModeValue('gray.100', 'gray.900');
 
     return (

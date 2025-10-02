@@ -1,9 +1,6 @@
 import React from 'react';
-import Link from 'next/link';
 import {
-    Text,
     Container,
-    Flex,
     HStack,
     Heading,
     Skeleton,

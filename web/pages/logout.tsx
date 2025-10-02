@@ -2,7 +2,7 @@ import { withSession } from '../src/utils/session';
 
 const Logout = () => null;
 
-export const getServerSideProps = withSession(async ({ req, params }) => {
+export const getServerSideProps = withSession(async ({ req }) => {
     req.session.destroy();
 
     return {

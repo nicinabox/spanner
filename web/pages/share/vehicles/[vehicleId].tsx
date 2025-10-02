@@ -1,12 +1,10 @@
 import { Center, TabPanel, TabPanels } from '@chakra-ui/react';
-import LinkPreload from 'components/common/LinkPreload';
 import Page from 'components/common/Page';
 import TabsHeader from 'components/common/TabsHeader';
 import Logo from 'components/Logo';
 import VehicleService from 'components/VehicleService';
-import useRequest from 'hooks/useRequest';
 import { recordsAPIPath } from 'queries/records';
-import { fetchVehicle, vehicleAPIPath } from 'queries/vehicles';
+import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { prefetch } from 'utils/queries';
 import { withSession } from 'utils/session';
@@ -23,7 +21,7 @@ export interface VehiclePageProps {
 
 const isShared = true;
 
-const PageHeader = ({ vehicle }) => (
+const PageHeader = () => (
     <TabsHeader
         hashchange
         tabs={[]}
@@ -39,12 +37,10 @@ const VehicleSharePage: React.FC<VehiclePageProps> = ({ params, fallback }) => {
     const vehicleAPI = vehicleAPIPath(params.vehicleId, isShared);
     const recordsAPI = recordsAPIPath(params.vehicleId, isShared);
 
-    const { vehicle } = fallback;
-
     return (
         <Page
             p={0}
-            Header={<PageHeader vehicle={vehicle} />}
+            Header={<PageHeader />}
             contextValue={{ isShared }}
             fallback={{
                 [vehicleAPI]: fallback.vehicle,

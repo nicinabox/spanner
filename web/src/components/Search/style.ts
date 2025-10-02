@@ -1,5 +1,4 @@
 import { mode } from '@chakra-ui/theme-tools';
-import theme from 'theme';
 
 export default {
     baseStyle: (props) => ({

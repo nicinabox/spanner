@@ -37,12 +37,15 @@ export default withAPISession((req, res) => {
             proxyReq.setHeader('Accept', 'application/vnd.api+json; version=2');
 
             if (session) {
-                proxyReq.setHeader('Authorization', `Token ${session.authToken}`);
+                proxyReq.setHeader(
+                    'Authorization',
+                    `Token ${session.authToken}`,
+                );
             }
         });
 
         proxy.once('error', reject);
-        proxy.once('proxyRes', resolve as any);
+        proxy.once('proxyRes', resolve);
 
         // Forward the request to the API
         proxy.web(req, res);

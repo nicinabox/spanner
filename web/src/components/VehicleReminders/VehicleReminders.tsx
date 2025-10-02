@@ -2,7 +2,6 @@ import { AddIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Container,
     Flex,
-    Heading,
     LinkBox,
     LinkOverlay,
     Skeleton,

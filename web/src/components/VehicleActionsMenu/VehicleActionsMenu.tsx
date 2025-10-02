@@ -163,9 +163,7 @@ export const VehicleActionsMenu: React.FC<VehicleActionsMenuProps> = ({
                     <ModalCloseButton />
 
                     <ModalBody>
-                        {Boolean(vehicle) && (
-                            <VehicleShareSettings vehicle={vehicle!} />
-                        )}
+                        {vehicle && <VehicleShareSettings vehicle={vehicle} />}
                     </ModalBody>
 
                     <ModalFooter />

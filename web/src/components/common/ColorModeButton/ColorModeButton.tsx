@@ -3,11 +3,9 @@ import {
     IconButton,
     useColorModeValue,
     Tooltip,
-    useStyleConfig,
-    useToken,
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export interface ColorModeButtonProps {
     variant?: string;
