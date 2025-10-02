@@ -1,5 +1,11 @@
 import {
-    AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
+    Button,
     Text,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
@@ -24,7 +30,12 @@ export const DestroyButton: React.FC<DestroyButtonProps> = ({
 
     return (
         <>
-            <FormButton variant="outline" size="md" colorScheme="gray" onClick={() => setIsConfirmDeleteOpen(true)}>
+            <FormButton
+                variant="outline"
+                size="md"
+                colorScheme="gray"
+                onClick={() => setIsConfirmDeleteOpen(true)}
+            >
                 {children}
             </FormButton>
 
@@ -39,15 +50,17 @@ export const DestroyButton: React.FC<DestroyButtonProps> = ({
                             {confirmTitle}
                         </AlertDialogHeader>
 
-                        <AlertDialogBody>
-                            {confirmBody}
-                        </AlertDialogBody>
+                        <AlertDialogBody>{confirmBody}</AlertDialogBody>
 
                         <AlertDialogFooter>
                             <Button ref={cancelDeleteRef} onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button colorScheme="red" onClick={onConfirm} ml={3}>
+                            <Button
+                                colorScheme="red"
+                                onClick={onConfirm}
+                                ml={3}
+                            >
                                 Delete
                             </Button>
                         </AlertDialogFooter>

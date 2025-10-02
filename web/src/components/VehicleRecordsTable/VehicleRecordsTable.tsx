@@ -12,10 +12,22 @@ export interface VehicleRecordsTableProps {
     isLoaded?: boolean;
 }
 
-export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({ records, ...props }) => {
-    const recordsNewestFirst = useMemo(() => sortRecordsNewestFirst(records ?? []), [records]);
-    const recordsByYear = useMemo(() => groupBy(recordsNewestFirst, (r) => new Date(r.date).getFullYear()), [recordsNewestFirst]);
-    const years = Object.keys(recordsByYear).sort((a, b) => Number(b) - Number(a));
+export const VehicleRecordsTable: React.FC<VehicleRecordsTableProps> = ({
+    records,
+    ...props
+}) => {
+    const recordsNewestFirst = useMemo(
+        () => sortRecordsNewestFirst(records ?? []),
+        [records],
+    );
+    const recordsByYear = useMemo(
+        () =>
+            groupBy(recordsNewestFirst, (r) => new Date(r.date).getFullYear()),
+        [recordsNewestFirst],
+    );
+    const years = Object.keys(recordsByYear).sort(
+        (a, b) => Number(b) - Number(a),
+    );
 
     if (!records) {
         return (

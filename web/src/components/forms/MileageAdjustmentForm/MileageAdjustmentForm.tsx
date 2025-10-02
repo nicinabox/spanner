@@ -1,5 +1,8 @@
 import {
-    FormControl, FormHelperText, FormLabel, Input,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    Input,
 } from '@chakra-ui/react';
 import FormErrors from 'components/common/FormErrors';
 import FormButton from 'components/common/FormButton';
@@ -20,11 +23,15 @@ export interface MileageAdjustmentFormProps {
     vehicle: API.Vehicle;
 }
 
-export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ vehicle }) => {
+export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({
+    vehicle,
+}) => {
     const router = useRouter();
 
     const {
-        mutate: mutateVehicleRecord, isProcessing, error,
+        mutate: mutateVehicleRecord,
+        isProcessing,
+        error,
     } = useMutation(createRecord, {
         onSuccess() {
             mutate(vehicleAPIPath(vehicle.id));
@@ -47,32 +54,28 @@ export const MileageAdjustmentForm: React.FC<MileageAdjustmentFormProps> = ({ ve
 
     return (
         <form onSubmit={handleSubmit}>
-            {error && 'errors' in error && (
-                <FormErrors errors={error.errors} />
-            )}
+            {error && 'errors' in error && <FormErrors errors={error.errors} />}
 
             <FormSection>
                 <FormControl mb={4} id="mileage" isRequired>
                     <FormLabel>
-                        Enter your current
-                        {' '}
+                        Enter your current{' '}
                         {lang.mileageLabel[vehicle.distanceUnit]}
                     </FormLabel>
-                    <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9,]*" autoFocus />
+                    <Input
+                        {...register('mileage', mileageFieldHelpers)}
+                        inputMode="numeric"
+                        pattern="[0-9,]*"
+                        autoFocus
+                    />
                     <FormHelperText>
-                        Your estimated
-                        {' '}
-                        {lang.mileageLabel[vehicle.distanceUnit]}
-                        {' '}
-                        is
-                        {' '}
-                        {formatEstimatedMileage(vehicle)}
+                        Your estimated {lang.mileageLabel[vehicle.distanceUnit]}{' '}
+                        is {formatEstimatedMileage(vehicle)}
                     </FormHelperText>
                 </FormControl>
             </FormSection>
 
             <FormButton type="submit" isProcessing={isProcessing} />
-
         </form>
     );
 };

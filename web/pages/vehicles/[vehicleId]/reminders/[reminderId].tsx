@@ -1,7 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-    Text, Container, Flex, HStack, Heading, Skeleton, Button, Box, Spacer, useDisclosure,
+    Text,
+    Container,
+    Flex,
+    HStack,
+    Heading,
+    Skeleton,
+    Button,
+    Box,
+    Spacer,
+    useDisclosure,
 } from '@chakra-ui/react';
 import Page from 'components/common/Page';
 import Header from 'components/common/Header';
@@ -22,59 +31,69 @@ export interface ReminderPageProps {
     params: {
         vehicleId: string;
         reminderId: string;
-    }
+    };
 }
 
 const PageHeader = ({ vehicle }) => {
     return (
         <Header
-            LeftComponent={(
+            LeftComponent={
                 <HStack spacing={2}>
-                    <BackButton>
-                        Reminders
-                    </BackButton>
+                    <BackButton>Reminders</BackButton>
                     <VehicleActionsMenu vehicle={vehicle} />
                 </HStack>
-            )}
+            }
         />
     );
 };
 
 export const ReminderPage: React.FC<ReminderPageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
-    const { data: reminder } = useRequest<API.Reminder>(reminderAPIPath(params.vehicleId, params.reminderId));
+    const { data: vehicle } = useRequest<API.Vehicle>(
+        vehicleAPIPath(params.vehicleId),
+    );
+    const { data: reminder } = useRequest<API.Reminder>(
+        reminderAPIPath(params.vehicleId, params.reminderId),
+    );
 
     const { isOpen, onToggle } = useDisclosure();
 
     const { mutate: destroyReminder } = useMutation(reminders.destroyReminder);
 
     return (
-        <Page
-            Header={<PageHeader vehicle={vehicle} />}
-        >
+        <Page Header={<PageHeader vehicle={vehicle} />}>
             <Container maxW={[null, 'container.md']} p={0}>
                 <HStack my={4} justify="end">
                     <Spacer />
-                    <LinkButton href={editReminderPath(params.vehicleId, params.reminderId)} size="md" colorScheme="brand">
+                    <LinkButton
+                        href={editReminderPath(
+                            params.vehicleId,
+                            params.reminderId,
+                        )}
+                        size="md"
+                        colorScheme="brand"
+                    >
                         Edit
                     </LinkButton>
                 </HStack>
 
                 <Box mb={10}>
                     <Skeleton isLoaded={Boolean(reminder)} minH={6} mb={2}>
-                        <Heading size="lg">
-                            {reminder?.notes}
-                        </Heading>
+                        <Heading size="lg">{reminder?.notes}</Heading>
                     </Skeleton>
 
                     <Skeleton isLoaded={Boolean(reminder)} minH={4}>
-                        <ReminderSummary reminder={reminder} distanceUnit={vehicle?.distanceUnit} />
+                        <ReminderSummary
+                            reminder={reminder}
+                            distanceUnit={vehicle?.distanceUnit}
+                        />
                     </Skeleton>
                 </Box>
 
                 <Button
                     onClick={onToggle}
-                    rightIcon={isOpen ? <ChevronDownIcon /> : <ChevronRightIcon />}
+                    rightIcon={
+                        isOpen ? <ChevronDownIcon /> : <ChevronRightIcon />
+                    }
                     colorScheme="brand"
                 >
                     Convert to service
@@ -89,7 +108,10 @@ export const ReminderPage: React.FC<ReminderPageProps> = ({ params }) => {
                                 mileage: vehicle?.estimatedMileage,
                             }}
                             onSuccess={() => {
-                                return destroyReminder(params.vehicleId, params.reminderId);
+                                return destroyReminder(
+                                    params.vehicleId,
+                                    params.reminderId,
+                                );
                             }}
                         />
                     </Box>

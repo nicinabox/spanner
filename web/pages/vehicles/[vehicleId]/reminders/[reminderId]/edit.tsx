@@ -16,36 +16,36 @@ export interface EditReminderPageProps {
     params: {
         vehicleId: string;
         reminderId: string;
-    }
+    };
 }
 
 const PageHeader = ({ vehicle }) => {
     return (
         <Header
-            LeftComponent={(
+            LeftComponent={
                 <HStack spacing={2}>
-                    <BackButton>
-                        Back
-                    </BackButton>
+                    <BackButton>Back</BackButton>
                     <VehicleActionsMenu vehicle={vehicle} />
                 </HStack>
-            )}
+            }
         />
     );
 };
 
-export const EditReminderPage: React.FC<EditReminderPageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
-    const { data: reminder } = useRequest<API.Reminder>(reminderAPIPath(params.vehicleId, params.reminderId));
+export const EditReminderPage: React.FC<EditReminderPageProps> = ({
+    params,
+}) => {
+    const { data: vehicle } = useRequest<API.Vehicle>(
+        vehicleAPIPath(params.vehicleId),
+    );
+    const { data: reminder } = useRequest<API.Reminder>(
+        reminderAPIPath(params.vehicleId, params.reminderId),
+    );
 
     return (
-        <Page
-            Header={<PageHeader vehicle={vehicle} />}
-        >
+        <Page Header={<PageHeader vehicle={vehicle} />}>
             <Container maxW={[null, 'md']} p={0}>
-                <Heading mb={6}>
-                    Edit Reminder
-                </Heading>
+                <Heading mb={6}>Edit Reminder</Heading>
                 <ReminderForm
                     vehicleId={params.vehicleId}
                     distanceUnit={vehicle?.distanceUnit}

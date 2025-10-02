@@ -27,11 +27,11 @@ const PageHeader = ({ vehicle }) => (
     <TabsHeader
         hashchange
         tabs={[]}
-        CenterComponent={(
+        CenterComponent={
             <Center flex={1} py={2}>
                 <Logo height={30} />
             </Center>
-          )}
+        }
     />
 );
 

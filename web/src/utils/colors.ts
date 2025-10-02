@@ -40,7 +40,7 @@ export function getTextColor(color: string) {
     const { r, g, b } = rgbColor;
     const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-    return luma < 120 ? '#FFF' : '#333' as const;
+    return luma < 120 ? '#FFF' : ('#333' as const);
 }
 
 function lighten(hex: string, intensity: number): string {

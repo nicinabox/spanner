@@ -14,36 +14,34 @@ export interface EditPageProps extends VehiclePageProps {
     params: {
         vehicleId: string;
         recordId: string;
-    }
+    };
 }
 
 const PageHeader = ({ vehicle }) => {
     return (
         <Header
-            LeftComponent={(
+            LeftComponent={
                 <HStack spacing={2}>
-                    <BackButton>
-                        Back
-                    </BackButton>
+                    <BackButton>Back</BackButton>
                     <VehicleActionsMenu vehicle={vehicle} />
                 </HStack>
-            )}
+            }
         />
     );
 };
 
 export const EditPage: React.FC<EditPageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
-    const { data: vehicleRecord } = useRequest<API.Record>(recordAPIPath(params.vehicleId, params.recordId));
+    const { data: vehicle } = useRequest<API.Vehicle>(
+        vehicleAPIPath(params.vehicleId),
+    );
+    const { data: vehicleRecord } = useRequest<API.Record>(
+        recordAPIPath(params.vehicleId, params.recordId),
+    );
 
     return (
-        <Page
-            Header={<PageHeader vehicle={vehicle} />}
-        >
+        <Page Header={<PageHeader vehicle={vehicle} />}>
             <Container maxW={[null, 'container.md']} p={0}>
-                <Heading mb={6}>
-                    Edit Record
-                </Heading>
+                <Heading mb={6}>Edit Record</Heading>
 
                 {vehicle && (
                     <RecordForm vehicle={vehicle} record={vehicleRecord} />

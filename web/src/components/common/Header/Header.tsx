@@ -1,6 +1,4 @@
-import {
-    Box, BoxProps, Flex, useStyleConfig,
-} from '@chakra-ui/react';
+import { Box, BoxProps, Flex, useStyleConfig } from '@chakra-ui/react';
 import React from 'react';
 
 export interface HeaderProps extends BoxProps {
@@ -10,7 +8,11 @@ export interface HeaderProps extends BoxProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({
-    LeftComponent, CenterComponent, RightComponent, children, ...boxProps
+    LeftComponent,
+    CenterComponent,
+    RightComponent,
+    children,
+    ...boxProps
 }) => {
     const styles = useStyleConfig('Header');
 
@@ -22,7 +24,12 @@ export const Header: React.FC<HeaderProps> = ({
                         {LeftComponent}
                     </Flex>
 
-                    <Flex flex={1} justify={['start']} overflowX={['auto', 'inherit']} maxW="100%">
+                    <Flex
+                        flex={1}
+                        justify={['start']}
+                        overflowX={['auto', 'inherit']}
+                        maxW="100%"
+                    >
                         {CenterComponent}
                     </Flex>
 

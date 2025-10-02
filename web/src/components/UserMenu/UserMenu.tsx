@@ -1,13 +1,20 @@
 import {
-    HStack, Image, Skeleton,
-    Menu, MenuButton, MenuGroup, MenuItem, MenuList, Text, Button,
+    HStack,
+    Image,
+    Skeleton,
+    Menu,
+    MenuButton,
+    MenuGroup,
+    MenuItem,
+    MenuList,
+    Text,
+    Button,
 } from '@chakra-ui/react';
 import crypto from 'crypto';
 import useRequest from 'hooks/useRequest';
 import React from 'react';
 
-export interface UserMenuProps {
-}
+export interface UserMenuProps {}
 
 const shortenEmail = (value: string) => {
     const [match] = /.+@/.exec(value) || [value];
@@ -15,10 +22,7 @@ const shortenEmail = (value: string) => {
 };
 
 const gravatarUrl = (email: string) => {
-    const hash = crypto
-        .createHash('md5')
-        .update(email)
-        .digest('hex');
+    const hash = crypto.createHash('md5').update(email).digest('hex');
     return `https://www.gravatar.com/avatar/${hash}.jpg?default=identicon`;
 };
 

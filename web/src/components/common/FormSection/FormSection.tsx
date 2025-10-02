@@ -1,13 +1,14 @@
-import {
-    Heading, Box, useColorModeValue, useToken,
-} from '@chakra-ui/react';
+import { Heading, Box, useColorModeValue, useToken } from '@chakra-ui/react';
 import React from 'react';
 
 export interface FormSectionProps {
     heading?: string;
 }
 
-export const FormSection: React.FC<FormSectionProps> = ({ children, heading }) => {
+export const FormSection: React.FC<FormSectionProps> = ({
+    children,
+    heading,
+}) => {
     const bg = useColorModeValue('white', 'whiteAlpha.100');
     const [gray100, gray300] = useToken('colors', ['none', 'gray.700']);
     const borderColor = useColorModeValue(gray100, gray300);

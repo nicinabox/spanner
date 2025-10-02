@@ -6,7 +6,11 @@ export interface LinkButtonProps extends ButtonProps {
     href: string;
 }
 
-export const LinkButton: React.FC<LinkButtonProps> = ({ href, children, ...buttonProps }) => {
+export const LinkButton: React.FC<LinkButtonProps> = ({
+    href,
+    children,
+    ...buttonProps
+}) => {
     return (
         <Button
             as={Link}

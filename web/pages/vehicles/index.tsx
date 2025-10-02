@@ -1,6 +1,13 @@
 import { AddIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Box, Button, Center, Flex, Heading, HStack, SimpleGrid, useBreakpointValue,
+    Box,
+    Button,
+    Center,
+    Flex,
+    Heading,
+    HStack,
+    SimpleGrid,
+    useBreakpointValue,
 } from '@chakra-ui/react';
 import ColorModeButton from 'components/common/ColorModeButton';
 import Header from 'components/common/Header';
@@ -20,15 +27,13 @@ import dynamic from 'next/dynamic';
 import { userAPIPath } from 'queries/user';
 import useRequest, { update } from 'hooks/useRequest';
 
-const VehicleSortMenu = dynamic(
-    () => import('components/VehicleSortMenu'),
-);
+const VehicleSortMenu = dynamic(() => import('components/VehicleSortMenu'));
 
 interface VehiclesProps {
     fallback: {
         [vehiclesAPIPath]: API.Vehicle[];
         [userAPIPath]: API.User;
-    }
+    };
 }
 
 const PageHeader = () => {
@@ -51,7 +56,9 @@ const PageHeader = () => {
 };
 
 const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
-    const { mutate, data: user } = useRequest<API.User>(userAPIPath, { fallback });
+    const { mutate, data: user } = useRequest<API.User>(userAPIPath, {
+        fallback,
+    });
     const { data: vehicles = [] } = useRequest<API.Vehicle[]>(vehiclesAPIPath, {
         fallback,
     });
@@ -61,7 +68,10 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
     const activeVehicles = vehicles.filter((v) => !v.retired);
     const retiredVehicles = vehicles.filter((v) => v.retired);
 
-    const sortable = user?.preferences.vehiclesSortOrder ?? ['created_at', 'desc'];
+    const sortable = user?.preferences.vehiclesSortOrder ?? [
+        'created_at',
+        'desc',
+    ];
 
     const setSortable = async (vehiclesSortOrder: API.Sortable) => {
         if (!user) return;
@@ -81,21 +91,26 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
     const newVehicleButtonSize = useBreakpointValue({ sm: 'xs', base: 'sm' });
 
     return (
-        <Page
-            fallback={fallback}
-            maxW="container.xl"
-            Header={<PageHeader />}
-        >
+        <Page fallback={fallback} maxW="container.xl" Header={<PageHeader />}>
             <Box my={6}>
                 <OverallStats activeVehicles={activeVehicles} />
             </Box>
 
             <Flex direction={['column', 'row']} align={[null, 'center']}>
-                <Flex flex={1} justify="space-between" align="center" mb={[2, 0]} mr={[0, 2]}>
-                    <Heading fontSize="xl">
-                        Vehicles
-                    </Heading>
-                    <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} size={newVehicleButtonSize} variant="ghost">
+                <Flex
+                    flex={1}
+                    justify="space-between"
+                    align="center"
+                    mb={[2, 0]}
+                    mr={[0, 2]}
+                >
+                    <Heading fontSize="xl">Vehicles</Heading>
+                    <LinkButton
+                        href={newVehiclePath()}
+                        leftIcon={<AddIcon />}
+                        size={newVehicleButtonSize}
+                        variant="ghost"
+                    >
                         New Vehicle
                     </LinkButton>
                 </Flex>
@@ -107,11 +122,15 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
             {!activeVehicles.length && (
                 <EmptyState
                     heading="Add your first vehicle to get started"
-                    action={(
-                        <LinkButton href={newVehiclePath()} leftIcon={<AddIcon />} shadow="lg">
+                    action={
+                        <LinkButton
+                            href={newVehiclePath()}
+                            leftIcon={<AddIcon />}
+                            shadow="lg"
+                        >
                             New Vehicle
                         </LinkButton>
-                      )}
+                    }
                 />
             )}
 
@@ -121,19 +140,22 @@ const Vehicles: React.FC<VehiclesProps> = ({ fallback }) => {
                 <Button
                     size="sm"
                     variant="outline"
-                    rightIcon={showRetired ? <ChevronDownIcon /> : <ChevronRightIcon />}
+                    rightIcon={
+                        showRetired ? <ChevronDownIcon /> : <ChevronRightIcon />
+                    }
                     onClick={() => {
                         setShowRetired(!showRetired);
                     }}
                 >
-                    {showRetired ? 'Hide' : 'Show'}
-                    {' '}
-                    retired
+                    {showRetired ? 'Hide' : 'Show'} retired
                 </Button>
             )}
 
             {showRetired && (
-                <VehiclesList vehicles={retiredVehicles} sortable={['created_at', 'desc']} />
+                <VehiclesList
+                    vehicles={retiredVehicles}
+                    sortable={['created_at', 'desc']}
+                />
             )}
         </Page>
     );

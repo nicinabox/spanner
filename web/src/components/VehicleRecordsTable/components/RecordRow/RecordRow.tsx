@@ -23,7 +23,11 @@ export interface RecordRowProps {
 }
 
 export const RecordRow: React.FC<RecordRowProps> = ({
-    record, vehicleId, deltaMileage, preferences = {}, distanceUnit = 'mi',
+    record,
+    vehicleId,
+    deltaMileage,
+    preferences = {},
+    distanceUnit = 'mi',
     index,
 }) => {
     const cm = useInlineColorMode();
@@ -41,7 +45,10 @@ export const RecordRow: React.FC<RecordRowProps> = ({
                 fontSize={['sm', null, 'md']}
                 mr={[3, null, 'auto']}
             >
-                {intlFormat(parseDateUTC(record.date), { month: 'short', day: 'numeric' })}
+                {intlFormat(parseDateUTC(record.date), {
+                    month: 'short',
+                    day: 'numeric',
+                })}
             </Cell>
 
             <Cell
@@ -51,12 +58,16 @@ export const RecordRow: React.FC<RecordRowProps> = ({
                 flex={[1, null, 'auto']}
                 fontSize={['sm', null, 'md']}
             >
-                {Boolean(Number(record.mileage)) && formatMileage(record.mileage, distanceUnit)}
+                {Boolean(Number(record.mileage)) &&
+                    formatMileage(record.mileage, distanceUnit)}
                 {deltaMileage !== undefined && (
-                    <Text fontSize="xs" color={cm('blackAlpha.600', 'whiteAlpha.600')} ml={1}>
+                    <Text
+                        fontSize="xs"
+                        color={cm('blackAlpha.600', 'whiteAlpha.600')}
+                        ml={1}
+                    >
                         (+
-                        {deltaMileage}
-                        )
+                        {deltaMileage})
                     </Text>
                 )}
             </Cell>
@@ -91,7 +102,11 @@ export const RecordRow: React.FC<RecordRowProps> = ({
                         py={[1, null]}
                         onClick={() => {
                             // Preload data for edit form
-                            mutate(recordAPIPath(vehicleId, record.id), record, false);
+                            mutate(
+                                recordAPIPath(vehicleId, record.id),
+                                record,
+                                false,
+                            );
                         }}
                     >
                         Edit

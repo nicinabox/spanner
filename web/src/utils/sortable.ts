@@ -28,7 +28,10 @@ export const vehicleSortStrategyToHuman: Record<VehicleSortStrategy, string> = {
     mileage_rate: 'Mileage Rate',
 };
 
-export const vehicleSortOrderToHuman: Record<VehicleSortStrategy, [string, string]> = {
+export const vehicleSortOrderToHuman: Record<
+VehicleSortStrategy,
+[string, string]
+> = {
     created_at: ['Oldest', 'Newest'],
     name: ['A to Z', 'Z to A'],
     reminders: ['Fewest', 'Most'],
@@ -51,11 +54,19 @@ export function sortByName(vehicles: API.Vehicle[], order: API.Order) {
 }
 
 export function sortByReminders(vehicles: API.Vehicle[], order: API.Order) {
-    return orderBy(vehicles, [getOverdueRemindersCount, 'name'], [order, 'asc']);
+    return orderBy(
+        vehicles,
+        [getOverdueRemindersCount, 'name'],
+        [order, 'asc'],
+    );
 }
 
 export function sortByMileage(vehicles: API.Vehicle[], order: API.Order) {
-    return orderBy(vehicles, [(v) => v.estimatedMileage ?? 0, 'name'], [order, 'asc']);
+    return orderBy(
+        vehicles,
+        [(v) => v.estimatedMileage ?? 0, 'name'],
+        [order, 'asc'],
+    );
 }
 
 export function sortByMileageRate(vehicles: API.Vehicle[], order: API.Order) {

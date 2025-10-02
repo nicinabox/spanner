@@ -2,7 +2,10 @@ import React from 'react';
 import nock from 'nock';
 import { cache } from 'swr';
 import {
-    fireEvent, render, screen, waitForElementToBeRemoved,
+    fireEvent,
+    render,
+    screen,
+    waitForElementToBeRemoved,
 } from '@testing-library/react';
 
 import vehicleFixture from '__fixtures__/vehicle';
@@ -20,7 +23,10 @@ describe('VehicleService', () => {
 
         nock(/localhost/)
             .get(recordsAPIPath('123'))
-            .reply(200, [recordFixure, { ...recordFixure, id: 2223, notes: 'Other note' }]);
+            .reply(200, [
+                recordFixure,
+                { ...recordFixure, id: 2223, notes: 'Other note' },
+            ]);
     });
 
     it('renders', () => {
@@ -29,7 +35,9 @@ describe('VehicleService', () => {
 
     it('renders records skeleton when loading', () => {
         render(<VehicleService vehicleId="123" />);
-        expect(screen.getByTestId('SkeletonVehicleRecordsTable')).toBeInTheDocument();
+        expect(
+            screen.getByTestId('SkeletonVehicleRecordsTable'),
+        ).toBeInTheDocument();
     });
 
     it('renders records when fully loaded', async () => {
@@ -41,7 +49,7 @@ describe('VehicleService', () => {
 
         const recordRow = await screen.findByText('Record Fixture');
         const loading = screen.queryByTestId('SkeletonVehicleRecordsTable');
-        const empty = screen.queryByText('You don\'t have any records yet');
+        const empty = screen.queryByText("You don't have any records yet");
         const searchEmpty = screen.queryByText('No results');
 
         expect(loading).not.toBeInTheDocument();
@@ -54,7 +62,7 @@ describe('VehicleService', () => {
     it('renders empty state when not loading and no records', async () => {
         render(<VehicleService vehicleId="789" />);
 
-        const empty = await screen.findByText('You don\'t have any records yet');
+        const empty = await screen.findByText("You don't have any records yet");
         const recordsTable = screen.queryByText('NOTES');
         const loading = screen.queryByTestId('SkeletonVehicleRecordsTable');
         const searchEmpty = screen.queryByText('No results');
@@ -69,7 +77,9 @@ describe('VehicleService', () => {
     it('renders search results', async () => {
         render(<VehicleService vehicleId="123" />);
 
-        await waitForElementToBeRemoved(() => screen.getByTestId('SkeletonVehicleRecordsTable'));
+        await waitForElementToBeRemoved(() =>
+            screen.getByTestId('SkeletonVehicleRecordsTable'),
+        );
 
         const input = screen.getByPlaceholderText('Search records');
         fireEvent.change(input, {
@@ -85,7 +95,9 @@ describe('VehicleService', () => {
     it('renders no results empty state when no search results', async () => {
         render(<VehicleService vehicleId="123" />);
 
-        await waitForElementToBeRemoved(() => screen.getByTestId('SkeletonVehicleRecordsTable'));
+        await waitForElementToBeRemoved(() =>
+            screen.getByTestId('SkeletonVehicleRecordsTable'),
+        );
 
         const input = screen.getByPlaceholderText('Search records');
         fireEvent.change(input, {
@@ -97,6 +109,8 @@ describe('VehicleService', () => {
         expect(screen.queryByText('Record Fixture')).not.toBeInTheDocument();
         expect(screen.queryByText('Other note')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Try searching a date or note')).toBeInTheDocument();
+        expect(
+            screen.getByText('Try searching a date or note'),
+        ).toBeInTheDocument();
     });
 });

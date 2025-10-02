@@ -1,13 +1,22 @@
 import React, { useEffect } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
-    Box, Button, Flex, Heading, Tooltip, useDisclosure,
+    Box,
+    Button,
+    Flex,
+    Heading,
+    Tooltip,
+    useDisclosure,
 } from '@chakra-ui/react';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import pluralize from 'utils/pluralize';
 import { capitalize } from 'lodash';
 import lang from 'utils/lang';
-import { Cell, FlexTable, Row } from 'components/VehicleRecordsTable/VehicleRecordsTable';
+import {
+    Cell,
+    FlexTable,
+    Row,
+} from 'components/VehicleRecordsTable/VehicleRecordsTable';
 import { getDeltaMileage, getNextRecordWithMileage } from 'utils/records';
 import { defaultPrefs } from 'queries/vehicles';
 import RecordRow from '../RecordRow';
@@ -22,29 +31,47 @@ export interface RecordGroupProps {
 }
 
 export const RecordGroup: React.FC<RecordGroupProps> = ({
-    records: recordsProp, recordsNewestFirst, heading, vehicleId, preferences = defaultPrefs, distanceUnit = 'mi',
+    records: recordsProp,
+    recordsNewestFirst,
+    heading,
+    vehicleId,
+    preferences = defaultPrefs,
+    distanceUnit = 'mi',
 }) => {
     const {
-        isOpen: showMileageAdjustmentRecords, onToggle: onToggleShowMileageAdjustment, onOpen, onClose,
+        isOpen: showMileageAdjustmentRecords,
+        onToggle: onToggleShowMileageAdjustment,
+        onOpen,
+        onClose,
     } = useDisclosure({
         defaultIsOpen: preferences.showMileageAdjustmentRecords ?? true,
     });
 
     useEffect(() => {
-        const goToState = preferences.showMileageAdjustmentRecords ? onOpen : onClose;
+        const goToState = preferences.showMileageAdjustmentRecords
+            ? onOpen
+            : onClose;
         goToState();
     }, [preferences.showMileageAdjustmentRecords]);
 
     const cm = useInlineColorMode();
 
-    const filteredRecords = recordsProp.filter((r) => r.recordType !== 'mileage adjustment');
+    const filteredRecords = recordsProp.filter(
+        (r) => r.recordType !== 'mileage adjustment',
+    );
     const omittedCount = recordsProp.length - filteredRecords.length;
-    const records = showMileageAdjustmentRecords ? recordsProp : filteredRecords;
+    const records = showMileageAdjustmentRecords
+        ? recordsProp
+        : filteredRecords;
 
     const { enableCost = false } = preferences;
 
     return (
-        <Box shadow={['sm', 'md', 'md']} mx={[-4, 0]} bg={cm('white', 'whiteAlpha.200')}>
+        <Box
+            shadow={['sm', 'md', 'md']}
+            mx={[-4, 0]}
+            bg={cm('white', 'whiteAlpha.200')}
+        >
             <Heading
                 borderBottomWidth={1}
                 borderBottomColor={cm('gray.200', 'whiteAlpha.200')}
@@ -54,13 +81,26 @@ export const RecordGroup: React.FC<RecordGroupProps> = ({
             >
                 <Flex justifyContent="space-between" align="center">
                     {heading}
-                    {!preferences.showMileageAdjustmentRecords && Boolean(omittedCount) && (
-                        <Tooltip label={`${pluralize(omittedCount, 'record')} ${showMileageAdjustmentRecords ? 'visible' : 'hidden'}`}>
-                            <Button rightIcon={showMileageAdjustmentRecords ? <ViewIcon /> : <ViewOffIcon />} size="xs" onClick={onToggleShowMileageAdjustment}>
-                                {omittedCount}
-                            </Button>
-                        </Tooltip>
-                    )}
+                    {!preferences.showMileageAdjustmentRecords &&
+                        Boolean(omittedCount) && (
+                            <Tooltip
+                                label={`${pluralize(omittedCount, 'record')} ${showMileageAdjustmentRecords ? 'visible' : 'hidden'}`}
+                            >
+                                <Button
+                                    rightIcon={
+                                        showMileageAdjustmentRecords ? (
+                                            <ViewIcon />
+                                        ) : (
+                                            <ViewOffIcon />
+                                        )
+                                    }
+                                    size="xs"
+                                    onClick={onToggleShowMileageAdjustment}
+                                >
+                                    {omittedCount}
+                                </Button>
+                            </Tooltip>
+                        )}
                 </Flex>
             </Heading>
 
@@ -74,15 +114,22 @@ export const RecordGroup: React.FC<RecordGroupProps> = ({
                     textTransform="uppercase"
                 >
                     <Cell>Date</Cell>
-                    <Cell whiteSpace="nowrap">{capitalize(lang.mileageLabel[distanceUnit])}</Cell>
+                    <Cell whiteSpace="nowrap">
+                        {capitalize(lang.mileageLabel[distanceUnit])}
+                    </Cell>
                     {enableCost && <Cell>Cost</Cell>}
                     <Cell>Notes</Cell>
                     <Cell />
                 </Row>
 
                 {records.map((record, i) => {
-                    const nextRecord = getNextRecordWithMileage(record, recordsNewestFirst);
-                    const deltaMileage = nextRecord ? getDeltaMileage(record, nextRecord) : undefined;
+                    const nextRecord = getNextRecordWithMileage(
+                        record,
+                        recordsNewestFirst,
+                    );
+                    const deltaMileage = nextRecord
+                        ? getDeltaMileage(record, nextRecord)
+                        : undefined;
 
                     return (
                         <RecordRow

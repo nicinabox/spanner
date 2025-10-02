@@ -1,6 +1,4 @@
-import {
-    Button, Flex, HStack, Textarea,
-} from '@chakra-ui/react';
+import { Button, Flex, HStack, Textarea } from '@chakra-ui/react';
 import useFormData from 'hooks/useFormData';
 import useMutation, { mutate } from 'hooks/useMutation';
 import useTextareaResize from 'hooks/useTextareaResize';
@@ -16,7 +14,10 @@ export interface NotesFormProps {
 }
 
 export const NotesForm: React.FC<NotesFormProps> = ({
-    formValues, onSuccess, onError, onCancel,
+    formValues,
+    onSuccess,
+    onError,
+    onCancel,
 }) => {
     const textareaRef = useTextareaResize();
 
@@ -24,10 +25,13 @@ export const NotesForm: React.FC<NotesFormProps> = ({
         ...formValues,
     });
 
-    const { mutate: updateVehicleMutation, isProcessing } = useMutation(updateVehicle, {
-        onSuccess,
-        onError,
-    });
+    const { mutate: updateVehicleMutation, isProcessing } = useMutation(
+        updateVehicle,
+        {
+            onSuccess,
+            onError,
+        },
+    );
 
     const handleSaveNotes = () => {
         mutate(vehicleAPIPath(formValues.id), formData, false);
@@ -38,7 +42,12 @@ export const NotesForm: React.FC<NotesFormProps> = ({
         <>
             <Flex direction="row-reverse" mb={6}>
                 <HStack spacing={3}>
-                    <Button colorScheme="brand" size="md" onClick={handleSaveNotes} isLoading={isProcessing}>
+                    <Button
+                        colorScheme="brand"
+                        size="md"
+                        onClick={handleSaveNotes}
+                        isLoading={isProcessing}
+                    >
                         Save
                     </Button>
                     <Button

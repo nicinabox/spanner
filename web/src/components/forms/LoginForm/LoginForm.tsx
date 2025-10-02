@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import {
-    Input, Button, FormHelperText, FormControl, Flex, AlertIcon, Alert, Center, Box, FormLabel, Heading,
+    Input,
+    Button,
+    FormHelperText,
+    FormControl,
+    Flex,
+    AlertIcon,
+    Alert,
+    Center,
+    Box,
+    FormLabel,
+    Heading,
     Text,
     Divider,
 } from '@chakra-ui/react';
@@ -22,7 +32,9 @@ function getPlaceholder() {
 export const LoginForm: React.FC = () => {
     const router = useRouter();
 
-    const [loginStatus, setLoginStatus] = useState<'pendingEmail' | 'pendingLoginToken'>('pendingEmail');
+    const [loginStatus, setLoginStatus] = useState<
+    'pendingEmail' | 'pendingLoginToken'
+    >('pendingEmail');
     const [pendingAuth, setPendingAuth] = useState(false);
 
     const newSessionForm = useFormData({ email: '' });
@@ -77,10 +89,9 @@ export const LoginForm: React.FC = () => {
                         Check your email
                     </Heading>
                     <Text>
-                        We sent an email to you at
-                        {' '}
-                        <strong>{newSessionForm.formData.email}</strong>
-                        . It has a magic link that will sign you in.
+                        We sent an email to you at{' '}
+                        <strong>{newSessionForm.formData.email}</strong>. It has
+                        a magic link that will sign you in.
                     </Text>
                 </Center>
 
@@ -102,7 +113,13 @@ export const LoginForm: React.FC = () => {
                                 {...loginForm.register('loginToken')}
                                 autoFocus
                             />
-                            <Button type="submit" colorScheme="brand" ml="4" isLoading={pendingAuth} disabled={pendingAuth}>
+                            <Button
+                                type="submit"
+                                colorScheme="brand"
+                                ml="4"
+                                isLoading={pendingAuth}
+                                disabled={pendingAuth}
+                            >
                                 Sign in
                             </Button>
                         </Flex>
@@ -122,9 +139,7 @@ export const LoginForm: React.FC = () => {
         <Box p={4}>
             <form onSubmit={handleRequestSession}>
                 <FormControl>
-                    <FormLabel>
-                        Enter your email to get started
-                    </FormLabel>
+                    <FormLabel>Enter your email to get started</FormLabel>
                     <Flex>
                         <Input
                             {...newSessionForm.register('email')}
@@ -132,7 +147,13 @@ export const LoginForm: React.FC = () => {
                             placeholder={getPlaceholder()}
                             autoFocus
                         />
-                        <Button type="submit" colorScheme="brand" ml="4" disabled={requestSession.isProcessing} isLoading={requestSession.isProcessing}>
+                        <Button
+                            type="submit"
+                            colorScheme="brand"
+                            ml="4"
+                            disabled={requestSession.isProcessing}
+                            isLoading={requestSession.isProcessing}
+                        >
                             Next
                         </Button>
                     </Flex>

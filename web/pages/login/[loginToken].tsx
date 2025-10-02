@@ -1,6 +1,4 @@
-import {
-    Box, Button, Center, Heading,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Heading } from '@chakra-ui/react';
 import Link from 'next/link';
 import React from 'react';
 import { vehiclesPath } from 'utils/resources';

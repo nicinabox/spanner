@@ -5,7 +5,8 @@ export function getTime(date: string) {
 }
 
 // '2019-09-18'
-export const formatDateISO = (date: Date): string => formatISO(date, { representation: 'date' });
+export const formatDateISO = (date: Date): string =>
+    formatISO(date, { representation: 'date' });
 
 // 'Jan 1, 2021' UTC
 export const intlFormatDateUTC = (date: string, formatOptions = {}): string => {

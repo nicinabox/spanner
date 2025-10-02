@@ -6,7 +6,9 @@ export interface FormButtonProps extends ButtonProps {
 }
 
 export const FormButton: React.FC<FormButtonProps> = ({
-    children = 'Save', isProcessing, ...props
+    children = 'Save',
+    isProcessing,
+    ...props
 }) => {
     const Container = props.type === 'submit' ? LightMode : React.Fragment;
 

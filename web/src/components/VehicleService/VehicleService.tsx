@@ -1,6 +1,13 @@
 import { AddIcon } from '@chakra-ui/icons';
 import {
-    Box, Container, Flex, Heading, HStack, LightMode, Spacer, Text,
+    Box,
+    Container,
+    Flex,
+    Heading,
+    HStack,
+    LightMode,
+    Spacer,
+    Text,
 } from '@chakra-ui/react';
 import EmptyState from 'components/common/EmptyState';
 import LinkButton from 'components/common/LinkButton';
@@ -24,18 +31,35 @@ export interface VehicleServiceProps {
     vehicleId: string;
 }
 
-export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => {
+export const VehicleService: React.FC<VehicleServiceProps> = ({
+    vehicleId,
+}) => {
     const { isShared } = usePageContext();
 
-    const { data: vehicle, loading: vehicleLoading } = useRequest<API.Vehicle>(vehicleAPIPath(vehicleId, isShared));
-    const { data: records, loading: recordsLoading } = useRequest<API.Record[]>(recordsAPIPath(vehicleId, isShared));
+    const { data: vehicle, loading: vehicleLoading } = useRequest<API.Vehicle>(
+        vehicleAPIPath(vehicleId, isShared),
+    );
+    const { data: records, loading: recordsLoading } = useRequest<API.Record[]>(
+        recordsAPIPath(vehicleId, isShared),
+    );
 
-    const { searchQuery, queryResults, setSearchQuery } = useSearchQuery(records, (item, query) => {
-        const re = new RegExp(query, 'gi');
-        const date = intlFormat(parseDateUTC(item.date), { month: 'short', year: 'numeric', day: 'numeric' });
+    const { searchQuery, queryResults, setSearchQuery } = useSearchQuery(
+        records,
+        (item, query) => {
+            const re = new RegExp(query, 'gi');
+            const date = intlFormat(parseDateUTC(item.date), {
+                month: 'short',
+                year: 'numeric',
+                day: 'numeric',
+            });
 
-        return re.test(item.notes) || re.test(date) || re.test(toNumber(item.mileage).toString());
-    });
+            return (
+                re.test(item.notes) ||
+                re.test(date) ||
+                re.test(toNumber(item.mileage).toString())
+            );
+        },
+    );
 
     const anyLoading = vehicleLoading || recordsLoading;
     const isEmpty = !anyLoading && !records?.length;
@@ -50,16 +74,22 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
             <EmptyState
                 heading="Add your vehicle's history"
                 details="Try adding your purchase as the first record."
-                action={(
+                action={
                     <HStack spacing={6}>
-                        <LinkButton href={`${vehicleAddPath(vehicleId)}?${qs.stringify({ notes: 'Purchase' })}`} shadow="lg">
+                        <LinkButton
+                            href={`${vehicleAddPath(vehicleId)}?${qs.stringify({ notes: 'Purchase' })}`}
+                            shadow="lg"
+                        >
                             Add Purchase
                         </LinkButton>
-                        <LinkButton href={`${vehicleImportPath(vehicleId)}`} variant="ghost">
+                        <LinkButton
+                            href={`${vehicleImportPath(vehicleId)}`}
+                            variant="ghost"
+                        >
                             Import History
                         </LinkButton>
                     </HStack>
-                )}
+                }
             />
         );
     }
@@ -90,13 +120,20 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
                 {!vehicle?.retired && !isShared && (
                     <Flex>
                         <LightMode>
-                            <LinkButton href={vehicleAddPath(vehicleId)} size="md" leftIcon={<AddIcon />} shadow="lg">
+                            <LinkButton
+                                href={vehicleAddPath(vehicleId)}
+                                size="md"
+                                leftIcon={<AddIcon />}
+                                shadow="lg"
+                            >
                                 New...
                             </LinkButton>
                         </LightMode>
                     </Flex>
                 )}
-                <Spacer minW={vehicle?.retired || isShared ? [null] : [4, null]} />
+                <Spacer
+                    minW={vehicle?.retired || isShared ? [null] : [4, null]}
+                />
                 <Search onChangeText={handleSearch} />
             </Flex>
 
@@ -111,9 +148,7 @@ export const VehicleService: React.FC<VehicleServiceProps> = ({ vehicleId }) => 
 
             {Boolean(searchQuery && !queryResults.length) && (
                 <Box>
-                    <Heading>
-                        No results
-                    </Heading>
+                    <Heading>No results</Heading>
                     <Text>Try searching by date, mileage, or notes.</Text>
                 </Box>
             )}

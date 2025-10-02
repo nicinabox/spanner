@@ -1,6 +1,4 @@
-import {
-    identity, isPlainObject, merge, set, get,
-} from 'lodash';
+import { identity, isPlainObject, merge, set, get } from 'lodash';
 import { DependencyList, useEffect, useState } from 'react';
 
 interface FieldHelpers {
@@ -27,7 +25,10 @@ const transformValues = <T extends Record<string, unknown>>(data: T) => {
     }, {});
 };
 
-export default function useFormData<T extends Record<string, unknown>>(initialData: T, deps: DependencyList = []) {
+export default function useFormData<T extends Record<string, unknown>>(
+    initialData: T,
+    deps: DependencyList = [],
+) {
     const [formData, setFormData] = useState(transformValues(initialData) as T);
     const [touchedData, setTouchedData] = useState<Partial<T>>({});
 
@@ -57,13 +58,17 @@ export default function useFormData<T extends Record<string, unknown>>(initialDa
         return event;
     };
 
-    const register = (name: string, {
-        parseValue = identity,
-        formatValue = identity,
-        valueProp,
-    }: FieldHelpers = {}) => {
+    const register = (
+        name: string,
+        {
+            parseValue = identity,
+            formatValue = identity,
+            valueProp,
+        }: FieldHelpers = {},
+    ) => {
         const value = get(formData, name);
-        const valueField = valueProp || typeof value === 'boolean' ? 'isChecked' : 'value';
+        const valueField =
+            valueProp || typeof value === 'boolean' ? 'isChecked' : 'value';
 
         return {
             name,

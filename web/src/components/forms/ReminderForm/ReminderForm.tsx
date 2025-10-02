@@ -2,7 +2,12 @@ import {
     Alert,
     AlertIcon,
     Box,
-    FormControl, FormHelperText, FormLabel, Input, Select, Text,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    Input,
+    Select,
+    Text,
 } from '@chakra-ui/react';
 import DatePicker from 'components/common/DatePicker';
 import DestroyButton from 'components/common/DestroyButton';
@@ -33,21 +38,29 @@ export interface NewReminderFormProps {
 }
 
 export const ReminderForm: React.FC<NewReminderFormProps> = ({
-    formValues, vehicleId, minMileage = 0, distanceUnit = 'mi',
+    formValues,
+    vehicleId,
+    minMileage = 0,
+    distanceUnit = 'mi',
 }) => {
     const router = useRouter();
     const [estimatedDate, setEstimatedDate] = useState<Date | null>(null);
 
-    const { formData, register, setValue } = useFormData({
-        date: formatDateISO(addMonths(new Date(), 6)),
-        notes: '',
-        reminderType: '',
-        mileage: '',
-        ...formValues,
-    }, [formValues]);
+    const { formData, register, setValue } = useFormData(
+        {
+            date: formatDateISO(addMonths(new Date(), 6)),
+            notes: '',
+            reminderType: '',
+            mileage: '',
+            ...formValues,
+        },
+        [formValues],
+    );
 
     const {
-        mutate: createOrUpdateReminder, isProcessing, error,
+        mutate: createOrUpdateReminder,
+        isProcessing,
+        error,
     } = useMutation(reminders.createOrUpdateReminder, {
         onSuccess() {
             mutate(vehicleAPIPath(vehicleId));
@@ -66,9 +79,15 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
     });
 
     useEffect(() => {
-        const estimateReminderDate = async (params: reminders.EstimateReminderParams) => {
+        const estimateReminderDate = async (
+            params: reminders.EstimateReminderParams,
+        ) => {
             try {
-                const { reminderDate } = await reminders.estimateReminderDate(clientAPI, vehicleId, params);
+                const { reminderDate } = await reminders.estimateReminderDate(
+                    clientAPI,
+                    vehicleId,
+                    params,
+                );
                 if (reminderDate) {
                     setEstimatedDate(parseDateUTC(reminderDate));
                 }
@@ -103,9 +122,7 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
 
     return (
         <form onSubmit={handleSubmit}>
-            {error && 'errors' in error && (
-                <FormErrors errors={error.errors} />
-            )}
+            {error && 'errors' in error && <FormErrors errors={error.errors} />}
 
             <FormSection>
                 <FormControl mb={4} id="note" isRequired>
@@ -117,43 +134,60 @@ export const ReminderForm: React.FC<NewReminderFormProps> = ({
                     <FormLabel>Remind me</FormLabel>
                     <Select {...register('reminderType')}>
                         <option value="">Don&apos;t remind me</option>
-                        <option value="date_or_mileage">On a date or mileage, whichever is first</option>
+                        <option value="date_or_mileage">
+                            On a date or mileage, whichever is first
+                        </option>
                         <option value="date">On a date</option>
                         <option value="mileage">At a mileage</option>
                     </Select>
                 </FormControl>
 
-                {['date', 'date_or_mileage'].includes(formData.reminderType as string) && (
-                <FormControl mb={4} id="date" isRequired>
-                    <FormLabel>Date</FormLabel>
-                    <input type="hidden" {...register('date')} />
-                    <DatePicker initialDate={parseDateUTC(formData.date as string)} onChange={(date) => setValue('date', formatDateISO(date))} />
-                </FormControl>
-            )}
+                {['date', 'date_or_mileage'].includes(
+                    formData.reminderType as string,
+                ) && (
+                    <FormControl mb={4} id="date" isRequired>
+                        <FormLabel>Date</FormLabel>
+                        <input type="hidden" {...register('date')} />
+                        <DatePicker
+                            initialDate={parseDateUTC(formData.date as string)}
+                            onChange={(date) =>
+                                setValue('date', formatDateISO(date))
+                            }
+                        />
+                    </FormControl>
+                )}
 
-                {['mileage', 'date_or_mileage'].includes(formData.reminderType as string) && (
+                {['mileage', 'date_or_mileage'].includes(
+                    formData.reminderType as string,
+                ) && (
                     <FormControl mb={4} id="mileage" isRequired>
-                        <FormLabel>{capitalize(lang.mileageLabel[distanceUnit])}</FormLabel>
+                        <FormLabel>
+                            {capitalize(lang.mileageLabel[distanceUnit])}
+                        </FormLabel>
 
-                        <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9,]*" />
+                        <Input
+                            {...register('mileage', mileageFieldHelpers)}
+                            inputMode="numeric"
+                            pattern="[0-9,]*"
+                        />
 
                         {Boolean(minMileage) && (
                             <FormHelperText>
-                                Minimum
-                                {' '}
+                                Minimum{' '}
                                 {formatMileage(minMileage, distanceUnit)}
                             </FormHelperText>
                         )}
                     </FormControl>
                 )}
 
-                {estimatedDate && ['date_or_mileage', 'mileage'].includes(formData.reminderType as string) && (
-                    <Alert status="info" variant="left-accent">
-                        Estimated for
-                        {' '}
-                        {intlFormatDate(estimatedDate)}
-                    </Alert>
-                )}
+                {estimatedDate &&
+                    ['date_or_mileage', 'mileage'].includes(
+                        formData.reminderType as string,
+                    ) && (
+                        <Alert status="info" variant="left-accent">
+                            Estimated for {intlFormatDate(estimatedDate)}
+                        </Alert>
+                    )}
             </FormSection>
 
             <FormButton type="submit" isProcessing={isProcessing} />

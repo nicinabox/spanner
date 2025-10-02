@@ -1,6 +1,12 @@
 import { AddIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Container, Flex, Heading, LinkBox, LinkOverlay, Skeleton, Text,
+    Container,
+    Flex,
+    Heading,
+    LinkBox,
+    LinkOverlay,
+    Skeleton,
+    Text,
 } from '@chakra-ui/react';
 import EmptyState from 'components/common/EmptyState';
 import LinkButton from 'components/common/LinkButton';
@@ -16,7 +22,7 @@ import { getTime } from 'utils/date';
 import { reminderPath, vehicleAddPath } from 'utils/resources';
 
 export interface VehicleRemindersProps {
-    vehicleId: string
+    vehicleId: string;
 }
 
 const sortByDueSoonest = (reminders: API.Reminder[]) => {
@@ -28,8 +34,12 @@ const sortByDueSoonest = (reminders: API.Reminder[]) => {
     });
 };
 
-export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId }) => {
-    const { data: vehicle, loading } = useRequest<API.Vehicle>(vehicleAPIPath(vehicleId));
+export const VehicleReminders: React.FC<VehicleRemindersProps> = ({
+    vehicleId,
+}) => {
+    const { data: vehicle, loading } = useRequest<API.Vehicle>(
+        vehicleAPIPath(vehicleId),
+    );
     const cm = useInlineColorMode();
 
     const reminders = sortByDueSoonest(vehicle?.reminders ?? []);
@@ -51,11 +61,15 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
             <EmptyState
                 heading="Get reminders in your inbox"
                 details="Use reminders to get notified on a date or mileage."
-                action={(
-                    <LinkButton href={`${vehicleAddPath(vehicleId)}#panel=1`} leftIcon={<AddIcon />} shadow="lg">
+                action={
+                    <LinkButton
+                        href={`${vehicleAddPath(vehicleId)}#panel=1`}
+                        leftIcon={<AddIcon />}
+                        shadow="lg"
+                    >
                         New Reminder
                     </LinkButton>
-                )}
+                }
             />
         );
     }
@@ -64,13 +78,17 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
         <Container>
             <Flex mb={6} direction="row-reverse">
                 {!vehicle?.retired && (
-                    <LinkButton href={`${vehicleAddPath(vehicleId)}#panel=1`} size="md" leftIcon={<AddIcon />}>
+                    <LinkButton
+                        href={`${vehicleAddPath(vehicleId)}#panel=1`}
+                        size="md"
+                        leftIcon={<AddIcon />}
+                    >
                         New
                     </LinkButton>
                 )}
             </Flex>
 
-            {reminders.map(((reminder) => {
+            {reminders.map((reminder) => {
                 return (
                     <LinkBox
                         key={reminder.id}
@@ -119,7 +137,7 @@ export const VehicleReminders: React.FC<VehicleRemindersProps> = ({ vehicleId })
                         </Flex>
                     </LinkBox>
                 );
-            }))}
+            })}
         </Container>
     );
 };

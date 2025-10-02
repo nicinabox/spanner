@@ -1,6 +1,4 @@
-import {
-    Container, HStack, TabPanel, TabPanels,
-} from '@chakra-ui/react';
+import { Container, HStack, TabPanel, TabPanels } from '@chakra-ui/react';
 import BackButton from 'components/common/BackButton';
 import LinkPreload from 'components/common/LinkPreload';
 import MileageAdjustmentForm from 'components/forms/MileageAdjustmentForm';
@@ -18,46 +16,52 @@ import lang from 'utils/lang';
 import qs from 'qs';
 import { VehiclePageProps } from '../[vehicleId]';
 
-export type AddPageProps = VehiclePageProps
+export type AddPageProps = VehiclePageProps;
 
 const isServer = typeof window === 'undefined';
 
 const PageHeader: React.FC<{ vehicle?: API.Vehicle }> = ({ vehicle }) => (
     <TabsHeader
         tabs={[
-                'New Service',
-                'New Reminder',
-                `Adjust ${lang.mileageLabel[vehicle?.distanceUnit ?? 'mi']}`,
-            ]}
-        LeftComponent={(
+            'New Service',
+            'New Reminder',
+            `Adjust ${lang.mileageLabel[vehicle?.distanceUnit ?? 'mi']}`,
+        ]}
+        LeftComponent={
             <HStack spacing={2}>
-                <BackButton>
-                    Back
-                </BackButton>
+                <BackButton>Back</BackButton>
                 <VehicleActionsMenu vehicle={vehicle} />
             </HStack>
-              )}
+        }
     />
 );
 
 export const AddPage: React.FC<AddPageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
-    const { data: records } = useRequest<API.Record[]>(recordsAPIPath(params.vehicleId));
+    const { data: vehicle } = useRequest<API.Vehicle>(
+        vehicleAPIPath(params.vehicleId),
+    );
+    const { data: records } = useRequest<API.Record[]>(
+        recordsAPIPath(params.vehicleId),
+    );
 
-    const newestRecordMileage: number = (records ? sortRecordsNewestFirst(records)[0]?.mileage : 0) ?? 0;
-    const recordFormValues = isServer ? {} : qs.parse(window?.location.search.replace('?', ''));
+    const newestRecordMileage: number =
+        (records ? sortRecordsNewestFirst(records)[0]?.mileage : 0) ?? 0;
+    const recordFormValues = isServer
+        ? {}
+        : qs.parse(window?.location.search.replace('?', ''));
 
     return (
-        <Page
-            Header={<PageHeader vehicle={vehicle} />}
-        >
+        <Page Header={<PageHeader vehicle={vehicle} />}>
             <LinkPreload path={vehicleAPIPath(params.vehicleId)} />
 
             {vehicle && (
                 <TabPanels>
                     <TabPanel p={0}>
                         <Container maxW={[null, 'container.md']} p={0}>
-                            <RecordForm vehicle={vehicle} record={recordFormValues} />
+                            <RecordForm
+                                vehicle={vehicle}
+                                record={recordFormValues}
+                            />
                         </Container>
                     </TabPanel>
                     <TabPanel p={0}>

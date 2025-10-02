@@ -16,8 +16,13 @@ interface APIReponseError {
     errors: APIError[];
 }
 
-export default function useMutation<T>(mutationFn: MutationFn<T>, { onError, onSuccess }: MutationCallbacks<T> = {}) {
-    const [status, setStatus] = useState<'idle' | 'processing' | 'complete'>('idle');
+export default function useMutation<T>(
+    mutationFn: MutationFn<T>,
+    { onError, onSuccess }: MutationCallbacks<T> = {},
+) {
+    const [status, setStatus] = useState<'idle' | 'processing' | 'complete'>(
+        'idle',
+    );
     const [data, setData] = useState<T | undefined>();
     const [error, setError] = useState<Error | APIReponseError | undefined>();
 

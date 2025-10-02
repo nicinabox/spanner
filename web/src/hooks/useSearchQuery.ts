@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 
-export default function useSearchQuery<T>(initialResults: T[] | undefined, filterFn: (result: T, searchQuery: string) => boolean) {
+export default function useSearchQuery<T>(
+    initialResults: T[] | undefined,
+    filterFn: (result: T, searchQuery: string) => boolean,
+) {
     const [searchQuery, setSearchQuery] = useState('');
     const [queryResults, setQueryResults] = useState(initialResults ?? []);
 
@@ -12,7 +15,9 @@ export default function useSearchQuery<T>(initialResults: T[] | undefined, filte
             return;
         }
 
-        const nextResults = initialResults?.filter((item) => filterFn(item, searchQuery));
+        const nextResults = initialResults?.filter((item) =>
+            filterFn(item, searchQuery),
+        );
         setQueryResults(nextResults ?? []);
     }, [searchQuery, initialResults]);
 

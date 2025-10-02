@@ -74,9 +74,11 @@ describe('useMutation', () => {
         const queryFn = jest.fn().mockResolvedValue({ test: true });
         const onSuccess = jest.fn();
 
-        const { result } = renderHook(() => useMutation(queryFn, {
-            onSuccess,
-        }));
+        const { result } = renderHook(() =>
+            useMutation(queryFn, {
+                onSuccess,
+            }),
+        );
 
         await act(() => result.current.mutate());
 
@@ -87,9 +89,11 @@ describe('useMutation', () => {
         const queryFn = jest.fn().mockRejectedValue('test error');
         const onError = jest.fn();
 
-        const { result } = renderHook(() => useMutation(queryFn, {
-            onError,
-        }));
+        const { result } = renderHook(() =>
+            useMutation(queryFn, {
+                onError,
+            }),
+        );
 
         await act(() => result.current.mutate());
 

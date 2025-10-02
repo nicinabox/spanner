@@ -9,6 +9,8 @@ describe('VehicleColorIndicator', () => {
         const props = {
             color: undefined,
         };
-        expect(() => render(<VehicleColorIndicator {...props} />)).not.toThrow();
+        expect(() =>
+            render(<VehicleColorIndicator {...props} />),
+        ).not.toThrow();
     });
 });

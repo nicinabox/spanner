@@ -1,5 +1,13 @@
 import {
-    Box, FormControl, FormLabel, Input, InputGroup, InputLeftAddon, InputRightAddon, SimpleGrid, Textarea,
+    Box,
+    FormControl,
+    FormLabel,
+    Input,
+    InputGroup,
+    InputLeftAddon,
+    InputRightAddon,
+    SimpleGrid,
+    Textarea,
 } from '@chakra-ui/react';
 import { ParsedQs } from 'qs';
 import DatePicker from 'components/common/DatePicker';
@@ -27,19 +35,30 @@ export interface RecordFormProps {
     onSuccess?: () => Promise<void> | void;
 }
 
-export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSuccess }) => {
+export const RecordForm: React.FC<RecordFormProps> = ({
+    vehicle,
+    record,
+    onSuccess,
+}) => {
     const router = useRouter();
     const textareaRef = useTextareaResize();
 
-    const { formData, register, setValue } = useFormData({
-        date: formatDateISO(new Date()),
-        mileage: vehicle.estimatedMileage,
-        notes: '',
-        cost: '',
-        ...record,
-    }, [record]);
+    const { formData, register, setValue } = useFormData(
+        {
+            date: formatDateISO(new Date()),
+            mileage: vehicle.estimatedMileage,
+            notes: '',
+            cost: '',
+            ...record,
+        },
+        [record],
+    );
 
-    const { mutate: createOrUpdateRecord, isProcessing, error } = useMutation(records.createOrUpdateRecord, {
+    const {
+        mutate: createOrUpdateRecord,
+        isProcessing,
+        error,
+    } = useMutation(records.createOrUpdateRecord, {
         onSuccess: async () => {
             await onSuccess?.();
             router.replace(vehiclePath(vehicle.id));
@@ -71,32 +90,62 @@ export const RecordForm: React.FC<RecordFormProps> = ({ vehicle, record, onSucce
                 )}
 
                 <FormSection>
-                    <SimpleGrid spacing={[null, 7]} templateColumns={['auto', null, '1fr 2fr']}>
+                    <SimpleGrid
+                        spacing={[null, 7]}
+                        templateColumns={['auto', null, '1fr 2fr']}
+                    >
                         <Box>
                             <FormControl mb={4} id="date" isRequired>
                                 <FormLabel>Date</FormLabel>
 
                                 <Input type="hidden" {...register('date')} />
-                                <DatePicker initialDate={parseDateUTC(formData.date)} onChange={(date) => setValue('date', formatDateISO(date))} />
+                                <DatePicker
+                                    initialDate={parseDateUTC(formData.date)}
+                                    onChange={(date) =>
+                                        setValue('date', formatDateISO(date))
+                                    }
+                                />
                             </FormControl>
                         </Box>
                         <Box flex={1}>
                             <FormControl mb={4} id="Notes" isRequired>
                                 <FormLabel>Notes</FormLabel>
-                                <Textarea ref={textareaRef} {...register('notes')} />
+                                <Textarea
+                                    ref={textareaRef}
+                                    {...register('notes')}
+                                />
                             </FormControl>
                             <FormControl mb={4} id="mileage">
-                                <FormLabel>{capitalize(lang.mileageLabel[vehicle.distanceUnit])}</FormLabel>
+                                <FormLabel>
+                                    {capitalize(
+                                        lang.mileageLabel[vehicle.distanceUnit],
+                                    )}
+                                </FormLabel>
                                 <InputGroup size="md">
-                                    <Input {...register('mileage', mileageFieldHelpers)} inputMode="numeric" pattern="[0-9,]*" />
-                                    <InputRightAddon>{vehicle.distanceUnit}</InputRightAddon>
+                                    <Input
+                                        {...register(
+                                            'mileage',
+                                            mileageFieldHelpers,
+                                        )}
+                                        inputMode="numeric"
+                                        pattern="[0-9,]*"
+                                    />
+                                    <InputRightAddon>
+                                        {vehicle.distanceUnit}
+                                    </InputRightAddon>
                                 </InputGroup>
                             </FormControl>
                             <FormControl mb={4} id="cost">
                                 <FormLabel>Cost</FormLabel>
                                 <InputGroup size="md">
-                                    <InputLeftAddon>{getCurrencySymbol()}</InputLeftAddon>
-                                    <Input {...register('cost', costFieldHelpers)} inputMode="numeric" pattern="[0-9,]*" />
+                                    <InputLeftAddon>
+                                        {getCurrencySymbol()}
+                                    </InputLeftAddon>
+                                    <Input
+                                        {...register('cost', costFieldHelpers)}
+                                        inputMode="numeric"
+                                        pattern="[0-9,]*"
+                                    />
                                 </InputGroup>
                             </FormControl>
                         </Box>

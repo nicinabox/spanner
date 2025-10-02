@@ -1,11 +1,21 @@
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
-    Button, Menu, MenuButton, MenuDivider, MenuItemOption, MenuList, MenuOptionGroup, useBreakpointValue,
+    Button,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuItemOption,
+    MenuList,
+    MenuOptionGroup,
+    useBreakpointValue,
 } from '@chakra-ui/react';
 import React from 'react';
 import {
     orderToHuman,
-    vehicleSortOrderToHuman, vehicleSortStrategy, VehicleSortStrategy, vehicleSortStrategyToHuman,
+    vehicleSortOrderToHuman,
+    vehicleSortStrategy,
+    VehicleSortStrategy,
+    vehicleSortStrategyToHuman,
 } from 'utils/sortable';
 
 export interface VehicleSortMenuProps {
@@ -23,17 +33,16 @@ export const VehicleSortMenu: React.FC<VehicleSortMenuProps> = ({
     return (
         <Menu>
             <MenuButton as={Button} size={size} rightIcon={<ChevronDownIcon />}>
-                Order By:
-                {' '}
-                {orderToHuman(sortable)}
-                {' '}
+                Order By: {orderToHuman(sortable)}{' '}
                 {vehicleSortStrategyToHuman[sortStrategy]}
             </MenuButton>
             <MenuList zIndex={2}>
                 <MenuOptionGroup
                     value={sortStrategy}
                     type="radio"
-                    onChange={(v) => onChangeProp([v as VehicleSortStrategy, sortOrder])}
+                    onChange={(v) =>
+                        onChangeProp([v as VehicleSortStrategy, sortOrder])
+                    }
                 >
                     {Object.keys(vehicleSortStrategy).map((value) => (
                         <MenuItemOption key={value} value={value}>
@@ -45,7 +54,9 @@ export const VehicleSortMenu: React.FC<VehicleSortMenuProps> = ({
                 <MenuOptionGroup
                     value={sortOrder}
                     type="radio"
-                    onChange={(v) => onChangeProp([sortStrategy, v as API.Order])}
+                    onChange={(v) =>
+                        onChangeProp([sortStrategy, v as API.Order])
+                    }
                 >
                     {vehicleSortOrderToHuman[sortStrategy].map((order, i) => (
                         <MenuItemOption

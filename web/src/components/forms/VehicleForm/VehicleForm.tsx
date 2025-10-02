@@ -1,5 +1,17 @@
 import {
-    Box, FormControl, FormHelperText, FormLabel, Heading, Input, LightMode, Radio, RadioGroup, Stack, StackDivider, Switch, useColorModeValue,
+    Box,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    Heading,
+    Input,
+    LightMode,
+    Radio,
+    RadioGroup,
+    Stack,
+    StackDivider,
+    Switch,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import DestroyButton from 'components/common/DestroyButton';
 import FormErrors from 'components/common/FormErrors';
@@ -22,21 +34,28 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const router = useRouter();
     const borderColor = useColorModeValue('gray.200', 'gray.600');
 
-    const { formData, register } = useFormData({
-        name: '',
-        vin: '',
-        distanceUnit: 'mi',
-        ...vehicle,
-        preferences: {
-            enableCost: true,
-            sendReminderEmails: true,
-            sendPromptForRecords: true,
-            showMileageAdjustmentRecords: true,
-            ...vehicle?.preferences,
+    const { formData, register } = useFormData(
+        {
+            name: '',
+            vin: '',
+            distanceUnit: 'mi',
+            ...vehicle,
+            preferences: {
+                enableCost: true,
+                sendReminderEmails: true,
+                sendPromptForRecords: true,
+                showMileageAdjustmentRecords: true,
+                ...vehicle?.preferences,
+            },
         },
-    }, [vehicle]);
+        [vehicle],
+    );
 
-    const { mutate: createOrUpdateVehicle, isProcessing, error } = useMutation(vehicles.createOrUpdateVehicle, {
+    const {
+        mutate: createOrUpdateVehicle,
+        isProcessing,
+        error,
+    } = useMutation(vehicles.createOrUpdateVehicle, {
         onSuccess(nextVehicle) {
             router.replace(vehiclePath(nextVehicle.id));
         },
@@ -75,14 +94,20 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                     <FormControl id="vin" mb={4}>
                         <FormLabel>VIN</FormLabel>
                         <Input type="text" {...register('vin')} />
-                        <FormHelperText>VIN is optional but recommended</FormHelperText>
+                        <FormHelperText>
+                            VIN is optional but recommended
+                        </FormHelperText>
                     </FormControl>
 
                     <FormControl id="edit-color" mb={4} overflow="hidden">
                         <FormLabel>
                             Color
                             <Box mt={2}>
-                                <VehicleColorIndicator color={formData.color} size={10} borderWidth={3} />
+                                <VehicleColorIndicator
+                                    color={formData.color}
+                                    size={10}
+                                    borderWidth={3}
+                                />
                             </Box>
                         </FormLabel>
                         <Box position="absolute" left="-100%">
@@ -107,45 +132,88 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
                 </FormSection>
 
                 <FormSection heading="Preferences">
-                    <Stack spacing={4} divider={<StackDivider borderColor={borderColor} />}>
+                    <Stack
+                        spacing={4}
+                        divider={<StackDivider borderColor={borderColor} />}
+                    >
                         <FormControl display="flex" alignItems="center">
-                            <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.enableCost">
+                            <FormLabel
+                                flex={1}
+                                pr={4}
+                                m={0}
+                                htmlFor="preferences.enableCost"
+                            >
                                 Enable cost
                                 <FormHelperText mt={0}>
-                                    Show cost column in History and cost field in form.
+                                    Show cost column in History and cost field
+                                    in form.
                                 </FormHelperText>
                             </FormLabel>
-                            <Switch colorScheme="green" {...register('preferences.enableCost')} />
+                            <Switch
+                                colorScheme="green"
+                                {...register('preferences.enableCost')}
+                            />
                         </FormControl>
 
                         <FormControl display="flex" alignItems="center">
-                            <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.sendReminderEmails">
+                            <FormLabel
+                                flex={1}
+                                pr={4}
+                                m={0}
+                                htmlFor="preferences.sendReminderEmails"
+                            >
                                 Send reminder emails
                                 <FormHelperText mt={0}>
-                                    Receive an email for upcoming reminders 2 weeks before and on the due date.
+                                    Receive an email for upcoming reminders 2
+                                    weeks before and on the due date.
                                 </FormHelperText>
                             </FormLabel>
-                            <Switch colorScheme="green" {...register('preferences.sendReminderEmails')} />
+                            <Switch
+                                colorScheme="green"
+                                {...register('preferences.sendReminderEmails')}
+                            />
                         </FormControl>
 
                         <FormControl display="flex" alignItems="center">
-                            <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.sendPromptForRecords">
+                            <FormLabel
+                                flex={1}
+                                pr={4}
+                                m={0}
+                                htmlFor="preferences.sendPromptForRecords"
+                            >
                                 Send prompt for records
                                 <FormHelperText mt={0}>
-                                    Receive an email asking if you recenty performed service based on your record history.
+                                    Receive an email asking if you recenty
+                                    performed service based on your record
+                                    history.
                                 </FormHelperText>
                             </FormLabel>
-                            <Switch colorScheme="green" {...register('preferences.sendPromptForRecords')} />
+                            <Switch
+                                colorScheme="green"
+                                {...register(
+                                    'preferences.sendPromptForRecords',
+                                )}
+                            />
                         </FormControl>
 
                         <FormControl display="flex" alignItems="center">
-                            <FormLabel flex={1} pr={4} m={0} htmlFor="preferences.showMileageAdjustmentRecords">
+                            <FormLabel
+                                flex={1}
+                                pr={4}
+                                m={0}
+                                htmlFor="preferences.showMileageAdjustmentRecords"
+                            >
                                 Show mileage adjustment records
                                 <FormHelperText mt={0}>
                                     Show mileage adjustment records in History.
                                 </FormHelperText>
                             </FormLabel>
-                            <Switch colorScheme="green" {...register('preferences.showMileageAdjustmentRecords')} />
+                            <Switch
+                                colorScheme="green"
+                                {...register(
+                                    'preferences.showMileageAdjustmentRecords',
+                                )}
+                            />
                         </FormControl>
                     </Stack>
                 </FormSection>

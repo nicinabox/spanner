@@ -1,6 +1,9 @@
 import { SearchIcon } from '@chakra-ui/icons';
 import {
-    Input, InputGroup, InputLeftElement, useColorModeValue,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import useInlineColorMode from 'hooks/useInlineColorMode';
 import React from 'react';
@@ -14,9 +17,7 @@ export const Search: React.FC<SearchProps> = ({ onChangeText }) => {
 
     return (
         <InputGroup>
-            <InputLeftElement
-                pointerEvents="none"
-            >
+            <InputLeftElement pointerEvents="none">
                 <SearchIcon color={cm('blackAlpha.500', 'whiteAlpha.500')} />
             </InputLeftElement>
             <Input

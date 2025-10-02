@@ -2,7 +2,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import qs from 'qs';
 
-export type MutateParams<T extends { id?: API.RecordID }> = T & Required<Pick<T, 'id'>>
+export type MutateParams<T extends { id?: API.RecordID }> = T &
+Required<Pick<T, 'id'>>;
 
 // eslint-disable-next-line prefer-destructuring
 const PROXY_HOST = process.env.PROXY_HOST;

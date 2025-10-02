@@ -1,5 +1,9 @@
 import {
-    Box, Center, Container, Flex, useColorModeValue,
+    Box,
+    Center,
+    Container,
+    Flex,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 import { vehiclesPath } from 'utils/resources';
@@ -11,12 +15,24 @@ export default function Home() {
     const bg = useColorModeValue('white', 'brand.900');
 
     return (
-        <Flex minH="100vh" bg="brand.primary" align="center" justify="center" direction="column">
+        <Flex
+            minH="100vh"
+            bg="brand.primary"
+            align="center"
+            justify="center"
+            direction="column"
+        >
             <Center flex={1} my={8}>
                 <Logo opacity={0.8} height={50} />
             </Center>
             <Container flex={3}>
-                <Box boxShadow="xl" bg={bg} p={[2, 4, 8]} mb={8} borderRadius="lg">
+                <Box
+                    boxShadow="xl"
+                    bg={bg}
+                    p={[2, 4, 8]}
+                    mb={8}
+                    borderRadius="lg"
+                >
                     <LoginForm />
                 </Box>
             </Container>

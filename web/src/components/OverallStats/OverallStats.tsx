@@ -11,7 +11,9 @@ export interface OverallStatsProps {
 // TODO:
 // - overall stats by distance unit
 // - count of active vehicles
-export const OverallStats: React.FC<OverallStatsProps> = ({ activeVehicles }) => {
+export const OverallStats: React.FC<OverallStatsProps> = ({
+    activeVehicles,
+}) => {
     const vehiclesByDistanceUnit = groupBy(activeVehicles, 'distanceUnit');
 
     return (
@@ -21,17 +23,25 @@ export const OverallStats: React.FC<OverallStatsProps> = ({ activeVehicles }) =>
                     {activeVehicles.length}
                 </Stat>
 
-                {Object.keys(vehiclesByDistanceUnit).map((distanceUnit: API.DistanceUnit) => {
-                    const total = vehiclesByDistanceUnit[distanceUnit].reduce((acc, vehicle) => {
-                        return acc + (vehicle.milesPerYear ?? 0);
-                    }, 0);
+                {Object.keys(vehiclesByDistanceUnit).map(
+                    (distanceUnit: API.DistanceUnit) => {
+                        const total = vehiclesByDistanceUnit[
+                            distanceUnit
+                        ].reduce((acc, vehicle) => {
+                            return acc + (vehicle.milesPerYear ?? 0);
+                        }, 0);
 
-                    return (
-                        <Stat key={distanceUnit} label={`Total ${distanceUnit} per year`} flex={0}>
-                            {formatMileage(total, distanceUnit)}
-                        </Stat>
-                    );
-                })}
+                        return (
+                            <Stat
+                                key={distanceUnit}
+                                label={`Total ${distanceUnit} per year`}
+                                flex={0}
+                            >
+                                {formatMileage(total, distanceUnit)}
+                            </Stat>
+                        );
+                    },
+                )}
             </HStack>
         </Box>
     );

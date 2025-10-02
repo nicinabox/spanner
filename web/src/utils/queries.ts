@@ -7,7 +7,11 @@ export const fetcher = (path: string, options?) => async (req) => {
     return data;
 };
 
-export const prefetch = async <T>(req, pathOrHandler: string | ((api: AxiosInstance) => Promise<T>), options?): Promise<{ data?: T, error?: any }> => {
+export const prefetch = async <T>(
+    req,
+    pathOrHandler: string | ((api: AxiosInstance) => Promise<T>),
+    options?,
+): Promise<{ data?: T; error?: any }> => {
     let result;
 
     if (typeof pathOrHandler === 'string') {

@@ -10,10 +10,15 @@ export interface ReminderSummaryProps extends TextProps {
     distanceUnit: API.DistanceUnit | undefined;
 }
 
-export const ReminderSummary: React.FC<ReminderSummaryProps> = ({ reminder, distanceUnit = 'mi', ...textProps }) => {
+export const ReminderSummary: React.FC<ReminderSummaryProps> = ({
+    reminder,
+    distanceUnit = 'mi',
+    ...textProps
+}) => {
     const cm = useInlineColorMode();
 
-    const date = reminder?.reminderDate && intlFormatDateUTC(reminder.reminderDate);
+    const date =
+        reminder?.reminderDate && intlFormatDateUTC(reminder.reminderDate);
     const mileage = reminder && formatMileage(reminder.mileage, distanceUnit);
 
     if (!reminder?.reminderDate && !reminder?.mileage) {
@@ -25,20 +30,20 @@ export const ReminderSummary: React.FC<ReminderSummaryProps> = ({ reminder, dist
     }
 
     return (
-        <Text {...textProps} color={isReminderOverdue(reminder) ? cm('red.500', 'red.300') : cm('blackAlpha.700', 'whiteAlpha.600')}>
-            Reminder scheduled for
-            {' '}
-
-            {date && (
-                <Text as="strong">{date}</Text>
-            )}
-
-            {reminder.reminderType === 'date_or_mileage' && reminder.reminderDate && ' or '}
+        <Text
+            {...textProps}
+            color={
+                isReminderOverdue(reminder)
+                    ? cm('red.500', 'red.300')
+                    : cm('blackAlpha.700', 'whiteAlpha.600')
+            }
+        >
+            Reminder scheduled for {date && <Text as="strong">{date}</Text>}
+            {reminder.reminderType === 'date_or_mileage' &&
+                reminder.reminderDate &&
+                ' or '}
             {reminder.reminderType === 'mileage' && ' at '}
-
-            {reminder.mileage && (
-                <Text as="strong">{mileage}</Text>
-            )}
+            {reminder.mileage && <Text as="strong">{mileage}</Text>}
         </Text>
     );
 };

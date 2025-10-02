@@ -12,6 +12,8 @@ describe('MileageAdjustmentForm', () => {
                 ...vehicleFixture,
             },
         };
-        expect(() => render(<MileageAdjustmentForm {...props} />)).not.toThrow();
+        expect(() =>
+            render(<MileageAdjustmentForm {...props} />),
+        ).not.toThrow();
     });
 });

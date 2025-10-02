@@ -2,7 +2,10 @@ import { getTime } from './date';
 import { formatNumber } from './number';
 import { diffMileage } from './records';
 
-export function formatMileage(mileage: number | null, distanceUnit: API.DistanceUnit = 'mi') {
+export function formatMileage(
+    mileage: number | null,
+    distanceUnit: API.DistanceUnit = 'mi',
+) {
     return `${formatNumber(mileage ?? 0)} ${distanceUnit}`;
 }
 
@@ -18,7 +21,10 @@ export function sortRecordsNewestFirst(records: API.Record[]) {
     return [...records].sort((a, b) => {
         const byDate = getTime(b.date) - getTime(a.date);
         if (byDate) return byDate;
-        return diffMileage(b.mileage, a.mileage) || getTime(b.createdAt) - getTime(a.createdAt);
+        return (
+            diffMileage(b.mileage, a.mileage) ||
+            getTime(b.createdAt) - getTime(a.createdAt)
+        );
     });
 }
 

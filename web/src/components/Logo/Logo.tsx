@@ -8,7 +8,12 @@ export interface LogoProps {
 }
 
 export const Logo: React.FC<LogoProps> = ({ height = 60, opacity = 0.5 }) => (
-    <Link href="/" display="inline-block" opacity={opacity} _hover={{ opacity: 1 }}>
+    <Link
+        href="/"
+        display="inline-block"
+        opacity={opacity}
+        _hover={{ opacity: 1 }}
+    >
         <Box h={height}>
             <Img src="/assets/logo-white.png" alt="Spanner" />
         </Box>

@@ -10,34 +10,30 @@ import { vehicleAPIPath } from 'queries/vehicles';
 import React from 'react';
 import { VehiclePageProps } from '../[vehicleId]';
 
-export type EditVehiclePageProps = VehiclePageProps
+export type EditVehiclePageProps = VehiclePageProps;
 
 export const EditVehiclePage: React.FC<EditVehiclePageProps> = ({ params }) => {
-    const { data: vehicle } = useRequest<API.Vehicle>(vehicleAPIPath(params.vehicleId));
+    const { data: vehicle } = useRequest<API.Vehicle>(
+        vehicleAPIPath(params.vehicleId),
+    );
 
     return (
         <Page
-            Header={(
+            Header={
                 <Header
-                    LeftComponent={(
+                    LeftComponent={
                         <HStack spacing={2}>
-                            <BackButton>
-                                Back
-                            </BackButton>
+                            <BackButton>Back</BackButton>
                             <VehicleActionsMenu vehicle={vehicle} />
                         </HStack>
-                      )}
+                    }
                 />
-              )}
+            }
         >
             <LinkPreload path={vehicleAPIPath(params.vehicleId)} />
 
             <Container maxW={[null, 'lg']} p={0}>
-                <Heading mb={6}>
-                    Edit
-                    {' '}
-                    {vehicle?.name}
-                </Heading>
+                <Heading mb={6}>Edit {vehicle?.name}</Heading>
                 <VehicleForm vehicle={vehicle} />
             </Container>
         </Page>
