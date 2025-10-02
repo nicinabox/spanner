@@ -1,0 +1,89 @@
+# frozen_string_literal: true
+
+require 'tempfile'
+require 'importer'
+require 'exporter'
+
+module V2
+  class VehiclesController < ApplicationController
+    skip_before_action :authenticate, only: [:share]
+
+    def index
+      render json: vehicles.order(:position)
+    end
+
+    def show
+      render json: vehicles.find(params[:id])
+    end
+
+    def share
+      vehicle = Vehicle.find(params[:vehicle_id])
+
+      return render json: vehicle if vehicle.preferences.enable_sharing
+
+      render_unauthorized
+    end
+
+    def create
+      vehicle = vehicles.build(vehicle_params)
+      vehicle.save!
+
+      GoodJob.set(wait: 24.hours).perform_later(vehicle, 'prompt_for_first_record!')
+
+      render json: vehicle
+    end
+
+    def update
+      vehicle = vehicles.find(params[:id])
+      vehicle.update!(vehicle_params)
+      render json: vehicle
+    end
+
+    def destroy
+      vehicles.destroy(params[:id])
+      head :no_content
+    end
+
+    def import
+      vehicle = vehicles.find(params[:vehicle_id])
+      contents = params[:vehicle][:import_file].read
+
+      if params[:vehicle][:fuelly] == 'true'
+        Importer.fuelly(vehicle, contents)
+      else
+        Importer.records(vehicle, contents)
+      end
+    end
+
+    def export
+      vehicle = vehicles.find(params[:vehicle_id])
+      tempfile = Tempfile.new('tmp')
+      Exporter.records(vehicle, tempfile)
+
+      send_file tempfile,
+                filename: "#{vehicle.name}.csv"
+    end
+
+    private
+
+    def vehicles
+      current_user.vehicles
+    end
+
+    def vehicle_params
+      params
+        .require(:vehicle)
+        .permit(
+          :name, :vin, :notes, :position, :enable_cost, :distance_unit,
+          :retired, :import_file, :fuelly, :color,
+          preferences: %i[
+            enable_sharing
+            enable_cost
+            send_reminder_emails
+            send_prompt_for_records
+            show_mileage_adjustment_records
+          ]
+        )
+    end
+  end
+end

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: Nov 20 2016
+  cost:
+  mileage: 1
+  notes: Purchase
+  vehicle_id: 1
+
+two:
+  date: Dec 20 2016
+  cost:
+  mileage: 3000
+  notes: Oil change
+  vehicle_id: 1

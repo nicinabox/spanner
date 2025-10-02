@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <%= stylesheet_link_tag :email %>
+  </head>
+  <body>
+    <div id="root">
+      <div class="content">
+        <div class="logo">
+          <%= image_tag('email-logo.png', height: 50) %>
+        </div>
+
+        <% if @user %>
+          <p>
+            Hello <%= @user.email %>!
+          </p>
+        <%end %>
+
+        <%= yield %>
+
+        <div class="footer">
+          <small class="text-muted">
+            View all your vehicles at
+            <a class="text-muted" href="https://spanner.nicinabox.com">https://spanner.nicinabox.com</a>
+          </small>
+          <div>
+            <small class="text-muted">
+              Thanks for using Spanner!
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

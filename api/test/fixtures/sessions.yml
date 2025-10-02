@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  ip: 1.1.1.1
+  description:
+  auth_token: 123123123
+  auth_token_valid_until: <%= 2.months.from_now %>
+
+two:
+  user_id: 2
+  ip: 2.2.2.2
+  description:
+  auth_token: 234234234
+  auth_token_valid_until: <%= 2.months.from_now %>
