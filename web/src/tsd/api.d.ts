@@ -5,7 +5,7 @@ declare namespace API {
 
     type Order = 'asc' | 'desc';
 
-    type DistanceUnit = 'mi' | 'km' | 'hr';
+    type DistanceUnit = 'mi' | 'km' | 'hr' | 'nmi';
 
     type RecordType = 'mileage adjustment';
 

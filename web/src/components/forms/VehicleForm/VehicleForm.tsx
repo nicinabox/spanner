@@ -4,8 +4,7 @@ import {
     FormHelperText,
     FormLabel,
     Input,
-    Radio,
-    RadioGroup,
+    Select,
     Stack,
     StackDivider,
     Switch,
@@ -119,13 +118,12 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
 
                     <FormControl id="distanceUnit" mb={4} isRequired>
                         <FormLabel>Distance Unit</FormLabel>
-                        <RadioGroup {...register('distanceUnit')}>
-                            <Stack direction="row" spacing={4}>
-                                <Radio value="mi">miles</Radio>
-                                <Radio value="km">kilometers</Radio>
-                                <Radio value="hr">hours</Radio>
-                            </Stack>
-                        </RadioGroup>
+                        <Select {...register('distanceUnit')}>
+                            <option value="mi">miles</option>
+                            <option value="km">kilometers</option>
+                            <option value="hr">hours</option>
+                            <option value="nmi">nautical miles</option>
+                        </Select>
                     </FormControl>
                 </FormSection>
 
