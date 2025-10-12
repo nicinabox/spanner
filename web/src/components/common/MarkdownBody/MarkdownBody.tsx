@@ -7,12 +7,25 @@ export interface MarkdownBodyProps {
     body: string;
 }
 
+// @ts-expect-error multiple renders
+const renderer: marked.Renderer = {
+    table(header, body) {
+        return `
+        <div style="overflow-x: auto;">
+            <table style="width: 100%;">
+                ${header}
+                ${body}
+            </table>
+        </div>
+        `;
+    },
+};
+
+marked.use({ renderer });
+
 const styles = {
     '&': {
         backgroundColor: 'transparent',
-    },
-    '& tbody': {
-        width: '100%',
     },
     '& a': {
         color: 'brand.primary',
