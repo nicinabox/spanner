@@ -48,8 +48,8 @@ export default extendTheme({
         useSystemColorMode: false,
     },
     fonts: {
-        heading: 'Lato',
-        body: 'Lato',
+        heading: 'var(--font-lato)',
+        body: 'var(--font-lato)',
     },
     components: {
         Header,
