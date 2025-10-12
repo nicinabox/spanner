@@ -36,7 +36,7 @@ export const VehicleNotes: React.FC<VehicleNotesProps> = ({ vehicle }) => {
     }
 
     return (
-        <Container maxW="container.md">
+        <Container maxW="container.md" width="100vw">
             {editing ? (
                 <NotesForm
                     formValues={vehicle}
