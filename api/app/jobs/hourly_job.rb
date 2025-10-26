@@ -4,6 +4,7 @@ class HourlyJob < ApplicationJob
   queue_as :low_priority
 
   def perform
+    puts "Performing hourly job"
     today_reminders_in_timezone
   end
 
