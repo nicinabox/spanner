@@ -1,4 +1,9 @@
 namespace :scheduler do
+  desc 'Process scheduled jobs once'
+  task once: :environment do
+    JobScheduler.schedule_jobs
+  end
+
   desc 'Process scheduled jobs'
   task run: :environment do
     loop do
