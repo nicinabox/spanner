@@ -17,26 +17,26 @@ class JobScheduler
       return unless monday?
       return unless time_to_run?(5) # 5 AM
 
-      QC.enqueue('Rake.weekday_jobs')
+      WeekdayJob.perform_later
     end
 
     def schedule_weekend_jobs
       return unless saturday?
       return unless time_to_run?(5) # 5 AM
 
-      QC.enqueue('Rake.weekend_jobs')
+      WeekendJob.perform_later
     end
 
     def schedule_daily_jobs
       return unless time_to_run?(5) # 5 AM
 
-      QC.enqueue('Rake.daily_jobs')
+      DailyJob.perform_later
     end
 
     def schedule_hourly_jobs
       return unless time_to_run?(current_hour)
 
-      QC.enqueue('Rake.hourly_jobs')
+      HourlyJob.perform_later
     end
 
     def monday?
