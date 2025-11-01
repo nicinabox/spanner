@@ -5,6 +5,7 @@
 class JobScheduler
   class << self
     def schedule_jobs
+      puts "Scheduling jobs..."
       schedule_weekday_jobs
       schedule_weekend_jobs
       schedule_daily_jobs
@@ -17,6 +18,7 @@ class JobScheduler
       return unless monday?
       return unless time_to_run?(5) # 5 AM
 
+      puts "Scheduling weekday job"
       WeekdayJob.perform_later
     end
 
@@ -24,18 +26,21 @@ class JobScheduler
       return unless saturday?
       return unless time_to_run?(5) # 5 AM
 
+      puts "Scheduling weekend job"
       WeekendJob.perform_later
     end
 
     def schedule_daily_jobs
       return unless time_to_run?(5) # 5 AM
 
+      puts "Scheduling daily job"
       DailyJob.perform_later
     end
 
     def schedule_hourly_jobs
       return unless time_to_run?(current_hour)
 
+      puts "Scheduling hourly job"
       HourlyJob.perform_later
     end
 
@@ -48,7 +53,7 @@ class JobScheduler
     end
 
     def time_to_run?(hour)
-      current_hour == hour && Time.current.min == 0
+      current_hour == hour
     end
 
     def current_hour

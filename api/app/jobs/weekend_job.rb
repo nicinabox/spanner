@@ -4,7 +4,6 @@ class WeekendJob < ApplicationJob
   queue_as :low_priority
 
   def perform
-    puts "Performing weekend job"
     prompt_to_add_new_record
   end
 

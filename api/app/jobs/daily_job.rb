@@ -4,7 +4,6 @@ class DailyJob < ApplicationJob
   queue_as :low_priority
 
   def perform
-    puts "Performing daily job"
     upcoming_reminders
     delete_expired_sessions
   end
