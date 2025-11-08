@@ -44,6 +44,8 @@
 	},
 	"dependencies": {
 		"camelcase-keys": "^10.0.1",
-		"iron-session": "^8.0.4"
+		"insane": "^2.6.2",
+		"iron-session": "^8.0.4",
+		"marked": "^17.0.0"
 	}
 }
