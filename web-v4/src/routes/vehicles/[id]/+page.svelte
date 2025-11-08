@@ -29,10 +29,15 @@
 	</div>
 
 	<h2 class="h2">History</h2>
+	<ul>
+		{#each data.history as entry (entry.id)}
+			<li>{entry.date}: {entry.notes}</li>
+		{/each}
+	</ul>
 
 	<h2 class="h2">Reminders</h2>
 	<ul>
-		{#each data.vehicle.reminders as reminder}
+		{#each data.vehicle.reminders as reminder (reminder.id)}
 			<li>{reminder.notes}</li>
 		{/each}
 	</ul>
