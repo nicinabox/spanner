@@ -14,6 +14,7 @@ export interface RequestContext {
 }
 
 export type RequestOpts = RequestInit & RequestContext;
+
 export type NonUpdatableFields = 'id' | 'createdAt' | 'updatedAt';
 export type CreatableFields<T> = Omit<T, NonUpdatableFields>;
 export type UpdatableFields<T> = Partial<CreatableFields<T>>;

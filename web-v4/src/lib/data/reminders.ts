@@ -19,7 +19,7 @@ export const getAllReminders = (opts: RequestOpts) => {
 	return request<Reminder[]>('/reminders', opts);
 };
 
-export const getReminder = (id: number, opts: RequestOpts) => {
+export const getReminder = (id: number | string, opts: RequestOpts) => {
 	return request<Reminder>(`/reminders/${id}`, opts);
 };
 
@@ -31,7 +31,11 @@ export const createReminder = (data: CreatableFields<Reminder>, opts: RequestOpt
 	});
 };
 
-export const updateReminder = (id: number, data: CreatableFields<Reminder>, opts: RequestOpts) => {
+export const updateReminder = (
+	id: number | string,
+	data: CreatableFields<Reminder>,
+	opts: RequestOpts
+) => {
 	return request<Reminder>(`/reminders/${id}`, {
 		...opts,
 		method: 'PUT',
@@ -39,7 +43,7 @@ export const updateReminder = (id: number, data: CreatableFields<Reminder>, opts
 	});
 };
 
-export const deleteReminder = (id: number, opts: RequestOpts) => {
+export const deleteReminder = (id: number | string, opts: RequestOpts) => {
 	return request<void>(`/reminders/${id}`, {
 		...opts,
 		method: 'DELETE'

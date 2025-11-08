@@ -47,7 +47,7 @@ export const getAllVehicles = async (opts: RequestOpts) => {
 	return request<Vehicle[]>('/vehicles', opts);
 };
 
-export const getVehicle = async (id: number, opts: RequestOpts) => {
+export const getVehicle = async (id: number | string, opts: RequestOpts) => {
 	return request<Vehicle>(`/vehicles/${id}`, opts);
 };
 
@@ -60,7 +60,7 @@ export const createVehicle = async (data: CreatableFields<Vehicle>, opts: Reques
 };
 
 export const updateVehicle = async (
-	id: number,
+	id: number | string,
 	data: UpdatableFields<Vehicle>,
 	opts: RequestOpts
 ) => {
@@ -71,7 +71,7 @@ export const updateVehicle = async (
 	});
 };
 
-export const deleteVehicle = async (id: number, opts: RequestOpts) => {
+export const deleteVehicle = async (id: number | string, opts: RequestOpts) => {
 	return request<void>(`/vehicles/${id}`, {
 		...opts,
 		method: 'DELETE'
