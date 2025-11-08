@@ -1,2 +1,6 @@
 @import 'tailwindcss';
 @plugin 'daisyui';
+
+.divider-px {
+	@apply my-0 h-px;
+}

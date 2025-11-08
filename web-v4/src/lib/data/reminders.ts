@@ -1,4 +1,4 @@
-import { createAPIRequest, type CreatableFields } from './client';
+import { createAPIRequest, type CreatableFields, type RequestOpts } from './client';
 
 export type ReminderType = '' | 'date_or_mileage' | 'mileage' | 'date';
 
@@ -15,30 +15,33 @@ export interface Reminder {
 
 const request = createAPIRequest();
 
-export const getAllReminders = () => {
-	return request<Reminder[]>('/reminders');
+export const getAllReminders = (opts: RequestOpts) => {
+	return request<Reminder[]>('/reminders', opts);
 };
 
-export const getReminder = (id: number) => {
-	return request<Reminder>(`/reminders/${id}`);
+export const getReminder = (id: number, opts: RequestOpts) => {
+	return request<Reminder>(`/reminders/${id}`, opts);
 };
 
-export const createReminder = (data: CreatableFields<Reminder>) => {
+export const createReminder = (data: CreatableFields<Reminder>, opts: RequestOpts) => {
 	return request<Reminder>('/reminders', {
+		...opts,
 		method: 'POST',
 		body: JSON.stringify(data)
 	});
 };
 
-export const updateReminder = (id: number, data: CreatableFields<Reminder>) => {
+export const updateReminder = (id: number, data: CreatableFields<Reminder>, opts: RequestOpts) => {
 	return request<Reminder>(`/reminders/${id}`, {
+		...opts,
 		method: 'PUT',
 		body: JSON.stringify(data)
 	});
 };
 
-export const deleteReminder = (id: number) => {
+export const deleteReminder = (id: number, opts: RequestOpts) => {
 	return request<void>(`/reminders/${id}`, {
+		...opts,
 		method: 'DELETE'
 	});
 };

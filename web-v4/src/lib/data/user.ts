@@ -14,6 +14,6 @@ export interface User {
 
 const request = createAPIRequest();
 
-export const getCurrentUser = (opts?: RequestOpts) => {
+export const getCurrentUser = (opts: RequestOpts) => {
 	return request<User>(`/user`, opts);
 };
