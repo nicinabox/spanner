@@ -1,4 +1,9 @@
-import { createAPIRequest, type CreatableFields, type UpdatableFields } from './client';
+import {
+	createAPIRequest,
+	type CreatableFields,
+	type RequestOpts,
+	type UpdatableFields
+} from './client';
 import { apiConfig } from './config';
 import type { Reminder } from './reminders';
 
@@ -38,30 +43,37 @@ export interface Vehicle {
 
 const request = createAPIRequest(apiConfig);
 
-export const getAllVehicles = async () => {
-	return request<Vehicle[]>('/vehicles');
+export const getAllVehicles = async (opts: RequestOpts) => {
+	return request<Vehicle[]>('/vehicles', opts);
 };
 
-export const getVehicle = async (id: number) => {
-	return request<Vehicle>(`/vehicles/${id}`);
+export const getVehicle = async (id: number, opts: RequestOpts) => {
+	return request<Vehicle>(`/vehicles/${id}`, opts);
 };
 
-export const createVehicle = async (data: CreatableFields<Vehicle>) => {
+export const createVehicle = async (data: CreatableFields<Vehicle>, opts: RequestOpts) => {
 	return request<Vehicle>('/vehicles', {
+		...opts,
 		method: 'POST',
 		body: JSON.stringify(data)
 	});
 };
 
-export const updateVehicle = async (id: number, data: UpdatableFields<Vehicle>) => {
+export const updateVehicle = async (
+	id: number,
+	data: UpdatableFields<Vehicle>,
+	opts: RequestOpts
+) => {
 	return request<Vehicle>(`/vehicles/${id}`, {
+		...opts,
 		method: 'PATCH',
 		body: JSON.stringify(data)
 	});
 };
 
-export const deleteVehicle = async (id: number) => {
+export const deleteVehicle = async (id: number, opts: RequestOpts) => {
 	return request<void>(`/vehicles/${id}`, {
+		...opts,
 		method: 'DELETE'
 	});
 };
