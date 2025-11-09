@@ -1,3 +1,5 @@
+import { type Session } from '$lib/session';
+
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 declare global {
@@ -5,6 +7,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			authToken: string | undefined;
+			session: Session | null | undefined;
 		}
 		// interface PageData {}
 		// interface PageState {}

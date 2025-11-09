@@ -1,4 +1,4 @@
-import { getAuthToken } from '$lib/session';
+import { getSession } from '$lib/utils/session';
 import { redirect, type Handle } from '@sveltejs/kit';
 
 const protectedRoutes = ['^/vehicles'];
@@ -11,12 +11,13 @@ const isProtected = (url: string) => {
 };
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const authToken = await getAuthToken(event.cookies);
+	const session = await getSession(event.cookies);
 
-	if (!authToken && isProtected(event.request.url)) {
+	if (!session?.authToken && isProtected(event.request.url)) {
 		throw redirect(307, '/');
 	}
 
-	event.locals.authToken = authToken;
+	event.locals.session = session;
+	event.locals.authToken = session?.authToken;
 	return resolve(event);
 };
