@@ -4,6 +4,9 @@
 	import { parseDateUTC } from '$lib/utils/date';
 	import { formatMileage, sortNewestDateFirst } from '$lib/utils/vehicle';
 	import type { DistanceUnit } from '$lib/data/vehicles';
+	import FlexTable from '$lib/components/FlexTable/Table.svelte';
+	import Row from '$lib/components/FlexTable/Row.svelte';
+	import Cell from '$lib/components/FlexTable/Cell.svelte';
 
 	interface Props {
 		history: HistoryEntry[];
@@ -24,41 +27,29 @@
 		<heading class="flex bg-base-300 px-4 py-2">
 			<h2 class="h2 m-0">{year}</h2>
 		</heading>
-		<div class="flex w-full flex-col flex-nowrap py-2 md:table">
-			<div class="flex flex-row flex-nowrap text-xs font-bold uppercase md:table-row">
-				<div
-					class="flex w-fit flex-col flex-nowrap justify-start px-4 py-2 whitespace-nowrap md:table-cell"
-				>
-					Date
-				</div>
-				<div
-					class="flex w-fit flex-col flex-nowrap justify-start px-4 py-2 whitespace-nowrap md:table-cell"
-				>
-					Mileage
-				</div>
-				<div class="flex flex-col flex-nowrap justify-start px-4 py-2 md:table-cell">Notes</div>
-			</div>
+		<FlexTable>
+			<Row class="text-xs font-bold uppercase max-sm:hidden">
+				<Cell>Date</Cell>
+				<Cell>Mileage</Cell>
+				<Cell>Notes</Cell>
+			</Row>
 
 			{#each groupedRecords[Number(year)] as record (record.id)}
-				<div class="flex flex-row flex-nowrap md:table-row">
-					<div
-						class="flex w-fit flex-col flex-nowrap justify-start px-4 py-2 whitespace-nowrap md:table-cell"
-					>
+				<Row>
+					<Cell class="whitespace-nowrap">
 						{intlFormat(parseDateUTC(record.date), {
 							month: 'short',
 							day: 'numeric'
 						})}
-					</div>
-					<div
-						class="flex w-fit flex-col flex-nowrap justify-start px-4 py-2 whitespace-nowrap md:table-cell"
-					>
+					</Cell>
+					<Cell class="whitespace-nowrap">
 						{formatMileage(record.mileage, distanceUnit)}
-					</div>
-					<div class="flex w-full flex-col flex-nowrap justify-start px-4 py-2 md:table-cell">
+					</Cell>
+					<Cell class="w-full">
 						{record.notes}
-					</div>
-				</div>
+					</Cell>
+				</Row>
 			{/each}
-		</div>
+		</FlexTable>
 	</div>
 {/each}
