@@ -9,23 +9,24 @@
 		center?: Snippet;
 		end?: Snippet;
 		session?: Session | null;
+		class?: string;
 	}
 
-	let { start, center, end, session }: Props = $props();
+	let { start, center, end, session, class: className }: Props = $props();
 </script>
 
-<div class="navbar bg-base-200 shadow-sm">
-	<div class="navbar-start">
+<header class="navbar relative z-10 gap-4 bg-base-200 shadow-sm {className}">
+	<div class="navbar-start [grid-area:start]">
 		{@render start?.()}
 	</div>
-	<div class="navbar-center">
+	<div class="navbar-center [grid-area:center]">
 		{#if center}
 			{@render center()}
 		{:else}
-			<a href={resolve('/')} class="btn text-lg btn-ghost">Spanner</a>
+			<a href={resolve('/')} class="btn text-lg btn-ghost btn-sm">Spanner</a>
 		{/if}
 	</div>
-	<div class="navbar-end">
+	<div class="navbar-end [grid-area:end]">
 		{#if end}
 			{@render end()}
 		{:else if session}
@@ -41,4 +42,4 @@
 			</div>
 		{/if}
 	</div>
-</div>
+</header>
