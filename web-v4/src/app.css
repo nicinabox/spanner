@@ -10,6 +10,25 @@
 }
 
 @layer base {
+	.root {
+		@apply grid h-screen;
+		grid-template-columns: 1fr;
+		grid-template-rows: auto 1fr auto;
+		grid-template-areas: 'header' 'main' 'footer';
+
+		> header {
+			grid-area: header;
+		}
+
+		> main {
+			grid-area: main;
+		}
+
+		> footer {
+			grid-area: footer;
+		}
+	}
+
 	.h1 {
 		@apply mb-4 text-2xl font-bold;
 	}
@@ -28,5 +47,5 @@
 }
 
 @utility navbar {
-	@apply min-h-8;
+	@apply min-h-12;
 }

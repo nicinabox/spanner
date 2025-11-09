@@ -4,23 +4,32 @@
 	import type { LayoutProps } from './$types';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import Main from '$lib/components/Main.svelte';
 
 	let { data, children }: LayoutProps = $props();
 
 	const view = $derived(page.url.searchParams.get('view') ?? 'history');
 </script>
 
-<AppBar>
+<AppBar
+	class="grid-cols-2 [grid-template-areas:'start_end''center_center'] max-sm:grid max-sm:gap-2"
+>
 	{#snippet start()}
 		<div class="flex items-center gap-4">
-			<a href={resolve('/vehicles')} class="btn"> <ArrowLeft size={16} /> Vehicles</a>
-			<span class="font-medium">{data.vehicle.name}</span>
+			<a href={resolve('/vehicles')} class="btn btn-sm btn-neutral">
+				<ArrowLeft size={16} /> Vehicles</a
+			>
+			<span class="text-sm font-bold whitespace-nowrap">{data.vehicle.name}</span>
 		</div>
 	{/snippet}
 	{#snippet center()}
-		<div class="join flex">
+		<div class="join flex flex-1">
 			{#each ['history', 'reminders', 'notes'] as tab (tab)}
-				<a class="btn join-item capitalize" class:btn-active={view === tab} href={`?view=${tab}`}>
+				<a
+					class="btn join-item flex-1 capitalize btn-sm"
+					class:btn-active={view === tab}
+					href={`?view=${tab}`}
+				>
 					{tab}
 				</a>
 			{/each}
@@ -28,6 +37,6 @@
 	{/snippet}
 </AppBar>
 
-<main class="container mx-auto my-8">
+<Main>
 	{@render children()}
-</main>
+</Main>

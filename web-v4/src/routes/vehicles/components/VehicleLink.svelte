@@ -12,6 +12,6 @@
 	<span class="text-sm text-gray-500">
 		<span>{formatMileage(estimatedMileage, distanceUnit)}</span>
 		&bull;
-		<span>{formatMileage(milesPerYear, distanceUnit)}/yr</span>
+		<span>{formatMileage(milesPerYear, distanceUnit)}</span>
 	</span>
 </a>

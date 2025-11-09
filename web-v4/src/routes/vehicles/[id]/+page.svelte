@@ -4,6 +4,8 @@
 	import type { PageProps } from './$types';
 	import { page } from '$app/state';
 	import Stat from '$lib/components/Stat.svelte';
+	import { formatEstimatedMileage, formatMilesPerYear } from '$lib/utils/vehicle';
+	import HistoryTable from './components/HistoryTable.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -11,10 +13,10 @@
 </script>
 
 <div>
-	<header class="my-8">
-		<div class="flex">
-			<Stat title="Estimated Mileage" value={data.vehicle.estimatedMileage} />
-			<Stat title="Mileage Rate" value={data.vehicle.milesPerYear} />
+	<header>
+		<div class="flex gap-8 overflow-auto">
+			<Stat title="Estimated Mileage" value={formatEstimatedMileage(data.vehicle)} />
+			<Stat title="Mileage Rate" value={formatMilesPerYear(data.vehicle)} />
 			<Stat title="Since" value={new Date(data.vehicle.createdAt).getFullYear()} />
 			<Stat title="VIN" value={data.vehicle.vin} />
 		</div>
@@ -22,12 +24,7 @@
 
 	{#if view === 'history'}
 		<section class="my-8" id="history">
-			<h2 class="h2">History</h2>
-			<ul>
-				{#each data.history as entry (entry.id)}
-					<li>{entry.date}: {entry.notes}</li>
-				{/each}
-			</ul>
+			<HistoryTable history={data.history} distanceUnit={data.vehicle.distanceUnit} />
 		</section>
 	{/if}
 

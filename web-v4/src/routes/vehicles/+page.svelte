@@ -14,7 +14,7 @@
 <h1 class="h1">Vehicles</h1>
 
 <section>
-	<ul class="grid grid-cols-4 gap-4">
+	<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 		{#each active as v (v.id)}
 			<li class="flex">
 				<VehicleLink {...v} />
@@ -29,7 +29,10 @@
 		<ChevronRight size={16} class={showRetired ? 'rotate-90' : ''} />
 	</button>
 
-	<ul class:hidden={!showRetired} class="grid grid-cols-4 gap-4">
+	<ul
+		class:hidden={!showRetired}
+		class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+	>
 		{#each retired as v (v.id)}
 			<li class="flex">
 				<VehicleLink {...v} />
