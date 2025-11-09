@@ -1,18 +1,32 @@
 @import 'tailwindcss';
 @plugin 'daisyui';
 
-.divider-px {
+@plugin 'daisyui/theme' {
+	name: 'dark';
+	prefersdark: true;
+	--color-base-100: oklch(21.15% 0.012 254.09);
+	--color-base-200: oklch(23.26% 0.014 253.1);
+	--color-base-300: oklch(25.33% 0.016 252.42);
+}
+
+@layer base {
+	.h1 {
+		@apply mb-4 text-2xl font-bold;
+	}
+
+	.h2 {
+		@apply mb-2 text-xl font-bold;
+	}
+
+	.h3 {
+		@apply mb-1 text-lg font-bold;
+	}
+}
+
+@utility divider-px {
 	@apply my-0 h-px;
 }
 
-.h1 {
-	@apply mb-4 text-2xl font-bold;
-}
-
-.h2 {
-	@apply mb-2 text-xl font-bold;
-}
-
-.h3 {
-	@apply mb-1 text-lg font-bold;
+@utility navbar {
+	@apply min-h-8;
 }

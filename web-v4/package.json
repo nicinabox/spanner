@@ -22,6 +22,7 @@
 		"@sveltejs/kit": "^2.47.1",
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@tailwindcss/vite": "^4.1.14",
+		"@types/insane": "^1.0.0",
 		"@types/node": "^22",
 		"@vitest/browser": "^3.2.4",
 		"daisyui": "^5.4.2",
@@ -44,8 +45,10 @@
 	},
 	"dependencies": {
 		"camelcase-keys": "^10.0.1",
+		"date-fns": "^4.1.0",
 		"insane": "^2.6.2",
 		"iron-session": "^8.0.4",
+		"lucide-svelte": "^0.553.0",
 		"marked": "^17.0.0"
 	}
 }

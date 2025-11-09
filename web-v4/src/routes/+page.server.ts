@@ -1,11 +1,11 @@
 import * as session from '$lib/data/session';
 import { redirect } from '@sveltejs/kit';
-import type { Actions } from './$types';
-import { setSession } from '$lib/session';
+import type { Actions, PageServerLoad } from './$types';
+import { setSession } from '$lib/utils/session';
 import { getCurrentUser } from '$lib/data/user';
-import { safeAsync } from '../utils/async';
+import { safeAsync } from '$lib/utils/async';
 
-export const load = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const [user] = await safeAsync(getCurrentUser(locals));
 
 	if (user) {
