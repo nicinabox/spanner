@@ -6,6 +6,8 @@
 	import Stat from '$lib/components/Stat.svelte';
 	import { formatEstimatedMileage, formatMilesPerYear } from '$lib/utils/vehicle';
 	import HistoryTable from './components/HistoryTable.svelte';
+	import EmptyState from '$lib/components/EmptyState.svelte';
+	import { resolve } from '$app/paths';
 
 	let { data }: PageProps = $props();
 
@@ -13,37 +15,69 @@
 </script>
 
 <div>
-	<header>
-		<div class="flex gap-8 overflow-auto">
-			<Stat title="Estimated Mileage" value={formatEstimatedMileage(data.vehicle)} />
-			<Stat title="Mileage Rate" value={formatMilesPerYear(data.vehicle)} />
-			<Stat title="Since" value={new Date(data.vehicle.createdAt).getFullYear()} />
-			<Stat title="VIN" value={data.vehicle.vin} />
-		</div>
-	</header>
+	{#if data.history.length}
+		<header>
+			<div class="flex gap-8 overflow-auto">
+				<Stat title="Estimated Mileage" value={formatEstimatedMileage(data.vehicle)} />
+				<Stat title="Mileage Rate" value={formatMilesPerYear(data.vehicle)} />
+				<Stat title="Since" value={new Date(data.vehicle.createdAt).getFullYear()} />
+				<Stat title="VIN" value={data.vehicle.vin} />
+			</div>
+		</header>
+	{/if}
 
 	{#if view === 'history'}
 		<section class="my-8" id="history">
-			<HistoryTable history={data.history} distanceUnit={data.vehicle.distanceUnit} />
+			{#if data.history.length}
+				<HistoryTable history={data.history} distanceUnit={data.vehicle.distanceUnit} />
+			{:else}
+				<EmptyState
+					heading="Add your vehicle's history"
+					details="Try adding your purchase as the first record."
+				>
+					{#snippet action()}
+						<a
+							class="btn btn-primary"
+							href={resolve(`/vehicles/${data.vehicle.id}/add?notes=Purchase`)}
+						>
+							Add Purchase
+						</a>
+					{/snippet}
+				</EmptyState>
+			{/if}
 		</section>
 	{/if}
 
 	{#if view === 'reminders'}
 		<section class="my-8" id="reminders">
-			<h2 class="h2">Reminders</h2>
-			<ul>
-				{#each data.vehicle.reminders as reminder (reminder.id)}
-					<li>{reminder.notes}</li>
-				{/each}
-			</ul>
+			{#if data.vehicle.reminders.length}
+				<h2 class="h2">Reminders</h2>
+				<ul>
+					{#each data.vehicle.reminders as reminder (reminder.id)}
+						<li>{reminder.notes}</li>
+					{/each}
+				</ul>
+			{:else}
+				<EmptyState
+					heading="Get reminders in your inbox"
+					details="Use reminders to get notified on a date or mileage."
+				/>
+			{/if}
 		</section>
 	{/if}
 
 	{#if view === 'notes'}
 		<section class="my-8" id="notes">
-			<h2 class="h2">Notes</h2>
-			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			<div>{@html insane(marked(data.vehicle.notes, { async: false }))}</div>
+			{#if data.vehicle.notes}
+				<h2 class="h2">Notes</h2>
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				<div>{@html insane(marked(data.vehicle.notes, { async: false }))}</div>
+			{:else}
+				<EmptyState
+					heading="Notes are for hard-to-remember things"
+					details="Add tire pressures, oil capacity, or how to reset the clock."
+				/>
+			{/if}
 		</section>
 	{/if}
 </div>
