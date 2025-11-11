@@ -1,9 +1,10 @@
 import * as session from '$lib/data/session';
-import { redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { setSession } from '$lib/utils/session';
 import { getCurrentUser } from '$lib/data/user';
 import { safeAsync } from '$lib/utils/async';
+import { getHTTPErrors } from '$lib/utils/actions';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const [user] = await safeAsync(getCurrentUser(locals));
@@ -16,33 +17,26 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	create: async ({ request }) => {
 		const formData = await request.formData();
-		const email = formData.get('email') as string;
+		const data = Object.fromEntries(formData);
 
-		if (!email) {
-			return {
-				status: 400,
-				body: { error: 'Email is required' }
-			};
+		try {
+			await session.create(data as never);
+			return { status: 'pending' };
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
 		}
-
-		await session.create({ email });
-
-		return { status: 'pending' };
 	},
 	signin: async ({ cookies, request }) => {
 		const formData = await request.formData();
-		const token = formData.get('token') as string;
+		const data = Object.fromEntries(formData);
 
-		if (!token) {
-			return {
-				status: 400,
-				body: { error: 'Login token is required' }
-			};
+		try {
+			const sess = await session.signin(data.token as string);
+			await setSession(cookies, sess);
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
 		}
 
-		const sess = await session.signin(token);
-		await setSession(cookies, sess);
-
-		throw redirect(303, '/vehicles');
+		redirect(303, '/vehicles');
 	}
 } satisfies Actions;

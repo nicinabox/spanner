@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { findFieldError, type FormAction } from '$lib/utils/form';
+	import { findFieldError, type FormError } from '$lib/utils/form';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
@@ -12,7 +12,7 @@
 	}
 
 	export type FormFieldProps<ExtraProps = object> = {
-		form: FormAction;
+		errors?: FormError[];
 		name: string;
 		label?: string;
 		hint?: string;
@@ -22,9 +22,9 @@
 		children?: Snippet<[FormControlProps & ExtraProps]>;
 	} & ExtraProps;
 
-	let { children, form, name, label, hint, value, required, ...props }: FormFieldProps = $props();
+	let { children, name, label, hint, value, required, errors, ...props }: FormFieldProps = $props();
 
-	let fieldError = findFieldError(name, form);
+	let fieldError = findFieldError(name, errors);
 </script>
 
 <div class="mb-4 flex flex-col gap-1" {...props}>

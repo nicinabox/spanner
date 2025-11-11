@@ -1,6 +1,7 @@
 <script lang="ts">
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import FormField, { type FormFieldProps } from './FormField.svelte';
-	let props: FormFieldProps = $props();
+	let props: FormFieldProps<HTMLInputAttributes> = $props();
 </script>
 
 <FormField {...props}>
