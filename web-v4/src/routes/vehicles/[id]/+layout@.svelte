@@ -19,7 +19,12 @@
 			<a href={resolve('/vehicles')} class="btn btn-sm btn-neutral">
 				<ArrowLeft size={16} /> Vehicles</a
 			>
-			<span class="text-sm font-bold whitespace-nowrap">{data.vehicle.name}</span>
+			<a
+				href={resolve(`/vehicles/${data.vehicle.id}/edit`)}
+				class="text-sm font-bold whitespace-nowrap"
+			>
+				{data.vehicle.name}
+			</a>
 		</div>
 	{/snippet}
 	{#snippet center()}

@@ -1,17 +1,18 @@
 <script lang="ts">
+	import FormField from '$lib/components/FormField.svelte';
 	import type { PageProps } from './$types';
 
 	let { form }: PageProps = $props();
 </script>
 
 <form method="post">
-	<fieldset class="fieldset">
-		<label class="label" for="name">Name</label>
-		<input name="name" type="text" class="input" required />
+	{#if form?.error}
+		<p>{form.error}</p>
+	{/if}
 
-		<label class="label" for="vin">VIN</label>
-		<input name="vin" type="text" class="input" />
-		<span class="label">VIN is optional but recommended</span>
+	<fieldset class="fieldset">
+		<FormField {form} name="name" label="Name" />
+		<FormField {form} name="vin" label="VIN" hint="VIN is optional but recommended" />
 	</fieldset>
 
 	<button class="btn btn-primary" type="submit">Create Vehicle</button>
