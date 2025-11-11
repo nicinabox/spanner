@@ -9,12 +9,13 @@ export const actions = {
 
 		try {
 			await updateVehicle(params.id!, data, locals);
-			redirect(303, `/vehicles/${params.id}`);
 		} catch (error) {
 			return fail(
 				422,
 				error instanceof HTTPError ? error.data : { errors: ['An unexpected error occurred'] }
 			);
 		}
+
+		redirect(303, `/vehicles/${params.id}`);
 	}
 } satisfies Actions;
