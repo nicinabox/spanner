@@ -12,29 +12,29 @@
 	}
 
 	let { form, values }: Props = $props();
-	let formErrors = findPlainErrors(form);
+	let errorsList = findPlainErrors(form?.errors);
 </script>
 
 <form method="post">
-	{#if formErrors}
+	{#if errorsList}
 		<div role="alert" class="mb-4 alert alert-soft alert-error">
-			{#each formErrors as message, i (i)}
+			{#each errorsList as message, i (i)}
 				<p>{message}</p>
 			{/each}
 		</div>
 	{/if}
 
 	<fieldset class="fieldset">
-		<TextField {form} name="name" label="Name" value={values?.name} required />
+		<TextField errors={form?.errors} name="name" label="Name" value={values?.name} required />
 		<TextField
-			{form}
+			errors={form?.errors}
 			name="vin"
 			label="VIN"
 			hint="VIN is optional but recommended"
 			value={values?.vin}
 		/>
 		<SelectField
-			{form}
+			errors={form?.errors}
 			label="Distance Unit"
 			name="distance_unit"
 			options={[
@@ -50,12 +50,12 @@
 	<fieldset class="fieldset">
 		<legend class="fieldset-legend">Preferences</legend>
 		<SwitchField
-			{form}
+			errors={form?.errors}
 			name="enable_cost"
 			label="Enable Cost"
 			value={values?.preferences.enableCost}
 		/>
-		<SwitchField {form} name="send_reminder_emails" label="Send Reminder Emails" />
+		<SwitchField errors={form?.errors} name="send_reminder_emails" label="Send Reminder Emails" />
 	</fieldset>
 
 	<button class="btn btn-primary" type="submit">Save</button>

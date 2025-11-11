@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { type ActionData } from '../../../routes/$types';
+	import TextField from '../TextField.svelte';
 
 	interface Props {
 		form: ActionData;
@@ -26,20 +27,29 @@
 
 {#if form?.status === 'pending'}
 	<form method="post" action="?/signin">
-		<p>Check your email for a login token.</p>
-		<fieldset class="mb-4 fieldset">
-			<legend class="fieldset-legend">Enter login token</legend>
-			<input type="text" class="input" name="token" autocomplete="off" />
+		<p class="mb-2">Check your email for a login token.</p>
+		<fieldset class="fieldset">
+			<TextField
+				errors={form.errors}
+				name="token"
+				autocomplete="off"
+				label="Enter login token"
+				required
+			/>
 		</fieldset>
 
 		<button type="submit" class="btn btn-primary">Sign In</button>
 	</form>
 {:else}
 	<form method="post" action="?/create">
-		<fieldset class="mb-4 fieldset">
-			<legend class="fieldset-legend">Enter your email to get started</legend>
-			<input type="email" class="input" name="email" {placeholder} />
-			<p class="label">First time? We'll set your account up automagically.</p>
+		<fieldset class="fieldset">
+			<TextField
+				label="Enter your email to get started"
+				errors={form?.errors}
+				{placeholder}
+				name="email"
+				hint="First time? We'll set your account up automagically."
+			/>
 		</fieldset>
 
 		<button type="submit" class="btn btn-primary">Next</button>

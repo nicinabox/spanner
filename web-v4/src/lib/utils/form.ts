@@ -1,4 +1,8 @@
-export type FormAction = { errors?: (ValidationError | string)[] } | null;
+export type FormError = ValidationError | string;
+
+export type FormAction = {
+	errors?: FormError[];
+} | null;
 
 export interface ValidationRules {
 	required?: boolean;
@@ -28,16 +32,14 @@ export function validate<R extends Record<string, ValidationRules>>(formData: Fo
 	};
 }
 
-export function findFieldError(name: string, form: FormAction) {
-	if (!form || !('errors' in form)) return null;
-	return form.errors?.find((error): error is ValidationError => {
+export function findFieldError(name: string, errors: FormError[] | undefined) {
+	return errors?.find((error): error is ValidationError => {
 		if (typeof error === 'string') return false;
 		return error.id === name;
 	})?.title;
 }
 
-export function findPlainErrors(form: FormAction) {
-	if (!form || !('errors' in form)) return null;
-	const errors = form.errors?.filter((error) => typeof error === 'string');
-	return errors?.length ? errors : null;
+export function findPlainErrors(errors: FormError[] | undefined) {
+	const found = errors?.filter((error) => typeof error === 'string');
+	return found?.length ? found : null;
 }
