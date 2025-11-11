@@ -1,7 +1,7 @@
 import { createAPIRequest } from './client';
 
 export interface Session {
-	id: string;
+	id: number;
 	userId: string;
 	email: string;
 	description: string;

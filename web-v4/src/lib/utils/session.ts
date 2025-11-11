@@ -1,17 +1,7 @@
 import type { Cookies } from '@sveltejs/kit';
 import { sealData, unsealData, type SessionOptions } from 'iron-session';
 import { CLIENT_SECRET } from '$env/static/private';
-
-export interface Session {
-	id: number;
-	userId: number;
-	email: string;
-	authToken: string;
-	ip: string;
-	lastSeen: string;
-	description: string;
-	userAgent: string;
-}
+import type { Session } from '$lib/data/session';
 
 export const sessionOptions: SessionOptions = {
 	password: CLIENT_SECRET,
