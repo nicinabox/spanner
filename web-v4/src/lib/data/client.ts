@@ -16,8 +16,13 @@ export interface RequestContext {
 export type RequestOpts = RequestInit & RequestContext;
 
 export type NonUpdatableFields = 'id' | 'createdAt' | 'updatedAt';
-export type CreatableFields<T> = Omit<T, NonUpdatableFields>;
-export type UpdatableFields<T> = Partial<CreatableFields<T>>;
+
+export type CreatableFields<
+	T,
+	R extends keyof Omit<T, NonUpdatableFields> = keyof Omit<T, NonUpdatableFields>
+> = Pick<T, R>;
+
+export type UpdatableFields<T> = Partial<Omit<T, NonUpdatableFields>>;
 
 const tokenAuthHeader = (token: string | undefined) => (token ? `Token ${token}` : undefined);
 

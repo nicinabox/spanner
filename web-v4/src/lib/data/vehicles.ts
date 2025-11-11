@@ -51,7 +51,7 @@ export const getVehicle = async (id: number | string, opts: RequestOpts) => {
 	return request<Vehicle>(`/vehicles/${id}`, opts);
 };
 
-export const createVehicle = async (data: CreatableFields<Vehicle>, opts: RequestOpts) => {
+export const createVehicle = async (data: CreatableFields<Vehicle, 'name'>, opts: RequestOpts) => {
 	return request<Vehicle>('/vehicles', {
 		...opts,
 		method: 'POST',
