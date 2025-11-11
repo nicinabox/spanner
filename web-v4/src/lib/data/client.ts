@@ -26,6 +26,26 @@ export type UpdatableFields<T> = Partial<Omit<T, NonUpdatableFields>>;
 
 const tokenAuthHeader = (token: string | undefined) => (token ? `Token ${token}` : undefined);
 
+export class HTTPError<T = string> extends Error {
+	data: T;
+
+	constructor(response: Response, data: T) {
+		super('');
+		this.name = 'HTTPError';
+
+		this.message = `HTTP Error: ${response.status}`;
+		this.data = data;
+	}
+}
+
+const deserialize = <T>(data: unknown) => {
+	try {
+		return camelcaseKeys(JSON.parse(data as string)) as T;
+	} catch (err) {
+		return data as T;
+	}
+};
+
 export function createAPIRequest(initialConfig: FetcherConfig = apiConfig) {
 	const config = {
 		authHeaderValue: tokenAuthHeader,
@@ -44,13 +64,14 @@ export function createAPIRequest(initialConfig: FetcherConfig = apiConfig) {
 		}
 
 		const response = await fetch(url, { ...init, headers });
-
-		if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-
 		const data = await response.text();
 
+		if (!response.ok) {
+			throw new HTTPError(response, deserialize(data));
+		}
+
 		if (data) {
-			return camelcaseKeys(JSON.parse(data)) as T;
+			return deserialize<T>(data);
 		}
 
 		return data as T;
