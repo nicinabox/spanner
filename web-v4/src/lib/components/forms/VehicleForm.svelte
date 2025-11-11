@@ -3,10 +3,11 @@
 	import SwitchField from '$lib/components/SwitchField.svelte';
 	import TextField from '$lib/components/TextField.svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
-	import { findPlainErrors, type FormAction } from '$lib/utils/form';
+	import { findPlainErrors } from '$lib/utils/form';
+	import type { ActionData } from '../../../routes/vehicles/new/$types';
 
 	interface Props {
-		form: FormAction;
+		form: ActionData;
 		values?: Vehicle;
 	}
 
