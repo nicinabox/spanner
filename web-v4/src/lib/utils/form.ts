@@ -30,7 +30,7 @@ export function validate<R extends Record<string, ValidationRules>>(formData: Fo
 
 export function findFieldError(name: string, form: FormAction) {
 	if (!form || !('errors' in form)) return null;
-	return form.errors.find((error): error is ValidationError => {
+	return form.errors?.find((error): error is ValidationError => {
 		if (typeof error === 'string') return false;
 		return error.id === name;
 	})?.title;
@@ -38,6 +38,6 @@ export function findFieldError(name: string, form: FormAction) {
 
 export function findPlainErrors(form: FormAction) {
 	if (!form || !('errors' in form)) return null;
-	const errors = form.errors.filter((error) => typeof error === 'string');
-	return errors.length > 0 ? errors : null;
+	const errors = form.errors?.filter((error) => typeof error === 'string');
+	return errors?.length ? errors : null;
 }
