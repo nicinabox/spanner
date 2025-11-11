@@ -7,14 +7,17 @@ export const actions = {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
 
+		let result;
+
 		try {
-			const result = await createVehicle(data as never, locals);
-			redirect(303, `/vehicles/${result.id}`);
+			result = await createVehicle(data as never, locals);
 		} catch (error) {
 			return fail(
 				422,
 				error instanceof HTTPError ? error.data : { errors: ['An unexpected error occurred'] }
 			);
 		}
+
+		redirect(303, `/vehicles/${result.id}`);
 	}
 } satisfies Actions;
