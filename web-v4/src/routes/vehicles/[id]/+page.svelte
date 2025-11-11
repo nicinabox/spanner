@@ -5,7 +5,7 @@
 	import { page } from '$app/state';
 	import Stat from '$lib/components/Stat.svelte';
 	import { formatEstimatedMileage, formatMilesPerYear } from '$lib/utils/vehicle';
-	import HistoryTable from './components/HistoryTable.svelte';
+	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { resolve } from '$app/paths';
 

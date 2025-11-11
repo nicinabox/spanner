@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { ChevronRight } from 'lucide-svelte';
 	import type { PageProps } from './$types';
-	import VehicleLink from './components/VehicleLink.svelte';
+	import VehicleLink from '$lib/components/VehicleLink.svelte';
+	import { resolve } from '$app/paths';
 
 	let { data }: PageProps = $props();
 
@@ -11,7 +12,10 @@
 	let showRetired = $state(false);
 </script>
 
-<h1 class="h1">Vehicles</h1>
+<header class="flex justify-between">
+	<h1 class="h1">Vehicles</h1>
+	<a class="btn btn-ghost" href={resolve('/vehicles/new')}>+ New</a>
+</header>
 
 <section>
 	<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

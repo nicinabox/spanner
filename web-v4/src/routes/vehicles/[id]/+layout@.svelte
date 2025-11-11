@@ -9,6 +9,7 @@
 	let { data, children }: LayoutProps = $props();
 
 	const view = $derived(page.url.searchParams.get('view') ?? 'history');
+	const vehiclePath = `/vehicles/${data.vehicle.id}`;
 </script>
 
 <AppBar
@@ -32,8 +33,8 @@
 			{#each ['history', 'reminders', 'notes'] as tab (tab)}
 				<a
 					class="btn join-item flex-1 capitalize btn-sm"
-					class:btn-active={view === tab}
-					href={`?view=${tab}`}
+					class:btn-active={view === tab && page.url.pathname === vehiclePath}
+					href={resolve(`/vehicles/${data.vehicle.id}?view=${tab}`)}
 				>
 					{tab}
 				</a>

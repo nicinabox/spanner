@@ -1,28 +1,20 @@
+import { HTTPError } from '$lib/data/client';
 import { createVehicle } from '$lib/data/vehicles';
-import { safeAsync } from '$lib/utils/async';
-import { validate } from '$lib/utils/form';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 
 export const actions = {
 	default: async ({ request, locals }) => {
 		const formData = await request.formData();
+		const data = Object.fromEntries(formData);
 
-		const { valid, errors, data } = validate(formData, {
-			name: {
-				required: true
-			}
-		});
-
-		if (!valid) {
-			return fail(422, { errors });
-		}
-
-		const [result, error] = await safeAsync(createVehicle(data, locals));
-
-		if (result) {
+		try {
+			const result = await createVehicle(data as never, locals);
 			redirect(303, `/vehicles/${result.id}`);
+		} catch (error) {
+			return fail(
+				422,
+				error instanceof HTTPError ? error.data : { errors: ['An unexpected error occurred'] }
+			);
 		}
-
-		return fail(422, { error });
 	}
 } satisfies Actions;
