@@ -3,13 +3,13 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	interface FormControlProps {
+	type FormControlProps = {
 		value: unknown;
 		name: string;
 		class: HTMLAttributes<EventTarget>['class'];
 		required: boolean | undefined;
 		ariaRequired: boolean | undefined;
-	}
+	};
 
 	export type FormFieldProps<ExtraProps = object> = {
 		errors?: FormError[];

@@ -1,14 +1,14 @@
-import { updateVehicle } from '$lib/data/vehicles';
+import { createHistoryEntry } from '$lib/data/history';
 import { getHTTPErrors } from '$lib/utils/actions';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 
 export const actions = {
-	default: async ({ request, locals, params }) => {
+	addHistoryEntry: async ({ request, locals, params }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
 
 		try {
-			await updateVehicle(params.id!, data, locals);
+			await createHistoryEntry(params.id!, data, locals);
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
 		}
