@@ -5,4 +5,4 @@
 	let { form, data }: PageProps = $props();
 </script>
 
-<VehicleForm {form} values={data.vehicle} />
+<VehicleForm {form} action="?/update" values={data.vehicle} />
