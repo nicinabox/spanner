@@ -5,17 +5,21 @@
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { findPlainErrors } from '$lib/utils/form';
 	import type { ActionData } from '../../../routes/vehicles/new/$types';
+	import Dialog from '../Dialog.svelte';
 
 	interface Props {
 		form: ActionData;
 		values?: Vehicle;
+		action?: string;
 	}
 
-	let { form, values }: Props = $props();
+	let { form, values, action }: Props = $props();
 	let errorsList = findPlainErrors(form?.errors);
+
+	let confirmDelete: HTMLDialogElement;
 </script>
 
-<form method="post">
+<form method="post" {action}>
 	{#if errorsList}
 		<div role="alert" class="mb-4 alert alert-soft alert-error">
 			{#each errorsList as message, i (i)}
@@ -60,3 +64,25 @@
 
 	<button class="btn btn-primary" type="submit">Save</button>
 </form>
+
+{#if values}
+	<div class="divider"></div>
+
+	<button class="btn btn-outline btn-sm btn-error" onclick={() => confirmDelete.showModal()}>
+		Delete {values.name}
+	</button>
+
+	<Dialog bind:ref={confirmDelete} title="Please confirm delete">
+		You can undo this action afterwards.
+		{#snippet actions()}
+			<form method="dialog">
+				<button class="btn btn-neutral">Cancel</button>
+			</form>
+			<form method="post" action="?/delete">
+				<button class="btn btn-error">
+					Delete {values.name}
+				</button>
+			</form>
+		{/snippet}
+	</Dialog>
+{/if}

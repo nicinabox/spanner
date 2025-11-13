@@ -1,9 +1,9 @@
 import { HTTPError } from '$lib/data/client';
-import { updateVehicle } from '$lib/data/vehicles';
+import { deleteVehicle, updateVehicle } from '$lib/data/vehicles';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 
 export const actions = {
-	default: async ({ request, locals, params }) => {
+	update: async ({ request, locals, params }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
 
@@ -17,5 +17,17 @@ export const actions = {
 		}
 
 		redirect(303, `/vehicles/${params.id}`);
+	},
+	delete: async ({ locals, params }) => {
+		try {
+			await deleteVehicle(params.id!, locals);
+		} catch (error) {
+			return fail(
+				422,
+				error instanceof HTTPError ? error.data : { errors: ['An unexpected error occurred'] }
+			);
+		}
+
+		redirect(303, '/vehicles');
 	}
 } satisfies Actions;
