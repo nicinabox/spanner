@@ -41,7 +41,13 @@
 	<FormField errors={form?.errors} name="mileage" label="Mileage" value={values?.mileage}>
 		{#snippet children(field)}
 			<label class="input">
-				<input type="text" pattern="[0-9,]*" {...field} min={vehicle.estimatedMileage} />
+				<input
+					type="text"
+					pattern="[0-9,]*"
+					title="Numbers with optional comma"
+					min={vehicle.estimatedMileage}
+					{...field}
+				/>
 				<span class="label">{vehicle.distanceUnit}</span>
 			</label>
 		{/snippet}
@@ -51,7 +57,7 @@
 		{#snippet children(field)}
 			<label class="input">
 				<span class="label">{getCurrencySymbol()}</span>
-				<input type="text" pattern="[0-9,]*" {...field} />
+				<input type="text" pattern="[0-9,]*" title="Numbers with optional comma" {...field} />
 			</label>
 		{/snippet}
 	</FormField>
