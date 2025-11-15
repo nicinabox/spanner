@@ -3,12 +3,14 @@
 	import { type HistoryEntry } from '$lib/data/history';
 	import { parseDateUTC } from '$lib/utils/date';
 	import { formatMileage, sortNewestDateFirst } from '$lib/utils/vehicle';
-	import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
+	import type { Vehicle } from '$lib/data/vehicles';
 	import FlexTable from '$lib/components/FlexTable/Table.svelte';
 	import Row from '$lib/components/FlexTable/Row.svelte';
 	import Cell from '$lib/components/FlexTable/Cell.svelte';
 	import { resolve } from '$app/paths';
 	import Markdown from './Markdown.svelte';
+	import { formatCurrency } from '$lib/utils/number';
+	import { calculateDeltaMileage } from '$lib/utils/records';
 
 	interface Props {
 		history: HistoryEntry[];
@@ -17,7 +19,9 @@
 
 	let { history, vehicle }: Props = $props();
 
-	const groupedRecords = Object.groupBy(history.toSorted(sortNewestDateFirst), (record) =>
+	const historyNewestFirst = history.toSorted(sortNewestDateFirst);
+
+	const groupedRecords = Object.groupBy(historyNewestFirst, (record) =>
 		new Date(record.date).getFullYear()
 	);
 
@@ -33,11 +37,14 @@
 			<Row class="text-xs font-bold tracking-wide text-current/70 uppercase max-sm:hidden">
 				<Cell>Date</Cell>
 				<Cell>Mileage</Cell>
+				<Cell>Cost</Cell>
 				<Cell>Notes</Cell>
 				<Cell />
 			</Row>
 
 			{#each groupedRecords[Number(year)] as record (record.id)}
+				{@const deltaMileage = calculateDeltaMileage(record, historyNewestFirst)}
+
 				<Row class="group text-[1rem] even:bg-base-300 max-sm:gap-1">
 					<Cell class="whitespace-nowrap max-sm:text-sm max-sm:font-bold">
 						{intlFormat(parseDateUTC(record.date), {
@@ -47,6 +54,14 @@
 					</Cell>
 					<Cell class="whitespace-nowrap max-sm:text-sm">
 						{formatMileage(record.mileage, vehicle.distanceUnit)}
+						{#if deltaMileage}
+							<span class="block text-right text-sm text-base-content/50">
+								(+{deltaMileage})
+							</span>
+						{/if}
+					</Cell>
+					<Cell>
+						{record.cost ? formatCurrency(Number(record.cost)) : '--'}
 					</Cell>
 					<Cell class="w-full">
 						<Markdown src={record.notes} />
