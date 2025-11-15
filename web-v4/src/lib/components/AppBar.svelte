@@ -26,7 +26,7 @@
 			<a href={resolve('/')} class="btn text-lg btn-ghost btn-sm">Spanner</a>
 		{/if}
 	</div>
-	<div class="navbar-end [grid-area:end]">
+	<div class="ml-auto navbar-end [grid-area:end]">
 		{#if end}
 			{@render end()}
 		{:else if session}
