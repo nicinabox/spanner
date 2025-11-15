@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowLeft } from 'lucide-svelte';
+	import { ArrowLeft, PlusIcon } from 'lucide-svelte';
 	import AppBar from '$lib/components/AppBar.svelte';
 	import type { LayoutProps } from './$types';
 	import { resolve } from '$app/paths';
@@ -40,6 +40,12 @@
 				</a>
 			{/each}
 		</div>
+	{/snippet}
+	{#snippet end()}
+		<a class="btn ml-auto btn-sm btn-primary" href={resolve(`/vehicles/${data.vehicle.id}/add`)}>
+			<PlusIcon size={16} />
+			New...
+		</a>
 	{/snippet}
 </AppBar>
 

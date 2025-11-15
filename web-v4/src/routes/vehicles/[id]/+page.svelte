@@ -27,16 +27,6 @@
 						<Stat title="Since" value={new Date(data.vehicle.createdAt).getFullYear()} />
 						<Stat title="VIN" value={data.vehicle.vin} />
 					</div>
-
-					<div class="mt-6 flex justify-between">
-						<a
-							class="btn ml-auto btn-md btn-primary"
-							href={resolve(`/vehicles/${data.vehicle.id}/add`)}
-						>
-							<PlusIcon />
-							New...
-						</a>
-					</div>
 				</header>
 
 				<HistoryTable vehicle={data.vehicle} history={data.history} />
