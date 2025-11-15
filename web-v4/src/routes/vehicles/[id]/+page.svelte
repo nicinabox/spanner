@@ -8,6 +8,7 @@
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { resolve } from '$app/paths';
+	import { PlusIcon } from 'lucide-svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
 
 	let { data }: PageProps = $props();
@@ -27,9 +28,13 @@
 						<Stat title="VIN" value={data.vehicle.vin} />
 					</div>
 
-					<div class="my-4 flex justify-between">
-						<a class="btn ml-auto btn-primary" href={resolve(`/vehicles/${data.vehicle.id}/add`)}>
-							Add...
+					<div class="mt-6 flex justify-between">
+						<a
+							class="btn ml-auto btn-md btn-primary"
+							href={resolve(`/vehicles/${data.vehicle.id}/add`)}
+						>
+							<PlusIcon />
+							New...
 						</a>
 					</div>
 				</header>
