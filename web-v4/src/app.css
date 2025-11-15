@@ -9,6 +9,11 @@
 	--color-base-300: oklch(25.33% 0.016 252.42);
 }
 
+
+@theme {
+	--font-sans: 'Lato', sans-serif;
+}
+
 @layer base {
 	.root {
 		@apply grid h-screen;
