@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ChevronRight } from 'lucide-svelte';
+	import { ChevronRight, PlusIcon } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import VehicleLink from '$lib/components/VehicleLink.svelte';
 	import { resolve } from '$app/paths';
@@ -14,7 +14,9 @@
 
 <header class="flex justify-between">
 	<h1 class="h1">Vehicles</h1>
-	<a class="btn btn-ghost" href={resolve('/vehicles/new')}>+ New</a>
+	<a class="btn btn-soft btn-sm btn-primary" href={resolve('/vehicles/new')}>
+		<PlusIcon size={16} /> New
+	</a>
 </header>
 
 <section>
