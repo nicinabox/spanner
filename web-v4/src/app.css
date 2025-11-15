@@ -54,3 +54,11 @@
 @utility navbar {
 	@apply min-h-12;
 }
+
+@utility no-scrollbar {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}

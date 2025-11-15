@@ -20,7 +20,7 @@
 		<section class="my-8" id="history">
 			{#if data.history.length}
 				<header class="my-8">
-					<div class="flex gap-8 overflow-auto">
+					<div class="flex gap-8 overflow-auto pointer-coarse:no-scrollbar">
 						<Stat title="Estimated Mileage" value={formatEstimatedMileage(data.vehicle)} />
 						<Stat title="Mileage Rate" value={formatMilesPerYear(data.vehicle)} />
 						<Stat
