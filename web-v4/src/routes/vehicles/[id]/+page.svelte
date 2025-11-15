@@ -8,6 +8,7 @@
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { resolve } from '$app/paths';
+	import Markdown from '$lib/components/Markdown.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -74,8 +75,7 @@
 		<section class="my-8" id="notes">
 			{#if data.vehicle.notes}
 				<h2 class="h2">Notes</h2>
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				<div>{@html insane(marked(data.vehicle.notes, { async: false }))}</div>
+				<Markdown src={data.vehicle.notes} />
 			{:else}
 				<EmptyState
 					heading="Notes are for hard-to-remember things"
