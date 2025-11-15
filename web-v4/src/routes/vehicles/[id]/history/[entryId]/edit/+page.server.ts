@@ -6,7 +6,15 @@ import { getHTTPErrors } from '$lib/utils/actions';
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const { id, entryId } = params;
 	const record = await getHistoryEntry(id, entryId, locals);
-	return { record };
+	return {
+		record,
+		appBar: {
+			backAction: {
+				href: `/vehicles/${id}`,
+				text: 'Back'
+			}
+		}
+	};
 };
 
 export const actions = {

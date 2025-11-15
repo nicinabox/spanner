@@ -5,11 +5,12 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import Main from '$lib/components/Main.svelte';
+	import { parameterize } from '$lib/utils/text';
 
 	let { data, children }: LayoutProps = $props();
+	let { backAction, primaryAction, tabs } = $derived(page.data.appBar);
 
-	const view = $derived(page.url.searchParams.get('view') ?? 'history');
-	const vehiclePath = `/vehicles/${data.vehicle.id}`;
+	const view = $derived(page.url.searchParams.get('view') ?? parameterize(tabs?.[0]?.text ?? ''));
 </script>
 
 <AppBar
@@ -17,9 +18,11 @@
 >
 	{#snippet start()}
 		<div class="flex items-center gap-4">
-			<a href={resolve('/vehicles')} class="btn btn-sm btn-neutral">
-				<ArrowLeft size={16} /> Vehicles</a
-			>
+			{#if backAction}
+				<a href={resolve(backAction.href)} class="btn btn-sm btn-neutral">
+					<ArrowLeft size={16} /> {backAction.text}</a
+				>
+			{/if}
 			<a
 				href={resolve(`/vehicles/${data.vehicle.id}/edit`)}
 				class="text-sm font-bold whitespace-nowrap"
@@ -29,23 +32,27 @@
 		</div>
 	{/snippet}
 	{#snippet center()}
-		<div class="join flex flex-1">
-			{#each ['history', 'reminders', 'notes'] as tab (tab)}
+		<div class="flex flex-1 gap-2">
+			{#each tabs as link, i (i)}
 				<a
-					class="btn join-item flex-1 capitalize btn-sm"
-					class:btn-active={view === tab && page.url.pathname === vehiclePath}
-					href={resolve(`/vehicles/${data.vehicle.id}?view=${tab}`)}
+					class={[
+						'btn flex-1 rounded-full whitespace-nowrap capitalize btn-sm',
+						view === parameterize(link.text) ? 'btn-primary' : 'btn-ghost'
+					]}
+					href={resolve(link.href)}
 				>
-					{tab}
+					{link.text}
 				</a>
 			{/each}
 		</div>
 	{/snippet}
 	{#snippet end()}
-		<a class="btn ml-auto btn-sm btn-primary" href={resolve(`/vehicles/${data.vehicle.id}/add`)}>
-			<PlusIcon size={16} />
-			New...
-		</a>
+		{#if primaryAction}
+			<a class="btn ml-auto btn-sm btn-primary" href={resolve(primaryAction.href)}>
+				<PlusIcon size={16} />
+				{primaryAction.text}
+			</a>
+		{/if}
 	{/snippet}
 </AppBar>
 
