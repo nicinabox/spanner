@@ -5,6 +5,7 @@
 	import { findPlainErrors } from '$lib/utils/form';
 	import { getCurrencySymbol } from '$lib/utils/number';
 	import type { ActionData } from '../../../routes/vehicles/[id]/add/$types';
+	import Dialog from '../Dialog.svelte';
 	import FormField from '../FormField.svelte';
 	import TextareaField from '../TextareaField.svelte';
 	import TextField from '../TextField.svelte';
@@ -17,6 +18,8 @@
 
 	let { form, vehicle, values }: Props = $props();
 	let errorsList = findPlainErrors(form?.errors);
+
+	let confirmDelete: HTMLDialogElement;
 </script>
 
 <form method="post" action="?/addHistoryEntry">
@@ -64,3 +67,23 @@
 
 	<button type="submit" class="btn btn-primary">Save</button>
 </form>
+
+{#if values?.id}
+	<div class="divider"></div>
+
+	<button class="btn btn-outline btn-sm btn-error" onclick={() => confirmDelete.showModal()}>
+		Delete
+	</button>
+
+	<Dialog bind:ref={confirmDelete} title="Please confirm delete">
+		You can't undo this action afterwards.
+		{#snippet actions()}
+			<form method="dialog">
+				<button class="btn btn-neutral">Cancel</button>
+			</form>
+			<form method="post" action="?/delete">
+				<button class="btn btn-error"> Delete </button>
+			</form>
+		{/snippet}
+	</Dialog>
+{/if}
