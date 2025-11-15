@@ -9,6 +9,6 @@
 	let { children, class: className }: Props = $props();
 </script>
 
-<div class="flex w-full flex-col flex-nowrap pb-2 sm:table {className}">
+<div class="flex w-full flex-col flex-nowrap rounded-none pb-2 sm:table {className}">
 	{@render children()}
 </div>
