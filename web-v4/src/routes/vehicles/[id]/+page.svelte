@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { marked } from 'marked';
-	import insane from 'insane';
 	import type { PageProps } from './$types';
 	import { page } from '$app/state';
 	import Stat from '$lib/components/Stat.svelte';
@@ -8,8 +6,9 @@
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { resolve } from '$app/paths';
-	import { PlusIcon } from 'lucide-svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
+	import { parseDateUTC } from '$lib/utils/date';
+	import { intlFormat } from 'date-fns';
 
 	let { data }: PageProps = $props();
 
@@ -24,7 +23,14 @@
 					<div class="flex gap-8 overflow-auto">
 						<Stat title="Estimated Mileage" value={formatEstimatedMileage(data.vehicle)} />
 						<Stat title="Mileage Rate" value={formatMilesPerYear(data.vehicle)} />
-						<Stat title="Since" value={new Date(data.vehicle.createdAt).getFullYear()} />
+						<Stat
+							title="Since"
+							value={intlFormat(parseDateUTC(data.history[0]?.date), {
+								month: 'short',
+								year: 'numeric',
+								day: 'numeric'
+							})}
+						/>
 						<Stat title="VIN" value={data.vehicle.vin} />
 					</div>
 				</header>
