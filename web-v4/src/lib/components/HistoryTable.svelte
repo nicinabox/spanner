@@ -29,15 +29,17 @@
 </script>
 
 {#each years as year (year)}
-	<div class="mb-4 overflow-hidden rounded-lg bg-base-200 shadow-sm">
-		<heading class="flex border-b-2 border-base-300 px-4 py-2">
+	<div class="mb-4 shadow-sm">
+		<heading class="sticky top-0 z-10 flex border-b-2 border-base-300 bg-base-200 px-4 py-2">
 			<h2 class="h2 m-0">{year}</h2>
 		</heading>
-		<FlexTable>
+		<FlexTable class="bg-base-200">
 			<Row class="text-xs font-bold tracking-wide text-current/70 uppercase max-sm:hidden">
 				<Cell>Date</Cell>
-				<Cell>Mileage</Cell>
-				<Cell>Cost</Cell>
+				<Cell>Distance</Cell>
+				{#if vehicle.preferences.enableCost}
+					<Cell>Cost</Cell>
+				{/if}
 				<Cell>Notes</Cell>
 				<Cell />
 			</Row>
@@ -60,9 +62,11 @@
 							</span>
 						{/if}
 					</Cell>
-					<Cell>
-						{record.cost ? formatCurrency(Number(record.cost)) : '--'}
-					</Cell>
+					{#if vehicle.preferences.enableCost}
+						<Cell>
+							{record.cost ? formatCurrency(Number(record.cost)) : '--'}
+						</Cell>
+					{/if}
 					<Cell class="w-full">
 						<Markdown src={record.notes} />
 					</Cell>
