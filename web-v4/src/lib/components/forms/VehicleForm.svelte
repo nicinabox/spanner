@@ -65,7 +65,7 @@
 	<button class="btn btn-primary" type="submit">Save</button>
 </form>
 
-{#if values}
+{#if values?.id}
 	<div class="divider"></div>
 
 	<button class="btn btn-outline btn-sm btn-error" onclick={() => confirmDelete.showModal()}>
@@ -73,7 +73,7 @@
 	</button>
 
 	<Dialog bind:ref={confirmDelete} title="Please confirm delete">
-		You can undo this action afterwards.
+		You can't undo this action afterwards.
 		{#snippet actions()}
 			<form method="dialog">
 				<button class="btn btn-neutral">Cancel</button>

@@ -1,5 +1,5 @@
-import { HTTPError } from '$lib/data/client';
 import { deleteVehicle, updateVehicle } from '$lib/data/vehicles';
+import { getHTTPErrors } from '$lib/utils/actions';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 
 export const actions = {
@@ -10,10 +10,7 @@ export const actions = {
 		try {
 			await updateVehicle(params.id!, data, locals);
 		} catch (error) {
-			return fail(
-				422,
-				error instanceof HTTPError ? error.data : { errors: ['An unexpected error occurred'] }
-			);
+			return fail(422, getHTTPErrors(error));
 		}
 
 		redirect(303, `/vehicles/${params.id}`);
@@ -22,10 +19,7 @@ export const actions = {
 		try {
 			await deleteVehicle(params.id!, locals);
 		} catch (error) {
-			return fail(
-				422,
-				error instanceof HTTPError ? error.data : { errors: ['An unexpected error occurred'] }
-			);
+			return fail(422, getHTTPErrors(error));
 		}
 
 		redirect(303, '/vehicles');

@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 
 	interface Props {
-		children: Snippet;
+		children?: Snippet;
 		class?: string;
 	}
 
@@ -10,5 +10,5 @@
 </script>
 
 <div class="flex flex-col flex-nowrap justify-start px-2 sm:table-cell sm:px-4 sm:py-2 {className}">
-	{@render children()}
+	{@render children?.()}
 </div>

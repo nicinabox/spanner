@@ -15,21 +15,25 @@
 </script>
 
 <div>
-	{#if data.history.length}
-		<header>
-			<div class="flex gap-8 overflow-auto">
-				<Stat title="Estimated Mileage" value={formatEstimatedMileage(data.vehicle)} />
-				<Stat title="Mileage Rate" value={formatMilesPerYear(data.vehicle)} />
-				<Stat title="Since" value={new Date(data.vehicle.createdAt).getFullYear()} />
-				<Stat title="VIN" value={data.vehicle.vin} />
-			</div>
-		</header>
-	{/if}
-
 	{#if view === 'history'}
 		<section class="my-8" id="history">
 			{#if data.history.length}
-				<HistoryTable history={data.history} distanceUnit={data.vehicle.distanceUnit} />
+				<header class="my-8">
+					<div class="flex gap-8 overflow-auto">
+						<Stat title="Estimated Mileage" value={formatEstimatedMileage(data.vehicle)} />
+						<Stat title="Mileage Rate" value={formatMilesPerYear(data.vehicle)} />
+						<Stat title="Since" value={new Date(data.vehicle.createdAt).getFullYear()} />
+						<Stat title="VIN" value={data.vehicle.vin} />
+					</div>
+
+					<div class="my-4 flex justify-between">
+						<a class="btn ml-auto btn-primary" href={resolve(`/vehicles/${data.vehicle.id}/add`)}>
+							Add...
+						</a>
+					</div>
+				</header>
+
+				<HistoryTable vehicle={data.vehicle} history={data.history} />
 			{:else}
 				<EmptyState
 					heading="Add your vehicle's history"

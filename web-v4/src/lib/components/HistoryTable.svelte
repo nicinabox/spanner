@@ -3,17 +3,18 @@
 	import { type HistoryEntry } from '$lib/data/history';
 	import { parseDateUTC } from '$lib/utils/date';
 	import { formatMileage, sortNewestDateFirst } from '$lib/utils/vehicle';
-	import type { DistanceUnit } from '$lib/data/vehicles';
+	import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
 	import FlexTable from '$lib/components/FlexTable/Table.svelte';
 	import Row from '$lib/components/FlexTable/Row.svelte';
 	import Cell from '$lib/components/FlexTable/Cell.svelte';
+	import { resolve } from '$app/paths';
 
 	interface Props {
 		history: HistoryEntry[];
-		distanceUnit: DistanceUnit;
+		vehicle: Vehicle;
 	}
 
-	let { history, distanceUnit }: Props = $props();
+	let { history, vehicle }: Props = $props();
 
 	const groupedRecords = Object.groupBy(history.toSorted(sortNewestDateFirst), (record) =>
 		new Date(record.date).getFullYear()
@@ -32,6 +33,7 @@
 				<Cell>Date</Cell>
 				<Cell>Mileage</Cell>
 				<Cell>Notes</Cell>
+				<Cell />
 			</Row>
 
 			{#each groupedRecords[Number(year)] as record (record.id)}
@@ -43,10 +45,13 @@
 						})}
 					</Cell>
 					<Cell class="whitespace-nowrap">
-						{formatMileage(record.mileage, distanceUnit)}
+						{formatMileage(record.mileage, vehicle.distanceUnit)}
 					</Cell>
 					<Cell class="w-full">
 						{record.notes}
+					</Cell>
+					<Cell>
+						<a href={resolve(`/vehicles/${vehicle.id}/history/${record.id}/edit`)}>Edit</a>
 					</Cell>
 				</Row>
 			{/each}
