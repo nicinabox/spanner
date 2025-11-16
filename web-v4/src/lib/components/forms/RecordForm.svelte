@@ -5,7 +5,10 @@
 	import { findPlainErrors } from '$lib/utils/form';
 	import { getCurrencySymbol } from '$lib/utils/number';
 	import type { ActionData } from '../../../routes/vehicles/[id]/add/$types';
+	import Confirm from '../Confirm.svelte';
+	import DangerZone from '../DangerZone.svelte';
 	import Dialog from '../Dialog.svelte';
+	import Divider from '../Divider.svelte';
 	import FormField from '../FormField.svelte';
 	import TextareaField from '../TextareaField.svelte';
 	import TextField from '../TextField.svelte';
@@ -43,7 +46,7 @@
 
 	<FormField errors={form?.errors} name="mileage" label="Mileage" value={values?.mileage}>
 		{#snippet children(field)}
-			<label class="input">
+			<label class="input w-full">
 				<input
 					type="text"
 					pattern="[0-9,]*"
@@ -58,32 +61,43 @@
 
 	<FormField errors={form?.errors} name="cost" label="Cost" value={values?.cost}>
 		{#snippet children(field)}
-			<label class="input">
+			<label class="input w-full">
 				<span class="label">{getCurrencySymbol()}</span>
 				<input type="text" pattern="[0-9,]*" title="Numbers with optional comma" {...field} />
 			</label>
 		{/snippet}
 	</FormField>
 
-	<button type="submit" class="btn btn-primary">Save</button>
+	<div class="form-actions">
+		<button type="submit" class="btn btn-primary">Save</button>
+	</div>
 </form>
 
 {#if values?.id}
-	<div class="divider"></div>
+	<Divider type="section" />
 
-	<button class="btn btn-outline btn-sm btn-error" onclick={() => confirmDelete.showModal()}>
-		Delete
-	</button>
+	<DangerZone>
+		<div class="flex justify-between gap-8">
+			<p>Permanently delete from history after confirmation.</p>
 
-	<Dialog bind:ref={confirmDelete} title="Please confirm delete">
-		You can't undo this action afterwards.
-		{#snippet actions()}
-			<form method="dialog">
-				<button class="btn btn-neutral">Cancel</button>
-			</form>
-			<form method="post" action="?/delete">
-				<button class="btn btn-error"> Delete </button>
-			</form>
-		{/snippet}
-	</Dialog>
+			<Confirm title="Please confirm delete">
+				You can't undo this action afterwards.
+
+				{#snippet button(dialog)}
+					<button class="btn btn-outline btn-sm btn-error" onclick={() => dialog.showModal()}>
+						Delete
+					</button>
+				{/snippet}
+
+				{#snippet actions()}
+					<form method="post" action="?/delete">
+						<button class="btn btn-soft btn-error"> Delete </button>
+					</form>
+					<form method="dialog">
+						<button class="btn btn-neutral">Back to safety</button>
+					</form>
+				{/snippet}
+			</Confirm>
+		</div>
+	</DangerZone>
 {/if}
