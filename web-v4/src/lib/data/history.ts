@@ -36,7 +36,7 @@ export const createHistoryEntry = (
 	return request<HistoryEntry>(`/vehicles/${vehicleId}/records`, {
 		...opts,
 		method: 'POST',
-		body: JSON.stringify(data)
+		json: data
 	});
 };
 
@@ -49,7 +49,7 @@ export const updateHistoryEntry = (
 	return request<HistoryEntry>(`/vehicles/${vehicleId}/records/${id}`, {
 		...opts,
 		method: 'PUT',
-		body: JSON.stringify(data)
+		json: data
 	});
 };
 

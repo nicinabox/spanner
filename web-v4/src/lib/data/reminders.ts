@@ -27,7 +27,7 @@ export const createReminder = (data: CreatableFields<Reminder>, opts: RequestOpt
 	return request<Reminder>('/reminders', {
 		...opts,
 		method: 'POST',
-		body: JSON.stringify(data)
+		json: data
 	});
 };
 
@@ -39,7 +39,7 @@ export const updateReminder = (
 	return request<Reminder>(`/reminders/${id}`, {
 		...opts,
 		method: 'PUT',
-		body: JSON.stringify(data)
+		json: data
 	});
 };
 
