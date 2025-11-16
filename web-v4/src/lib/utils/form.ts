@@ -43,3 +43,32 @@ export function findPlainErrors(errors: FormError[] | undefined) {
 	const found = errors?.filter((error) => typeof error === 'string');
 	return found?.length ? found : null;
 }
+
+export function decode(formData: FormData) {
+	const decodeValue = (value: FormDataEntryValue) => {
+		if (!value) return '';
+		if (value === 'true') return true;
+		if (value === 'false') return false;
+		if (!isNaN(Number(value))) return Number(value);
+		return value;
+	};
+
+	const result: Record<string, any> = {};
+
+	for (const [key, value] of formData.entries()) {
+		const keys = key.split('.');
+		let current = result;
+
+		for (let i = 0; i < keys.length; i++) {
+			const part = keys[i];
+			if (i === keys.length - 1) {
+				current[part] = decodeValue(value);
+			} else {
+				current[part] = current[part] || {};
+				current = current[part];
+			}
+		}
+	}
+
+	return result;
+}
