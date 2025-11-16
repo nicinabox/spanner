@@ -1,11 +1,12 @@
 import { deleteVehicle, updateVehicle } from '$lib/data/vehicles';
 import { getHTTPErrors } from '$lib/utils/actions';
+import { decode } from '$lib/utils/form';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 
 export const actions = {
 	update: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const data = Object.fromEntries(formData);
+		const data = decode(formData);
 
 		try {
 			await updateVehicle(params.id!, data, locals);
