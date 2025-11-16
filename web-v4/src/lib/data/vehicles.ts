@@ -55,7 +55,7 @@ export const createVehicle = async (data: CreatableFields<Vehicle, 'name'>, opts
 	return request<Vehicle>('/vehicles', {
 		...opts,
 		method: 'POST',
-		body: JSON.stringify(data)
+		json: data
 	});
 };
 
@@ -66,8 +66,8 @@ export const updateVehicle = async (
 ) => {
 	return request<Vehicle>(`/vehicles/${id}`, {
 		...opts,
-		method: 'PATCH',
-		body: JSON.stringify(data)
+		method: 'PUT',
+		json: data
 	});
 };
 
