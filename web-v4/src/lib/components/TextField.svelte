@@ -6,6 +6,6 @@
 
 <FormField {...props}>
 	{#snippet children(field)}
-		<input {type} {...field} class={['input', field.class]} />
+		<input {type} {...field} class={['input', 'w-full', field.class]} />
 	{/snippet}
 </FormField>

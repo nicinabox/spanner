@@ -6,6 +6,6 @@
 
 <FormField {...props}>
 	{#snippet children(field)}
-		<textarea {...field} class={['textarea', field.class]}></textarea>
+		<textarea {...field} class={['textarea', 'w-full', field.class]}></textarea>
 	{/snippet}
 </FormField>

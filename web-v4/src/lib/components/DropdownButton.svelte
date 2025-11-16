@@ -35,7 +35,10 @@
 	<summary class="btn">
 		{label}
 	</summary>
-	<ul role="menu" class="dropdown-content menu z-1 w-52 rounded-box bg-slate-700 p-2 shadow-lg">
+	<ul
+		role="menu"
+		class="dropdown-content menu z-1 w-fit min-w-[200px] rounded-box bg-base-200 p-2 shadow-lg"
+	>
 		{#if children}
 			{@render children?.()}
 		{:else}
