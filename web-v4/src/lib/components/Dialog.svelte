@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	interface Props {
+	export interface DialogProps {
 		title: string;
 		children: Snippet;
 		actions: Snippet;
 		ref: HTMLDialogElement;
 	}
 
-	let { title, children, actions, ref = $bindable() }: Props = $props();
+	let { title, children, actions, ref = $bindable() }: DialogProps = $props();
 </script>
 
 <dialog class="modal" bind:this={ref}>
