@@ -12,6 +12,7 @@
 
 @theme {
 	--font-sans: 'Lato', sans-serif;
+	--text-md: var(--text-base);
 }
 
 @layer base {
@@ -45,6 +46,28 @@
 	.h3 {
 		@apply mb-1 text-lg font-bold;
 	}
+}
+
+@layer components {
+	.form-actions {
+		@apply my-8 flex flex-row-reverse justify-between;
+	}
+
+	.input-hint {
+		@apply text-sm font-normal text-neutral-500;
+	}
+}
+
+@utility fieldset {
+	@apply gap-4;
+}
+
+@utility fieldset-legend {
+	@apply text-lg;
+}
+
+@utility label {
+	@apply text-md font-medium text-base-content;
 }
 
 @utility divider-px {
