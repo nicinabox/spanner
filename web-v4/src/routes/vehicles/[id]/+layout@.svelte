@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 	import Main from '$lib/components/Main.svelte';
 	import { parameterize } from '$lib/utils/text';
+	import DropdownButton from '$lib/components/DropdownButton.svelte';
 
 	let { data, children }: LayoutProps = $props();
 	let { backAction, primaryAction, tabs } = $derived(page.data.appBar);
@@ -17,18 +18,20 @@
 	class="grid-cols-2 [grid-template-areas:'start_end''center_center'] max-sm:grid max-sm:gap-2"
 >
 	{#snippet start()}
-		<div class="flex items-center gap-4">
+		<div class="flex items-center gap-2">
 			{#if backAction}
 				<a href={resolve(backAction.href)} class="btn btn-sm btn-neutral">
 					<ArrowLeft size={16} /> {backAction.text}</a
 				>
 			{/if}
-			<a
-				href={resolve(`/vehicles/${data.vehicle.id}/edit`)}
-				class="text-sm font-bold whitespace-nowrap"
+			<DropdownButton
+				label={data.vehicle.name}
+				class="font-bold whitespace-nowrap [&_summary]:text-sm [&_summary]:btn-ghost [&_summary]:btn-sm"
 			>
-				{data.vehicle.name}
-			</a>
+				<li role="menuitem">
+					<a href={resolve(`/vehicles/${data.vehicle.id}/edit`)}> Edit</a>
+				</li>
+			</DropdownButton>
 		</div>
 	{/snippet}
 	{#snippet center()}
