@@ -5,4 +5,6 @@
 	let { form, data }: PageProps = $props();
 </script>
 
-<VehicleForm {form} action="?/update" values={data.vehicle} />
+<div class="container mx-auto max-w-xl">
+	<VehicleForm {form} action="?/update" values={data.vehicle} />
+</div>

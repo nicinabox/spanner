@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { ChevronDownIcon } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
-	import type { ClassValue } from 'svelte/elements';
+	import type { ClassValue, HTMLAttributes } from 'svelte/elements';
 
 	type Props = {
 		items?: string[];
@@ -9,6 +10,10 @@
 		open?: boolean;
 		class?: ClassValue;
 		onClickItem?: (item: string, ev: MouseEvent) => void;
+		attributes?: {
+			button?: HTMLAttributes<HTMLElement>;
+			menu?: HTMLAttributes<HTMLUListElement>;
+		};
 	};
 
 	let {
@@ -17,13 +22,14 @@
 		items = [],
 		onClickItem,
 		label,
+		attributes,
 		class: className
 	}: Props = $props();
 
 	$effect(() => {
 		if (open) {
 			const handler = (ev: MouseEvent) => {
-				if (!(ev.target as Node)?.closest('details')) open = false;
+				if (!(ev.target as HTMLElement)?.closest('details')) open = false;
 				if ((ev.target as HTMLElement)?.closest('ul')) open = false;
 			};
 			document.addEventListener('click', handler, { once: true });
@@ -31,13 +37,18 @@
 	});
 </script>
 
-<details class={['dropdown', className]} bind:open>
-	<summary class="btn">
+<details class={['group dropdown', className]} bind:open>
+	<summary {...attributes?.button} class={['btn group-open:btn-active', attributes?.button?.class]}>
 		{label}
+		<ChevronDownIcon size={14} class="group-open:rotate-180" />
 	</summary>
 	<ul
+		{...attributes?.menu}
 		role="menu"
-		class="dropdown-content menu z-1 w-fit min-w-[200px] rounded-box bg-base-200 p-2 shadow-lg"
+		class={[
+			'dropdown-content menu z-1 mt-1 w-fit min-w-[200px] rounded-box bg-base-300 p-2 shadow-md',
+			attributes?.menu?.class
+		]}
 	>
 		{#if children}
 			{@render children?.()}

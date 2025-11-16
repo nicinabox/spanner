@@ -8,4 +8,6 @@
 	let paramValues = Object.fromEntries(page.url.searchParams) as Partial<HistoryEntry>;
 </script>
 
-<RecordForm {form} vehicle={data.vehicle} values={paramValues} />
+<div class="container mx-auto max-w-xl">
+	<RecordForm {form} vehicle={data.vehicle} values={paramValues} />
+</div>
