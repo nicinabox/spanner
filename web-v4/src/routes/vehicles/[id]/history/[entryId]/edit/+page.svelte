@@ -3,4 +3,6 @@
 	const { data, form } = $props();
 </script>
 
-<RecordForm {form} vehicle={data.vehicle} values={data.record} />
+<div class="container mx-auto max-w-xl">
+	<RecordForm {form} vehicle={data.vehicle} values={data.record} />
+</div>
