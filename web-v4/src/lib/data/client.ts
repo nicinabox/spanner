@@ -1,4 +1,5 @@
 import camelcaseKeys from 'camelcase-keys';
+import snakeCaseKeys from 'snakecase-keys';
 import { apiConfig } from './config';
 
 export type Transport = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
@@ -11,6 +12,7 @@ export interface FetcherConfig {
 
 export interface RequestContext {
 	authToken?: string;
+	json?: Record<string, unknown>;
 }
 
 export type RequestOpts = RequestInit & RequestContext;
@@ -40,7 +42,7 @@ export class HTTPError<T = string> extends Error {
 
 const deserialize = <T>(data: unknown) => {
 	try {
-		return camelcaseKeys(JSON.parse(data as string)) as T;
+		return camelcaseKeys(JSON.parse(data as string), { deep: true }) as T;
 	} catch (err) {
 		return data as T;
 	}
@@ -61,6 +63,11 @@ export function createAPIRequest(initialConfig: FetcherConfig = apiConfig) {
 		const authHeaderValue = config.authHeaderValue(authToken);
 		if (authHeaderValue) {
 			headers.set('Authorization', authHeaderValue);
+		}
+
+		if (options.json) {
+			headers.set('Content-Type', 'application/json');
+			init.body = JSON.stringify(snakeCaseKeys(options.json));
 		}
 
 		const response = await fetch(url, { ...init, headers });
