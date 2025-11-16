@@ -11,7 +11,7 @@
 
 <FormField {...props}>
 	{#snippet children(field)}
-		<select {...field} class={['select', field.class]}>
+		<select {...field} class={['select', 'w-full', field.class]}>
 			{#each options as { value, label }, i (i)}
 				<option {value}>{label}</option>
 			{/each}
