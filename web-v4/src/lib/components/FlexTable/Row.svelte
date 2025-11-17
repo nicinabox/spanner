@@ -9,6 +9,6 @@
 	let { children, class: className }: Props = $props();
 </script>
 
-<div class="flex flex-row flex-wrap max-sm:py-2 sm:table-row sm:flex-nowrap {className}">
+<div class="flex flex-row flex-wrap max-sm:py-3 sm:table-row sm:flex-nowrap {className}">
 	{@render children()}
 </div>
