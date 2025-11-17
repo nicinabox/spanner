@@ -26,10 +26,22 @@
 			{/if}
 			<DropdownButton
 				label={data.vehicle.name}
-				class="font-bold whitespace-nowrap [&_summary]:text-sm [&_summary]:btn-ghost [&_summary]:btn-sm"
+				class="text-sm"
+				attributes={{
+					button: {
+						class: 'group-not-open:btn-ghost btn-sm font-bold whitespace-nowrap'
+					}
+				}}
 			>
 				<li role="menuitem">
 					<a href={resolve(`/vehicles/${data.vehicle.id}/edit`)}> Edit</a>
+				</li>
+				<li role="menuitem">
+					<button>Mark retired</button>
+				</li>
+				<li role="separator"></li>
+				<li role="menuitem">
+					<button>Share</button>
 				</li>
 			</DropdownButton>
 		</div>
