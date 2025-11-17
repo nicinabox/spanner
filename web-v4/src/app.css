@@ -1,14 +1,5 @@
 @import 'tailwindcss';
-@plugin 'daisyui';
-
-@plugin 'daisyui/theme' {
-	name: 'dark';
-	prefersdark: true;
-	--color-base-100: oklch(21.15% 0.012 254.09);
-	--color-base-200: oklch(23.26% 0.014 253.1);
-	--color-base-300: oklch(25.33% 0.016 252.42);
-}
-
+@import './daisy.css';
 
 @theme {
 	--font-sans: 'Lato', sans-serif;
@@ -56,26 +47,6 @@
 	.input-hint {
 		@apply text-sm font-normal text-neutral-500;
 	}
-}
-
-@utility fieldset {
-	@apply gap-4;
-}
-
-@utility fieldset-legend {
-	@apply text-lg;
-}
-
-@utility label {
-	@apply text-md font-medium text-base-content;
-}
-
-@utility divider-px {
-	@apply my-0 h-px;
-}
-
-@utility navbar {
-	@apply min-h-12;
 }
 
 @utility no-scrollbar {
