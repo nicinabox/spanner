@@ -10,6 +10,7 @@
 		class: HTMLAttributes<EventTarget>['class'];
 		required: boolean | undefined;
 		ariaRequired: boolean | undefined;
+		placeholder: string | undefined;
 	};
 
 	export type FormFieldProps<ExtraProps = object> = {
@@ -21,6 +22,7 @@
 		class?: HTMLAttributes<EventTarget>['class'];
 		required?: boolean;
 		children?: Snippet<[FormControlProps & ExtraProps]>;
+		placeholder?: string;
 		attributes?: {
 			label?: HTMLAttributes<HTMLLabelElement>;
 			hint?: HTMLAttributes<HTMLSpanElement>;
@@ -36,6 +38,7 @@
 		required,
 		errors,
 		attributes,
+		placeholder,
 		...props
 	}: FormFieldProps = $props();
 
@@ -56,7 +59,8 @@
 		required,
 		ariaRequired: required,
 		class: { 'input-error': fieldError },
-		id: uid + name
+		id: uid + name,
+		placeholder
 	})}
 
 	{#if fieldError}

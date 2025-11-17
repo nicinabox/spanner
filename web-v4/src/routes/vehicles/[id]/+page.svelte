@@ -9,6 +9,7 @@
 	import Markdown from '$lib/components/Markdown.svelte';
 	import { parseDateUTC } from '$lib/utils/date';
 	import { intlFormat } from 'date-fns';
+	import TextField from '$lib/components/TextField.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -20,7 +21,7 @@
 		<section class="my-8" id="history">
 			{#if data.history.length}
 				<header class="my-8">
-					<div class="flex gap-8 overflow-auto pointer-coarse:no-scrollbar">
+					<div class="flex justify-between gap-16 overflow-auto pointer-coarse:no-scrollbar">
 						<Stat title="Estimated Mileage" value={formatEstimatedMileage(data.vehicle)} />
 						<Stat title="Mileage Rate" value={formatMilesPerYear(data.vehicle)} />
 						<Stat
@@ -34,6 +35,14 @@
 						<Stat title="VIN" value={data.vehicle.vin} />
 					</div>
 				</header>
+
+				<div class="flex">
+					<TextField
+						name="search"
+						placeholder="Search history"
+						class="mb-4 ml-auto w-full justify-self-end sm:w-1/2 lg:w-1/3"
+					/>
+				</div>
 
 				<HistoryTable vehicle={data.vehicle} history={data.history} />
 			{:else}
