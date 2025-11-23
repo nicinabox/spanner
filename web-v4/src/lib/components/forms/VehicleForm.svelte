@@ -5,6 +5,7 @@
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { findPlainErrors } from '$lib/utils/form';
 	import type { ActionData } from '../../../routes/vehicles/new/$types';
+	import Button from '../ui/Button.svelte';
 	import Confirm from '../Confirm.svelte';
 	import DangerZone from '../DangerZone.svelte';
 	import Divider from '../Divider.svelte';
@@ -21,7 +22,7 @@
 
 <form method="post" {action}>
 	{#if errorsList}
-		<div role="alert" class="mb-4 alert alert-soft alert-error">
+		<div role="alert" class="alert alert-soft alert-error mb-4">
 			{#each errorsList as message, i (i)}
 				<p>{message}</p>
 			{/each}
@@ -103,7 +104,7 @@
 	{/if}
 
 	<div class="form-actions">
-		<button class="btn btn-primary" type="submit">Save {values?.name}</button>
+		<Button type="submit">Save {values?.name}</Button>
 	</div>
 </form>
 
@@ -121,19 +122,17 @@
 				{values.name} will be permanently deleted. You can't undo this action afterwards.
 
 				{#snippet button(dialog)}
-					<button class="btn btn-soft btn-error" onclick={() => dialog.showModal()}>
-						Delete
-					</button>
+					<Button variant="destructive" onclick={() => dialog.showModal()}>Delete</Button>
 				{/snippet}
 
 				{#snippet actions()}
 					<form method="post" action="?/delete">
-						<button class="btn btn-soft btn-error">
+						<Button variant="destructive">
 							Delete {values.name}
-						</button>
+						</Button>
 					</form>
 					<form method="dialog">
-						<button class="btn btn-neutral">Back to safety</button>
+						<Button variant="neutral">Back to safety</Button>
 					</form>
 				{/snippet}
 			</Confirm>
