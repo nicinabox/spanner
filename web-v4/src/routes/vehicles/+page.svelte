@@ -2,7 +2,7 @@
 	import { ChevronRight, PlusIcon } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import VehicleLink from '$lib/components/VehicleLink.svelte';
-	import { resolve } from '$app/paths';
+	import Button from '$lib/components/ui/Button.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -14,9 +14,9 @@
 
 <header class="flex justify-between">
 	<h1 class="h1">Vehicles</h1>
-	<a class="btn btn-soft btn-sm btn-primary" href={resolve('/vehicles/new')}>
+	<Button href="/vehicles/new" variant="ghost" size="sm">
 		<PlusIcon size={16} /> New
-	</a>
+	</Button>
 </header>
 
 <section>
@@ -30,10 +30,10 @@
 </section>
 
 <section class="mt-8">
-	<button class="btn my-4 btn-ghost btn-sm" onclick={() => (showRetired = !showRetired)}>
+	<Button class="my-4" variant="outline" onclick={() => (showRetired = !showRetired)}>
 		{showRetired ? 'Hide' : 'Show'} retired
 		<ChevronRight size={16} class={showRetired ? 'rotate-90' : ''} />
-	</button>
+	</Button>
 
 	<ul
 		class:hidden={!showRetired}

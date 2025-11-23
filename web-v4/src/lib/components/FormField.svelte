@@ -48,7 +48,11 @@
 </script>
 
 <div class="flex flex-col gap-1" {...props}>
-	<label {...attributes?.label} class="label {attributes?.label?.class}" for={uid + name}>
+	<label
+		{...attributes?.label}
+		class="text-sm font-medium {attributes?.label?.class}"
+		for={uid + name}
+	>
 		{label}
 		{#if required}<span class="text-red-400">*</span>{/if}
 	</label>

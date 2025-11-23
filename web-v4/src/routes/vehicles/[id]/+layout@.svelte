@@ -7,6 +7,7 @@
 	import Main from '$lib/components/Main.svelte';
 	import { parameterize } from '$lib/utils/text';
 	import DropdownButton from '$lib/components/DropdownButton.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 
 	let { data, children }: LayoutProps = $props();
 	let { backAction, primaryAction, tabs } = $derived(page.data.appBar);
@@ -20,9 +21,10 @@
 	{#snippet start()}
 		<div class="flex items-center gap-2">
 			{#if backAction}
-				<a href={resolve(backAction.href)} class="btn btn-sm btn-neutral">
-					<ArrowLeft size={16} /> {backAction.text}</a
-				>
+				<Button href={backAction.href} size="sm" variant="neutral">
+					<ArrowLeft size={16} />
+					{backAction.text}
+				</Button>
 			{/if}
 			<DropdownButton
 				label={data.vehicle.name}
@@ -49,24 +51,23 @@
 	{#snippet center()}
 		<div class="flex flex-1 gap-2">
 			{#each tabs as link, i (i)}
-				<a
-					class={[
-						'btn flex-1 rounded-full whitespace-nowrap capitalize btn-sm',
-						view === parameterize(link.text) ? 'btn-primary' : 'btn-ghost'
-					]}
+				<Button
+					size="sm"
+					class="flex-1 rounded-full whitespace-nowrap capitalize"
 					href={resolve(link.href)}
+					variant={view === parameterize(link.text) ? 'default' : 'ghost'}
 				>
 					{link.text}
-				</a>
+				</Button>
 			{/each}
 		</div>
 	{/snippet}
 	{#snippet end()}
 		{#if primaryAction}
-			<a class="btn ml-auto btn-sm btn-primary" href={resolve(primaryAction.href)}>
+			<Button size="sm" class="ml-auto" href={primaryAction.href}>
 				<PlusIcon size={16} />
 				{primaryAction.text}
-			</a>
+			</Button>
 		{/if}
 	{/snippet}
 </AppBar>
