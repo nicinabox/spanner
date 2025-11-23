@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { type Snippet } from 'svelte';
-	import { type Session } from '$lib/utils/session';
 	import { LogOut } from 'lucide-svelte';
+	import Button from './ui/Button.svelte';
+	import type { Session } from '$lib/data/session';
 
 	interface Props {
 		start?: Snippet;
@@ -15,7 +16,7 @@
 	let { start, center, end, session, class: className }: Props = $props();
 </script>
 
-<header class="navbar relative z-10 gap-4 bg-base-200 shadow-sm {className}">
+<header class="navbar relative z-10 gap-4 bg-accent shadow-sm {className}">
 	<div class="navbar-start [grid-area:start]">
 		{@render start?.()}
 	</div>
@@ -23,22 +24,18 @@
 		{#if center}
 			{@render center()}
 		{:else}
-			<a href={resolve('/')} class="btn text-lg btn-ghost btn-sm">Spanner</a>
+			<a href={resolve('/')} class="text-lg">Spanner</a>
 		{/if}
 	</div>
-	<div class="ml-auto navbar-end [grid-area:end]">
+	<div class="navbar-end ml-auto [grid-area:end]">
 		{#if end}
 			{@render end()}
 		{:else if session}
 			<div class="inline-flex items-center gap-2 text-sm">
 				<span>{session?.email.split('@')[0]}</span>
-				<a
-					href={resolve('/logout')}
-					class="btn btn-square btn-ghost btn-sm"
-					data-sveltekit-preload-data="tap"
-				>
+				<Button href="/logout" size="sm" variant="ghost" data-sveltekit-preload-data="tap">
 					<LogOut size={16} />
-				</a>
+				</Button>
 			</div>
 		{/if}
 	</div>

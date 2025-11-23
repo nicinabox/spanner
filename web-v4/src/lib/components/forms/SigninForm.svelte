@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { type ActionData } from '../../../routes/$types';
+	import Button from '../ui/Button.svelte';
 	import TextField from '../TextField.svelte';
 
 	interface Props {
@@ -38,7 +39,7 @@
 			/>
 		</fieldset>
 
-		<button type="submit" class="btn btn-primary">Sign In</button>
+		<Button type="submit">Sign In</Button>
 	</form>
 {:else}
 	<form method="post" action="?/create">
@@ -52,6 +53,6 @@
 			/>
 		</fieldset>
 
-		<button type="submit" class="btn btn-primary">Next</button>
+		<Button type="submit">Next</Button>
 	</form>
 {/if}
