@@ -4,6 +4,22 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>Spanner</title>
+		<script>
+			const setTheme = (theme, prefers) => {
+				document.documentElement.classList.remove('dark', 'light');
+				console.log(prefers);
+				if (prefers) {
+					document.documentElement.classList.add(theme);
+				}
+			};
+
+			window.matchMedia('(prefers-color-scheme: dark)');
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+			prefersDark.addEventListener('change', (event) => {
+				setTheme('dark', event.matches);
+			});
+			setTheme('dark', prefersDark.matches);
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
