@@ -1,5 +1,6 @@
 <script lang="ts">
 	import FormField, { type FormFieldProps } from './FormField.svelte';
+	import NativeSelect from './ui/NativeSelect.svelte';
 
 	let {
 		options,
@@ -11,10 +12,10 @@
 
 <FormField {...props}>
 	{#snippet children(field)}
-		<select {...field} class={['select', 'w-full', field.class]}>
+		<NativeSelect {...field} class={['w-full', field.class]}>
 			{#each options as { value, label }, i (i)}
 				<option {value}>{label}</option>
 			{/each}
-		</select>
+		</NativeSelect>
 	{/snippet}
 </FormField>
