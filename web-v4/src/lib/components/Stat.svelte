@@ -9,8 +9,8 @@
 </script>
 
 {#if value}
-	<div class="stat border-0 p-0 {props.class}">
-		<div class="stat-title">{title}</div>
-		<div class="stat-value text-2xl font-medium">{value}</div>
+	<div class="min-w-fit py-2 {props.class}">
+		<div class="text-sm text-muted-foreground">{title}</div>
+		<div class="text-xl font-bold">{value}</div>
 	</div>
 {/if}

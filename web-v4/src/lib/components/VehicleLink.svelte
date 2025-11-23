@@ -13,18 +13,18 @@
 
 <a
 	href={resolve(`/vehicles/${id}`)}
-	class="min-h-[110px] flex-1 rounded-md bg-base-300 p-4 shadow-sm hover:bg-primary"
+	class="min-h-[110px] flex-1 rounded-md bg-card p-4 shadow-sm hover:bg-muted"
 >
 	<h2 class="font-medium">{name}</h2>
 
-	<span class="text-sm text-black/40 dark:text-white/50">
+	<span class="text-sm text-muted-foreground">
 		<span>{formatMileage(estimatedMileage, distanceUnit)}</span>
 		&bull;
 		<span>{formatMileage(milesPerYear, distanceUnit)}/yr</span>
 	</span>
 
 	{#if overdueRemindersCount}
-		<span class="mt-2 badge block badge-sm badge-warning">
+		<span class="badge badge-sm badge-warning mt-2 block">
 			{pluralize(overdueRemindersCount, 'overdue reminder', 'overdue reminders')}
 		</span>
 	{/if}
