@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { cn } from '$lib/utils';
 	import { ChevronDownIcon } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import type { ClassValue, HTMLAttributes } from 'svelte/elements';
+	import { buttonVariants, type ButtonSize, type ButtonVariant } from './ui/Button.svelte';
 
 	type Props = {
 		items?: string[];
@@ -10,6 +12,8 @@
 		open?: boolean;
 		class?: ClassValue;
 		onClickItem?: (item: string, ev: MouseEvent) => void;
+		variant?: ButtonVariant;
+		size?: ButtonSize;
 		attributes?: {
 			button?: HTMLAttributes<HTMLElement>;
 			menu?: HTMLAttributes<HTMLUListElement>;
@@ -23,7 +27,9 @@
 		onClickItem,
 		label,
 		attributes,
-		class: className
+		class: className,
+		variant,
+		size
 	}: Props = $props();
 
 	$effect(() => {
@@ -37,19 +43,15 @@
 	});
 </script>
 
-<details class={['group dropdown', className]} bind:open>
-	<summary {...attributes?.button} class={['btn group-open:btn-active', attributes?.button?.class]}>
+<details class={['group menu', className]} data-size={size} bind:open>
+	<summary
+		{...attributes?.button}
+		class={cn(buttonVariants({ variant, size }), 'menu-button', attributes?.button?.class)}
+	>
 		{label}
 		<ChevronDownIcon size={14} class="group-open:rotate-180" />
 	</summary>
-	<ul
-		{...attributes?.menu}
-		role="menu"
-		class={[
-			'dropdown-content menu z-1 mt-1 w-fit min-w-[200px] rounded-box bg-base-300 p-2 shadow-md',
-			attributes?.menu?.class
-		]}
-	>
+	<ul {...attributes?.menu} role="menu" class={attributes?.menu?.class}>
 		{#if children}
 			{@render children?.()}
 		{:else}
