@@ -3,6 +3,8 @@
 @import './styles/lato.css';
 @import './styles/theme.css';
 
+@custom-variant dark (&:is(.dark *));
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
@@ -31,7 +33,7 @@
 	}
 
 	.h1 {
-		@apply mb-4 text-2xl font-bold;
+		@apply mb-2 text-2xl font-bold;
 	}
 
 	.h2 {
