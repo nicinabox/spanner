@@ -3,6 +3,9 @@
 	import type { PageProps } from './$types';
 	import VehicleLink from '$lib/components/VehicleLink.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Stat from '$lib/components/Stat.svelte';
+	import { formatMileage } from '$lib/utils/vehicle';
+	import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
 
 	let { data }: PageProps = $props();
 
@@ -10,10 +13,24 @@
 	let retired = data.vehicles.filter((v) => v.retired);
 
 	let showRetired = $state(false);
+
+	let vehiclesByDistanceUnit = Object.entries(Object.groupBy(active, (v) => v.distanceUnit)) as [
+		DistanceUnit,
+		Vehicle[]
+	][];
 </script>
 
-<header class="flex justify-between">
-	<h1 class="h1">Vehicles</h1>
+<div class="mb-6 flex justify-start gap-16 overflow-auto pointer-coarse:no-scrollbar">
+	<Stat title="Active vehicles" value={active.length} />
+
+	{#each vehiclesByDistanceUnit as [distanceUnit, vehicles] (distanceUnit)}
+		{@const total = vehicles.reduce((acc, v) => acc + (v.milesPerYear ?? 0), 0)}
+		<Stat title={`Total ${distanceUnit} per year`} value={formatMileage(total, distanceUnit)} />
+	{/each}
+</div>
+
+<header class="mb-2 flex items-center justify-between">
+	<h1 class="h2">Vehicles</h1>
 	<Button href="/vehicles/new" variant="ghost" size="sm">
 		<PlusIcon /> New
 	</Button>

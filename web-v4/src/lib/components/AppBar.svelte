@@ -34,10 +34,10 @@
 			{@render end()}
 		{:else if session}
 			<div class="inline-flex items-center gap-2 text-sm">
-				<span>{session?.email.split('@')[0]}</span>
+				<span>{session.email}</span>
 				<Button
 					href="/logout"
-					size="sm"
+					size="icon-sm"
 					class="text-foreground"
 					variant="ghost"
 					data-sveltekit-preload-data="tap"
