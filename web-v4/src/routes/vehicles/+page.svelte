@@ -15,7 +15,7 @@
 <header class="flex justify-between">
 	<h1 class="h1">Vehicles</h1>
 	<Button href="/vehicles/new" variant="ghost" size="sm">
-		<PlusIcon size={16} /> New
+		<PlusIcon /> New
 	</Button>
 </header>
 
@@ -30,7 +30,12 @@
 </section>
 
 <section class="mt-8">
-	<Button class="my-4" variant="outline" onclick={() => (showRetired = !showRetired)}>
+	<Button
+		aria-pressed={showRetired}
+		class="my-4"
+		variant="outline"
+		onclick={() => (showRetired = !showRetired)}
+	>
 		{showRetired ? 'Hide' : 'Show'} retired
 		<ChevronRight size={16} class={showRetired ? 'rotate-90' : ''} />
 	</Button>

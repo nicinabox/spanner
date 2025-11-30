@@ -17,10 +17,6 @@ export const load: LayoutServerLoad = async ({ locals, params, url }) => {
 				href: path.dirname(url.pathname),
 				text: 'Vehicles'
 			},
-			primaryAction: {
-				href: `/vehicles/${params.id}/add`,
-				text: 'New'
-			},
 			tabs: [
 				{ href: `/vehicles/${params.id}?view=history`, text: 'History' },
 				{ href: `/vehicles/${params.id}?view=reminders`, text: 'Reminders' },

@@ -29,11 +29,13 @@
 </script>
 
 {#each years as year (year)}
-	<div class="mb-8 shadow-sm">
-		<heading class="border-base-300 bg-base-200 sticky top-0 z-10 flex border-b-2 px-4 py-2">
+	<div class="mb-8 bg-white shadow-md dark:bg-gray-700">
+		<heading
+			class="sticky top-0 z-10 flex border-b-2 border-gray-100 bg-inherit px-4 py-2 dark:border-gray-800"
+		>
 			<h2 class="h2 m-0">{year}</h2>
 		</heading>
-		<FlexTable class="bg-base-200">
+		<FlexTable>
 			<Row class="text-xs font-bold tracking-wide text-current/70 uppercase max-sm:hidden">
 				<Cell>Date</Cell>
 				<Cell>Distance</Cell>
@@ -47,7 +49,7 @@
 			{#each groupedRecords[Number(year)] as record (record.id)}
 				{@const deltaMileage = calculateDeltaMileage(record, historyNewestFirst)}
 
-				<Row class="group even:bg-base-300 text-md max-sm:gap-1">
+				<Row class="group text-md even:bg-gray-100 max-sm:gap-1 dark:even:bg-gray-800">
 					<Cell class="whitespace-nowrap max-sm:text-sm max-sm:font-bold">
 						{intlFormat(parseDateUTC(record.date), {
 							month: 'short',

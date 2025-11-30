@@ -12,15 +12,17 @@
 				destructive:
 					'bg-destructive/10 text-destructive shadow-xs hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
 				outline:
-					'bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 border',
+					'bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 border dark:aria-pressed:bg-input/50',
 				secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
-				neutral: 'bg-neutral text-neutral-foreground shadow-xs hover:bg-neutral/80',
-				ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+				neutral:
+					'bg-black text-white shadow-xs hover:bg-black/80 dark:bg-white dark:text-black dark:hover:bg-white/80',
+				ghost: 'text-primary hover:bg-secondary dark:text-foreground',
 				link: 'text-primary underline-offset-4 hover:underline'
 			},
 			size: {
 				default: 'h-9 px-4 py-2 has-[>svg]:px-3',
 				sm: 'h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5',
+				xs: 'h-6 gap-1.5 rounded-sm px-3 px-2 has-[>svg]:px-2 text-xs',
 				lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
 				icon: 'size-9',
 				'icon-sm': 'size-8',

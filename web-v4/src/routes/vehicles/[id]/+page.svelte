@@ -10,6 +10,8 @@
 	import { parseDateUTC } from '$lib/utils/date';
 	import { intlFormat } from 'date-fns';
 	import TextField from '$lib/components/TextField.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import { PlusIcon } from 'lucide-svelte';
 
 	let { data }: PageProps = $props();
 
@@ -36,12 +38,17 @@
 					</div>
 				</header>
 
-				<div class="flex">
+				<div class="flex justify-between gap-10">
 					<TextField
 						name="search"
 						placeholder="Search history"
-						class="mb-4 ml-auto w-full justify-self-end sm:w-1/2 lg:w-1/3"
+						class="mb-4 w-full sm:w-1/2 lg:w-1/3"
 					/>
+
+					<Button class="ml-auto" href={`/vehicles/${page.params.id}/add`}>
+						<PlusIcon size={16} />
+						New...
+					</Button>
 				</div>
 
 				<HistoryTable vehicle={data.vehicle} history={data.history} />
@@ -51,12 +58,9 @@
 					details="Try adding your purchase as the first record."
 				>
 					{#snippet action()}
-						<a
-							class="btn btn-primary"
-							href={resolve(`/vehicles/${data.vehicle.id}/add?notes=Purchase`)}
-						>
+						<Button href={resolve(`/vehicles/${data.vehicle.id}/add?notes=Purchase`)}>
 							Add Purchase
-						</a>
+						</Button>
 					{/snippet}
 				</EmptyState>
 			{/if}

@@ -16,7 +16,9 @@
 	let { start, center, end, session, class: className }: Props = $props();
 </script>
 
-<header class="navbar relative z-10 gap-4 bg-accent shadow-sm {className}">
+<header
+	class="navbar dark relative z-10 gap-4 bg-primary text-primary-foreground shadow-sm {className}"
+>
 	<div class="navbar-start [grid-area:start]">
 		{@render start?.()}
 	</div>
@@ -33,7 +35,13 @@
 		{:else if session}
 			<div class="inline-flex items-center gap-2 text-sm">
 				<span>{session?.email.split('@')[0]}</span>
-				<Button href="/logout" size="sm" variant="ghost" data-sveltekit-preload-data="tap">
+				<Button
+					href="/logout"
+					size="sm"
+					class="text-foreground"
+					variant="ghost"
+					data-sveltekit-preload-data="tap"
+				>
 					<LogOut size={16} />
 				</Button>
 			</div>
