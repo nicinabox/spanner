@@ -3,6 +3,8 @@
 @import './styles/lato.css';
 @import './styles/theme.css';
 
+@plugin '@tailwindcss/typography';
+
 @custom-variant dark (&:is(.dark *));
 
 @layer base {
@@ -69,6 +71,34 @@
 		}
 		.navbar-end {
 			@apply inline-flex w-1/2 items-center justify-end;
+		}
+	}
+
+	.menu {
+		.menu-button {
+			@apply cursor-pointer select-none group-open:bg-secondary;
+		}
+
+		[role='menu'] {
+			@apply absolute z-1 mt-0.5 w-fit min-w-[200px] rounded-md border bg-popover py-1 text-popover-foreground shadow-md;
+		}
+
+		[role='menuitem'] {
+			@apply mx-1 flex h-9 cursor-pointer items-center rounded px-2.5 hover:bg-accent;
+
+			> * {
+				@apply flex w-full justify-between;
+			}
+		}
+
+		[role='separator'] {
+			@apply my-1 h-px w-full bg-border;
+		}
+
+		[data-size='sm'] {
+			[role='menuitem'] {
+				@apply h-8;
+			}
 		}
 	}
 }

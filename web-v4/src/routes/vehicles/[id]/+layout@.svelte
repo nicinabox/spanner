@@ -6,7 +6,7 @@
 	import { page } from '$app/state';
 	import Main from '$lib/components/Main.svelte';
 	import { parameterize } from '$lib/utils/text';
-	import DropdownButton from '$lib/components/DropdownButton.svelte';
+	import DropdownMenu from '$lib/components/DropdownMenu.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 
 	let { data, children }: LayoutProps = $props();
@@ -26,17 +26,12 @@
 					{backAction.text}
 				</Button>
 			{/if}
-			<DropdownButton
-				label={data.vehicle.name}
-				class="text-sm"
-				attributes={{
-					button: {
-						class: 'group-not-open:btn-ghost btn-sm font-bold whitespace-nowrap'
-					}
-				}}
-			>
+			<DropdownMenu label={data.vehicle.name} size="sm" variant="ghost">
 				<li role="menuitem">
 					<a href={resolve(`/vehicles/${data.vehicle.id}/edit`)}> Edit</a>
+				</li>
+				<li role="menuitem">
+					<button>Change color</button>
 				</li>
 				<li role="menuitem">
 					<button>Mark retired</button>
@@ -45,17 +40,22 @@
 				<li role="menuitem">
 					<button>Share</button>
 				</li>
-			</DropdownButton>
+				<li role="separator"></li>
+				<li role="menuitem">
+					<button>Import/Export</button>
+				</li>
+			</DropdownMenu>
 		</div>
 	{/snippet}
 	{#snippet center()}
-		<div class="flex flex-1 gap-2">
+		<div class="flex flex-1 gap-1">
 			{#each tabs as link, i (i)}
 				<Button
+					aria-selected={view === parameterize(link.text)}
 					size="sm"
-					class="flex-1 rounded-full whitespace-nowrap capitalize"
+					class="flex-1 rounded-full whitespace-nowrap capitalize aria-selected:bg-secondary"
 					href={resolve(link.href)}
-					variant={view === parameterize(link.text) ? 'default' : 'ghost'}
+					variant="ghost"
 				>
 					{link.text}
 				</Button>
