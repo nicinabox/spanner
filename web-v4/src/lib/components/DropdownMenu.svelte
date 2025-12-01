@@ -11,9 +11,10 @@
 		children?: Snippet;
 		open?: boolean;
 		class?: ClassValue;
-		onClickItem?: (item: string, ev: MouseEvent) => void;
+		onSelect?: (item: string, ev: MouseEvent) => void;
 		variant?: ButtonVariant;
 		size?: ButtonSize;
+		align?: 'start' | 'end';
 		attributes?: {
 			button?: HTMLAttributes<HTMLElement>;
 			menu?: HTMLAttributes<HTMLUListElement>;
@@ -24,12 +25,13 @@
 		open = $bindable(false),
 		children,
 		items = [],
-		onClickItem,
+		onSelect,
 		label,
 		attributes,
 		class: className,
 		variant,
-		size
+		size,
+		align = 'start'
 	}: Props = $props();
 
 	$effect(() => {
@@ -51,14 +53,22 @@
 		{label}
 		<ChevronDownIcon size={14} class="group-open:rotate-180" />
 	</summary>
-	<ul {...attributes?.menu} role="menu" class={attributes?.menu?.class}>
+	<ul
+		{...attributes?.menu}
+		role="menu"
+		class={cn(align === 'start' ? 'left-0' : 'right-0', attributes?.menu?.class)}
+	>
 		{#if children}
 			{@render children?.()}
 		{:else}
 			{#each items as item, i (i)}
-				<li role="menuitem">
-					<button onclick={(ev) => onClickItem?.(item, ev)}>{item}</button>
-				</li>
+				{#if item === '---'}
+					<li role="separator"></li>
+				{:else}
+					<li role="menuitem">
+						<button onclick={(ev) => onSelect?.(item, ev)}>{item}</button>
+					</li>
+				{/if}
 			{/each}
 		{/if}
 	</ul>
