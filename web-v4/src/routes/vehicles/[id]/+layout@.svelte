@@ -28,7 +28,7 @@
 			{/if}
 			<DropdownMenu label={data.vehicle.name} size="sm" variant="ghost">
 				<li role="menuitem">
-					<a href={resolve(`/vehicles/${data.vehicle.id}/edit`)}> Edit</a>
+					<a href={resolve(`/vehicles/${data.vehicle.id}/edit`)}>Edit</a>
 				</li>
 				<li role="menuitem">
 					<button>Change color</button>

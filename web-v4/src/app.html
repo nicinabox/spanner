@@ -7,7 +7,7 @@
 		<script>
 			const setTheme = (theme, prefers) => {
 				document.documentElement.classList.remove('dark', 'light');
-				console.log(prefers);
+
 				if (prefers) {
 					document.documentElement.classList.add(theme);
 				}

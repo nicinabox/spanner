@@ -75,28 +75,45 @@
 	}
 
 	.menu {
+		@apply relative;
+
 		.menu-button {
 			@apply cursor-pointer select-none group-open:bg-secondary;
 		}
 
 		[role='menu'] {
-			@apply absolute z-1 mt-0.5 w-fit min-w-[200px] rounded-md border bg-popover py-1 text-popover-foreground shadow-md;
+			@apply absolute z-1 mt-2 w-fit min-w-[240px] rounded-md border bg-popover p-1.5 text-popover-foreground shadow-md;
 		}
 
-		[role='menuitem'] {
-			@apply mx-1 flex h-9 cursor-pointer items-center rounded px-2.5 hover:bg-accent;
+		[role='menuitem'],
+		[role='menuitemradio'] {
+			@apply flex h-9 w-full items-center justify-start gap-2 rounded px-2.5 hover:bg-accent;
 
-			> * {
-				@apply flex w-full justify-between;
+			button,
+			a {
+				@apply flex flex-1 justify-between;
 			}
 		}
 
 		[role='separator'] {
-			@apply my-1 h-px w-full bg-border;
+			@apply my-1.5 h-px w-full bg-border;
+		}
+
+		[role='menuitemradio'] {
+			svg {
+				@apply invisible;
+			}
+
+			&[aria-checked='true'] {
+				svg {
+					@apply visible;
+				}
+			}
 		}
 
 		[data-size='sm'] {
-			[role='menuitem'] {
+			[role='menuitem'],
+			[role='menuitemradio'] {
 				@apply h-8;
 			}
 		}

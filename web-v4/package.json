@@ -21,8 +21,10 @@
 		"@sveltejs/adapter-auto": "^7.0.0",
 		"@sveltejs/kit": "^2.47.1",
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
+		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.1.14",
 		"@types/insane": "^1.0.0",
+		"@types/lodash-es": "^4.17.12",
 		"@types/node": "^22",
 		"@vitest/browser": "^3.2.4",
 		"clsx": "^2.1.1",
@@ -51,6 +53,7 @@
 		"date-fns": "^4.1.0",
 		"insane": "^2.6.2",
 		"iron-session": "^8.0.4",
+		"lodash-es": "^4.17.21",
 		"lucide-svelte": "^0.553.0",
 		"marked": "^17.0.0",
 		"snakecase-keys": "^9.0.2"

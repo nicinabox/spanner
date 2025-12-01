@@ -6,6 +6,7 @@
 	import Stat from '$lib/components/Stat.svelte';
 	import { formatMileage } from '$lib/utils/vehicle';
 	import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
+	import VehicleSortMenu from '$lib/components/VehicleSortMenu.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -31,9 +32,14 @@
 
 <header class="mb-2 flex items-center justify-between">
 	<h1 class="h2">Vehicles</h1>
-	<Button href="/vehicles/new" variant="ghost" size="sm">
-		<PlusIcon /> New
-	</Button>
+
+	<div class="flex gap-2">
+		<Button href="/vehicles/new" variant="ghost" size="sm">
+			<PlusIcon /> New
+		</Button>
+
+		<VehicleSortMenu sortable={data.user.preferences.vehiclesSortOrder} onSelect={console.log} />
+	</div>
 </header>
 
 <section>
