@@ -1,14 +1,15 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
-	interface Props {
+	interface Props extends HTMLAttributes<HTMLDivElement> {
 		children: Snippet;
 		class?: string;
 	}
 
-	let { children, class: className }: Props = $props();
+	let { children, class: className, ...props }: Props = $props();
 </script>
 
-<div class="flex w-full flex-col flex-nowrap rounded-none pb-2 sm:table {className}">
+<div {...props} class="flex w-full flex-col flex-nowrap rounded-none pb-2 sm:table {className}">
 	{@render children()}
 </div>
