@@ -11,6 +11,7 @@
 	import Markdown from './Markdown.svelte';
 	import { formatCurrency } from '$lib/utils/number';
 	import { calculateDeltaMileage, sortNewestDateFirst } from '$lib/utils/records';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		history: HistoryEntry[];
@@ -26,16 +27,44 @@
 	);
 
 	const years = Object.keys(groupedRecords).sort((a, b) => Number(b) - Number(a));
+
+	onMount(() => {
+		const observer = new IntersectionObserver(([entry]) => {
+			const root = entry.target.parentNode;
+			if (root) {
+				if (entry.isIntersecting) {
+					delete root.dataset.state;
+				} else {
+					root.dataset.state = 'top';
+				}
+			}
+		});
+
+		const elements = document.querySelectorAll('.sticky-sentinel');
+
+		elements.forEach((element) => {
+			observer.observe(element);
+		});
+
+		return () => observer.disconnect();
+	});
 </script>
 
 {#each years as year (year)}
-	<div class="mb-8 bg-white shadow-md dark:bg-gray-700">
-		<heading
-			class="sticky top-0 z-10 flex border-b-2 border-gray-100 bg-inherit px-4 py-2 dark:border-gray-800"
+	<div
+		id={`year-${year}`}
+		class="history-table group mb-8 overflow-clip rounded-md bg-white shadow-sm dark:bg-gray-700"
+	>
+		<div class="sticky-sentinel"></div>
+		<header
+			class={[
+				'sticky top-0 z-10 flex rounded-t-[inherit] bg-inherit px-4 py-2',
+				'group-data-[state=top]:rounded-t-none group-data-[state=top]:shadow-sm'
+			]}
 		>
 			<h2 class="h2 m-0">{year}</h2>
-		</heading>
-		<FlexTable>
+		</header>
+		<FlexTable class="border-t-2 border-gray-100 dark:border-gray-800">
 			<Row class="text-xs font-bold tracking-wide text-current/70 uppercase max-sm:hidden">
 				<Cell>Date</Cell>
 				<Cell>Distance</Cell>
@@ -58,11 +87,10 @@
 					</Cell>
 					<Cell class="w-fit items-baseline gap-2 text-right whitespace-nowrap max-sm:text-sm">
 						{formatMileage(record.mileage, vehicle.distanceUnit)}
-						{#if deltaMileage}
-							<span class="block text-xs text-muted-foreground">
-								(+{deltaMileage})
-							</span>
-						{/if}
+
+						<span class="block text-xs text-muted-foreground">
+							(+{deltaMileage})
+						</span>
 					</Cell>
 					{#if vehicle.preferences.enableCost}
 						<Cell class="ml-auto text-right tabular-nums max-sm:text-sm">
