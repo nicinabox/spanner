@@ -16,9 +16,7 @@
 	let { start, center, end, session, class: className }: Props = $props();
 </script>
 
-<header
-	class="navbar dark relative z-10 gap-4 bg-primary text-primary-foreground shadow-sm {className}"
->
+<header class="navbar dark relative z-10 gap-4 bg-primary text-primary-foreground {className}">
 	<div class="navbar-start [grid-area:start]">
 		{@render start?.()}
 	</div>

@@ -61,7 +61,7 @@
 	}
 
 	.navbar {
-		@apply flex min-h-12 w-full items-center p-2;
+		@apply flex min-h-12 w-full items-center p-2 shadow-md;
 
 		.navbar-start {
 			@apply inline-flex w-1/2 items-center justify-start;
@@ -82,7 +82,7 @@
 		}
 
 		[role='menu'] {
-			@apply absolute z-1 mt-2 w-fit min-w-[240px] rounded-md border bg-popover p-1.5 text-popover-foreground shadow-md;
+			@apply absolute z-1 mt-2 w-fit min-w-60 rounded-md border bg-popover p-1.5 text-popover-foreground shadow-md;
 		}
 
 		[role='menuitem'],
