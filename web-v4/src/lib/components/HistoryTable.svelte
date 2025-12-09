@@ -20,13 +20,13 @@
 
 	let { history, vehicle }: Props = $props();
 
-	const historyNewestFirst = history.toSorted(sortNewestDateFirst);
+	const historyNewestFirst = $derived(history.toSorted(sortNewestDateFirst));
 
-	const groupedRecords = Object.groupBy(historyNewestFirst, (record) =>
-		new Date(record.date).getFullYear()
+	const groupedRecords = $derived(
+		Object.groupBy(historyNewestFirst, (record) => new Date(record.date).getFullYear())
 	);
 
-	const years = Object.keys(groupedRecords).sort((a, b) => Number(b) - Number(a));
+	const years = $derived(Object.keys(groupedRecords).sort((a, b) => Number(b) - Number(a)));
 
 	onMount(() => {
 		const observer = new IntersectionObserver(([entry]) => {

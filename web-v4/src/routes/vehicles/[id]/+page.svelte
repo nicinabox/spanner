@@ -9,13 +9,21 @@
 	import Markdown from '$lib/components/Markdown.svelte';
 	import { parseDateUTC } from '$lib/utils/date';
 	import { intlFormat } from 'date-fns';
-	import TextField from '$lib/components/TextField.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { PlusIcon } from 'lucide-svelte';
+	import Input from '$lib/components/ui/Input.svelte';
 
 	let { data }: PageProps = $props();
 
 	const view = $derived(page.url.searchParams.get('view') ?? 'history');
+
+	let searchQuery = $state('');
+	let history = $derived.by(() => {
+		if (!searchQuery) return data.history;
+		return data.history.filter((item) =>
+			JSON.stringify(item).toLowerCase().includes(searchQuery.toLowerCase())
+		);
+	});
 </script>
 
 <div>
@@ -39,10 +47,13 @@
 				</header>
 
 				<div class="flex justify-between gap-10">
-					<TextField
+					<Input
+						type="search"
 						name="search"
 						placeholder="Search history"
 						class="mb-4 w-full sm:w-1/2 lg:w-1/3"
+						bind:value={searchQuery}
+						onfocus={(e) => e.target?.select()}
 					/>
 
 					<Button class="ml-auto" href={`/vehicles/${page.params.id}/add`}>
@@ -51,7 +62,7 @@
 					</Button>
 				</div>
 
-				<HistoryTable vehicle={data.vehicle} history={data.history} />
+				<HistoryTable vehicle={data.vehicle} {history} />
 			{:else}
 				<EmptyState
 					heading="Add your vehicle's history"
@@ -89,7 +100,9 @@
 		<section class="my-8" id="notes">
 			{#if data.vehicle.notes}
 				<h2 class="h2">Notes</h2>
-				<Markdown src={data.vehicle.notes} />
+				<div class="rounded-md border bg-card p-4">
+					<Markdown src={data.vehicle.notes} />
+				</div>
 			{:else}
 				<EmptyState
 					heading="Notes are for hard-to-remember things"
