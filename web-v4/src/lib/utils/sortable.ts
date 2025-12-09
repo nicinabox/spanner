@@ -56,3 +56,7 @@ export function sortByMileage(vehicles: Vehicle[], order: Order) {
 export function sortByMileageRate(vehicles: Vehicle[], order: Order) {
 	return orderBy(vehicles, (v) => v.milesPerYear ?? 0, order);
 }
+
+export function sortVehiclesBy(vehicles: Vehicle[], [sortStrategy, order]: Sortable) {
+	return vehicleSortStrategy[sortStrategy](vehicles, order);
+}
