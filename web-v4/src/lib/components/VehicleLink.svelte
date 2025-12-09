@@ -17,7 +17,18 @@
 	href={resolve(`/vehicles/${id}`)}
 	class="min-h-[110px] flex-1 rounded-md bg-primary p-4 text-primary-foreground shadow-sm hover:brightness-75"
 >
-	<VehicleColor color={vehicle.color ?? '#ffffff'} class="mb-3" />
+	<div class="mb-3 flex items-start justify-between">
+		<VehicleColor color={vehicle.color ?? '#ffffff'} />
+		{#if overdueRemindersCount}
+			<span
+				title={pluralize(overdueRemindersCount, 'overdue reminder', 'overdue reminders')}
+				class="badge badge-sm inline-flex items-center gap-2 text-sm text-amber-500"
+			>
+				<Wrench size={16} />
+				{overdueRemindersCount}
+			</span>
+		{/if}
+	</div>
 
 	<div class="flex flex-col">
 		<h2 class="font-medium">{name}</h2>
@@ -28,11 +39,4 @@
 			<span>{formatMileage(milesPerYear, distanceUnit)}/yr</span>
 		</span>
 	</div>
-
-	{#if overdueRemindersCount}
-		<span class="badge badge-sm mt-2 inline-flex items-center gap-2 text-sm text-amber-500">
-			<Wrench size={14} />
-			{pluralize(overdueRemindersCount, 'overdue reminder', 'overdue reminders')}
-		</span>
-	{/if}
 </a>
