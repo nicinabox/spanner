@@ -11,13 +11,14 @@
 	import DropdownMenu from './DropdownMenu.svelte';
 
 	interface Props {
-		onSelect?: (value: Sortable) => void;
+		onSelect?: (value: Sortable, event: Event) => void;
 		sortable?: Sortable;
 	}
 
 	let { sortable = ['created_at', 'desc'], onSelect }: Props = $props();
 
-	const [sortStrategy, sortOrder] = sortable;
+	let sortStrategy = $derived(sortable[0]);
+	let sortOrder = $derived(sortable[1]);
 </script>
 
 <DropdownMenu
@@ -30,8 +31,9 @@
 		<li>
 			<button
 				role="menuitemradio"
+				type="button"
 				aria-checked={value === sortStrategy}
-				onclick={() => onSelect?.([value as VehicleSortStrategy, sortOrder])}
+				onclick={(event) => onSelect?.([value as VehicleSortStrategy, sortOrder], event)}
 			>
 				<CheckIcon size={16} />
 				{vehicleSortStrategyToHuman[value as VehicleSortStrategy]}
@@ -43,8 +45,9 @@
 		<li>
 			<button
 				role="menuitemradio"
+				type="button"
 				aria-checked={order === sortOrder}
-				onclick={() => onSelect?.([sortStrategy, order as Order])}
+				onclick={(event) => onSelect?.([sortStrategy, order as Order], event)}
 			>
 				<CheckIcon size={16} />
 				{vehicleSortOrderToHuman[sortStrategy][i]}

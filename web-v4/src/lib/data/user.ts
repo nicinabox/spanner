@@ -1,4 +1,4 @@
-import { createAPIRequest, type RequestOpts } from './client';
+import { createAPIRequest, type RequestOpts, type UpdatableFields } from './client';
 import type { Sortable } from './vehicles';
 
 export interface User {
@@ -16,4 +16,8 @@ const request = createAPIRequest();
 
 export const getCurrentUser = (opts: RequestOpts) => {
 	return request<User>(`/user`, opts);
+};
+
+export const updateUser = (user: UpdatableFields<User>, opts: RequestOpts) => {
+	return request<User>(`/user`, { ...opts, method: 'PUT', json: user });
 };

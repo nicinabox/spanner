@@ -7,11 +7,16 @@
 	import { formatMileage } from '$lib/utils/vehicle';
 	import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
 	import VehicleSortMenu from '$lib/components/VehicleSortMenu.svelte';
+	import { enhance } from '$app/forms';
+	import { sortVehiclesBy } from '$lib/utils/sortable';
 
-	let { data }: PageProps = $props();
+	let { data, form }: PageProps = $props();
 
 	let active = data.vehicles.filter((v) => !v.retired);
-	let retired = data.vehicles.filter((v) => v.retired);
+	let retired = sortVehiclesBy(
+		data.vehicles.filter((v) => v.retired),
+		['created_at', 'desc']
+	);
 
 	let showRetired = $state(false);
 
@@ -19,6 +24,9 @@
 		DistanceUnit,
 		Vehicle[]
 	][];
+
+	let user = form?.user ?? data.user;
+	let vehiclesSortOrder = $state(user.preferences.vehiclesSortOrder);
 </script>
 
 <div class="mb-6 flex justify-start gap-16 overflow-auto pointer-coarse:no-scrollbar">
@@ -38,13 +46,29 @@
 			<PlusIcon /> New
 		</Button>
 
-		<VehicleSortMenu sortable={data.user.preferences.vehiclesSortOrder} onSelect={console.log} />
+		<form method="POST" action="?/updateUserPreferences" use:enhance>
+			<input type="hidden" value={vehiclesSortOrder[0]} name="strategy" />
+			<input type="hidden" value={vehiclesSortOrder[1]} name="order" />
+			<VehicleSortMenu
+				sortable={vehiclesSortOrder}
+				onSelect={(value, event) => {
+					vehiclesSortOrder = value;
+
+					const form = event.target?.closest('form');
+					if (form) {
+						form.querySelector('input[name=strategy]').value = value[0];
+						form.querySelector('input[name=order]').value = value[1];
+						form.requestSubmit();
+					}
+				}}
+			/>
+		</form>
 	</div>
 </header>
 
 <section>
 	<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-		{#each active as v (v.id)}
+		{#each sortVehiclesBy(active, vehiclesSortOrder) as v (v.id)}
 			<li class="flex">
 				<VehicleLink {...v} />
 			</li>
