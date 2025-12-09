@@ -2,16 +2,17 @@
 	import type { PageProps } from './$types';
 	import { page } from '$app/state';
 	import Stat from '$lib/components/Stat.svelte';
-	import { formatEstimatedMileage, formatMilesPerYear } from '$lib/utils/vehicle';
+	import { formatEstimatedMileage, formatMileage, formatMilesPerYear } from '$lib/utils/vehicle';
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { resolve } from '$app/paths';
 	import Markdown from '$lib/components/Markdown.svelte';
-	import { parseDateUTC } from '$lib/utils/date';
+	import { intlFormatDateUTC, parseDateUTC } from '$lib/utils/date';
 	import { intlFormat } from 'date-fns';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { PlusIcon } from 'lucide-svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import { isReminderOverdue } from '$lib/utils/reminders';
 
 	let { data }: PageProps = $props();
 
@@ -79,12 +80,37 @@
 	{/if}
 
 	{#if view === 'reminders'}
-		<section class="my-8" id="reminders">
+		<section class="mx-auto my-8 max-w-[60ch]" id="reminders">
 			{#if data.vehicle.reminders.length}
-				<h2 class="h2">Reminders</h2>
 				<ul>
 					{#each data.vehicle.reminders as reminder (reminder.id)}
-						<li>{reminder.notes}</li>
+						<li class="mb-4">
+							<div class="rounded-lg border bg-muted/50 px-6 py-4">
+								<h3 class="text-lg font-semibold">
+									{reminder.notes}
+								</h3>
+
+								<span class={[isReminderOverdue(reminder) && 'text-amber-500']}>
+									{#if reminder.reminderDate || reminder.mileage}
+										Scheduled for
+										{#if reminder.reminderDate}
+											<strong>{intlFormatDateUTC(reminder.reminderDate)}</strong>
+										{/if}
+										{#if reminder.reminderType === 'date_or_mileage' && reminder.reminderDate}
+											or
+										{/if}
+										{#if reminder.reminderType === 'mileage'}
+											at
+										{/if}
+										{#if reminder.mileage}
+											<strong>{formatMileage(reminder.mileage, data.vehicle.distanceUnit)}</strong>
+										{/if}
+									{:else}
+										<span class="text-muted-foreground">No reminder set</span>
+									{/if}
+								</span>
+							</div>
+						</li>
 					{/each}
 				</ul>
 			{:else}
@@ -99,10 +125,7 @@
 	{#if view === 'notes'}
 		<section class="my-8" id="notes">
 			{#if data.vehicle.notes}
-				<h2 class="h2">Notes</h2>
-				<div class="rounded-md border bg-card p-4">
-					<Markdown src={data.vehicle.notes} />
-				</div>
+				<Markdown class="mx-auto prose dark:prose-invert" src={data.vehicle.notes} />
 			{:else}
 				<EmptyState
 					heading="Notes are for hard-to-remember things"
