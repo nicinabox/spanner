@@ -10,7 +10,7 @@
 	import { intlFormatDateUTC, parseDateUTC } from '$lib/utils/date';
 	import { intlFormat } from 'date-fns';
 	import Button from '$lib/components/ui/Button.svelte';
-	import { PlusIcon } from 'lucide-svelte';
+	import { ChevronRight, NotebookPen, PlusIcon, WrenchIcon } from 'lucide-svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import { isReminderOverdue } from '$lib/utils/reminders';
 
@@ -80,35 +80,58 @@
 	{/if}
 
 	{#if view === 'reminders'}
-		<section class="mx-auto my-8 max-w-[60ch]" id="reminders">
+		<section class="mx-auto my-8 max-w-[80ch]" id="reminders">
 			{#if data.vehicle.reminders.length}
+				<header class="my-8 flex">
+					<Button class="ml-auto" href={`/vehicles/${page.params.id}/add?view=new-reminder`}>
+						<PlusIcon size={16} />
+						New Reminder
+					</Button>
+				</header>
 				<ul>
 					{#each data.vehicle.reminders as reminder (reminder.id)}
 						<li class="mb-4">
-							<div class="rounded-lg border bg-muted/50 px-6 py-4">
-								<h3 class="text-lg font-semibold">
-									{reminder.notes}
-								</h3>
+							<div class="rounded-lg border bg-muted/50 px-6 py-4 shadow-sm">
+								<div class="flex items-center justify-between gap-4">
+									<div>
+										<h3 class="text-lg font-semibold">
+											{#if isReminderOverdue(reminder)}
+												<span class="badge mr-2 bg-amber-500 text-amber-950">
+													<WrenchIcon size={14} />
+													Overdue
+												</span>
+											{/if}
+											{reminder.notes}
+										</h3>
 
-								<span class={[isReminderOverdue(reminder) && 'text-amber-500']}>
-									{#if reminder.reminderDate || reminder.mileage}
-										Scheduled for
-										{#if reminder.reminderDate}
-											<strong>{intlFormatDateUTC(reminder.reminderDate)}</strong>
-										{/if}
-										{#if reminder.reminderType === 'date_or_mileage' && reminder.reminderDate}
-											or
-										{/if}
-										{#if reminder.reminderType === 'mileage'}
-											at
-										{/if}
-										{#if reminder.mileage}
-											<strong>{formatMileage(reminder.mileage, data.vehicle.distanceUnit)}</strong>
-										{/if}
-									{:else}
-										<span class="text-muted-foreground">No reminder set</span>
-									{/if}
-								</span>
+										<span class="text-secondary-foreground">
+											{#if reminder.reminderDate || reminder.mileage}
+												Scheduled for
+												{#if reminder.reminderDate}
+													<strong>{intlFormatDateUTC(reminder.reminderDate)}</strong>
+												{/if}
+												{#if reminder.reminderType === 'date_or_mileage' && reminder.reminderDate}
+													or
+												{/if}
+												{#if reminder.reminderType === 'mileage'}
+													at
+												{/if}
+												{#if reminder.mileage}
+													<strong
+														>{formatMileage(reminder.mileage, data.vehicle.distanceUnit)}</strong
+													>
+												{/if}
+											{:else}
+												<span class="text-muted-foreground">No reminder set</span>
+											{/if}
+										</span>
+									</div>
+
+									<aside class="flex gap-2">
+										<Button variant="secondary">Edit</Button>
+										<Button>Move to History <ChevronRight /></Button>
+									</aside>
+								</div>
 							</div>
 						</li>
 					{/each}
@@ -123,9 +146,18 @@
 	{/if}
 
 	{#if view === 'notes'}
-		<section class="my-8" id="notes">
+		<section class="mx-auto my-8 max-w-[80ch]" id="notes">
 			{#if data.vehicle.notes}
-				<Markdown class="mx-auto prose dark:prose-invert" src={data.vehicle.notes} />
+				<header class="my-8 flex">
+					<Button class="ml-auto" href={`/vehicles/${page.params.id}/edit?view=notes`}>
+						<NotebookPen size={16} />
+						Edit
+					</Button>
+				</header>
+				<Markdown
+					class="mx-auto prose dark:prose-invert prose-h1:text-3xl"
+					src={data.vehicle.notes}
+				/>
 			{:else}
 				<EmptyState
 					heading="Notes are for hard-to-remember things"
