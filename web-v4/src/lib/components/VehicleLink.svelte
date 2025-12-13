@@ -22,7 +22,7 @@
 		{#if overdueRemindersCount}
 			<span
 				title={pluralize(overdueRemindersCount, 'overdue reminder', 'overdue reminders')}
-				class="badge badge-sm inline-flex items-center gap-2 text-sm text-amber-500"
+				class="badge text-amber-500"
 			>
 				<Wrench size={16} />
 				{overdueRemindersCount}

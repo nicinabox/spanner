@@ -82,7 +82,7 @@
 		}
 
 		[role='menu'] {
-			@apply absolute z-1 mt-2 w-fit min-w-60 rounded-md border bg-popover p-1.5 text-popover-foreground shadow-md;
+			@apply absolute z-1 mt-2 w-fit min-w-60 rounded-md border bg-popover p-2 text-popover-foreground shadow-md;
 		}
 
 		[role='menuitem'],
@@ -96,7 +96,7 @@
 		}
 
 		[role='separator'] {
-			@apply my-1.5 h-px w-full bg-border;
+			@apply mx-2.5 my-1.5 h-px bg-border;
 		}
 
 		[role='menuitemradio'] {
@@ -117,6 +117,10 @@
 				@apply h-8;
 			}
 		}
+	}
+
+	.badge {
+		@apply inline-flex h-6 items-center gap-1 rounded-full px-2 text-sm font-medium;
 	}
 }
 
