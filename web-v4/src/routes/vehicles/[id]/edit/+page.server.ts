@@ -14,7 +14,8 @@ export const actions = {
 			return fail(422, getHTTPErrors(error));
 		}
 
-		redirect(303, `/vehicles/${params.id}`);
+		const referrer = request.headers.get('referer');
+		redirect(303, referrer || `/vehicles/${params.id}`);
 	},
 	delete: async ({ locals, params }) => {
 		try {
