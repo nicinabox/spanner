@@ -4,7 +4,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Textarea from '$lib/components/ui/Textarea.svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
-	import { HelpCircle, NotebookPen } from 'lucide-svelte';
+	import { NotepadText, Pencil } from 'lucide-svelte';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -68,7 +68,7 @@
 			</div>
 		{:else}
 			<Button class="ml-auto" onclick={() => (view = 'edit')}>
-				<NotebookPen size={16} />
+				<Pencil size={16} />
 				Edit
 			</Button>
 		{/if}
@@ -113,8 +113,11 @@
 {:else}
 	<EmptyState
 		heading="Notes are for hard-to-remember things"
-		details="Add tire pressures, oil capacity, or how to reset the clock."
+		details="Keep track of tire pressures, oil capacity, or how to reset the clock"
 	>
+		{#snippet media()}
+			<NotepadText size={48} class="text-accent-foreground" />
+		{/snippet}
 		{#snippet action()}
 			<Button onclick={() => (view = 'edit')}>Add Notes</Button>
 		{/snippet}

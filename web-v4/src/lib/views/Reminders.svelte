@@ -7,7 +7,7 @@
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import { isReminderOverdue } from '$lib/utils/reminders';
 	import { formatMileage } from '$lib/utils/vehicle';
-	import { PlusIcon, WrenchIcon, ChevronRight } from 'lucide-svelte';
+	import { PlusIcon, WrenchIcon, ChevronRight, Wrench } from 'lucide-svelte';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -91,7 +91,14 @@
 	</ul>
 {:else}
 	<EmptyState
-		heading="Get reminders in your inbox"
-		details="Use reminders to get notified on a date or mileage."
-	/>
+		heading="Predictive reminders sent to your inbox"
+		details="Get notified on a date or mileage"
+	>
+		{#snippet media()}
+			<Wrench size={48} class="text-accent-foreground" />
+		{/snippet}
+		{#snippet action()}
+			<Button href={`/vehicles/${vehicle.id}/add?view=new-reminder`}>Add Reminder</Button>
+		{/snippet}
+	</EmptyState>
 {/if}

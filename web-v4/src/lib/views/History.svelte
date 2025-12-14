@@ -10,7 +10,7 @@
 	import { parseDateUTC } from '$lib/utils/date';
 	import { formatEstimatedMileage, formatMilesPerYear } from '$lib/utils/vehicle';
 	import { intlFormat } from 'date-fns';
-	import { PlusIcon } from 'lucide-svelte';
+	import { BookOpenText, PlusIcon } from 'lucide-svelte';
 
 	interface Props {
 		history: HistoryEntry[];
@@ -65,8 +65,12 @@
 {:else}
 	<EmptyState
 		heading="Add your vehicle's history"
-		details="Try adding your purchase as the first record."
+		details="Try adding your purchase as the first record"
 	>
+		{#snippet media()}
+			<BookOpenText size={48} class="text-accent-foreground" />
+		{/snippet}
+
 		{#snippet action()}
 			<Button href={`/vehicles/${props.vehicle.id}/add?notes=Purchase`}>Add Purchase</Button>
 		{/snippet}
