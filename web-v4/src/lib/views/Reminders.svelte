@@ -65,7 +65,7 @@
 					</div>
 
 					<aside class="flex gap-2">
-						<Button variant="secondary">Edit</Button>
+						<Button variant="ghost">Edit</Button>
 						<Button
 							class="group"
 							onclick={() => {
@@ -82,7 +82,7 @@
 				<section
 					id={`add-to-history-form-${index}`}
 					hidden={showAddToHistoryIndex !== index}
-					class="my-3 rounded-md bg-secondary p-4"
+					class="my-3 rounded-md bg-background p-4"
 				>
 					<RecordForm {vehicle} />
 				</section>
