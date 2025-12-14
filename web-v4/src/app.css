@@ -124,16 +124,23 @@
 	}
 
 	.grid-textarea-autosize {
-		@apply grid;
+		display: grid;
+		@apply md:text-sm;
 
-		[data-textarea-clone] {
-			grid-area: 1/1/2/2;
-			@apply invisible min-h-16 w-full border px-3 py-2 text-sm whitespace-pre;
+		&:after {
+			content: attr(data-text-value) ' ';
+			@apply invisible whitespace-pre;
 		}
 
-		textarea {
-			grid-area: 1/1/2/2;
-			@apply w-full resize-none overflow-hidden;
+		> textarea {
+			@apply resize-none overflow-hidden;
+		}
+
+		&:after,
+		> textarea {
+			grid-area: 1/1;
+			font: inherit;
+			@apply w-full px-3 py-2;
 		}
 	}
 }

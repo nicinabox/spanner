@@ -15,10 +15,9 @@
 	let view = $state<'edit' | 'preview' | 'saved'>('saved');
 	let editing = $derived(view !== 'saved');
 
-	let form = $state({
-		notes: vehicle.notes
-	});
+	let form = $state({ notes: vehicle.notes });
 	let dirty = $derived(form.notes !== vehicle.notes);
+
 	let notes = $derived.by(() => {
 		if (view === 'saved') {
 			return vehicle.notes;
@@ -86,11 +85,8 @@
 			method="POST"
 			action={`/vehicles/${vehicle.id}/edit?/update`}
 		>
-			<div class="grid-textarea-autosize">
-				<div data-textarea-clone class="font-mono">
-					{form.notes}
-				</div>
-				<Textarea name="notes" bind:value={form.notes} class="min-h-40 font-mono" />
+			<div class="grid-textarea-autosize min-h-40 font-mono" data-text-value={form.notes}>
+				<Textarea name="notes" bind:value={form.notes} />
 			</div>
 
 			<span class="mt-1.5 inline-block px-3.5 text-sm">
