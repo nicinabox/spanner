@@ -12,5 +12,5 @@
 
 <div {...props}>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	{@html insane(marked(src, { async: false }))}
+	{@html insane(marked(src ?? '', { async: false }))}
 </div>
