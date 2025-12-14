@@ -27,7 +27,7 @@
 	});
 </script>
 
-{#if vehicle.notes}
+{#if vehicle.notes || editing}
 	<header class="space-between my-8 flex items-center">
 		{#if editing}
 			<div class="flex h-fit rounded-lg border bg-secondary p-0.5">
@@ -90,7 +90,7 @@
 				<div data-textarea-clone class="font-mono">
 					{form.notes}
 				</div>
-				<Textarea name="notes" bind:value={form.notes} class="font-mono" />
+				<Textarea name="notes" bind:value={form.notes} class="min-h-40 font-mono" />
 			</div>
 
 			<span class="mt-1.5 inline-block px-3.5 text-sm">
@@ -114,5 +114,9 @@
 	<EmptyState
 		heading="Notes are for hard-to-remember things"
 		details="Add tire pressures, oil capacity, or how to reset the clock."
-	/>
+	>
+		{#snippet action()}
+			<Button onclick={() => (view = 'edit')}>Add Notes</Button>
+		{/snippet}
+	</EmptyState>
 {/if}
