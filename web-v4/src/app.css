@@ -122,6 +122,20 @@
 	.badge {
 		@apply inline-flex h-6 items-center gap-1 rounded-full px-2 text-sm font-medium;
 	}
+
+	.grid-textarea-autosize {
+		@apply grid;
+
+		[data-textarea-clone] {
+			grid-area: 1/1/2/2;
+			@apply invisible min-h-16 w-full border px-3 py-2 text-sm whitespace-pre;
+		}
+
+		textarea {
+			grid-area: 1/1/2/2;
+			@apply w-full resize-none overflow-hidden;
+		}
+	}
 }
 
 @utility no-scrollbar {
@@ -130,4 +144,13 @@
 	}
 	-ms-overflow-style: none;
 	scrollbar-width: none;
+}
+
+@utility grid-stack {
+	display: grid;
+	grid: stack;
+	> *,
+	&::after {
+		grid-area: stack;
+	}
 }
