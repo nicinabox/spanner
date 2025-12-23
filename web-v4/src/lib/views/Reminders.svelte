@@ -75,7 +75,7 @@
 							aria-controls={`add-to-history-form-${index}`}
 							variant="outline"
 						>
-							Make History <ChevronRight class="group-aria-expanded:rotate-90" />
+							Complete <ChevronRight class="group-aria-expanded:rotate-90" />
 						</Button>
 					</aside>
 				</div>
@@ -91,8 +91,8 @@
 	</ul>
 {:else}
 	<EmptyState
-		heading="Predictive reminders sent to your inbox"
-		details="Get notified on a date or mileage"
+		heading="Get notified on a date or mileage"
+		details="Predictive reminders are sent to your inbox"
 	>
 		{#snippet media()}
 			<Wrench size={48} class="text-accent-foreground" />
