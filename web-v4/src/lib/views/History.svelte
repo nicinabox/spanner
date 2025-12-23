@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
@@ -7,10 +8,11 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import type { HistoryEntry } from '$lib/data/history';
 	import type { Vehicle } from '$lib/data/vehicles';
-	import { parseDateUTC } from '$lib/utils/date';
-	import { formatEstimatedMileage, formatMilesPerYear } from '$lib/utils/vehicle';
+	import { intlFormatDateUTC, parseDateUTC } from '$lib/utils/date';
+	import { isReminderOverdue } from '$lib/utils/reminders';
+	import { formatEstimatedMileage, formatMileage, formatMilesPerYear } from '$lib/utils/vehicle';
 	import { intlFormat } from 'date-fns';
-	import { BookOpenText, PlusIcon } from 'lucide-svelte';
+	import { BookOpenText, PlusIcon, WrenchIcon } from 'lucide-svelte';
 
 	interface Props {
 		history: HistoryEntry[];
@@ -26,11 +28,48 @@
 			JSON.stringify(item).toLowerCase().includes(searchQuery.toLowerCase())
 		);
 	});
+
+	let overdueReminder = $derived.by(() => {
+		if (!props.vehicle.reminders) return null;
+		return props.vehicle.reminders.find(isReminderOverdue);
+	});
 </script>
 
 {#if props.history.length}
 	<header class="my-8">
-		<div class="flex justify-between gap-16 overflow-auto pointer-coarse:no-scrollbar">
+		<div class="flex items-center justify-between gap-16 overflow-auto pointer-coarse:no-scrollbar">
+			{#if overdueReminder}
+				<a
+					href={resolve(`/vehicles/${props.vehicle.id}?view=reminders`)}
+					class="min-w-fit rounded-lg border border-amber-500/50 px-5 py-3 hover:border-amber-500"
+				>
+					<h2 class="text-lg font-semibold">
+						<span class="badge mr-2 bg-amber-500 text-amber-950">
+							<WrenchIcon size={14} />
+							Overdue
+						</span>
+
+						{overdueReminder.notes}
+					</h2>
+
+					<span class="text-muted-foreground">
+						Scheduled for
+						{#if overdueReminder.reminderDate}
+							<strong>{intlFormatDateUTC(overdueReminder.reminderDate)}</strong>
+						{/if}
+						{#if overdueReminder.reminderType === 'date_or_mileage' && overdueReminder.reminderDate}
+							or
+						{/if}
+						{#if overdueReminder.reminderType === 'mileage'}
+							at
+						{/if}
+						{#if overdueReminder.mileage}
+							<strong>{formatMileage(overdueReminder.mileage, props.vehicle.distanceUnit)}</strong>
+						{/if}
+					</span>
+				</a>
+			{/if}
+
 			<Stat title="Estimated Mileage" value={formatEstimatedMileage(props.vehicle)} />
 			<Stat title="Mileage Rate" value={formatMilesPerYear(props.vehicle)} />
 			<Stat
