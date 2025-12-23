@@ -129,7 +129,7 @@
 
 		&:after {
 			content: attr(data-text-value) ' ';
-			@apply invisible whitespace-pre;
+			@apply invisible whitespace-pre-wrap;
 		}
 
 		> textarea {
