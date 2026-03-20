@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { HTMLInputAttributes, HTMLInputTypeAttribute } from 'svelte/elements';
 	import { cn, type WithElementRef } from '$lib/utils';
+	import { getFieldContext } from '$lib/utils/field.svelte';
 	type InputType = Exclude<HTMLInputTypeAttribute, 'file'>;
 	type Props = WithElementRef<
 		Omit<HTMLInputAttributes, 'type'> &
@@ -15,10 +16,18 @@
 		'data-slot': dataSlot = 'input',
 		...restProps
 	}: Props = $props();
+
+	const ctx = getFieldContext();
 </script>
 
 {#if type === 'file'}
 	<input
+		aria-required={ctx?.required}
+		aria-invalid={ctx?.invalid}
+		id={ctx?.id}
+		disabled={ctx?.disabled}
+		readonly={ctx?.readonly}
+		name={ctx?.name}
 		bind:this={ref}
 		data-slot={dataSlot}
 		class={cn(
@@ -34,6 +43,12 @@
 	/>
 {:else}
 	<input
+		aria-required={ctx?.required}
+		aria-invalid={ctx?.invalid}
+		id={ctx?.id}
+		disabled={ctx?.disabled}
+		readonly={ctx?.readonly}
+		name={ctx?.name}
 		bind:this={ref}
 		data-slot={dataSlot}
 		class={cn(

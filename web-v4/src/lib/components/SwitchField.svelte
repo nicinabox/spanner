@@ -1,27 +1,63 @@
 <script lang="ts">
-	import FormField, { type FormFieldProps } from './FormField.svelte';
-	let props: FormFieldProps<{
-		value?: boolean;
-	}> = $props();
+	import { cn } from '$lib/utils';
+	import { getFieldContext } from '$lib/utils/field.svelte';
+	import FormField from './FormField.svelte';
 
-	let checked = $derived(Boolean(props.value));
+	import type { ComponentProps } from 'svelte';
+
+	type FormFieldProps = Omit<ComponentProps<typeof FormField>, 'children'>;
+	type Props = FormFieldProps & {
+		value?: boolean;
+	};
+
+	let {
+		label,
+		hint,
+		errors,
+		name,
+		required,
+		id,
+		value = $bindable(false),
+		attributes,
+		class: className,
+		...props
+	}: Props = $props();
+
+	const ctx = getFieldContext();
+
+	let checked = $derived(value);
 </script>
 
 <FormField
+	{label}
+	{hint}
+	{errors}
+	{required}
+	{id}
+	{name}
 	{...props}
-	class="grid min-w-0 grid-cols-[auto_1fr] gap-x-4 {props.class}"
+	class={cn('grid min-w-0 grid-cols-[auto_1fr] gap-x-4', className)}
 	attributes={{
+		...attributes,
 		hint: {
 			class: 'text-sm whitespace-wrap'
 		}
 	}}
 >
-	{#snippet children({ name, ...field })}
-		<input type="hidden" {name} {...field} value={checked} />
-		<input
-			type="checkbox"
-			bind:checked
-			class={['toggle toggle-success', 'row-span-2 self-center justify-self-end', field.class]}
-		/>
-	{/snippet}
+	<input type="hidden" name={ctx?.name} value={checked} />
+	<label class="row-span-2 inline-flex cursor-pointer items-center self-center justify-self-end">
+		<span class="switch-track">
+			<input
+				type="checkbox"
+				id={ctx?.id}
+				name={ctx?.name}
+				aria-required={ctx?.required}
+				aria-invalid={ctx?.invalid}
+				disabled={ctx?.disabled}
+				readonly={ctx?.readonly}
+				bind:checked
+				class="peer sr-only"
+			/>
+		</span>
+	</label>
 </FormField>

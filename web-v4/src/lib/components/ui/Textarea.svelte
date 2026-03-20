@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { cn, type WithElementRef, type WithoutChildren } from '$lib/utils';
+	import { getFieldContext } from '$lib/utils/field.svelte';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
+
 	let {
 		ref = $bindable(null),
 		value = $bindable(),
@@ -8,11 +10,19 @@
 		'data-slot': dataSlot = 'textarea',
 		...restProps
 	}: WithoutChildren<WithElementRef<HTMLTextareaAttributes>> = $props();
+
+	const ctx = getFieldContext();
 </script>
 
 <textarea
 	bind:this={ref}
 	data-slot={dataSlot}
+	id={ctx?.id}
+	name={ctx?.name}
+	aria-required={ctx?.required}
+	aria-invalid={ctx?.invalid}
+	disabled={ctx?.disabled}
+	readonly={ctx?.readonly}
 	class={cn(
 		'flex field-sizing-content min-h-16 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:aria-invalid:ring-destructive/40',
 		className

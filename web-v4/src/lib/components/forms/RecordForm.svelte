@@ -50,27 +50,34 @@
 		/>
 
 		<FormField errors={form?.errors} name="mileage" label="Mileage" value={values?.mileage}>
-			{#snippet children(field)}
-				<label class="input w-full">
-					<input
-						type="text"
-						pattern="[0-9,]*"
-						title="Numbers with optional comma"
-						min={vehicle.estimatedMileage}
-						{...field}
-					/>
-					<span class="label">{vehicle.distanceUnit}</span>
-				</label>
-			{/snippet}
+			<div
+				class="focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 flex h-9 w-full min-w-0 items-center rounded-md border border-input bg-background px-3 text-base shadow-xs ring-offset-background transition-[color,box-shadow] has-[[data-invalid]]:border-destructive has-[[data-invalid]]:ring-destructive/20 has-[[data-invalid]]:ring-[3px]">
+				<input
+					type="text"
+					pattern="[0-9,]*"
+					title="Numbers with optional comma"
+					min={vehicle.estimatedMileage}
+					name="mileage"
+					value={values?.mileage}
+					class="w-full flex-1 bg-transparent py-1 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+				/>
+				<span class="ml-2 text-sm text-muted-foreground">{vehicle.distanceUnit}</span>
+			</div>
 		</FormField>
 
 		<FormField errors={form?.errors} name="cost" label="Cost" value={values?.cost}>
-			{#snippet children(field)}
-				<label class="input w-full">
-					<span class="label">{getCurrencySymbol()}</span>
-					<input type="text" pattern="[0-9,]*" title="Numbers with optional comma" {...field} />
-				</label>
-			{/snippet}
+			<div
+				class="focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 flex h-9 w-full min-w-0 items-center rounded-md border border-input bg-background px-3 text-base shadow-xs ring-offset-background transition-[color,box-shadow] has-[[data-invalid]]:border-destructive has-[[data-invalid]]:ring-destructive/20 has-[[data-invalid]]:ring-[3px]">
+				<span class="mr-2 text-sm text-muted-foreground">{getCurrencySymbol()}</span>
+				<input
+					type="text"
+					pattern="[0-9,]*"
+					title="Numbers with optional comma"
+					name="cost"
+					value={values?.cost}
+					class="w-full flex-1 bg-transparent py-1 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+				/>
+			</div>
 		</FormField>
 	</fieldset>
 
