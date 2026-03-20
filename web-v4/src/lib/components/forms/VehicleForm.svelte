@@ -127,7 +127,7 @@
 
 				{#snippet actions()}
 					<form method="post" action="?/delete">
-						<Button variant="destructive">
+						<Button type="submit" variant="destructive">
 							Delete {values.name}
 						</Button>
 					</form>
