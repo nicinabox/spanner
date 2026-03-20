@@ -132,7 +132,7 @@
 						</Button>
 					</form>
 					<form method="dialog">
-						<Button variant="neutral">Back to safety</Button>
+						<Button type="submit" variant="neutral">Back to safety</Button>
 					</form>
 				{/snippet}
 			</Confirm>
