@@ -30,7 +30,7 @@
 
 	onMount(() => {
 		const observer = new IntersectionObserver(([entry]) => {
-			const root = entry.target.parentNode;
+			const root = entry.target.parentNode as HTMLElement | null;
 			if (root) {
 				if (entry.isIntersecting) {
 					delete root.dataset.state;
