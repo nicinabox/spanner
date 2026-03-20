@@ -2,14 +2,17 @@
 	import { cn, type WithElementRef } from '$lib/utils';
 	import { ChevronDownIcon } from 'lucide-svelte';
 	import type { HTMLSelectAttributes } from 'svelte/elements';
+	import { getFieldContext } from '$lib/utils/field.svelte';
 
 	let {
 		ref = $bindable(null),
 		value = $bindable(),
 		class: className,
 		children,
-		...restProps
+		...props
 	}: WithElementRef<HTMLSelectAttributes> = $props();
+
+	const ctx = getFieldContext();
 </script>
 
 <div
@@ -17,6 +20,12 @@
 	data-slot="native-select-wrapper"
 >
 	<select
+		aria-required={ctx?.required}
+		aria-invalid={ctx?.invalid}
+		aria-readonly={ctx?.readonly}
+		id={ctx?.id}
+		disabled={ctx?.disabled}
+		name={ctx?.name}
 		bind:value
 		bind:this={ref}
 		data-slot="native-select"
@@ -26,7 +35,7 @@
 			'aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40',
 			className
 		)}
-		{...restProps}
+		{...props}
 	>
 		{@render children?.()}
 	</select>

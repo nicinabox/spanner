@@ -1,12 +1,37 @@
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
-	import FormField, { type FormFieldProps } from './FormField.svelte';
+	import FormField from './FormField.svelte';
 	import Input from './ui/Input.svelte';
-	let { type = 'text', ...props }: FormFieldProps<HTMLInputAttributes> = $props();
+	import type { ComponentProps } from 'svelte';
+
+	type FormFieldProps = Omit<ComponentProps<typeof FormField>, 'children'>;
+	type InputProps = ComponentProps<typeof Input>;
+	type Props = FormFieldProps & InputProps;
+
+	let {
+		label,
+		hint,
+		errors,
+		name,
+		required,
+		id,
+		type = 'text',
+		value = $bindable(''),
+		attributes,
+		class: className,
+		...props
+	}: Props = $props();
 </script>
 
-<FormField {...props}>
-	{#snippet children(field)}
-		<Input {type} {...field} class={['w-full', field.class]} />
-	{/snippet}
+<FormField
+	class={className}
+	{attributes}
+	{label}
+	{hint}
+	{errors}
+	{required}
+	{id}
+	{name}
+	{...props}
+>
+	<Input {type} bind:value />
 </FormField>

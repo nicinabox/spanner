@@ -1,75 +1,74 @@
 <script lang="ts">
+	import { cn } from '$lib/utils';
+	import { setFieldContext, type FieldContext } from '$lib/utils/field.svelte';
 	import { findFieldError, type FormError } from '$lib/utils/form';
 	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import type { ClassValue, HTMLAttributes, HTMLLabelAttributes } from 'svelte/elements';
 
-	type FormControlProps = {
-		value: unknown;
-		name: string;
-		id: string;
-		class: HTMLAttributes<EventTarget>['class'];
-		required: boolean | undefined;
-		ariaRequired: boolean | undefined;
-		placeholder: string | undefined;
-	};
-
-	export type FormFieldProps<ExtraProps = object> = {
-		errors?: FormError[];
-		name: string;
+	export type FormFieldProps = FieldContext & {
 		label?: string;
+		children: Snippet;
 		hint?: string;
-		value?: unknown;
-		class?: HTMLAttributes<EventTarget>['class'];
-		required?: boolean;
-		children?: Snippet<[FormControlProps & ExtraProps]>;
-		placeholder?: string;
+		errors?: FormError[];
+		class?: ClassValue;
 		attributes?: {
-			label?: HTMLAttributes<HTMLLabelElement>;
+			label?: HTMLLabelAttributes;
 			hint?: HTMLAttributes<HTMLSpanElement>;
 		};
-	} & ExtraProps;
+	};
 
-	let {
+	const {
+		class: className,
 		children,
-		name,
-		label,
-		hint,
-		value,
-		required,
-		errors,
 		attributes,
-		placeholder,
+		name,
+		errors,
+		label,
+		required,
+		hint,
 		...props
 	}: FormFieldProps = $props();
 
-	const uid = $props.id();
+	let uid = $props.id();
+	let error = findFieldError(name, errors);
 
-	let fieldError = findFieldError(name, errors);
+	let state = $state<FieldContext>({
+		...props,
+		id: props.id ?? uid,
+		name,
+		invalid: Boolean(error)
+	});
+
+	setFieldContext(state);
 </script>
 
-<div class="flex flex-col gap-1" {...props}>
+<div class={cn('flex flex-col gap-1', className)}>
 	<label
 		{...attributes?.label}
 		class="text-sm font-medium {attributes?.label?.class}"
-		for={uid + name}
+		for={state.id}
 	>
 		{label}
-		{#if required}<span class="text-red-400">*</span>{/if}
+		{#if required}<span class="text-red-400" aria-label="required">*</span>{/if}
 	</label>
 
-	{@render children?.({
-		value,
-		name,
-		required,
-		ariaRequired: required,
-		class: { 'input-error': fieldError },
-		id: uid + name,
-		placeholder
-	})}
+	{@render children()}
 
-	{#if fieldError}
-		<span class="text-error first-letter:capitalize">{fieldError}</span>
+	{#if error}
+		<span
+			class="text-sm text-destructive first-letter:capitalize"
+			id={state.id + '-error'}
+			role="alert"
+		>
+			{error}
+		</span>
 	{:else}
-		<span {...attributes?.hint} class="input-hint {attributes?.hint?.class}">{hint}</span>
+		<span
+			{...attributes?.hint}
+			id={state.id + '-hint'}
+			class="input-hint text-sm {attributes?.hint?.class}"
+		>
+			{hint}
+		</span>
 	{/if}
 </div>

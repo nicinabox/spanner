@@ -1,12 +1,15 @@
 <script lang="ts">
-	import type { HTMLTextareaAttributes } from 'svelte/elements';
-	import FormField, { type FormFieldProps } from './FormField.svelte';
+	import FormField from './FormField.svelte';
+	import type { ComponentProps } from 'svelte';
 	import Textarea from './ui/Textarea.svelte';
-	let props: FormFieldProps<HTMLTextareaAttributes> = $props();
+
+	type FormFieldProps = Omit<ComponentProps<typeof FormField>, 'children'>;
+	type TextareaProps = ComponentProps<typeof Textarea>;
+	type Props = FormFieldProps & TextareaProps;
+
+	let { label, hint, errors, name, required, id, value = $bindable(''), ...rest }: Props = $props();
 </script>
 
-<FormField {...props}>
-	{#snippet children(field)}
-		<Textarea {...field} class={['w-full', field.class]}></Textarea>
-	{/snippet}
+<FormField {label} {hint} {errors} {required} {id} {name} {...rest}>
+	<Textarea bind:value />
 </FormField>
