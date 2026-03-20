@@ -44,10 +44,10 @@ export function findPlainErrors(errors: FormError[] | undefined) {
 	return found?.length ? found : null;
 }
 
-export function decode(formData: FormData) {
+export function decode(formData: FormData, schema?: Record<string, 'boolean' | 'string' | 'number'>) {
 	const decodeValue = (value: FormDataEntryValue) => {
 		if (!value) return '';
-		if (value === 'true') return true;
+		if (value === 'true' || value === 'on') return true;
 		if (value === 'false') return false;
 		if (!isNaN(Number(value))) return Number(value);
 		return value;
@@ -55,6 +55,7 @@ export function decode(formData: FormData) {
 
 	const result: Record<string, any> = {};
 
+	// First pass: set all values from formData
 	for (const [key, value] of formData.entries()) {
 		const keys = key.split('.');
 		let current = result;
@@ -66,6 +67,15 @@ export function decode(formData: FormData) {
 			} else {
 				current[part] = current[part] || {};
 				current = current[part];
+			}
+		}
+	}
+
+	// Second pass: handle unchecked checkboxes (schema values not in formData should be false)
+	if (schema) {
+		for (const [key, type] of Object.entries(schema)) {
+			if (type === 'boolean' && !(key in result)) {
+				result[key] = false;
 			}
 		}
 	}

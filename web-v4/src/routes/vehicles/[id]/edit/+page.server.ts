@@ -6,16 +6,24 @@ import { fail, redirect, type Actions } from '@sveltejs/kit';
 export const actions = {
 	update: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const data = decode(formData);
+		const data = decode(formData, {
+			name: 'string',
+			vin: 'string',
+			distanceUnit: 'string',
+			retired: 'boolean',
+			'preferences.enableCost': 'boolean',
+			'preferences.sendReminderEmails': 'boolean',
+			'preferences.sendPromptForRecords': 'boolean',
+			'preferences.showMileageAdjustmentRecords': 'boolean'
+		});
 
 		try {
-			await updateVehicle(params.id!, data, locals);
+			await updateVehicle(params.id!, { vehicle: data } as never, locals);
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
 		}
 
-		const referrer = request.headers.get('referer');
-		redirect(303, referrer || `/vehicles/${params.id}`);
+		redirect(303, `/vehicles/${params.id}`);
 	},
 	delete: async ({ locals, params }) => {
 		try {

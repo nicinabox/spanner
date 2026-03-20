@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -15,8 +16,12 @@
 	let view = $state<'edit' | 'preview' | 'saved'>('saved');
 	let editing = $derived(view !== 'saved');
 
-	let form = $state({ notes: vehicle.notes });
+	let form = $state({ notes: '' });
 	let dirty = $derived(form.notes !== vehicle.notes);
+
+	$effect(() => {
+		form.notes = vehicle.notes;
+	});
 
 	let notes = $derived.by(() => {
 		if (view === 'saved') {
@@ -84,6 +89,7 @@
 			id="notes-form"
 			method="POST"
 			action={`/vehicles/${vehicle.id}/edit?/update`}
+			use:enhance
 		>
 			<div class="grid-textarea-autosize min-h-40 font-mono" data-text-value={form.notes}>
 				<Textarea name="notes" bind:value={form.notes} />

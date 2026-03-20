@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import SelectField from '$lib/components/SelectField.svelte';
 	import SwitchField from '$lib/components/SwitchField.svelte';
 	import TextField from '$lib/components/TextField.svelte';
@@ -17,10 +18,10 @@
 	}
 
 	let { form, values, action }: Props = $props();
-	let errorsList = findPlainErrors(form?.errors);
+	let errorsList = $derived(findPlainErrors(form?.errors));
 </script>
 
-<form method="post" {action}>
+<form method="post" {action} use:enhance>
 	{#if errorsList}
 		<div role="alert" class="alert alert-soft alert-error mb-4">
 			{#each errorsList as message, i (i)}
