@@ -102,7 +102,7 @@
 
 				{#snippet actions()}
 					<form method="post" action="?/delete">
-						<Button variant="destructive">Delete</Button>
+						<Button type="submit" variant="destructive">Delete</Button>
 					</form>
 					<form method="dialog">
 						<Button type="submit" variant="neutral">Back to safety</Button>
