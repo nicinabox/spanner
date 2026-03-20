@@ -48,7 +48,8 @@
 }
 
 @layer components {
-	fieldset {
+	fieldset,
+	.fieldset {
 		@apply flex flex-col gap-3;
 	}
 
@@ -58,6 +59,22 @@
 
 	.input-hint {
 		@apply text-sm font-normal text-neutral-500;
+	}
+
+	.alert {
+		@apply flex items-center gap-2 rounded-lg border p-4 text-sm;
+
+		&.alert-error {
+			@apply border-destructive/20 bg-destructive/10 text-destructive;
+		}
+
+		&.alert-soft {
+			@apply bg-white/50;
+		}
+	}
+
+	.fieldset-legend {
+		@apply mb-2 text-sm font-medium text-muted-foreground;
 	}
 
 	.navbar {
