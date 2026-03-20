@@ -2,6 +2,8 @@ namespace :scheduler do
   desc 'Process scheduled jobs once'
   task once: :environment do
     JobScheduler.schedule_jobs
+  ensure
+    ActiveRecord::Base.connection_pool.disconnect!
   end
 
   desc 'Process scheduled jobs'

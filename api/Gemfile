@@ -38,7 +38,7 @@ gem 'premailer-rails'
 gem 'queue_classic', '>= 4.0.0'
 gem 'schema2type'
 gem 'virtus'
-gem 'whenever', require: false
+# gem 'whenever', require: false  # Replaced by Railway native cron
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
