@@ -11,7 +11,7 @@ export const actions = {
 		let result;
 
 		try {
-			result = await createVehicle(data as never, locals);
+			result = await createVehicle({ vehicle: data } as never, locals);
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
 		}

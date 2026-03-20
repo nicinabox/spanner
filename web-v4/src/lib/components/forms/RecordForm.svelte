@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import type { HistoryEntry } from '$lib/data/history';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { formatDateISO } from '$lib/utils/date';
@@ -14,16 +15,16 @@
 	import TextField from '../TextField.svelte';
 
 	interface Props {
-		form: ActionData;
+		form?: ActionData;
 		vehicle: Vehicle;
 		values?: Partial<HistoryEntry>;
 	}
 
 	let { form, vehicle, values }: Props = $props();
-	let errorsList = findPlainErrors(form?.errors);
+	let errorsList = $derived(findPlainErrors(form?.errors));
 </script>
 
-<form method="post" action="?/addHistoryEntry">
+<form method="post" action="?/addHistoryEntry" use:enhance>
 	{#if errorsList}
 		<div role="alert" class="alert alert-soft alert-error mb-4">
 			{#each errorsList as message, i (i)}

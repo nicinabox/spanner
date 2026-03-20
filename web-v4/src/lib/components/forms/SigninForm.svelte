@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { type ActionData } from '../../../routes/$types';
 	import Button from '../ui/Button.svelte';
 	import TextField from '../TextField.svelte';
@@ -27,7 +28,7 @@
 </script>
 
 {#if form?.status === 'pending'}
-	<form method="post" action="?/signin">
+	<form method="post" action="?/signin" use:enhance>
 		<p class="mb-2">Check your email for a login token.</p>
 		<fieldset class="fieldset">
 			<TextField
@@ -42,7 +43,7 @@
 		<Button type="submit">Sign In</Button>
 	</form>
 {:else}
-	<form method="post" action="?/create">
+	<form method="post" action="?/create" use:enhance>
 		<fieldset class="fieldset">
 			<TextField
 				label="Enter your email to get started"
