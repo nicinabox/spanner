@@ -15,13 +15,22 @@ class HourlyJob < ApplicationJob
     date = Time.now.in_time_zone(tz)
     users = User.where time_zone_offset: time_zone_offset
 
-    users.each do |user|
-      reminders = user.reminders.where(reminder_date: date.all_day)
-      reminders = reminders.select do |r|
-        r.vehicle.preferences.send_reminder_emails
-      end
+    ActiveSupport::TimeZone.all.each do |tz|
+      local_time = now.in_time_zone(tz)
+      next unless local_time.hour == 0
 
-      RemindersMailer.reminder_today(user, reminders).deliver_now if reminders.any?
+      time_zone_offset = tz.utc_offset / (60 * 60)
+      date = local_time.to_date
+      users = User.where(time_zone_offset: time_zone_offset)
+
+      users.each do |user|
+        reminders = user.reminders.where(reminder_date: date.all_day)
+        reminders = reminders.select do |r|
+          r.vehicle.preferences.send_reminder_emails
+        end
+
+        RemindersMailer.reminder_today(user, reminders).deliver_now if reminders.any?
+      end
     end
   end
 end
