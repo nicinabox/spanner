@@ -5,28 +5,33 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Stat from '$lib/components/Stat.svelte';
 	import { formatMileage } from '$lib/utils/vehicle';
-	import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
+	import type { DistanceUnit, Vehicle, Sortable } from '$lib/data/vehicles';
 	import VehicleSortMenu from '$lib/components/VehicleSortMenu.svelte';
 	import { enhance } from '$app/forms';
 	import { sortVehiclesBy } from '$lib/utils/sortable';
 
 	let { data, form }: PageProps = $props();
 
-	let active = data.vehicles.filter((v) => !v.retired);
-	let retired = sortVehiclesBy(
-		data.vehicles.filter((v) => v.retired),
-		['created_at', 'desc']
+	let active = $derived(data.vehicles.filter((v) => !v.retired));
+	let retired = $derived(
+		sortVehiclesBy(
+			data.vehicles.filter((v) => v.retired),
+			['created_at', 'desc']
+		)
 	);
 
 	let showRetired = $state(false);
 
-	let vehiclesByDistanceUnit = Object.entries(Object.groupBy(active, (v) => v.distanceUnit)) as [
-		DistanceUnit,
-		Vehicle[]
-	][];
+	let vehiclesByDistanceUnit = $derived(
+		Object.entries(Object.groupBy(active, (v) => v.distanceUnit)) as [DistanceUnit, Vehicle[]][]
+	);
 
-	let user = form?.user ?? data.user;
-	let vehiclesSortOrder = $state(user.preferences.vehiclesSortOrder);
+	let user = $derived(form?.user ?? data.user);
+	let vehiclesSortOrder = $state(['created_at', 'asc'] as Sortable);
+
+	$effect(() => {
+		vehiclesSortOrder = user.preferences.vehiclesSortOrder;
+	});
 </script>
 
 <div class="mb-6 flex justify-start gap-16 overflow-auto pointer-coarse:no-scrollbar">
@@ -54,10 +59,12 @@
 				onSelect={(value, event) => {
 					vehiclesSortOrder = value;
 
-					const form = event.target?.closest('form');
+					const form = (event.target as HTMLElement)?.closest('form');
 					if (form) {
-						form.querySelector('input[name=strategy]').value = value[0];
-						form.querySelector('input[name=order]').value = value[1];
+						const strategyInput = form.querySelector('input[name=strategy]') as HTMLInputElement | null;
+						const orderInput = form.querySelector('input[name=order]') as HTMLInputElement | null;
+						if (strategyInput) strategyInput.value = value[0];
+						if (orderInput) orderInput.value = value[1];
 						form.requestSubmit();
 					}
 				}}

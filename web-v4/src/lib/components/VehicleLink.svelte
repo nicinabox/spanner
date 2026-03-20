@@ -8,9 +8,9 @@
 	import VehicleColor from './VehicleColor.svelte';
 
 	const vehicle: Vehicle = $props();
-	const { id, name, milesPerYear, estimatedMileage, distanceUnit } = vehicle;
+	const { id, name, milesPerYear, estimatedMileage, distanceUnit } = $derived(vehicle);
 
-	let overdueRemindersCount = getOverdueRemindersCount(vehicle);
+	let overdueRemindersCount = $derived(getOverdueRemindersCount(vehicle));
 </script>
 
 <a

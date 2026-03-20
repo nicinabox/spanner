@@ -91,7 +91,7 @@
 			placeholder="Search history"
 			class="mb-4 w-full sm:w-1/2 lg:w-1/3"
 			bind:value={searchQuery}
-			onfocus={(e) => e.target?.select()}
+			onfocus={(e) => (e.target as HTMLInputElement)?.select()}
 		/>
 
 		<Button class="ml-auto" href={`/vehicles/${page.params.id}/add`}>

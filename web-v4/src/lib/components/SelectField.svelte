@@ -36,7 +36,7 @@
 	{name}
 	{...props}
 >
-	<NativeSelect>
+	<NativeSelect bind:value>
 		{#each options as { value, label }, i (i)}
 			<option {value}>{label}</option>
 		{/each}

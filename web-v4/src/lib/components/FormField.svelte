@@ -30,9 +30,9 @@
 	}: FormFieldProps = $props();
 
 	let uid = $props.id();
-	let error = findFieldError(name, errors);
+	let error = $derived(findFieldError(name, errors));
 
-	let state = $state<FieldContext>({
+	let state = $derived<FieldContext>({
 		...props,
 		id: props.id ?? uid,
 		name,
