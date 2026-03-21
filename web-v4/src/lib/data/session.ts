@@ -13,7 +13,7 @@ export interface Session {
 
 const request = createAPIRequest();
 
-export const create = async (data: { email: string }) => {
+export const create = async (data: { email: string; host?: string }) => {
 	return request(`/sessions`, { method: 'POST', json: data });
 };
 
