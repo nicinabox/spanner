@@ -9,6 +9,8 @@ class HourlyJob < ApplicationJob
 
   def today_reminders_in_timezone
     tz = ActiveSupport::TimeZone.all.find { |tz| Time.now.in_time_zone(tz).hour === 0 }
+    return unless tz
+
     time_zone_offset = tz.utc_offset / (60 * 60)
     date = Time.now.in_time_zone(tz)
     users = User.where time_zone_offset: time_zone_offset
