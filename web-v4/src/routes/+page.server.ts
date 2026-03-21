@@ -1,4 +1,5 @@
 import * as session from '$lib/data/session';
+import { apiConfig } from '$lib/data/config';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { setSession } from '$lib/utils/session';
@@ -16,6 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions = {
 	create: async ({ request }) => {
+		console.log('API Config baseUrl:', apiConfig.baseUrl);
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
 
@@ -23,6 +25,7 @@ export const actions = {
 			await session.create(data as never);
 			return { status: 'pending' };
 		} catch (error) {
+			console.error('Session create error:', error);
 			return fail(422, getHTTPErrors(error));
 		}
 	},
