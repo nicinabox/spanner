@@ -1,0 +1,9 @@
+[build]
+builder = "railpack"
+
+[deploy]
+startCommand = "bun ./build/index.js"
+
+[variables]
+CLIENT_SECRET = { required = true }
+PROXY_HOST = { required = true }
