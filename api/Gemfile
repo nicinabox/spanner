@@ -57,5 +57,5 @@ end
 
 gem 'rails_12factor', group: :production
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:windows]
+# Include timezone data for all platforms (required for Railway)
+gem 'tzinfo-data'
