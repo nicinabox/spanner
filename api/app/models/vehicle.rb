@@ -26,13 +26,13 @@ class Vehicle < ApplicationRecord
   end
 
   def prompt_for_first_record!
-    return if !preferences.prompt_for_records || records.any?
+    return if !preferences.send_prompt_for_records || records.any?
 
     PromptUserMailer.add_first_record(user, self).deliver_later
   end
 
   def prompt_for_new_record!
-    return unless preferences.prompt_for_records
+    return unless preferences.send_prompt_for_records
 
     date = estimated_next_record_date
     return unless date && (date <= Time.zone.today.beginning_of_day)
