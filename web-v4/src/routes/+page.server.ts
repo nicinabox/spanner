@@ -1,5 +1,4 @@
 import * as session from '$lib/data/session';
-import { apiConfig } from '$lib/data/config';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { setSession } from '$lib/utils/session';
@@ -16,13 +15,15 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	create: async ({ request }) => {
-		console.log('API Config baseUrl:', apiConfig.baseUrl);
+	create: async ({ request, url }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
 
+		// Pass the frontend host for email links
+		const host = process.env.PUBLIC_HOST || url.origin;
+
 		try {
-			await session.create(data as never);
+			await session.create({ email: data.email as string, host });
 			return { status: 'pending' };
 		} catch (error) {
 			console.error('Session create error:', error);
