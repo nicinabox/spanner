@@ -24,7 +24,9 @@
 		{#if center}
 			{@render center()}
 		{:else}
-			<a href={resolve('/')} class="text-lg">Spanner</a>
+			<a href={resolve('/')}>
+				<img src="/logo-white.png" alt="Spanner" class="h-6 w-auto" />
+			</a>
 		{/if}
 	</div>
 	<div class="navbar-end ml-auto [grid-area:end]">
