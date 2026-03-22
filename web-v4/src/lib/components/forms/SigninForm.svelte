@@ -29,31 +29,45 @@
 
 {#if form?.status === 'pending'}
 	<form method="post" action="?/signin" use:enhance>
-		<p class="mb-2">Check your email for a login token.</p>
+		<p class="mb-4 text-muted-foreground">
+			We sent a sign-in link to your email. Click the link to sign in instantly.
+		</p>
+
+		<div class="my-6 flex items-center gap-4">
+			<div class="h-px flex-1 bg-border"></div>
+			<span class="text-sm text-muted-foreground">Or</span>
+			<div class="h-px flex-1 bg-border"></div>
+		</div>
+
 		<fieldset class="fieldset">
 			<TextField
 				errors={form.errors}
 				name="token"
 				autocomplete="off"
-				label="Enter login token"
+				label="Enter your token"
 				required
 			/>
 		</fieldset>
 
-		<Button type="submit">Sign In</Button>
+		<div class="mt-6 flex flex-col gap-3">
+			<Button type="submit" class="w-full">Sign in</Button>
+			<Button href="/" variant="ghost" class="w-full">Back</Button>
+		</div>
 	</form>
 {:else}
 	<form method="post" action="?/create" use:enhance>
 		<fieldset class="fieldset">
 			<TextField
-				label="Enter your email to get started"
+				label="Email"
 				errors={form?.errors}
 				{placeholder}
 				name="email"
-				hint="First time? We'll set your account up automagically."
+				hint="New here? We'll create your account automatically."
 			/>
 		</fieldset>
 
-		<Button type="submit">Next</Button>
+		<div class="mt-6">
+			<Button type="submit" class="w-full">Continue</Button>
+		</div>
 	</form>
 {/if}
