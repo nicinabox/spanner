@@ -34,11 +34,16 @@ export const actions = {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
 
+		const token = data.token as string;
+		if (!token || token.trim() === '') {
+			return fail(422, { status: 'pending', errors: [{ id: 'token', title: "Token can't be blank" }] });
+		}
+
 		try {
-			const sess = await session.signin(data.token as string);
+			const sess = await session.signin(token);
 			await setSession(cookies, sess);
 		} catch (error) {
-			return fail(422, getHTTPErrors(error));
+			return fail(422, { status: 'pending', ...getHTTPErrors(error) });
 		}
 
 		redirect(303, '/vehicles');
