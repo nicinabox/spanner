@@ -76,22 +76,11 @@ export default class Document extends NextDocument {
                     <Main />
                     <NextScript />
 
-                    <Script>
-                        {`
-                        var _gauges = _gauges || [];
-                        (function() {
-                            var t   = document.createElement('script');
-                            t.type  = 'text/javascript';
-                            t.async = true;
-                            t.id    = 'gauges-tracker';
-                            t.setAttribute('data-site-id', '547f8cc8eddd5b7f9201ada2');
-                            t.setAttribute('data-track-path', 'https://track.gaug.es/track.gif');
-                            t.src = 'https://d2fuc4clr7gvcn.cloudfront.net/track.js';
-                            var s = document.getElementsByTagName('script')[0];
-                            s.parentNode.insertBefore(t, s);
-                        })();
-                    `}
-                    </Script>
+                    <script
+                        defer
+                        src="https://analytics.nicinabox.com/script.js"
+                        data-website-id="cf4e02e3-e896-4d07-b5de-521ce81f1559"
+                    />
                 </body>
             </Html>
         );
