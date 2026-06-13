@@ -5,4 +5,16 @@ class ApplicationMailer < ActionMailer::Base
 
   default from: 'spanner@nicinabox.com'
   layout 'mailer'
+
+  helper_method :logo_data_uri
+
+  def logo_data_uri
+    return @logo_data_uri if defined?(@logo_data_uri)
+
+    path = Rails.root.join('public/images/email-logo.png')
+    data = path.read
+    encoded = Base64.strict_encode64(data)
+
+    @logo_data_uri = "data:image/png;base64,#{encoded}"
+  end
 end
