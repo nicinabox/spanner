@@ -5,3 +5,7 @@ Hello <%= @user.email %>!
 <%end %>
 
 <%= yield %>
+
+<% if @unsubscribe_url %>
+Unsubscribe: <%= @unsubscribe_url %>
+<% end %>

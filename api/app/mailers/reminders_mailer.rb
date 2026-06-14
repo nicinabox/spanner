@@ -4,6 +4,8 @@ class RemindersMailer < ApplicationMailer
   def reminder_today(user, reminders)
     @user      = user
     @reminders = reminders
+    @vehicle   = @reminders.first.vehicle
+    @unsubscribe_url = unsubscribe_url(@vehicle, action: :reminders)
 
     mail to: @user.email, subject: reminder_subject(reminders)
   end
@@ -12,6 +14,8 @@ class RemindersMailer < ApplicationMailer
     @user      = user
     @reminders = reminders
     @date      = @reminders.first.try(:reminder_date) || @reminders.first.try(:date) || Time.zone.today
+    @vehicle   = @reminders.first.vehicle
+    @unsubscribe_url = unsubscribe_url(@vehicle, action: :reminders)
 
     mail to: @user.email, subject: reminder_subject(reminders)
   end

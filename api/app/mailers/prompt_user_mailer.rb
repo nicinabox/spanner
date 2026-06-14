@@ -4,6 +4,9 @@ class PromptUserMailer < ApplicationMailer
   def add_record(user, vehicle)
     @user = user
     @vehicle = vehicle
+    @unsubscribe_url = unsubscribe_url(@vehicle, action: :prompt)
+    @remind_me_later_url = prompt_control_url(@vehicle, action: :remind_me_later)
+    @mute_url = prompt_control_url(@vehicle, action: :mute)
 
     mail to: @user.email,
          subject: "Have you done anything to your #{vehicle.name} lately?"

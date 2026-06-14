@@ -27,6 +27,10 @@ Rails.application.configure do
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
+
+  config.action_mailer.default_url_options = {
+    host: 'localhost:3000'
+  }
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.
@@ -36,10 +40,6 @@ Rails.application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
-
-  config.action_mailer.default_url_options = {
-    host: 'http://localhost:3000'
-  }
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

@@ -24,6 +24,13 @@
             View all your vehicles at
             <a class="text-muted" href="https://spanner.nicinabox.com">https://spanner.nicinabox.com</a>
           </small>
+          <% if @unsubscribe_url %>
+            <div>
+              <small class="text-muted">
+                <a class="text-muted" href="<%= @unsubscribe_url %>">Unsubscribe</a>
+              </small>
+            </div>
+          <% end %>
           <div>
             <small class="text-muted">
               Thanks for using Spanner!

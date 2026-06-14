@@ -20,6 +20,7 @@ const vehicleFixture: API.Vehicle = {
         sendPromptForRecords: true,
         showMileageAdjustmentRecords: true,
     },
+    promptSnoozedUntil: null,
 };
 
 export default vehicleFixture;

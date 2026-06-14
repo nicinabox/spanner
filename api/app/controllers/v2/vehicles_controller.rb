@@ -75,7 +75,7 @@ module V2
         .require(:vehicle)
         .permit(
           :name, :vin, :notes, :position, :enable_cost, :distance_unit,
-          :retired, :import_file, :fuelly, :color,
+          :retired, :import_file, :fuelly, :color, :prompt_snoozed_until,
           preferences: %i[
             enable_sharing
             enable_cost

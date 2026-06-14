@@ -93,6 +93,7 @@ ActiveRecord::Schema[8.0].define(version: 2023_01_09_013025) do
     t.boolean "prompt_for_records", default: true
     t.string "color"
     t.hstore "preferences"
+    t.datetime "prompt_snoozed_until"
     t.index ["preferences"], name: "index_vehicles_on_preferences", using: :gin
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end

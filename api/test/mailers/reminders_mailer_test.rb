@@ -14,6 +14,8 @@ class RemindersMailerTest < ActionMailer::TestCase
     assert_equal ["user1@test"], mail.to
     assert_equal ["spanner@nicinabox.com"], mail.from
     assert_match "Hello", mail.body.encoded
+    assert_match "data:image/png;base64,", mail.body.encoded
+    assert_match '/unsubscribe/', mail.body.encoded
   end
 
   test "reminder_upcoming" do
@@ -26,6 +28,7 @@ class RemindersMailerTest < ActionMailer::TestCase
     assert_equal ["user2@test"], mail.to
     assert_equal ["spanner@nicinabox.com"], mail.from
     assert_match "14 days", mail.body.encoded
+    assert_match '/unsubscribe/', mail.body.encoded
   end
 
 end

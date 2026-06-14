@@ -15,14 +15,13 @@ class Vehicle < ApplicationRecord
   WEIGHT_COEFFICIENT = 10
 
   def preferences
-    @preferences ||= VehiclePreferences.new(self[:preferences] || {})
+    VehiclePreferences.new(self[:preferences] || {})
   end
 
   def preferences=(value)
     # Accepts either a VehiclePreferences object or a hash
     prefs_hash = value.is_a?(VehiclePreferences) ? value.to_hash : value
     self[:preferences] = prefs_hash
-    @preferences = VehiclePreferences.new(prefs_hash)
   end
 
   def prompt_for_first_record!
@@ -33,11 +32,16 @@ class Vehicle < ApplicationRecord
 
   def prompt_for_new_record!
     return unless preferences.send_prompt_for_records
+    return if prompt_snoozed? && prompt_snoozed_until > Time.zone.now
 
     date = estimated_next_record_date
     return unless date && (date <= Time.zone.today.beginning_of_day)
 
     PromptUserMailer.add_record(user, self).deliver_later
+  end
+
+  def prompt_snoozed?
+    prompt_snoozed_until.present?
   end
 
   def squish_vin

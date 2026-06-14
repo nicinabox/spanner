@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     FormControl,
     FormHelperText,
     FormLabel,
@@ -58,6 +59,8 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
         },
     });
 
+    const { mutate: updateVehicle } = useMutation(vehicles.createOrUpdateVehicle);
+
     const { mutate: destroyVehicle } = useMutation(vehicles.destroyVehicle, {
         onSuccess() {
             router.replace(vehiclesPath());
@@ -73,6 +76,25 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         createOrUpdateVehicle(formData);
+    };
+
+    const handleSnooze = () => {
+        if (!vehicle) return;
+        updateVehicle({
+            id: vehicle.id,
+            promptSnoozedUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        });
+    };
+
+    const handleMute = () => {
+        if (!vehicle) return;
+        updateVehicle({
+            id: vehicle.id,
+            preferences: {
+                ...formData.preferences,
+                sendPromptForRecords: false,
+            },
+        });
     };
 
     return (
@@ -218,11 +240,44 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ vehicle }) => {
             </form>
 
             {Boolean(vehicle) && (
-                <DangerZone>
-                    <DestroyButton onConfirm={handleDeleteVehicle}>
-                        Delete vehicle
-                    </DestroyButton>
-                </DangerZone>
+                <>
+                    <FormSection heading="Prompt Notifications">
+                        <Stack
+                            spacing={4}
+                            direction="row"
+                            align="center"
+                        >
+                            <Button
+                                colorScheme="blue"
+                                size="sm"
+                                onClick={handleSnooze}
+                            >
+                                Remind Me Later
+                            </Button>
+                            <Button
+                                colorScheme="red"
+                                size="sm"
+                                onClick={handleMute}
+                            >
+                                Mute
+                            </Button>
+                        </Stack>
+                        {vehicle!.promptSnoozedUntil && (
+                            <FormHelperText mt={2}>
+                                Prompts snoozed until{' '}
+                                {new Date(
+                                    vehicle!.promptSnoozedUntil,
+                                ).toLocaleDateString()}
+                            </FormHelperText>
+                        )}
+                    </FormSection>
+
+                    <DangerZone>
+                        <DestroyButton onConfirm={handleDeleteVehicle}>
+                            Delete vehicle
+                        </DestroyButton>
+                    </DangerZone>
+                </>
             )}
         </>
     );

@@ -9,6 +9,10 @@ class VehiclePreferences
   attribute :send_prompt_for_records, Boolean, default: true
   attribute :show_mileage_adjustment_records, Boolean, default: true
 
+  def to_hash
+    attributes.transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
+  end
+
   def self.dump(preferences)
     preferences.to_hash
   end

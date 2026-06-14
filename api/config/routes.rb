@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     post 'sessions', to: 'sessions#create'
 
     get 'login(/:login_token)', to: 'sessions#login', as: 'login'
+
+    get 'unsubscribe/:token', to: 'unsubscribes#show', as: 'unsubscribe'
+    post 'prompt_controls/:token/remind_me_later', to: 'prompt_controls#remind_me_later', as: 'remind_me_later'
+    post 'prompt_controls/:token/mute', to: 'prompt_controls#mute', as: 'mute_prompt'
   end
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do

@@ -80,5 +80,6 @@ declare namespace API {
         reminders: API.Reminder[];
         color: string | null;
         preferences: VehiclePreferences;
+        promptSnoozedUntil: string | null;
     }
 }
