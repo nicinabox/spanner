@@ -10,6 +10,9 @@ class ActiveSupport::TestCase
     seed_classifications
   end
 
+  # Make Action Mailer test helpers (assert_emails, etc.) available in all tests.
+  include ActionMailer::TestHelper
+
   # Add more helper methods to be used by all tests here...
 
   def seed_classifications
