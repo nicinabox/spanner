@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   end
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do
+    resources :classifications, only: :index
+
     resources :vehicles do
       get 'reminders/estimate_date', to: 'reminders#estimate_date'
       resources :reminders
