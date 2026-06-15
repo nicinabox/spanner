@@ -12,6 +12,7 @@ class LoginMailerTest < ActionMailer::TestCase
     assert_equal ["user1@test"], mail.to
     assert_equal ["spanner@nicinabox.com"], mail.from
     assert_match "Hello", mail.body.encoded
+    assert_match "data:image/png;base64,", mail.body.encoded
   end
 
 end
