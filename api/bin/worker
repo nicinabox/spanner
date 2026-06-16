@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Unified worker + scheduler runner for Railway.
+# This process:
+#   - Starts a QueueClassic worker thread to process queued jobs.
+#   - Runs a rufus-scheduler cron loop to enqueue recurring jobs.
+
+require_relative '../config/environment'
+
+worker = QC::Worker.new
+
+worker_thread = Thread.new do
+  Thread.current.name = 'queue_classic_worker'
+
+  begin
+    Rails.logger.info { '[worker] Starting QueueClassic worker' }
+    worker.start
+  rescue StandardError => e
+    Rails.logger.error { "[worker] QueueClassic worker crashed: #{e.message}" }
+    Bugsnag.notify(e) if defined?(Bugsnag)
+    raise
+  end
+end
+
+scheduler = Rufus::Scheduler.new
+
+scheduler.cron '0 5 * * *' do
+  Rails.logger.info { '[scheduler] Enqueuing DailyJob' }
+  DailyJob.perform_later
+end
+
+scheduler.cron '0 * * * *' do
+  Rails.logger.info { '[scheduler] Enqueuing HourlyJob' }
+  HourlyJob.perform_later
+end
+
+scheduler.cron '0 5 * * 1' do
+  Rails.logger.info { '[scheduler] Enqueuing WeekdayJob' }
+  WeekdayJob.perform_later
+end
+
+scheduler.cron '0 5 * * 6' do
+  Rails.logger.info { '[scheduler] Enqueuing WeekendJob' }
+  WeekendJob.perform_later
+end
+
+shutdown = proc do
+  Rails.logger.info { '[worker] Shutting down worker and scheduler' }
+  worker.stop
+  scheduler.shutdown(:wait)
+  worker_thread.join(5)
+  exit
+end
+
+Signal.trap('TERM', shutdown)
+Signal.trap('INT', shutdown)
+
+scheduler.join
