@@ -36,9 +36,9 @@ gem 'ostruct'
 gem 'postmark-rails'
 gem 'premailer-rails'
 gem 'queue_classic', '>= 4.0.0'
+gem 'rufus-scheduler', '~> 3.9'
 gem 'schema2type'
 gem 'virtus'
-gem 'whenever', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -59,3 +59,4 @@ gem 'rails_12factor', group: :production
 
 # Include timezone data for all platforms (required for Railway)
 gem 'tzinfo-data'
+
