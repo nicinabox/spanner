@@ -1,13 +1,13 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   host = 'https://spanner.nicinabox.com'
-  api_host = ENV['API_HOST']
+  api_host = ENV.fetch('API_HOST', nil)
 
   # Settings specified here will take precedence over those in config/application.rb.
 
-  if ENV["ALLOWED_HOSTS"]
-    ENV["ALLOWED_HOSTS"].split(",").each do |host|
-      config.hosts << host.strip
-    end
+  ENV['ALLOWED_HOSTS']&.split(',')&.each do |host|
+    config.hosts << host.strip
   end
 
   # Code is not reloaded between requests.
@@ -47,7 +47,7 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -62,7 +62,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :postmark
 
   config.action_mailer.postmark_settings = {
-    api_token: ENV['POSTMARK_API_KEY']
+    api_token: ENV.fetch('POSTMARK_API_KEY', nil)
   }
 
   config.action_mailer.default_url_options = {
@@ -81,14 +81,14 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
+    logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end

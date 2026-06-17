@@ -72,17 +72,16 @@ module V2
 
     def vehicle_params
       params
-        .require(:vehicle)
-        .permit(
-          :name, :vin, :notes, :position, :enable_cost, :distance_unit,
-          :retired, :import_file, :fuelly, :color,
-          preferences: %i[
-            enable_sharing
-            enable_cost
-            send_reminder_emails
-            send_prompt_for_records
-            show_mileage_adjustment_records
-          ]
+        .expect(
+          vehicle: [:name, :vin, :notes, :position, :enable_cost, :distance_unit,
+                    :retired, :import_file, :fuelly, :color,
+                    { preferences: %i[
+                      enable_sharing
+                      enable_cost
+                      send_reminder_emails
+                      send_prompt_for_records
+                      show_mileage_adjustment_records
+                    ] }]
         )
     end
   end

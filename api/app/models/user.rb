@@ -55,7 +55,7 @@ class User < ApplicationRecord
   end
 
   def can_access_analytics?
-    [ENV['ANALYTICS_USER']].include? email
+    [ENV.fetch('ANALYTICS_USER', nil)].include? email
   end
 
   def active_sessions?

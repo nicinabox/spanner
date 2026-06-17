@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMongoIds < ActiveRecord::Migration[5.0]
   def change
     add_column :users, :mongo_id, :string

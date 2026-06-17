@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-include ErrorSerializer
-
 class ApplicationController < ActionController::API
+  include ErrorSerializer
   include ErrorLogging
   include ActionController::HttpAuthentication::Token::ControllerMethods
 

@@ -4,8 +4,8 @@ require:
 AllCops:
   NewCops: enable
   Exclude:
-    - "db/schema.rb"
-    - "bin/*"
+    - "db/**/*"
+    - "bin/**/*"
     - "node_modules/**/*"
     - "vendor/**/*"
 
@@ -13,4 +13,25 @@ Rails:
   Enabled: true
 
 Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 30
+
+Metrics/AbcSize:
+  Max: 35
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/BlockLength:
+  Exclude:
+    - "config/environments/*"
+    - "lib/tasks/*.rake"
+  Max: 30
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+Rails/StrongParametersExpect:
   Enabled: false

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
-require "minitest/mock"
+require 'minitest/mock'
 
 class ReminderTest < ActiveSupport::TestCase
-  test "estimate_date" do
+  test 'estimate_date' do
     vehicle = Vehicle.new
     vehicle.stub :miles_per_day, 22 do
       vehicle.stub :estimated_mileage, 3800 do
@@ -14,7 +16,7 @@ class ReminderTest < ActiveSupport::TestCase
         )
 
         days = (5000 - vehicle.estimated_mileage) / vehicle.miles_per_day
-        assert_equal reminder.estimate_date, Date.today + days.days
+        assert_equal reminder.estimate_date, Time.zone.today + days.days
       end
     end
   end

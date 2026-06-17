@@ -59,4 +59,3 @@ gem 'rails_12factor', group: :production
 
 # Include timezone data for all platforms (required for Railway)
 gem 'tzinfo-data'
-

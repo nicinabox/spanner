@@ -10,8 +10,8 @@ namespace :qc do
     end
   end
 
-  desc "Returns the number of jobs in the (default or QUEUE) queue"
-  task :count => :environment do
+  desc 'Returns the number of jobs in the (default or QUEUE) queue'
+  task count: :environment do
     QC::Worker.new.queues.each do |queue|
       puts "#{queue.name} ->\t #{queue.count}"
     end

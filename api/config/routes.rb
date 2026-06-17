@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'constraints/api_constraint'
 
 Rails.application.routes.draw do

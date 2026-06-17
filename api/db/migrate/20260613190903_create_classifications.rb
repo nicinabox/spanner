@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateClassifications < ActiveRecord::Migration[8.0]
   def change
     create_table :classifications do |t|
