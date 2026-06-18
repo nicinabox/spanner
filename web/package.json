@@ -9,6 +9,7 @@
         "lint": "next lint",
         "lint:fix": "next lint --fix",
         "test": "jest",
+        "typecheck": "tsc --noEmit",
         "dev": "next dev",
         "build": "next build",
         "start": "next start"

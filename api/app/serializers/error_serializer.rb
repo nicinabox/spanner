@@ -3,15 +3,13 @@
 module ErrorSerializer
   def self.serialize(object)
     if object.is_a? String
-      serizlize_message(object)
+      serialize_message(object)
     else
       serialize_object(object)
     end
   end
 
-  protected
-
-  def serialize_object(object)
+  def self.serialize_object(object)
     return if object.errors.nil?
 
     object.errors.to_hash(true).map do |k, v|
@@ -21,7 +19,7 @@ module ErrorSerializer
     end.flatten
   end
 
-  def serizlize_message(message)
+  def self.serialize_message(message)
     message
   end
 end

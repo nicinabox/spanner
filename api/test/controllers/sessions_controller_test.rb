@@ -1,19 +1,21 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
-  test "request new session" do
+  test 'request new session' do
     post sessions_url, params: { email: 'nic@test' }, headers: http_options[:headers]
     assert User.last.email == 'nic@test'
-    assert User.last.login_token_valid_until > Time.now
+    assert User.last.login_token_valid_until > Time.zone.now
   end
 
-  test "login" do
+  test 'login' do
     login_token = SecureRandom.urlsafe_base64
     User.create({
-      email: 'nic@test',
-      login_token: login_token,
-      login_token_valid_until: Time.now + 15.minutes
-    })
+                  email: 'nic@test',
+                  login_token: login_token,
+                  login_token_valid_until: 15.minutes.from_now
+                })
 
     get login_url(login_token: login_token), headers: http_options[:headers]
     assert_not_empty response_body['auth_token']

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class LoginMailerTest < ActionMailer::TestCase
@@ -5,14 +7,13 @@ class LoginMailerTest < ActionMailer::TestCase
     new_session
   end
 
-  test "login_link" do
-    mail = LoginMailer.login_link(@user, host: "http://localhost")
+  test 'login_link' do
+    mail = LoginMailer.login_link(@user, host: 'http://localhost')
 
-    assert_match "Sign in to Spanner", mail.subject
-    assert_equal ["user1@test"], mail.to
-    assert_equal ["spanner@nicinabox.com"], mail.from
-    assert_match "Hello", mail.body.encoded
-    assert_match "data:image/png;base64,", mail.body.encoded
+    assert_match 'Sign in to Spanner', mail.subject
+    assert_equal ['user1@test'], mail.to
+    assert_equal ['spanner@nicinabox.com'], mail.from
+    assert_match 'Hello', mail.body.encoded
+    assert_match 'data:image/png;base64,', mail.body.encoded
   end
-
 end

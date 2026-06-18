@@ -11,7 +11,7 @@ class ApplicationMailer < ActionMailer::Base
   def logo_data_uri
     return @logo_data_uri if defined?(@logo_data_uri)
 
-    path = Rails.root.join('public/images/email-logo.png')
+    path = Rails.public_path.join('images/email-logo.png')
     data = path.read
     encoded = Base64.strict_encode64(data)
 

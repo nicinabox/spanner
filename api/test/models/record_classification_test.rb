@@ -11,14 +11,14 @@ class RecordClassificationTest < ActiveSupport::TestCase
   end
 
   test 'creating a record classifies notes' do
-    record = @vehicle.records.create!(date: Date.today, notes: 'Changed oil and rotated tires')
+    record = @vehicle.records.create!(date: Time.zone.today, notes: 'Changed oil and rotated tires')
     names = record.classifications.pluck(:name).sort
     assert_includes names, 'Oil Change'
     assert_includes names, 'Tire Rotation'
   end
 
   test 'updating record notes reclassifies' do
-    record = @vehicle.records.create!(date: Date.today, notes: 'Changed oil')
+    record = @vehicle.records.create!(date: Time.zone.today, notes: 'Changed oil')
     assert_includes record.classifications.pluck(:name), 'Oil Change'
 
     record.update!(notes: 'New battery')
@@ -27,14 +27,14 @@ class RecordClassificationTest < ActiveSupport::TestCase
   end
 
   test 'record classification requires classifier' do
-    record = @vehicle.records.create!(date: Date.today, notes: 'Test')
+    record = @vehicle.records.create!(date: Time.zone.today, notes: 'Test')
     rc = RecordClassification.new(record: record, classification: @classification)
     assert_not rc.valid?
     assert_includes rc.errors[:classifier], "can't be blank"
   end
 
   test 'record classification confidence defaults to 1.0' do
-    record = @vehicle.records.create!(date: Date.today, notes: 'Test')
+    record = @vehicle.records.create!(date: Time.zone.today, notes: 'Test')
     rc = RecordClassification.new(record: record, classification: @classification, classifier: 'heuristic')
     assert rc.valid?
     assert_equal 1.0, rc.confidence

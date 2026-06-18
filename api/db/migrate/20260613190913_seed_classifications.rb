@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SeedClassifications < ActiveRecord::Migration[8.0]
   BUILT_INS = {
     oil_change: {
