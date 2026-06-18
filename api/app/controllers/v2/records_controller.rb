@@ -83,11 +83,11 @@ module V2
       Array(uploaded).each do |file|
         next unless file.respond_to?(:size)
 
-        if file.size > Record::MAX_ATTACHMENT_SIZE
-          raise ActiveRecord::RecordInvalid.new(
-            Record.new.tap { |r| r.errors.add(:attachments, "exceeds the 10MB size limit") }
-          )
-        end
+        next unless file.size > Record::MAX_ATTACHMENT_SIZE
+
+        raise(ActiveRecord::RecordInvalid, Record.new.tap do |r|
+          r.errors.add(:attachments, 'exceeds the 10MB size limit')
+        end)
       end
     end
   end

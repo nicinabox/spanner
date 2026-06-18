@@ -89,11 +89,12 @@ class RecordsControllerTest < ActionDispatch::IntegrationTest
     vehicle = @user.vehicles.first
     record = vehicle.records.create!(date: Time.zone.today, notes: 'Oil change')
     file = Rack::Test::UploadedFile.new(file_fixture('receipt.pdf').to_s, 'application/pdf')
-    record.attachments.attach(io: file.respond_to?(:read) ? file : File.open(file), filename: 'receipt.pdf', content_type: 'application/pdf')
+    record.attachments.attach(io: file.respond_to?(:read) ? file : File.open(file), filename: 'receipt.pdf',
+                              content_type: 'application/pdf')
     signed_id = record.attachments.first.signed_id
 
     delete vehicle_record_attachment_url(vehicle, record, signed_id),
-          headers: http_options(@session.auth_token)[:headers]
+           headers: http_options(@session.auth_token)[:headers]
     assert_response :no_content
 
     get vehicle_record_url(vehicle, record), headers: http_options(@session.auth_token)[:headers]

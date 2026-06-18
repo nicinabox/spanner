@@ -32,7 +32,11 @@ class RecordTest < ActiveSupport::TestCase
   end
 
   test 'has many attached attachments' do
-    vehicle = vehicles(:one) rescue Vehicle.first || Vehicle.create!(name: 'Test Vehicle', user: User.first)
+    vehicle = begin
+      vehicles(:one)
+    rescue StandardError
+      Vehicle.first || Vehicle.create!(name: 'Test Vehicle', user: User.first)
+    end
     record = vehicle.records.create!(date: Time.zone.today, notes: 'Oil change')
 
     assert record.respond_to?(:attachments)
