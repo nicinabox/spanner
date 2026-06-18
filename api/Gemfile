@@ -12,6 +12,7 @@ gem 'pg', '~> 1.5'
 gem 'puma'
 
 gem 'active_model_serializers'
+gem 'aws-sdk-s3', '~> 1.0', require: false
 gem 'base64'
 gem 'benchmark'
 gem 'bigdecimal'

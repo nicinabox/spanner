@@ -51,4 +51,10 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Active Storage: store files on local disk in development.
+  config.active_storage.service = :local
+
+  Rails.application.routes.default_url_options[:host] = 'localhost:3001'
+  Rails.application.routes.default_url_options[:protocol] = 'http'
 end

@@ -13,6 +13,10 @@
 !/log/.keep
 !/tmp/.keep
 
+# Ignore Active Storage local disk uploads (development).
+/storage/*
+!/storage/.keep
+
 # Ignore Byebug command history file.
 .byebug_history
 
