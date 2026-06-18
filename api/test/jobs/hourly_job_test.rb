@@ -4,9 +4,19 @@ require 'test_helper'
 require 'action_mailer/test_case'
 
 class HourlyJobTest < ActiveJob::TestCase
+  include ActiveSupport::Testing::TimeHelpers
+
   setup do
+    # The user is in UTC-2, so midnight for them is 02:00 UTC. Freeze time so
+    # HourlyJob#find_midnight_timezone reliably finds the matching zone.
+    travel_to Time.utc(2026, 1, 15, 2, 0, 0)
+
     @user = users(:one)
     @user.update!(time_zone_offset: '-2')
+  end
+
+  teardown do
+    travel_back
   end
 
   test 'sends today reminders to active users' do
