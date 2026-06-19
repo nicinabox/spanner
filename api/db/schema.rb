@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 20_260_614_211_130) do
+ActiveRecord::Schema[8.0].define(version: 20_260_619_153_248) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'hstore'
   enable_extension 'pg_catalog.plpgsql'
@@ -63,7 +63,6 @@ ActiveRecord::Schema[8.0].define(version: 20_260_614_211_130) do
     t.text 'notes'
     t.datetime 'created_at', precision: nil, null: false
     t.datetime 'updated_at', precision: nil, null: false
-    t.string 'mongo_id'
     t.string 'record_type'
     t.index ['vehicle_id'], name: 'index_records_on_vehicle_id'
   end
@@ -73,7 +72,6 @@ ActiveRecord::Schema[8.0].define(version: 20_260_614_211_130) do
     t.string 'notes'
     t.datetime 'created_at', precision: nil, null: false
     t.datetime 'updated_at', precision: nil, null: false
-    t.string 'mongo_id'
     t.datetime 'date', precision: nil
     t.integer 'mileage'
     t.string 'reminder_type'
@@ -100,7 +98,6 @@ ActiveRecord::Schema[8.0].define(version: 20_260_614_211_130) do
     t.datetime 'updated_at', precision: nil, null: false
     t.string 'login_token'
     t.datetime 'login_token_valid_until', precision: nil
-    t.string 'mongo_id'
     t.string 'time_zone_offset'
     t.json 'preferences'
     t.datetime 'last_reminder_sent_at'
@@ -117,7 +114,6 @@ ActiveRecord::Schema[8.0].define(version: 20_260_614_211_130) do
     t.boolean 'retired'
     t.datetime 'created_at', precision: nil, null: false
     t.datetime 'updated_at', precision: nil, null: false
-    t.string 'mongo_id'
     t.string 'distance_unit', default: 'mi'
     t.boolean 'prompt_for_records', default: true
     t.string 'color'
