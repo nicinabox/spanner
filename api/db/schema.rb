@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 20_260_619_153_248) do
+ActiveRecord::Schema[8.0].define(version: 20_260_619_160_000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'hstore'
   enable_extension 'pg_catalog.plpgsql'
@@ -101,6 +101,7 @@ ActiveRecord::Schema[8.0].define(version: 20_260_619_153_248) do
     t.string 'time_zone_offset'
     t.json 'preferences'
     t.datetime 'last_reminder_sent_at'
+    t.boolean 'admin', default: false, null: false
     t.index ['email'], name: 'index_users_on_email', unique: true
   end
 

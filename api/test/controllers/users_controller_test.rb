@@ -22,6 +22,7 @@ module V2
       assert_response :success
       body = JSON.parse(@response.body)
       assert_equal @user.email, body['email']
+      assert_equal false, body['admin?']
     end
 
     test 'should update current user' do
