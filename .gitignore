@@ -1,0 +1,8 @@
+# Git worktrees
+.worktrees/
+
+# Claude Code
+.claude/
+
+# Project-local logs
+log/
