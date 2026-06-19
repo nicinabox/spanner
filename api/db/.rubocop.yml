@@ -1,0 +1,11 @@
+# Auto-generated schema uses double quotes (Rails 8.0 default).
+# This override ensures db/schema.rb stays consistent across Ruby versions
+# that may generate single quotes. Only StringLiterals is enforced;
+# all other cops are disabled since this file is auto-generated.
+
+AllCops:
+  DisabledByDefault: true
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
