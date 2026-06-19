@@ -2,7 +2,7 @@ import React from 'react';
 import { ColorModeScript } from '@chakra-ui/react';
 import NextDocument, { Html, Head, Main, NextScript } from 'next/document';
 import theme from 'theme';
-import Script from 'components/common/Script';
+import HeadInjections from 'components/common/HeadInjections';
 
 export default class Document extends NextDocument {
     render() {
@@ -68,6 +68,8 @@ export default class Document extends NextDocument {
                         sizes="192x192"
                         href="/assets/apple-touch-icon-192x192.png"
                     />
+
+                    <HeadInjections />
                 </Head>
                 <body>
                     <ColorModeScript
@@ -75,12 +77,6 @@ export default class Document extends NextDocument {
                     />
                     <Main />
                     <NextScript />
-
-                    <script
-                        defer
-                        src="https://analytics.nicinabox.com/script.js"
-                        data-website-id="cf4e02e3-e896-4d07-b5de-521ce81f1559"
-                    />
                 </body>
             </Html>
         );
