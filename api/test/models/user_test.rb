@@ -85,4 +85,82 @@ class UserTest < ActiveSupport::TestCase
     user.sessions.first.update!(last_seen: 200.days.ago)
     assert_equal 30.days.to_i, user.reminder_backoff_interval.to_i
   end
+
+  test 'request_email_change! stores unconfirmed email without changing email' do
+    user = users(:one)
+
+    user.request_email_change!('new@example.com')
+
+    assert_equal 'user1@test', user.reload.email
+    assert_equal 'new@example.com', user.unconfirmed_email
+    assert_not_nil user.email_confirmation_token
+    assert user.email_confirmation_token_valid_until > Time.zone.now
+  end
+
+  test 'request_email_change! normalizes the new email' do
+    user = users(:one)
+
+    user.request_email_change!('  NEW@Example.com  ')
+
+    assert_equal 'new@example.com', user.reload.unconfirmed_email
+  end
+
+  test 'request_email_change! rejects a blank email' do
+    user = users(:one)
+
+    assert_raises(ActiveRecord::RecordInvalid) { user.request_email_change!('') }
+    assert_raises(ActiveRecord::RecordInvalid) { user.request_email_change!('   ') }
+  end
+
+  test 'request_email_change! rejects the current email' do
+    user = users(:one)
+
+    assert_raises(ActiveRecord::RecordInvalid) { user.request_email_change!(user.email) }
+  end
+
+  test 'request_email_change! rejects a duplicate email' do
+    user = users(:one)
+    other = users(:two)
+
+    assert_raises(ActiveRecord::RecordInvalid) { user.request_email_change!(other.email) }
+  end
+
+  test 'confirm_email_change! commits the new email and clears the token' do
+    user = users(:one)
+    user.request_email_change!('new@example.com')
+    token = user.reload.email_confirmation_token
+
+    confirmed = User.confirm_email_change!(token)
+
+    assert_equal user, confirmed
+    assert_equal 'new@example.com', user.reload.email
+    assert_nil user.unconfirmed_email
+    assert_nil user.email_confirmation_token
+    assert_nil user.email_confirmation_token_valid_until
+  end
+
+  test 'confirm_email_change! returns nil for an invalid token' do
+    assert_nil User.confirm_email_change!('does-not-exist')
+  end
+
+  test 'confirm_email_change! returns nil for an expired token' do
+    user = users(:one)
+    user.request_email_change!('new@example.com')
+    user.update!(email_confirmation_token_valid_until: 1.minute.ago)
+
+    assert_nil User.confirm_email_change!(user.reload.email_confirmation_token)
+    assert_equal 'user1@test', user.reload.email
+    assert_equal 'new@example.com', user.unconfirmed_email
+  end
+
+  test 'confirm_email_change! rejects a token whose new email is already taken' do
+    user = users(:one)
+    user.request_email_change!('new@example.com')
+    token = user.reload.email_confirmation_token
+
+    User.create!(email: 'new@example.com')
+
+    assert_nil User.confirm_email_change!(token)
+    assert_equal 'user1@test', user.reload.email
+  end
 end

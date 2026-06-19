@@ -16,7 +16,12 @@ class User < ApplicationRecord
   # they are suppressed forever. This lets the cutoff act as a final grace
   # reminder before unsubscribing from future noise.
 
+  EMAIL_CONFIRMATION_TOKEN_TTL = 15.minutes
+
   validates :email, presence: true
+  validates :unconfirmed_email,
+            allow_nil: true,
+            format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is invalid' }
 
   store_accessor :preferences
 
@@ -25,7 +30,54 @@ class User < ApplicationRecord
   has_many :reminders, through: :vehicles
   has_many :records, through: :vehicles
 
-  before_save { |user| user.email = user.email.strip.downcase }
+  before_save { |user| user.email = user.email.strip.downcase if user.email }
+  before_save { |user| user.unconfirmed_email = user.unconfirmed_email.strip.downcase if user.unconfirmed_email }
+
+  # Begins an email change request. Stores the requested (new) email and a
+  # single-use confirmation token, but does NOT modify the current `email`.
+  # Raises ActiveRecord::RecordInvalid if the new email is already taken or
+  # otherwise invalid.
+  def request_email_change!(new_email)
+    new_email = new_email.to_s.strip.downcase
+    raise ActiveRecord::RecordInvalid, self if new_email.blank?
+    raise ActiveRecord::RecordInvalid, self if new_email == email
+
+    if self.class.exists?(email: new_email)
+      errors.add(:email, 'has already been taken')
+      raise ActiveRecord::RecordInvalid, self
+    end
+
+    update!(
+      unconfirmed_email: new_email,
+      email_confirmation_token: SecureRandom.urlsafe_base64,
+      email_confirmation_token_valid_until: EMAIL_CONFIRMATION_TOKEN_TTL.from_now
+    )
+  end
+
+  # Redeems a pending email change for the given token, committing the new
+  # email. Returns the user on success, nil if the token is invalid/expired.
+  # Re-validates uniqueness at commit time to guard against races.
+  def self.confirm_email_change!(token)
+    return nil if token.blank?
+
+    user = where(email_confirmation_token: token)
+           .where('email_confirmation_token_valid_until > ?', Time.zone.now)
+           .first
+    return nil unless user&.unconfirmed_email
+
+    if exists?(email: user.unconfirmed_email)
+      user.errors.add(:email, 'has already been taken')
+      return nil
+    end
+
+    user.update!(
+      email: user.unconfirmed_email,
+      unconfirmed_email: nil,
+      email_confirmation_token: nil,
+      email_confirmation_token_valid_until: nil
+    )
+    user
+  end
 
   def preferences
     @preferences ||= UserPreferences.new(self[:preferences] || {})
