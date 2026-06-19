@@ -59,6 +59,17 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test 'admin defaults to false for a new user' do
+    user = User.create!(email: 'newadmin@example.com')
+    assert_equal false, user.admin
+    assert_not user.admin?
+  end
+
+  test 'admin? reflects the admin flag' do
+    user = users(:admin)
+    assert user.admin?
+  end
+
   test 'reminder_backoff_interval increases with inactivity' do
     user = users(:one)
 

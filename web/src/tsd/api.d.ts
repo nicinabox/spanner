@@ -51,6 +51,7 @@ declare namespace API {
         createdAt: string;
         updatedAt: string;
         timeZoneOffset: string | null;
+        admin: boolean;
         preferences: {
             vehiclesSortOrder: Sortable;
         };

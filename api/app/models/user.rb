@@ -50,6 +50,10 @@ class User < ApplicationRecord
     id
   end
 
+  def admin?
+    admin
+  end
+
   def active_sessions?
     sessions.active.any?
   end
