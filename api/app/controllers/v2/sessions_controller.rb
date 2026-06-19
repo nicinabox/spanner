@@ -20,8 +20,6 @@ module V2
         PromptUserMailer.add_first_vehicle(user).deliver_later wait: 5.minutes
       end
 
-      return head :no_content if user.demo_account?
-
       if user
         login_token = SecureRandom.urlsafe_base64
         user.update!(
@@ -69,12 +67,10 @@ module V2
       browser = Browser.new(request.user_agent)
       name = request.user_agent =~ /Spanner/ ? 'Spanner iOS' : browser.name
 
-      unless user.demo_account?
-        user.update!(
-          login_token: nil,
-          login_token_valid_until: 1.year.ago
-        )
-      end
+      user.update!(
+        login_token: nil,
+        login_token_valid_until: 1.year.ago
+      )
 
       session = user.sessions.build(
         ip: remote_ip,

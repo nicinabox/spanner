@@ -34,7 +34,5 @@ Rails.application.routes.draw do
 
     delete 'sessions/:id', to: 'sessions#destroy'
     get 'sessions', to: 'sessions#index'
-
-    get 'analytics', to: 'analytics#index'
   end
 end
