@@ -6,3 +6,6 @@
 
 # Project-local logs
 log/
+
+# Project-local docs
+docs/
