@@ -50,14 +50,6 @@ class User < ApplicationRecord
     id
   end
 
-  def demo_account?
-    email == ENV['DEMO_USER']
-  end
-
-  def can_access_analytics?
-    [ENV.fetch('ANALYTICS_USER', nil)].include? email
-  end
-
   def active_sessions?
     sessions.active.any?
   end
