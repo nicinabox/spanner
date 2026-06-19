@@ -11,5 +11,7 @@ export const getContentFile = (name: string) => {
 
 export const getHtmlFromMarkdown = (name: string) => {
     const content = getContentFile(name);
-    return marked(content);
+    const appUrl = process.env.APP_URL || 'http://localhost:3000';
+    const interpolated = content.replaceAll('{{APP_URL}}', appUrl);
+    return marked(interpolated);
 };

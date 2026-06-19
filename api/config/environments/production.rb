@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
-  host = 'https://spanner.nicinabox.com'
+  host = ENV.fetch('APP_URL', 'http://localhost:3000')
   api_host = ENV.fetch('API_HOST', nil)
 
   # Settings specified here will take precedence over those in config/application.rb.

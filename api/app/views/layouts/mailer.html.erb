@@ -19,10 +19,11 @@
 
         <%= yield %>
 
+        <% app_url = ENV.fetch('APP_URL', 'http://localhost:3000') %>
         <div class="footer">
           <small class="text-muted">
             View all your vehicles at
-            <a class="text-muted" href="https://spanner.nicinabox.com">https://spanner.nicinabox.com</a>
+            <a class="text-muted" href="<%= app_url %>"><%= app_url %></a>
           </small>
           <div>
             <small class="text-muted">
