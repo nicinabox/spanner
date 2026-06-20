@@ -291,4 +291,50 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedules = vehicle.service_schedules
     assert_not schedules.any? { |s| s.classification.key == 'tire_rotation' }
   end
+
+  test 'auto-advances schedule when matching record is saved' do
+    @classification.update!(default_mileage_interval: 5000)
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    vehicle.records.create!(
+      date: 60.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+
+    schedule = vehicle.service_schedules.find { |s| s.classification_id == @classification.id }
+    schedule.generate_reminder
+    assert_equal 55_000, schedule.reminder.mileage
+
+    vehicle.records.create!(
+      date: Time.zone.today,
+      notes: 'Oil change',
+      mileage: 53_000
+    )
+
+    schedule.reload
+    assert_equal 58_000, schedule.reminder.mileage
+  end
+
+  test 'does not advance schedules when record does not match classification' do
+    @classification.update!(default_mileage_interval: 5000)
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    vehicle.records.create!(
+      date: 60.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+
+    schedule = vehicle.service_schedules.find { |s| s.classification_id == @classification.id }
+    schedule.generate_reminder
+    original_mileage = schedule.reminder.mileage
+
+    vehicle.records.create!(
+      date: Time.zone.today,
+      notes: 'Washed car',
+      mileage: 51_000
+    )
+
+    schedule.reload
+    assert_equal original_mileage, schedule.reminder.mileage
+  end
 end
