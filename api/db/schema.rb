@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_19_175800) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_20_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -105,6 +105,22 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_19_175800) do
     t.index ["vehicle_id"], name: "index_reminders_on_vehicle_id"
   end
 
+  create_table "service_schedules", force: :cascade do |t|
+    t.bigint "vehicle_id", null: false
+    t.bigint "classification_id", null: false
+    t.integer "mileage_interval"
+    t.integer "month_interval"
+    t.text "notes"
+    t.boolean "enabled", default: true, null: false
+    t.bigint "last_completed_record_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["classification_id"], name: "index_service_schedules_on_classification_id"
+    t.index ["last_completed_record_id"], name: "index_service_schedules_on_last_completed_record_id"
+    t.index ["vehicle_id", "classification_id"], name: "index_service_schedules_on_vehicle_id_and_classification_id", unique: true
+    t.index ["vehicle_id"], name: "index_service_schedules_on_vehicle_id"
+  end
+
   create_table "sessions", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.string "ip"
@@ -161,4 +177,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_19_175800) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "record_classifications", "classifications"
   add_foreign_key "record_classifications", "records"
+  add_foreign_key "service_schedules", "classifications"
+  add_foreign_key "service_schedules", "records", column: "last_completed_record_id"
+  add_foreign_key "service_schedules", "vehicles"
 end
