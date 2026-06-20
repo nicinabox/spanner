@@ -26,14 +26,18 @@ module V2
     def create
       record = records.build(record_params)
 
+      validate_attachment_sizes!
       record.save!
+      record.attachments.attach(params[:record][:attachments]) if params[:record][:attachments].present?
       render json: record
     end
 
     def update
       record = records.find(params[:id])
 
+      validate_attachment_sizes!
       record.update!(record_params)
+      record.attachments.attach(params[:record][:attachments]) if params[:record][:attachments].present?
       render json: record
     end
 
@@ -41,6 +45,16 @@ module V2
       record = records.find(params[:id])
 
       record.destroy!
+      head :no_content
+    end
+
+    def destroy_attachment
+      record = records.find(params[:record_id])
+      attachment = record.attachments.find { |a| a.signed_id == params[:signed_id] }
+
+      raise ActiveRecord::RecordNotFound if attachment.nil?
+
+      attachment.purge
       head :no_content
     end
 
@@ -60,6 +74,21 @@ module V2
 
     def record_params
       params.require(:record).permit(:date, :cost, :mileage, :notes, :record_type)
+    end
+
+    def validate_attachment_sizes!
+      uploaded = params[:record][:attachments]
+      return if uploaded.blank?
+
+      Array(uploaded).each do |file|
+        next unless file.respond_to?(:size)
+
+        next unless file.size > Record::MAX_ATTACHMENT_SIZE
+
+        raise(ActiveRecord::RecordInvalid, Record.new.tap do |r|
+          r.errors.add(:attachments, 'exceeds the 10MB size limit')
+        end)
+      end
     end
   end
 end

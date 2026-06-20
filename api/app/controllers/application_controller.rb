@@ -6,6 +6,7 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
   before_action :authenticate
+  before_action :set_active_storage_url_options
   before_bugsnag_notify :add_user_info_to_bugsnag
 
   rescue_from StandardError do |e|
@@ -71,6 +72,10 @@ class ApplicationController < ActionController::API
 
   def time_zone_offset
     request.headers['HTTP_TIME_ZONE_OFFSET'] || '0'
+  end
+
+  def set_active_storage_url_options
+    ActiveStorage::Current.url_options = Rails.application.routes.default_url_options.dup
   end
 
   def render_unauthorized

@@ -26,7 +26,9 @@ Rails.application.routes.draw do
       get :share
       get 'records/share', to: 'records#share'
 
-      resources :records
+      resources :records do
+        delete 'attachments/:signed_id', to: 'records#destroy_attachment', as: :attachment
+      end
 
       post :import
       get :export
