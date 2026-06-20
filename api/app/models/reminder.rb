@@ -5,6 +5,7 @@ class Reminder < ApplicationRecord
   validate :mileage_greater_than_trailing_record
 
   belongs_to :vehicle
+  belongs_to :service_schedule, optional: true
 
   default_scope { order(date: :asc) }
 

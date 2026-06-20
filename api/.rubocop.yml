@@ -23,6 +23,8 @@ Metrics/AbcSize:
 
 Metrics/ClassLength:
   Max: 150
+  Exclude:
+    - "test/**/*"
 
 Metrics/BlockLength:
   Exclude:

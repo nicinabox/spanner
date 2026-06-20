@@ -4,8 +4,12 @@ one:
   notes: Rotate tires
   date: <%= Date.today %>
   vehicle_id: 1
+  created_at: <%= 2.weeks.ago %>
+  updated_at: <%= 2.weeks.ago %>
 
 two:
   notes: Oil change
   date: <%= 2.weeks.from_now %>
   vehicle_id: 2
+  created_at: <%= 1.week.ago %>
+  updated_at: <%= 1.week.ago %>

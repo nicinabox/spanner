@@ -16,6 +16,10 @@ Rails.application.routes.draw do
     resources :classifications, only: :index
 
     resources :vehicles do
+      resources :service_schedules do
+        post :complete, on: :member
+      end
+
       get 'reminders/estimate_date', to: 'reminders#estimate_date'
       resources :reminders
 
