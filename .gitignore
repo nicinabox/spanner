@@ -1,11 +1,7 @@
-# Git worktrees
+# Agents
 .worktrees/
-
-# Claude Code
 .claude/
-
-# Project-local logs
-log/
-
-# Project-local docs
+.pi/
+.cline/
 docs/
+log/
