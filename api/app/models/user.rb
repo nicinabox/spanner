@@ -74,7 +74,8 @@ class User < ApplicationRecord
       email: user.unconfirmed_email,
       unconfirmed_email: nil,
       email_confirmation_token: nil,
-      email_confirmation_token_valid_until: nil
+      email_confirmation_token_valid_until: nil,
+      email_bounced_at: nil
     )
     user
   end
@@ -129,6 +130,7 @@ class User < ApplicationRecord
   end
 
   def reminder_eligible?
+    return false if email_bounced_at.present?
     return false if days_since_last_seen.nil? && created_at.before?(REMINDER_CUTOFF_DAYS.days.ago)
     return false if days_since_last_seen && days_since_last_seen > REMINDER_CUTOFF_DAYS
     return true if last_reminder_sent_at.nil?

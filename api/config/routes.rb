@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
     get 'login(/:login_token)', to: 'sessions#login', as: 'login'
     get 'confirm_email(/:token)', to: 'users#confirm_email', as: 'confirm_email'
+
+    post 'webhooks/postmark', to: 'postmark#webhook'
   end
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do
