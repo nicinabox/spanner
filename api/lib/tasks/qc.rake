@@ -36,4 +36,9 @@ namespace :qc do
   task hourly_jobs: :environment do
     HourlyJob.perform_later
   end
+
+  desc 'Run account cleanup'
+  task cleanup: :environment do
+    CleanupUnverifiedAccountsJob.perform_later
+  end
 end

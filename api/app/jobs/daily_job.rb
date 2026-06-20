@@ -6,6 +6,11 @@ class DailyJob < ApplicationJob
   def perform
     upcoming_reminders
     delete_expired_sessions
+    cleanup_unverified_accounts
+  end
+
+  def cleanup_unverified_accounts
+    CleanupUnverifiedAccountsJob.perform_later
   end
 
   def upcoming_reminders
