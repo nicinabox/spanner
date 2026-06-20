@@ -269,31 +269,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     assert last_record.date.present?
   end
 
-  test 'auto-creates schedules from classification defaults on vehicle creation' do
-    @classification.update!(default_mileage_interval: 5000)
-
-    vehicle = Vehicle.create!(name: 'New Car', user: @user)
-
-    schedules = vehicle.service_schedules
-    assert(schedules.any? { |s| s.classification_id == @classification.id })
-    oil_schedule = schedules.find { |s| s.classification_id == @classification.id }
-    assert_equal 5000, oil_schedule.mileage_interval
-  end
-
-  test 'does not auto-create schedules for classifications without default intervals' do
-    Classification.find_by!(key: 'tire_rotation').update!(
-      default_mileage_interval: nil,
-      default_month_interval: nil
-    )
-
-    vehicle = Vehicle.create!(name: 'New Car', user: @user)
-
-    schedules = vehicle.service_schedules
-    assert_not(schedules.any? { |s| s.classification.key == 'tire_rotation' })
-  end
-
   test 'auto-advances schedule when matching record is saved' do
-    @classification.update!(default_mileage_interval: 5000)
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
     vehicle.records.create!(
       date: 60.days.ago,
@@ -301,7 +277,11 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       mileage: 50_000
     )
 
-    schedule = vehicle.service_schedules.find { |s| s.classification_id == @classification.id }
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      mileage_interval: 5000
+    )
     schedule.generate_reminder
     assert_equal 55_000, schedule.reminder.mileage
 
@@ -316,7 +296,6 @@ class ServiceScheduleTest < ActiveSupport::TestCase
   end
 
   test 'does not advance schedules when record does not match classification' do
-    @classification.update!(default_mileage_interval: 5000)
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
     vehicle.records.create!(
       date: 60.days.ago,
@@ -324,7 +303,11 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       mileage: 50_000
     )
 
-    schedule = vehicle.service_schedules.find { |s| s.classification_id == @classification.id }
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      mileage_interval: 5000
+    )
     schedule.generate_reminder
     original_mileage = schedule.reminder.mileage
 

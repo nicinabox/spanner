@@ -12,8 +12,6 @@ class Vehicle < ApplicationRecord
 
   default_scope { order(position: :asc, id: :asc) }
 
-  after_create :create_default_service_schedules
-
   ONE_YEAR = 365
   WEIGHT_COEFFICIENT = 10
 
@@ -174,18 +172,6 @@ class Vehicle < ApplicationRecord
   end
 
   private
-
-  def create_default_service_schedules
-    Classification.system.where.not(default_mileage_interval: [nil]).or(
-      Classification.system.where.not(default_month_interval: [nil])
-    ).find_each do |classification|
-      service_schedules.create!(
-        classification: classification,
-        mileage_interval: classification.default_mileage_interval,
-        month_interval: classification.default_month_interval
-      )
-    end
-  end
 
   def weighted_average(values, weights)
     sum = values.inject(:+).to_f
