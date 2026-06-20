@@ -43,6 +43,18 @@ class ServiceSchedule < ApplicationRecord
     end
   end
 
+  def complete!(notes: nil, date: nil, mileage: nil)
+    record = vehicle.records.create!(
+      date: date || Time.zone.today,
+      mileage: mileage || vehicle.estimated_mileage,
+      notes: notes.presence || classification.name
+    )
+
+    update!(last_completed_record_id: record.id)
+    generate_reminder
+    record
+  end
+
   private
 
   def at_least_one_interval
@@ -53,13 +65,14 @@ class ServiceSchedule < ApplicationRecord
 
   def destroy_reminder
     reminder&.destroy
+    association(:reminder).reset
   end
 
   def last_matching_record
     vehicle.records
            .joins(:classifications)
            .where(classifications: { id: classification_id })
-           .order(date: :desc)
+           .reorder(date: :desc)
            .first
   end
 

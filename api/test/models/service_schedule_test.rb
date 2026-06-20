@@ -204,4 +204,68 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
     assert_nil schedule.reminder
   end
+
+  test 'complete! creates a record and advances reminder' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    vehicle.records.create!(
+      date: 30.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      mileage_interval: 5000
+    )
+    schedule.generate_reminder
+
+    assert_difference -> { vehicle.records.count }, 1 do
+      schedule.complete!
+    end
+
+    last_record = vehicle.records.reorder(date: :desc).first
+    assert_equal @classification.name, last_record.notes
+    assert_equal last_record.id, schedule.reload.last_completed_record_id
+    assert_equal 55_000, schedule.reminder.mileage
+  end
+
+  test 'complete! with override params' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    vehicle.records.create!(
+      date: 30.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      mileage_interval: 5000
+    )
+    schedule.generate_reminder
+
+    schedule.complete!(notes: 'Synthetic oil change', date: 3.days.ago, mileage: 52_000)
+
+    last_record = vehicle.records.reorder(date: :desc).first
+    assert_equal 'Synthetic oil change', last_record.notes
+    assert_equal 3.days.ago.to_date, last_record.date.to_date
+    assert_equal 52_000, last_record.mileage
+    assert_equal 57_000, schedule.reminder.mileage
+  end
+
+  test 'complete! defaults mileage to estimated mileage' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      month_interval: 12
+    )
+    schedule.generate_reminder
+
+    schedule.complete!
+
+    last_record = vehicle.records.reorder(date: :desc).first
+    assert last_record.date.present?
+  end
 end
