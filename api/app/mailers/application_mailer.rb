@@ -3,7 +3,7 @@
 class ApplicationMailer < ActionMailer::Base
   include ActionView::Helpers::DateHelper
 
-  default from: 'spanner@nicinabox.com'
+  default from: ENV.fetch('FROM_EMAIL', 'noreply@localhost')
   layout 'mailer'
 
   helper_method :logo_data_uri
