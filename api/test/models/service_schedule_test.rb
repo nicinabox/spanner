@@ -84,4 +84,39 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     )
     assert_equal reminder, schedule.reminder
   end
+
+  test 'generate_reminder from mileage interval with matching record' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    vehicle.records.create!(
+      date: 30.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      mileage_interval: 5000
+    )
+    schedule.generate_reminder
+
+    assert schedule.reminder.present?
+    assert_equal 55_000, schedule.reminder.mileage
+    assert_equal 'mileage', schedule.reminder.reminder_type
+    assert_equal schedule, schedule.reminder.service_schedule
+  end
+
+  test 'generate_reminder from mileage interval with no matching record uses estimated mileage' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      mileage_interval: 5000
+    )
+    schedule.generate_reminder
+
+    assert schedule.reminder.present?
+    assert_equal 'mileage', schedule.reminder.reminder_type
+  end
 end
