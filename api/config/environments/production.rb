@@ -102,6 +102,7 @@ Rails.application.configure do
   config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE', 'amazon').to_sym
   config.active_storage.service_urls_expire_in = 5.minutes
 
-  Rails.application.routes.default_url_options[:host] = ENV.fetch('API_HOST', 'spanner.nicinabox.com')
-  Rails.application.routes.default_url_options[:protocol] = 'https'
+  Rails.application.routes.default_url_options[:host] = URI.parse(ENV.fetch('APP_URL', 'http://localhost:3000')).host
+  Rails.application.routes.default_url_options[:protocol] =
+    ENV.fetch('APP_URL', 'http://localhost:3000').start_with?('https') ? 'https' : 'http'
 end
