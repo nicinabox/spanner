@@ -66,6 +66,7 @@ jobs:
             CLIENT_SECRET: ci-test-secret-must-be-at-least-32-characters-long
             PROXY_HOST: http://localhost:3001
             BUGSNAG_API_KEY: ''
+            HEAD_INJECTIONS: ''
 
         defaults:
             run:

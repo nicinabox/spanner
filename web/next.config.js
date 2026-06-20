@@ -24,5 +24,6 @@ module.exports = {
 
     env: {
         BUGSNAG_API_KEY: process.env.BUGSNAG_API_KEY || '',
+        HEAD_INJECTIONS: process.env.HEAD_INJECTIONS || '',
     },
 };
