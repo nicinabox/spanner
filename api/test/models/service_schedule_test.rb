@@ -275,7 +275,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     vehicle = Vehicle.create!(name: 'New Car', user: @user)
 
     schedules = vehicle.service_schedules
-    assert schedules.any? { |s| s.classification_id == @classification.id }
+    assert(schedules.any? { |s| s.classification_id == @classification.id })
     oil_schedule = schedules.find { |s| s.classification_id == @classification.id }
     assert_equal 5000, oil_schedule.mileage_interval
   end
@@ -289,7 +289,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     vehicle = Vehicle.create!(name: 'New Car', user: @user)
 
     schedules = vehicle.service_schedules
-    assert_not schedules.any? { |s| s.classification.key == 'tire_rotation' }
+    assert_not(schedules.any? { |s| s.classification.key == 'tire_rotation' })
   end
 
   test 'auto-advances schedule when matching record is saved' do
