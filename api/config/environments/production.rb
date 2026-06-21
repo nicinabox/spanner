@@ -59,11 +59,26 @@ Rails.application.configure do
 
   config.action_mailer.asset_host = api_host
 
-  config.action_mailer.delivery_method = :postmark
+  # SMTP as fallback for self-hosted (set first, may be overridden by Postmark)
+  if ENV['SMTP_HOST'].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: ENV['SMTP_HOST'],
+      port: ENV.fetch('SMTP_PORT', 587).to_i,
+      user_name: ENV.fetch('SMTP_USERNAME', nil),
+      password: ENV.fetch('SMTP_PASSWORD', nil),
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
+  end
 
-  config.action_mailer.postmark_settings = {
-    api_token: ENV.fetch('POSTMARK_API_KEY', nil)
-  }
+  # Postmark takes priority — overwrites SMTP if both are configured
+  if ENV['POSTMARK_API_KEY'].present?
+    config.action_mailer.delivery_method = :postmark
+    config.action_mailer.postmark_settings = {
+      api_token: ENV['POSTMARK_API_KEY']
+    }
+  end
 
   config.action_mailer.default_url_options = {
     host: host
