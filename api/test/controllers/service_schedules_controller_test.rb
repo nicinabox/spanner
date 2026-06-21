@@ -28,7 +28,7 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 5000, response_body['mileage_interval']
   end
 
-  test 'create creates a schedule and generates reminder' do
+  test 'create creates a schedule and recalculates next due' do
     @other_classification = Classification.find_by!(key: 'tire_rotation')
 
     assert_difference -> { ServiceSchedule.count }, 1 do
@@ -46,7 +46,7 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
     assert schedule.reload.next_due_mileage.present?
   end
 
-  test 'update modifies a schedule and regenerates reminder' do
+  test 'update modifies a schedule and recalculates next due' do
     put vehicle_service_schedule_url(@vehicle, @schedule),
         params: { service_schedule: { mileage_interval: 7500 } },
         headers: http_options(@session.auth_token)[:headers]
