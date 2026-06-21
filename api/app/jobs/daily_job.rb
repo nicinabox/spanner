@@ -5,6 +5,7 @@ class DailyJob < ApplicationJob
 
   def perform
     upcoming_reminders
+    upcoming_schedules
     delete_expired_sessions
     cleanup_unverified_accounts
   end
@@ -17,11 +18,26 @@ class DailyJob < ApplicationJob
     reminders = reminders_on(2.weeks.from_now)
     users = reminders.group_by { |r| r.vehicle.user }
 
-    users.each do |user, reminders|
+    users.each do |user, user_reminders|
       next unless user.reminder_eligible?
 
-      RemindersMailer.reminder_upcoming(user, reminders).deliver_now
+      NotificationDispatcher.dispatch(:reminder_upcoming, user: user, reminders: user_reminders)
       user.record_reminder_sent!
+    end
+  end
+
+  def upcoming_schedules
+    schedules = ServiceSchedule.where(
+      next_due_date: Time.zone.today..2.weeks.from_now,
+      enabled: true
+    ).includes(:vehicle, :classification)
+
+    by_user = schedules.group_by { |s| s.vehicle.user }
+
+    by_user.each do |user, user_schedules|
+      next unless user.reminder_eligible?
+
+      NotificationDispatcher.dispatch(:schedule_due_upcoming, user: user, schedules: user_schedules)
     end
   end
 

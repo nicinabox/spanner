@@ -31,6 +31,7 @@ module SpannerApi
     config.api_only = true
 
     config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths << Rails.root.join('app/services/channels')
 
     config.active_job.queue_adapter = :queue_classic
     config.action_mailer.deliver_later_queue_name = 'default'

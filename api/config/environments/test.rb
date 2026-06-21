@@ -36,6 +36,9 @@ Rails.application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
+  # Make EmailChannel available in tests (actual delivery uses :test adapter)
+  ENV['POSTMARK_API_KEY'] ||= 'test-key'
+
   # Use the test queue adapter so Active Job jobs can be performed inline
   # during tests (e.g. perform_enqueued_jobs).
   config.active_job.queue_adapter = :test

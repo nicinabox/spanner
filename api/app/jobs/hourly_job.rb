@@ -20,16 +20,30 @@ class HourlyJob < ApplicationJob
       User.where(time_zone_offset: time_zone_offset).find_each do |user|
         next unless user.reminder_eligible?
 
-        reminders = user.reminders.where(reminder_date: date.all_day)
-        reminders = reminders.select do |r|
-          r.vehicle.preferences.send_reminder_emails
-        end
-
-        next if reminders.empty?
-
-        RemindersMailer.reminder_today(user, reminders).deliver_now
-        user.record_reminder_sent!
+        dispatch_manual_reminders(user, date)
+        dispatch_due_schedules(user, date)
       end
     end
+  end
+
+  private
+
+  def dispatch_manual_reminders(user, date)
+    reminders = user.reminders.where(reminder_date: date.all_day)
+    reminders = reminders.select { |r| r.vehicle.preferences.send_reminder_emails }
+    return if reminders.empty?
+
+    NotificationDispatcher.dispatch(:reminder_today, user: user, reminders: reminders)
+    user.record_reminder_sent!
+  end
+
+  def dispatch_due_schedules(user, date)
+    schedules = ServiceSchedule.joins(:vehicle)
+                               .where(vehicles: { user_id: user.id })
+                               .where(next_due_date: date.all_day, enabled: true)
+                               .includes(:vehicle, :classification)
+    return if schedules.empty?
+
+    NotificationDispatcher.dispatch(:schedule_due_today, user: user, schedules: schedules)
   end
 end

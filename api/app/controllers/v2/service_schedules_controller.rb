@@ -13,14 +13,14 @@ module V2
     def create
       schedule = schedules.build(schedule_params)
       schedule.save!
-      schedule.generate_reminder
+      schedule.recalculate_next_due
       render json: schedule
     end
 
     def update
       schedule = schedules.find(params[:id])
       schedule.update!(schedule_params)
-      schedule.generate_reminder
+      schedule.recalculate_next_due
       render json: schedule
     end
 

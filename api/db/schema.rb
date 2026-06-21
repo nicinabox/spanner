@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_21_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_22_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -117,6 +117,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_21_000000) do
     t.bigint "last_completed_record_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "next_due_date"
+    t.integer "next_due_mileage"
     t.index ["classification_id"], name: "index_service_schedules_on_classification_id"
     t.index ["last_completed_record_id"], name: "index_service_schedules_on_last_completed_record_id"
     t.index ["vehicle_id", "classification_id"], name: "index_service_schedules_on_vehicle_id_and_classification_id", unique: true
