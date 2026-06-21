@@ -31,6 +31,7 @@
 		"vitest-browser-svelte": "^2.1.1"
 	},
 	"dependencies": {
+		"@fontsource/lato": "^5.2.7",
 		"camelcase-keys": "^10.0.2",
 		"date-fns": "^4.4.0",
 		"iron-session": "^8.0.4",

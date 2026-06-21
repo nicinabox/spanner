@@ -95,8 +95,7 @@
 	--leading-normal: 1.5;
 	--leading-loose: 1.75;
 	--weight-normal: 400;
-	--weight-medium: 500;
-	--weight-semibold: 600;
+	--weight-medium: 600;
 	--weight-bold: 700;
 
 	@media (max-width: 639px) {
