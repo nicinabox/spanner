@@ -2,83 +2,137 @@
 	@scope (.btn) {
 		:scope {
 			--btn-bg: var(--color-surface);
-			--btn-color: var(--color-ink);
+			--btn-color: var(--color-brand);
 			--btn-border: var(--color-ink-lightest);
-			--btn-padding: 0.5em 1.1em;
+			--btn-inline-padding: var(--space-3);
+			--btn-height: var(--space-8);
+			--btn-width: var(--btn-height);
 			--btn-radius: var(--radius-md);
-			--btn-hover-brightness: 0.97;
+			--btn-font-size: var(--text-sm);
+			--btn-hover-brightness: 0.8;
 
 			display: inline-flex;
 			align-items: center;
 			gap: var(--space-xs);
-			padding: var(--btn-padding);
+			padding-inline: var(--btn-inline-padding);
 			background-color: var(--btn-bg);
 			color: var(--btn-color);
+			height: var(--btn-height);
+			min-width: var(--btn-width);
+			line-height: 1;
 			border: 1px solid var(--btn-border);
 			border-radius: var(--btn-radius);
-			font: inherit;
+			font-size: var(--btn-font-size);
 			font-weight: var(--weight-medium);
 			white-space: nowrap;
 			cursor: pointer;
 			transition: filter var(--duration-fast) var(--ease-out-expo);
 		}
 
-		@media (any-hover: hover) {
-			:scope:hover {
-				filter: brightness(var(--btn-hover-brightness));
-			}
-		}
-
-		:scope:active {
-			filter: brightness(0.93);
-		}
-
-		:scope:focus-visible {
+		&:focus-visible {
 			outline: 2px solid var(--color-focus-ring);
 			outline-offset: 2px;
 		}
 
-		:scope[disabled] {
+		&[disabled] {
 			cursor: not-allowed;
 			opacity: 0.4;
 			filter: none;
+			pointer-events: none;
 		}
 
-		html[data-theme='dark'] & {
-			--btn-hover-brightness: 1.08;
+		&.primary {
+			--btn-bg: var(--color-brand);
+			--btn-color: var(--color-ink-inverted);
+			--btn-border: var(--color-brand);
+
+			&:hover {
+				--btn-bg: var(--color-brand-dark);
+				--btn-border: var(--color-brand-dark);
+			}
+
+			&:active {
+				--btn-bg: var(--color-brand-darker);
+				--btn-border: var(--color-brand-darker);
+			}
 		}
-	}
 
-	.btn-primary {
-		--btn-bg: var(--color-brand);
-		--btn-color: var(--color-ink-inverted);
-		--btn-border: var(--color-brand);
-		--btn-hover-brightness: 0.93;
-	}
+		&.secondary {
+			--btn-bg: transparent;
+			--btn-border: var(--color-brand);
+			--btn-color: var(--color-brand);
 
-	.btn-ghost {
-		--btn-bg: transparent;
-		--btn-border: transparent;
-	}
+			&:hover {
+				--btn-bg: var(--color-brand-lightest);
+			}
 
-	.btn-negative {
-		--btn-bg: var(--color-negative);
-		--btn-color: var(--color-ink-inverted);
-		--btn-border: var(--color-negative);
-	}
+			&:active {
+				--btn-bg: var(--color-brand-light);
+				--btn-color: var(--color-brand-dark);
+			}
+		}
 
-	.btn-sm {
-		--btn-padding: 0.3em 0.8em;
-		font-size: var(--text-sm);
-	}
+		&.tertiary {
+			--btn-bg: transparent;
+			--btn-border: transparent;
+			text-decoration: underline;
 
-	.btn-block {
-		display: flex;
-		justify-content: center;
-		width: 100%;
-	}
+			&:hover {
+				--btn-bg: var(--color-brand-lightest);
+			}
 
-	html[data-theme='dark'] .btn-primary {
-		--btn-hover-brightness: 1.1;
+			&:active {
+				--btn-bg: var(--color-brand-light);
+				--btn-color: var(--color-brand-dark);
+			}
+		}
+
+		&.neutral {
+			--btn-bg: var(--color-ink);
+			--btn-border: var(--color-ink);
+			--btn-color: var(--color-ink-inverted);
+
+			&:hover {
+				--btn-bg: var(--color-ink-dark);
+				--btn-border: var(--color-ink-dark);
+			}
+
+			&:active {
+				--btn-bg: var(--color-ink);
+				--btn-border: var(--color-ink);
+			}
+		}
+
+		&.sm {
+			--btn-height: var(--space-6);
+			--btn-radius: var(--radius-sm);
+			--btn-inline-padding: var(--space-2);
+			--btn-font-size: var(--text-xs);
+		}
+
+		&.lg {
+			--btn-height: var(--space-10);
+			--btn-inline-padding: var(--space-4);
+			--btn-font-size: var(--text-base);
+		}
+
+		&.pill {
+			--btn-radius: 999px;
+			--btn-inline-padding: var(--space-3-5);
+
+			&.sm {
+				--btn-inline-padding: var(--space-2-5);
+			}
+
+			&.lg {
+				--btn-inline-padding: var(--space-4-5);
+			}
+		}
+
+		&.block {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+		}
 	}
 }
