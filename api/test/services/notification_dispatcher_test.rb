@@ -213,7 +213,7 @@ class NotificationDispatcherTest < ActiveSupport::TestCase
   private
 
   def with_env(vars)
-    originals = vars.transform_keys(&:to_s).transform_values { |_| ENV[_] }
+    originals = vars.transform_keys(&:to_s).transform_values { |k| ENV.fetch(k, nil) }
     vars.each { |k, v| v.nil? ? ENV.delete(k.to_s) : ENV[k.to_s] = v }
     yield
   ensure
