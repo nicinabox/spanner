@@ -44,5 +44,9 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+group :test do
+  gem 'webmock'
+end
+
 # Include timezone data for all platforms (required for Railway)
 gem 'tzinfo-data'
