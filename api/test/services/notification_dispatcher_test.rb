@@ -2,6 +2,7 @@
 
 require 'test_helper'
 require 'webmock/minitest'
+require 'minitest/mock'
 
 class EmailChannelTest < ActiveSupport::TestCase
   setup do
@@ -129,6 +130,90 @@ class WebhookChannelTest < ActiveSupport::TestCase
 
   def with_env(vars)
     originals = vars.to_h { |k, _| [k.to_s, ENV.fetch(k.to_s, nil)] }
+    vars.each { |k, v| v.nil? ? ENV.delete(k.to_s) : ENV[k.to_s] = v }
+    yield
+  ensure
+    originals.each { |k, v| v.nil? ? ENV.delete(k) : ENV[k] = v }
+  end
+end
+
+class NotificationDispatcherTest < ActiveSupport::TestCase
+  setup do
+    @user = User.first
+    @reminders = @user.reminders.to_a
+  end
+
+  test 'dispatches to email channel when available' do
+    EmailChannel.stub(:available?, true) do
+      WebhookChannel.stub(:available?, false) do
+        assert_emails 1 do
+          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
+        end
+      end
+    end
+  end
+
+  test 'dispatches to webhook channel when available' do
+    stub_request(:post, 'https://hooks.example.com')
+
+    EmailChannel.stub(:available?, false) do
+      WebhookChannel.stub(:available?, true) do
+        with_env('NOTIFICATION_WEBHOOK_URL' => 'https://hooks.example.com') do
+          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
+        end
+      end
+    end
+
+    assert_requested :post, 'https://hooks.example.com'
+  end
+
+  test 'dispatches to both channels when both available' do
+    stub_request(:post, 'https://hooks.example.com')
+
+    EmailChannel.stub(:available?, true) do
+      WebhookChannel.stub(:available?, true) do
+        with_env('NOTIFICATION_WEBHOOK_URL' => 'https://hooks.example.com') do
+          assert_emails 1 do
+            NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
+          end
+        end
+      end
+    end
+
+    assert_requested :post, 'https://hooks.example.com'
+  end
+
+  test 'skips unavailable channels' do
+    EmailChannel.stub(:available?, false) do
+      WebhookChannel.stub(:available?, false) do
+        assert_emails 0 do
+          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
+        end
+      end
+    end
+  end
+
+  test 'continues to next channel if one raises' do
+    stub_request(:post, 'https://hooks.example.com')
+
+    EmailChannel.stub(:available?, true) do
+      WebhookChannel.stub(:available?, true) do
+        with_env('NOTIFICATION_WEBHOOK_URL' => 'https://hooks.example.com') do
+          # Stub deliver to raise, then verify webhook still fires
+          EmailChannel.stub(:deliver, ->(*, **) { raise 'email down' }) do
+            NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
+          end
+        end
+      end
+    end
+
+    assert_requested :post, 'https://hooks.example.com'
+  end
+
+  private
+
+  def with_env(vars)
+    originals = vars.transform_keys(&:to_s).transform_values { |_| ENV[_] }
     vars.each { |k, v| v.nil? ? ENV.delete(k.to_s) : ENV[k.to_s] = v }
     yield
   ensure
