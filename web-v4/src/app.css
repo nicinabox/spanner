@@ -1,0 +1,8 @@
+@layer reset, base, layout, components, utilities;
+
+@import './styles/_global.css';
+@import './styles/reset.css';
+@import './styles/base.css';
+@import './styles/layout.css';
+@import './styles/components/buttons.css';
+@import './styles/utilities.css';
