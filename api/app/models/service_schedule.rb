@@ -3,7 +3,6 @@
 class ServiceSchedule < ApplicationRecord
   belongs_to :vehicle
   belongs_to :classification
-  has_one :reminder, dependent: :destroy
 
   # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo
   validates :vehicle, presence: true
@@ -11,36 +10,19 @@ class ServiceSchedule < ApplicationRecord
   # rubocop:enable Rails/RedundantPresenceValidationOnBelongsTo
   validate :at_least_one_interval
 
-  def generate_reminder
-    return destroy_reminder unless enabled?
+  def recalculate_next_due
+    unless enabled?
+      update!(next_due_date: nil, next_due_mileage: nil)
+      return
+    end
 
     last_record = last_matching_record
 
-    reminder_data = {
-      vehicle: vehicle,
-      service_schedule: self,
-      notes: classification.name
-    }
+    attrs = {}
+    attrs[:next_due_mileage] = next_mileage(last_record) if mileage_interval.present?
+    attrs[:next_due_date] = next_date(last_record) if month_interval.present?
 
-    if mileage_interval.present?
-      reminder_data[:mileage] = next_mileage(last_record)
-      reminder_data[:reminder_type] = 'mileage'
-    end
-
-    if month_interval.present?
-      reminder_data[:date] = next_date(last_record)
-      reminder_data[:reminder_type] = if mileage_interval.present?
-                                        'date_or_mileage'
-                                      else
-                                        'date'
-                                      end
-    end
-
-    if reminder
-      reminder.update!(reminder_data)
-    else
-      Reminder.create!(reminder_data)
-    end
+    update!(attrs)
   end
 
   def complete!(notes: nil, date: nil, mileage: nil)
@@ -51,7 +33,7 @@ class ServiceSchedule < ApplicationRecord
     )
 
     update!(last_completed_record_id: record.id)
-    generate_reminder
+    recalculate_next_due
     record
   end
 
@@ -63,11 +45,6 @@ class ServiceSchedule < ApplicationRecord
     errors.add(:base, 'at least one of mileage_interval or month_interval must be present')
   end
 
-  def destroy_reminder
-    reminder&.destroy
-    association(:reminder).reset
-  end
-
   def last_matching_record
     vehicle.records
            .joins(:classifications)
@@ -77,12 +54,12 @@ class ServiceSchedule < ApplicationRecord
   end
 
   def next_mileage(last_record)
-    base_mileage = last_record&.mileage || vehicle.estimated_mileage || 0
-    base_mileage + mileage_interval
+    base = last_record&.mileage || vehicle.estimated_mileage || 0
+    base + mileage_interval
   end
 
   def next_date(last_record)
-    base_date = last_record&.date || Time.zone.today
-    base_date + month_interval.months
+    base = last_record&.date || Time.zone.today
+    base + month_interval.months
   end
 end

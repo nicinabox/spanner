@@ -71,21 +71,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     assert schedule.enabled
   end
 
-  test 'has_one reminder association' do
-    schedule = ServiceSchedule.create!(
-      vehicle: @vehicle,
-      classification: @classification,
-      mileage_interval: 5000
-    )
-    reminder = Reminder.create!(
-      vehicle: @vehicle,
-      notes: @classification.name,
-      service_schedule: schedule
-    )
-    assert_equal reminder, schedule.reminder
-  end
-
-  test 'generate_reminder from mileage interval with matching record' do
+  test 'recalculate_next_due from mileage interval with matching record' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
     vehicle.records.create!(
       date: 30.days.ago,
@@ -98,15 +84,13 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification,
       mileage_interval: 5000
     )
-    schedule.generate_reminder
+    schedule.recalculate_next_due
 
-    assert schedule.reminder.present?
-    assert_equal 55_000, schedule.reminder.mileage
-    assert_equal 'mileage', schedule.reminder.reminder_type
-    assert_equal schedule, schedule.reminder.service_schedule
+    assert schedule.reload.next_due_mileage.present?
+    assert_equal 55_000, schedule.reload.next_due_mileage
   end
 
-  test 'generate_reminder from mileage interval with no matching record uses estimated mileage' do
+  test 'recalculate_next_due from mileage interval with no matching record uses estimated mileage' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
 
     schedule = ServiceSchedule.create!(
@@ -114,13 +98,12 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification,
       mileage_interval: 5000
     )
-    schedule.generate_reminder
+    schedule.recalculate_next_due
 
-    assert schedule.reminder.present?
-    assert_equal 'mileage', schedule.reminder.reminder_type
+    assert schedule.reload.next_due_mileage.present?
   end
 
-  test 'generate_reminder from month interval with matching record' do
+  test 'recalculate_next_due from month interval with matching record' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
     vehicle.records.create!(
       date: 30.days.ago,
@@ -133,14 +116,13 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification,
       month_interval: 6
     )
-    schedule.generate_reminder
+    schedule.recalculate_next_due
 
-    assert schedule.reminder.present?
-    assert_equal 'date', schedule.reminder.reminder_type
-    assert_equal 30.days.ago.to_date + 6.months, schedule.reminder.date.to_date
+    assert schedule.reload.next_due_date.present?
+    assert_equal 30.days.ago.to_date + 6.months, schedule.reload.next_due_date
   end
 
-  test 'generate_reminder with both intervals creates date_or_mileage reminder' do
+  test 'recalculate_next_due with both intervals sets both next_due fields' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
     vehicle.records.create!(
       date: 30.days.ago,
@@ -154,15 +136,14 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       mileage_interval: 5000,
       month_interval: 12
     )
-    schedule.generate_reminder
+    schedule.recalculate_next_due
 
-    assert schedule.reminder.present?
-    assert_equal 'date_or_mileage', schedule.reminder.reminder_type
-    assert_equal 55_000, schedule.reminder.mileage
-    assert_equal 30.days.ago.to_date + 12.months, schedule.reminder.date.to_date
+    assert schedule.reload.next_due_mileage.present?
+    assert_equal 55_000, schedule.reload.next_due_mileage
+    assert_equal 30.days.ago.to_date + 12.months, schedule.reload.next_due_date
   end
 
-  test 'generate_reminder updates existing reminder instead of creating duplicate' do
+  test 'recalculate_next_due updates next_due_mileage after new matching record' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
     vehicle.records.create!(
       date: 30.days.ago,
@@ -175,37 +156,36 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification,
       mileage_interval: 5000
     )
-    schedule.generate_reminder
-    original_reminder_id = schedule.reminder.id
+    schedule.recalculate_next_due
 
     vehicle.records.create!(
       date: Time.zone.today,
       notes: 'Oil change',
       mileage: 53_000
     )
-    schedule.generate_reminder
+    schedule.recalculate_next_due
 
-    assert_equal original_reminder_id, schedule.reminder.id
-    assert_equal 58_000, schedule.reminder.mileage
+    assert_equal 58_000, schedule.reload.next_due_mileage
   end
 
-  test 'generate_reminder when disabled destroys existing reminder' do
+  test 'recalculate_next_due when disabled clears next_due fields' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
       mileage_interval: 5000
     )
-    schedule.generate_reminder
-    assert schedule.reminder.present?
+    schedule.recalculate_next_due
+    assert schedule.reload.next_due_mileage.present?
 
     schedule.update!(enabled: false)
-    schedule.generate_reminder
+    schedule.recalculate_next_due
 
-    assert_nil schedule.reminder
+    assert_nil schedule.reload.next_due_date
+    assert_nil schedule.reload.next_due_mileage
   end
 
-  test 'complete! creates a record and advances reminder' do
+  test 'complete! creates a record and advances next_due' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
     vehicle.records.create!(
       date: 30.days.ago,
@@ -218,7 +198,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification,
       mileage_interval: 5000
     )
-    schedule.generate_reminder
+    schedule.recalculate_next_due
 
     assert_difference -> { vehicle.records.count }, 1 do
       schedule.complete!
@@ -227,7 +207,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     last_record = vehicle.records.reorder(date: :desc).first
     assert_equal @classification.name, last_record.notes
     assert_equal last_record.id, schedule.reload.last_completed_record_id
-    assert_equal 55_000, schedule.reminder.mileage
+    assert_equal 55_000, schedule.reload.next_due_mileage
   end
 
   test 'complete! with override params' do
@@ -243,7 +223,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification,
       mileage_interval: 5000
     )
-    schedule.generate_reminder
+    schedule.recalculate_next_due
 
     schedule.complete!(notes: 'Synthetic oil change', date: 3.days.ago, mileage: 52_000)
 
@@ -251,7 +231,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     assert_equal 'Synthetic oil change', last_record.notes
     assert_equal 3.days.ago.to_date, last_record.date.to_date
     assert_equal 52_000, last_record.mileage
-    assert_equal 57_000, schedule.reminder.mileage
+    assert_equal 57_000, schedule.reload.next_due_mileage
   end
 
   test 'complete! defaults mileage to estimated mileage' do
@@ -261,7 +241,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification,
       month_interval: 12
     )
-    schedule.generate_reminder
+    schedule.recalculate_next_due
 
     schedule.complete!
 
@@ -282,8 +262,8 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification,
       mileage_interval: 5000
     )
-    schedule.generate_reminder
-    assert_equal 55_000, schedule.reminder.mileage
+    schedule.recalculate_next_due
+    assert_equal 55_000, schedule.reload.next_due_mileage
 
     vehicle.records.create!(
       date: Time.zone.today,
@@ -292,7 +272,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     )
 
     schedule.reload
-    assert_equal 58_000, schedule.reminder.mileage
+    assert_equal 58_000, schedule.reload.next_due_mileage
   end
 
   test 'does not advance schedules when record does not match classification' do
@@ -308,8 +288,8 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification,
       mileage_interval: 5000
     )
-    schedule.generate_reminder
-    original_mileage = schedule.reminder.mileage
+    schedule.recalculate_next_due
+    original_mileage = schedule.reload.next_due_mileage
 
     vehicle.records.create!(
       date: Time.zone.today,
@@ -318,6 +298,6 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     )
 
     schedule.reload
-    assert_equal original_mileage, schedule.reminder.mileage
+    assert_equal original_mileage, schedule.reload.next_due_mileage
   end
 end
