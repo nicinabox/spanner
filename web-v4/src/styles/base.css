@@ -28,7 +28,10 @@
 		font-size: var(--text-sm);
 	}
 
-	code, pre, kbd, samp {
+	code,
+	pre,
+	kbd,
+	samp {
 		font-family: var(--font-mono);
 		font-size: 0.9em;
 	}
@@ -48,7 +51,8 @@
 		border-block-start: 1px solid var(--color-ink-lightest);
 	}
 
-	strong, b {
+	strong,
+	b {
 		font-weight: var(--weight-semibold);
 	}
 

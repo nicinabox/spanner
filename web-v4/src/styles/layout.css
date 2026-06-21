@@ -31,9 +31,20 @@
 			padding-inline: var(--main-padding);
 		}
 
-		.start  { flex: 1; }
-		.center { flex: 1; display: flex; justify-content: center; }
-		.end    { flex: 1; display: flex; justify-content: flex-end; gap: var(--space-sm); }
+		.start {
+			flex: 1;
+		}
+		.center {
+			flex: 1;
+			display: flex;
+			justify-content: center;
+		}
+		.end {
+			flex: 1;
+			display: flex;
+			justify-content: flex-end;
+			gap: var(--space-sm);
+		}
 	}
 
 	.main {

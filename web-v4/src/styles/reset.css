@@ -20,23 +20,36 @@
 		text-rendering: optimizeLegibility;
 	}
 
-	h1, h2, h3, h4, h5, h6 {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
 		font-size: inherit;
 		font-weight: var(--weight-semibold);
 		line-height: var(--leading-tight);
 	}
 
-	ul, ol {
+	ul,
+	ol {
 		padding-inline-start: 1.5em;
 	}
 
-	img, picture, video, canvas, svg {
+	img,
+	picture,
+	video,
+	canvas,
+	svg {
 		display: block;
 		max-width: 100%;
 		height: auto;
 	}
 
-	input, button, textarea, select {
+	input,
+	button,
+	textarea,
+	select {
 		font: inherit;
 		color: inherit;
 	}
@@ -62,7 +75,9 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		*, *::before, *::after {
+		*,
+		*::before,
+		*::after {
 			animation-duration: 1ms !important;
 			animation-iteration-count: 1 !important;
 			transition-duration: 1ms !important;
