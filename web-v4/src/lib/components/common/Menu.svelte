@@ -58,7 +58,7 @@
 	</Button>
 
 	<div use:portal {...api.getPositionerProps()}>
-		<ul {...api.getContentProps()}>
+		<ul {...api.getContentProps()} hidden={undefined}>
 			{#each items as item}
 				{const computed = children
 					? children(item, () => item.label ?? item.value)
@@ -96,6 +96,27 @@
 		border: 1px solid var(--color-ink-lightest);
 		border-radius: var(--radius-md);
 		box-shadow: var(--shadow-md);
+		transform-origin: var(--transform-origin, top);
+		transition:
+			opacity var(--duration-slow) var(--ease-out-expo),
+			transform var(--duration-slow) var(--ease-out-expo);
+	}
+
+	ul[data-state='open'] {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+
+	ul[data-state='closed'] {
+		opacity: 0;
+		transform: scale(0.97) translateY(-8px);
+	}
+
+	@starting-style {
+		ul[data-state='open'] {
+			opacity: 0;
+			transform: scale(0.97) translateY(-8px);
+		}
 	}
 
 	li {
