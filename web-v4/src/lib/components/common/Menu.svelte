@@ -74,7 +74,6 @@ export type OptionItem = {
 				{:else}
 					{const preload = item.preload ?? true}
 					<li {...api.getItemProps({ value: item.value })}>
-						<span class="check-indicator"></span>
 						{#if item.href}
 							<a
 								href={item.href}
@@ -149,7 +148,6 @@ export type OptionItem = {
 		align-items: center;
 		gap: var(--space-2);
 		padding: var(--space-1-5) var(--space-3);
-		padding-left: var(--space-1);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		user-select: none;
@@ -179,6 +177,10 @@ export type OptionItem = {
 		text-decoration: none;
 		display: block;
 		width: 100%;
+	}
+
+	li[data-type='radio'] {
+		padding-left: var(--space-1);
 	}
 
 	li[role='separator'] {
