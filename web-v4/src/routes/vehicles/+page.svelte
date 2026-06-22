@@ -91,7 +91,7 @@
 	<Button
 		aria-pressed={showRetired}
 		class="my-4"
-		variant="tertiary"
+		variant="secondary"
 		onclick={() => (showRetired = !showRetired)}
 	>
 		{showRetired ? 'Hide' : 'Show'} retired

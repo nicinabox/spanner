@@ -76,12 +76,12 @@
 			/*text-decoration: underline;*/
 
 			&:hover {
-				--btn-bg: var(--color-brand-lightest);
+				--btn-bg: var(--color-brand-lighter);
 			}
 
 			&:active,
 			&[aria-expanded='true'] {
-				--btn-bg: var(--color-brand-lighter);
+				--btn-bg: var(--color-brand-light);
 				--btn-color: var(--color-brand-dark);
 			}
 		}

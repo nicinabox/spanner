@@ -121,6 +121,12 @@
 	.items-stretch {
 		align-items: stretch;
 	}
+
+	/* Transform */
+	.rotate-90 {
+		transform: rotate(90deg);
+	}
+
 	.gap-xs {
 		gap: var(--space-2xs);
 	}
@@ -269,6 +275,12 @@
 	}
 	.mt-6 {
 		margin-block-start: var(--space-lg);
+	}
+	.mt-8 {
+		margin-block-start: var(--space-8);
+	}
+	.mt-12 {
+		margin-block-start: var(--space-12);
 	}
 	.mb-2 {
 		margin-block-end: var(--space-xs);
