@@ -3,6 +3,7 @@
 	import type { Session } from '$lib/data/session';
 	import { Button } from '$lib';
 	import { LogOut } from 'lucide-svelte';
+	import Menu from './Menu.svelte';
 
 	interface Props {
 		start?: Snippet;
@@ -31,18 +32,15 @@
 		{#if end}
 			{@render end()}
 		{:else if session}
-			<span class="text-light">{session.email}</span>
-			<Button
-				href="/logout"
-				variant="tertiary"
+			<Menu
+				trigger={session.email}
+				theme="dark"
 				class="text-light"
-				icon
-				data-sveltekit-preload-data="off"
-				title="Sign out"
-				aria-label="Sign out"
-			>
-				<LogOut size={16} />
-			</Button>
+				items={[
+					{ value: 'settings', label: 'Settings', href: '/settings' },
+					{ value: 'signout', label: 'Sign out', href: '/logout' }
+				]}
+			/>
 		{/if}
 	</div>
 </header>

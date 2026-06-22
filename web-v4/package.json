@@ -32,6 +32,8 @@
 	},
 	"dependencies": {
 		"@fontsource/lato": "^5.2.7",
+		"@zag-js/menu": "^1.41.2",
+		"@zag-js/svelte": "^1.41.2",
 		"camelcase-keys": "^10.0.2",
 		"date-fns": "^4.4.0",
 		"insane": "^2.6.2",
