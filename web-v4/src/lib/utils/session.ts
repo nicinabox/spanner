@@ -8,15 +8,22 @@ export const sessionOptions: SessionOptions = {
 	cookieName: 'session',
 	ttl: 5_184_000, // 60 days
 	cookieOptions: {
-		secure: false
+		secure: false,
+		httpOnly: true,
+		sameSite: 'lax',
+		maxAge: 5_184_000 - 60 // expire cookie 60s before seal
 	}
 };
 
 export const getSession = async (cookies: Cookies) => {
 	const cookie = cookies.get(sessionOptions.cookieName);
 	if (!cookie) return;
-	const session = await unsealData<{ session: Session }>(cookie, sessionOptions);
-	return session?.session;
+	try {
+		const session = await unsealData<{ session: Session }>(cookie, sessionOptions);
+		return session?.session;
+	} catch {
+		return undefined;
+	}
 };
 
 export const setSession = async (cookies: Cookies, session: Session) => {
