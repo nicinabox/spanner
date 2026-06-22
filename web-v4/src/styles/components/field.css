@@ -9,7 +9,7 @@
 
 		.label {
 			font-weight: var(--weight-medium);
-			font-size: var(--text-sm);
+			font-size: var(--text-base);
 		}
 
 		.required {

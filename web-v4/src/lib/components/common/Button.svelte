@@ -32,7 +32,7 @@
 	}: Props = $props();
 
 	let classes = $derived(
-		['btn', variant, size, block && 'block', radius, className].filter(Boolean).join(' ')
+		['btn', variant, size, block && 'full-width', radius, className].filter(Boolean).join(' ')
 	);
 </script>
 

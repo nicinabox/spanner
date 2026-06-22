@@ -82,7 +82,7 @@
 			}
 
 			&:active {
-				--btn-bg: var(--color-brand-light);
+				--btn-bg: var(--color-brand-lighter);
 				--btn-color: var(--color-brand-dark);
 			}
 		}
@@ -129,7 +129,7 @@
 			}
 		}
 
-		&.block {
+		&.full-width {
 			display: flex;
 			justify-content: center;
 			width: 100%;
