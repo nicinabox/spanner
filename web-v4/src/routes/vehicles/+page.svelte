@@ -78,7 +78,7 @@
 </header>
 
 <section>
-	<ul class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 p-0">
+	<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0">
 		{#each sortVehiclesBy(active, vehiclesSortOrder) as v (v.id)}
 			<li class="flex">
 				<VehicleLink vehicle={v} />
@@ -98,7 +98,7 @@
 		<ChevronRight size={16} class={showRetired ? 'rotate-90' : ''} />
 	</Button>
 
-	<ul class:hidden={!showRetired} class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 p-0">
+	<ul class:hidden={!showRetired} class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0">
 		{#each retired as v (v.id)}
 			<li class="flex">
 				<VehicleLink vehicle={v} />
