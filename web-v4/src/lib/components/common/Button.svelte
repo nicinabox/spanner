@@ -10,6 +10,7 @@
 		radius?: Radius;
 		size?: Size;
 		block?: boolean;
+		icon?: boolean;
 		href?: string;
 		type?: 'button' | 'submit' | 'reset';
 		disabled?: boolean;
@@ -23,6 +24,7 @@
 		size = 'md',
 		radius,
 		block = false,
+		icon = false,
 		href,
 		type = 'button',
 		disabled,
@@ -32,7 +34,7 @@
 	}: Props = $props();
 
 	let classes = $derived(
-		['btn', variant, size, block && 'full-width', radius, className].filter(Boolean).join(' ')
+		['btn', variant, size, block && 'full-width', icon && 'icon-only', radius, className].filter(Boolean).join(' ')
 	);
 </script>
 

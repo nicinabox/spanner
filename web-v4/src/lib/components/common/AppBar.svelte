@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { Session } from '$lib/data/session';
+	import { Button } from '$lib';
+	import { LogOut } from 'lucide-svelte';
 
 	interface Props {
 		start?: Snippet;
@@ -30,6 +32,17 @@
 			{@render end()}
 		{:else if session}
 			<span class="text-light">{session.email}</span>
+			<Button
+				href="/logout"
+				variant="tertiary"
+				class="text-light"
+				icon
+				data-sveltekit-preload-data="off"
+				title="Sign out"
+				aria-label="Sign out"
+			>
+				<LogOut size={16} />
+			</Button>
 		{/if}
 	</div>
 </header>
@@ -43,7 +56,7 @@
 		flex-wrap: wrap;
 		align-items: center;
 		gap: var(--space-sm);
-		padding-block: var(--space-sm);
+		padding-block: var(--space-2);
 		padding-inline: var(--main-padding);
 		background-color: var(--color-brand);
 		color: var(--color-ink-inverted);
@@ -65,6 +78,7 @@
 		display: flex;
 		justify-content: flex-end;
 		gap: var(--space-sm);
+		align-items: center;
 	}
 
 	.appbar-logo img {
