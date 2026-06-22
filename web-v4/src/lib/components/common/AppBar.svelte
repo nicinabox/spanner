@@ -13,6 +13,8 @@
 	}
 
 	let { start, center, end, session }: Props = $props();
+
+	let username = $derived(session?.email?.split('@')[0] ?? '');
 </script>
 
 <header class="appbar">
@@ -33,7 +35,7 @@
 			{@render end()}
 		{:else if session}
 			<Menu
-				trigger={session.email}
+				trigger={username}
 				theme="dark"
 				class="text-light"
 				items={[{ value: 'signout', label: 'Sign out', href: '/logout', preload: false }]}

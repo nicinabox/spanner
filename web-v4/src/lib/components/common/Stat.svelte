@@ -9,7 +9,7 @@
 </script>
 
 {#if value}
-	<div class="min-w-fit py-2 {props.class}">
+	<div class="min-w-fit py-2 whitespace-nowrap {props.class}">
 		<div class="text-sm text-muted">{title}</div>
 		<div class="text-xl font-bold">{value}</div>
 	</div>

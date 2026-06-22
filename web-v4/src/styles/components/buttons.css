@@ -30,6 +30,12 @@
 			text-decoration: none;
 		}
 
+		& svg {
+			flex-shrink: 0;
+			max-width: none;
+			height: auto;
+		}
+
 		&[disabled] {
 			cursor: not-allowed;
 			opacity: 0.4;

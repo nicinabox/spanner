@@ -43,24 +43,23 @@
 	{/each}
 </div>
 
-<header class="mb-4 flex items-center justify-between">
+<header class="vehicles-header">
 	<h1 class="text-xl">Vehicles</h1>
 
-	<div class="flex gap-2">
-		<Button href="/vehicles/new" variant="tertiary">
-			<PlusIcon size={16} /> New
-		</Button>
+	<Button href="/vehicles/new" variant="tertiary" class="new-btn">
+		<PlusIcon size={16} /> New
+	</Button>
 
-		<form method="POST" action="?/updateUserPreferences" use:enhance>
-			<input type="hidden" value={vehiclesSortOrder[0]} name="strategy" />
-			<input type="hidden" value={vehiclesSortOrder[1]} name="order" />
-			<VehicleSortMenu
-				sortable={vehiclesSortOrder}
-				onSelect={(value) => {
-					vehiclesSortOrder = value;
+	<form method="POST" action="?/updateUserPreferences" use:enhance class="sort-form">
+		<input type="hidden" value={vehiclesSortOrder[0]} name="strategy" />
+		<input type="hidden" value={vehiclesSortOrder[1]} name="order" />
+		<VehicleSortMenu
+			sortable={vehiclesSortOrder}
+			onSelect={(value) => {
+				vehiclesSortOrder = value;
 
-					const form = document.querySelector(
-						'form[action$="updateUserPreferences"]'
+				const form = document.querySelector(
+					'form[action$="updateUserPreferences"]'
 					) as HTMLFormElement | null;
 					if (form) {
 						const strategyInput = form.querySelector(
@@ -74,7 +73,6 @@
 				}}
 			/>
 		</form>
-	</div>
 </header>
 
 <section>
@@ -98,11 +96,68 @@
 		<ChevronRight size={16} class={showRetired ? 'rotate-90' : ''} />
 	</Button>
 
-	<ul class:hidden={!showRetired} class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0">
-		{#each retired as v (v.id)}
-			<li class="flex">
-				<VehicleLink vehicle={v} />
-			</li>
-		{/each}
-	</ul>
+	<div>
+		<ul class:hidden={!showRetired} class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0">
+			{#each retired as v (v.id)}
+				<li class="flex">
+					<VehicleLink vehicle={v} />
+				</li>
+			{/each}
+		</ul>
+	</div>
 </section>
+
+<style>
+	.vehicles-header {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		grid-template-areas:
+			"title new"
+			"sort sort";
+		gap: var(--space-2);
+		align-items: center;
+		margin-bottom: var(--space-4);
+	}
+
+	.vehicles-header :global(h1) {
+		grid-area: title;
+	}
+
+	:global(.new-btn) {
+		grid-area: new;
+		justify-self: end;
+	}
+
+	.sort-form {
+		grid-area: sort;
+		display: block;
+	}
+
+	.sort-form :global(.menu) {
+			display: block;
+		}
+
+	@media (max-width: 639px) {
+		.sort-form :global([data-part='trigger']) {
+			width: 100%;
+			position: relative;
+			justify-content: center;
+		}
+
+		.sort-form :global([data-part='trigger']) :global([data-part='indicator']) {
+			position: absolute;
+			right: var(--btn-inline-padding, var(--space-3));
+		}
+	}
+
+	@media (min-width: 640px) {
+		.vehicles-header {
+			grid-template-columns: auto 1fr auto;
+			grid-template-areas: "title new sort";
+		}
+
+		.sort-form {
+			justify-self: end;
+		}
+	}
+</style>

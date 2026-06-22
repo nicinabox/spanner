@@ -3,7 +3,6 @@
 		width: 100%;
 		max-width: var(--max-content);
 		margin-inline: auto;
-		padding-inline: var(--main-padding);
 	}
 
 	.container-narrow {
