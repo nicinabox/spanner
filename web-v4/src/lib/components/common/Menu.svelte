@@ -2,15 +2,24 @@
 	import * as menu from '@zag-js/menu';
 	import { portal, useMachine, normalizeProps } from '@zag-js/svelte';
 	import Button from './Button.svelte';
-	import { ChevronDown } from 'lucide-svelte';
+	import { Check, ChevronDown } from 'lucide-svelte';
 	import type { ClassValue } from 'svelte/elements';
 
-	type Item = { value: string; label?: string; href?: string; preload?: boolean };
+export type Item = { value: string; label?: string; href?: string; preload?: boolean; separator?: boolean };
+
+export type OptionItem = {
+	type: 'radio' | 'checkbox' | 'separator';
+	name?: string;
+	value?: string;
+	label?: string;
+	checked?: boolean;
+	onCheckedChange?: (checked: boolean) => void;
+};
 
 	interface Props {
 		trigger: any;
-		items: Item[];
-		children?: (item: Item, fallback: () => string) => any;
+		items?: Item[];
+		optionItems?: OptionItem[];
 		theme?: 'light' | 'dark';
 		variant?: 'primary' | 'secondary' | 'tertiary' | 'neutral';
 		class?: ClassValue;
@@ -22,8 +31,8 @@
 
 	let {
 		trigger,
-		items,
-		children,
+		items = [],
+		optionItems = [],
 		theme,
 		variant = 'tertiary',
 		class: className,
@@ -60,24 +69,40 @@
 	<div use:portal {...api.getPositionerProps()}>
 		<ul {...api.getContentProps()} hidden={undefined}>
 			{#each items as item}
-				{const computed = children
-					? children(item, () => item.label ?? item.value)
-					: (item.label ?? item.value)}
-				{const preload = item.preload ?? true}
-
-				<li {...api.getItemProps({ value: item.value })}>
-					{#if item.href}
-						<a
-							href={item.href}
-							tabindex="-1"
-							data-sveltekit-preload-data={preload ? 'hover' : 'off'}
-						>
-							{computed}
-						</a>
-					{:else}
-						{computed}
-					{/if}
-				</li>
+				{#if item.separator}
+					<li role="separator" class="separator"></li>
+				{:else}
+					{const preload = item.preload ?? true}
+					<li {...api.getItemProps({ value: item.value })}>
+						<span class="check-indicator"></span>
+						{#if item.href}
+							<a
+								href={item.href}
+								tabindex="-1"
+								data-sveltekit-preload-data={preload ? 'hover' : 'off'}
+							>
+								{item.label ?? item.value}
+							</a>
+						{:else}
+								{item.label ?? item.value}
+						{/if}
+					</li>
+				{/if}
+			{/each}
+			{#if items.length > 0 && optionItems.length > 0}
+				<li role="separator" class="separator"></li>
+			{/if}
+			{#each optionItems as item}
+				{#if item.type === 'separator'}
+					<li role="separator" class="separator"></li>
+				{:else}
+					<li {...api.getOptionItemProps(item as menu.OptionItemProps)}>
+						<span class="check-indicator" {...api.getItemIndicatorProps(item as menu.OptionItemProps)}>
+							<Check size={16} />
+						</span>
+						<span {...api.getItemTextProps(item as menu.OptionItemProps)}>{item.label}</span>
+					</li>
+				{/if}
 			{/each}
 		</ul>
 	</div>
@@ -124,6 +149,7 @@
 		align-items: center;
 		gap: var(--space-2);
 		padding: var(--space-1-5) var(--space-3);
+		padding-left: var(--space-1);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		user-select: none;
@@ -131,11 +157,36 @@
 		transition: background-color var(--duration-fast) var(--ease-out-expo);
 	}
 
+	.check-indicator {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		flex-shrink: 0;
+	}
+
+	.check-indicator :global(svg) {
+		opacity: 0;
+	}
+
+	li[data-state='checked'] .check-indicator :global(svg) {
+		opacity: 1;
+	}
+
 	li a {
 		color: inherit;
 		text-decoration: none;
 		display: block;
 		width: 100%;
+	}
+
+	li[role='separator'] {
+		height: 1px;
+		background-color: var(--color-ink-lightest);
+		margin: var(--space-1) 0;
+		padding: 0;
+		cursor: default;
 	}
 
 	li:hover,
