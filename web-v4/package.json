@@ -34,8 +34,11 @@
 		"@fontsource/lato": "^5.2.7",
 		"camelcase-keys": "^10.0.2",
 		"date-fns": "^4.4.0",
+		"insane": "^2.6.2",
 		"iron-session": "^8.0.4",
 		"lodash-es": "^4.18.1",
+		"lucide-svelte": "^1.0.1",
+		"marked": "^18.0.5",
 		"snakecase-keys": "^9.0.2"
 	}
 }
