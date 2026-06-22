@@ -5,7 +5,7 @@
 	import { ChevronDown } from 'lucide-svelte';
 	import type { ClassValue } from 'svelte/elements';
 
-	type Item = { value: string; label?: string; href?: string };
+	type Item = { value: string; label?: string; href?: string; preload?: boolean };
 
 	interface Props {
 		trigger: any;
@@ -15,20 +15,41 @@
 		variant?: 'primary' | 'secondary' | 'tertiary' | 'neutral';
 		class?: ClassValue;
 		onSelect?: (details: { value: string }) => void;
+		id?: string;
 	}
 
-	const {
+	const defaultId = $props.id();
+
+	let {
 		trigger,
 		items,
 		children,
 		theme,
 		variant = 'tertiary',
 		class: className,
-		onSelect,
-		id
+		id = defaultId,
+		onSelect
 	}: Props = $props();
-	const service = useMachine(menu.machine, { id, onSelect });
+	// svelte-ignore state_referenced_locally
+	const service = useMachine(menu.machine, {
+		id,
+		onSelect,
+		defaultHighlightedValue: items[0]?.value
+	});
 	const api = $derived(menu.connect(service, normalizeProps));
+
+	let highlighted = $state(false);
+
+	$effect(() => {
+		if (api.open) {
+			if (!highlighted && items.length > 0) {
+				api.setHighlightedValue(items[0].value);
+				highlighted = true;
+			}
+		} else {
+			highlighted = false;
+		}
+	});
 </script>
 
 <div class="menu" data-theme={theme}>
@@ -39,15 +60,22 @@
 	<div use:portal {...api.getPositionerProps()}>
 		<ul {...api.getContentProps()}>
 			{#each items as item}
+				{const computed = children
+					? children(item, () => item.label ?? item.value)
+					: (item.label ?? item.value)}
+				{const preload = item.preload ?? true}
+
 				<li {...api.getItemProps({ value: item.value })}>
 					{#if item.href}
-						<a href={item.href} data-sveltekit-preload-data="off">
-							{children
-								? children(item, () => item.label ?? item.value)
-								: (item.label ?? item.value)}
+						<a
+							href={item.href}
+							tabindex="-1"
+							data-sveltekit-preload-data={preload ? 'hover' : 'off'}
+						>
+							{computed}
 						</a>
 					{:else}
-						{children ? children(item, () => item.label ?? item.value) : (item.label ?? item.value)}
+						{computed}
 					{/if}
 				</li>
 			{/each}
@@ -62,12 +90,12 @@
 
 	ul {
 		list-style: none;
-		min-width: 10rem;
+		min-width: var(--reference-width, 15ch);
 		padding: var(--space-1);
 		background-color: var(--color-surface-raised);
 		border: 1px solid var(--color-ink-lightest);
 		border-radius: var(--radius-md);
-		box-shadow: var(--shadow-lg);
+		box-shadow: var(--shadow-md);
 	}
 
 	li {
@@ -85,23 +113,19 @@
 	li a {
 		color: inherit;
 		text-decoration: none;
+		display: block;
+		width: 100%;
 	}
 
-	li:hover {
+	li:hover,
+	li[data-highlighted] {
 		background-color: color-mix(in oklch, var(--color-surface-raised), black 6%);
 	}
 
-	:global([data-theme='dark']) li:hover {
-		background-color: color-mix(in oklch, var(--color-surface-raised), white 8%);
-	}
-
-	li:focus-visible {
-		outline: 2px solid var(--color-focus-ring);
-		outline-offset: -2px;
-	}
-
-	.menu :global(.btn[aria-expanded='true']) {
-		--btn-bg: var(--color-brand-lightest);
-		--btn-border: var(--color-brand-light);
+	:global([data-theme='dark']) {
+		li:hover,
+		li[data-highlighted] {
+			background-color: color-mix(in oklch, var(--color-surface-raised), white 8%);
+		}
 	}
 </style>

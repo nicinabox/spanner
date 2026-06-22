@@ -36,10 +36,7 @@
 				trigger={session.email}
 				theme="dark"
 				class="text-light"
-				items={[
-					{ value: 'settings', label: 'Settings', href: '/settings' },
-					{ value: 'signout', label: 'Sign out', href: '/logout' }
-				]}
+				items={[{ value: 'signout', label: 'Sign out', href: '/logout', preload: false }]}
 			/>
 		{/if}
 	</div>
@@ -54,8 +51,7 @@
 		flex-wrap: wrap;
 		align-items: center;
 		gap: var(--space-sm);
-		padding-block: var(--space-2);
-		padding-inline: var(--main-padding);
+		padding: var(--space-2);
 		background-color: var(--color-brand);
 		color: var(--color-ink-inverted);
 		box-shadow: var(--shadow-md);

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { ClassValue } from 'svelte/elements';
 
 	type Variant = 'primary' | 'secondary' | 'tertiary' | 'neutral';
 	type Size = 'sm' | 'md' | 'lg';
@@ -15,8 +16,8 @@
 		icon?: boolean;
 		href?: string;
 		type?: 'button' | 'submit' | 'reset' | null;
-		disabled?: boolean;
-		class?: string;
+		disabled?: boolean | null;
+		class?: ClassValue;
 		children: Snippet;
 		[key: string]: unknown;
 	};
