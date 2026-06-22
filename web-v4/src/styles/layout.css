@@ -12,41 +12,6 @@
 		padding-inline: var(--main-padding);
 	}
 
-	.header {
-		position: sticky;
-		top: 0;
-		z-index: var(--z-nav);
-		background-color: var(--color-brand);
-		color: var(--color-ink-inverted);
-		box-shadow: var(--shadow-md);
-	}
-
-	@scope (.header) {
-		:scope {
-			display: flex;
-			flex-wrap: wrap;
-			align-items: center;
-			gap: var(--space-sm);
-			padding-block: var(--space-sm);
-			padding-inline: var(--main-padding);
-		}
-
-		.start {
-			flex: 1;
-		}
-		.center {
-			flex: 1;
-			display: flex;
-			justify-content: center;
-		}
-		.end {
-			flex: 1;
-			display: flex;
-			justify-content: flex-end;
-			gap: var(--space-sm);
-		}
-	}
-
 	.main {
 		padding-block: var(--space-lg);
 		padding-inline: var(--main-padding);

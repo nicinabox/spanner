@@ -50,6 +50,9 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+	.text-light {
+		color: var(--color-ink);
+	}
 
 	/* Layout */
 	.flex {
@@ -258,7 +261,7 @@
 		min-height: 0;
 	}
 	.h-px {
-	    height: 1px;
+		height: 1px;
 	}
 	.h-1 {
 		height: var(--space-1);
