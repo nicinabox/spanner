@@ -12,6 +12,10 @@
 			border-radius: var(--radius);
 		}
 
+		header {
+		    margin-bottom: var(--space-md);
+		}
+
 		h1 {
 			font-weight: bold;
 			font-size: var(--text-xl);

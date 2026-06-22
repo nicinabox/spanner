@@ -27,6 +27,7 @@
 			white-space: nowrap;
 			cursor: pointer;
 			transition: filter var(--duration-fast) var(--ease-out-expo);
+			text-decoration: none;
 		}
 
 		&:focus-visible {

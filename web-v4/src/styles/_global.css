@@ -160,11 +160,11 @@ html[data-theme='dark'] {
 	--lch-ink-medium: 72% 0.01 264;
 	--lch-ink-light: 55% 0.015 264;
 	--lch-ink-lightest: 35% 0.015 264;
-	--lch-ink-inverted: 96% 0.005 264;
 	--lch-canvas: 20% 0.0195 232;
 	--lch-surface: 24% 0.017 232;
 	--lch-surface-raised: 27% 0.015 232;
 	--lch-overlay: 8% 0.02 232;
+	--lch-ink-inverted: 24% 0.03 264;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -184,11 +184,11 @@ html[data-theme='dark'] {
 		--lch-ink-medium: 72% 0.01 264;
 		--lch-ink-light: 55% 0.015 264;
 		--lch-ink-lightest: 35% 0.015 264;
-		--lch-ink-inverted: 96% 0.005 264;
 		--lch-canvas: 20% 0.0195 232;
 		--lch-surface: 24% 0.017 232;
 		--lch-surface-raised: 27% 0.015 232;
 		--lch-overlay: 8% 0.02 232;
+		--lch-ink-inverted: 24% 0.03 264;
 	}
 }
 
