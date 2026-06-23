@@ -138,15 +138,15 @@
 		<hr class="border-ink-200" />
 
 		<fieldset class="flex flex-col gap-4">
-		<label class="flex items-center justify-between gap-3 cursor-pointer">
-			<div>
-				<span class="font-medium">Retire</span>
-				<p class="text-sm text-ink-500">
-					Hide this vehicle from the list and stop sending reminders.
-				</p>
-			</div>
-			<Switch name="retired" defaultChecked={values?.retired} />
-		</label>
+			<label class="flex items-center justify-between gap-3 cursor-pointer">
+				<div>
+					<span class="font-medium">Retire</span>
+					<p class="text-sm text-ink-500">
+						Hide this vehicle from the list and stop sending reminders.
+					</p>
+				</div>
+				<Switch name="retired" defaultChecked={values?.retired} />
+			</label>
 		</fieldset>
 	{/if}
 
