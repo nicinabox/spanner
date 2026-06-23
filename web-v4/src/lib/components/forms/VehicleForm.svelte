@@ -4,6 +4,7 @@
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import NativeSelect from '$lib/components/common/NativeSelect.svelte';
+	import Switch from '$lib/components/common/Switch.svelte';
 	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
 	import { getColorPalette } from '$lib/utils/colors';
 	import type { Vehicle } from '$lib/data/vehicles';
@@ -84,60 +85,52 @@
 	<fieldset class="flex flex-col gap-4">
 		<legend class="font-semibold">Preferences</legend>
 
-		<label class="flex items-center gap-3 cursor-pointer">
-			<input
-				type="checkbox"
-				name="preferences.enableCost"
-				checked={values?.preferences?.enableCost ?? true}
-				class="accent-brand"
-			/>
+		<label class="flex items-center justify-between gap-3 cursor-pointer">
 			<div>
 				<span class="font-medium">Enable cost</span>
 				<p class="text-sm text-ink-500">Show cost column in History and cost field in form.</p>
 			</div>
+			<Switch
+				name="preferences.enableCost"
+				defaultChecked={values?.preferences?.enableCost ?? true}
+			/>
 		</label>
 
-		<label class="flex items-center gap-3 cursor-pointer">
-			<input
-				type="checkbox"
-				name="preferences.sendReminderEmails"
-				checked={values?.preferences?.sendReminderEmails ?? true}
-				class="accent-brand"
-			/>
+		<label class="flex items-center justify-between gap-3 cursor-pointer">
 			<div>
 				<span class="font-medium">Send reminder emails</span>
 				<p class="text-sm text-ink-500">
 					Receive an email for upcoming reminders 2 weeks before and on the due date.
 				</p>
 			</div>
+			<Switch
+				name="preferences.sendReminderEmails"
+				defaultChecked={values?.preferences?.sendReminderEmails ?? true}
+			/>
 		</label>
 
-		<label class="flex items-center gap-3 cursor-pointer">
-			<input
-				type="checkbox"
-				name="preferences.sendPromptForRecords"
-				checked={values?.preferences?.sendPromptForRecords ?? true}
-				class="accent-brand"
-			/>
+		<label class="flex items-center justify-between gap-3 cursor-pointer">
 			<div>
 				<span class="font-medium">Send prompt for records email</span>
 				<p class="text-sm text-ink-500">
 					Receive an email asking if you recently performed service based on your record history.
 				</p>
 			</div>
+			<Switch
+				name="preferences.sendPromptForRecords"
+				defaultChecked={values?.preferences?.sendPromptForRecords ?? true}
+			/>
 		</label>
 
-		<label class="flex items-center gap-3 cursor-pointer">
-			<input
-				type="checkbox"
-				name="preferences.showMileageAdjustmentRecords"
-				checked={values?.preferences?.showMileageAdjustmentRecords ?? true}
-				class="accent-brand"
-			/>
+		<label class="flex items-center justify-between gap-3 cursor-pointer">
 			<div>
 				<span class="font-medium">Show mileage adjustment records</span>
 				<p class="text-sm text-ink-500">Show mileage adjustment records in History.</p>
 			</div>
+			<Switch
+				name="preferences.showMileageAdjustmentRecords"
+				defaultChecked={values?.preferences?.showMileageAdjustmentRecords ?? true}
+			/>
 		</label>
 	</fieldset>
 
@@ -145,15 +138,15 @@
 		<hr class="border-ink-200" />
 
 		<fieldset class="flex flex-col gap-4">
-			<label class="flex items-center gap-3 cursor-pointer">
-				<input type="checkbox" name="retired" checked={values?.retired} class="accent-brand" />
-				<div>
-					<span class="font-medium">Retire</span>
-					<p class="text-sm text-ink-500">
-						Hide this vehicle from the list and stop sending reminders.
-					</p>
-				</div>
-			</label>
+		<label class="flex items-center justify-between gap-3 cursor-pointer">
+			<div>
+				<span class="font-medium">Retire</span>
+				<p class="text-sm text-ink-500">
+					Hide this vehicle from the list and stop sending reminders.
+				</p>
+			</div>
+			<Switch name="retired" defaultChecked={values?.retired} />
+		</label>
 		</fieldset>
 	{/if}
 
