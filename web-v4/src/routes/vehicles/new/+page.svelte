@@ -9,7 +9,11 @@
 	let { form }: PageProps = $props();
 
 	let { setStart } = useAppBarSetters();
-	setStart(backButton);
+
+	$effect(() => {
+		setStart(backButton);
+		return () => setStart(undefined);
+	});
 </script>
 
 {#snippet backButton()}
