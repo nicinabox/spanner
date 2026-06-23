@@ -2,7 +2,9 @@
 	import { Button } from '$lib';
 	import PageLayout from '$lib/components/common/PageLayout.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
-	import { ArrowLeft } from 'lucide-svelte';
+	import HistoryTable from '$lib/components/HistoryTable.svelte';
+	import EmptyState from '$lib/components/EmptyState.svelte';
+	import { ArrowLeft, BookOpenText } from 'lucide-svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import type { PageProps } from './$types';
 	import Menu from '$lib/components/common/Menu.svelte';
@@ -11,6 +13,7 @@
 	let { data }: PageProps = $props();
 
 	let vehicle = $derived(data.vehicle);
+	let history = $derived(data.history);
 </script>
 
 <PageLayout>
@@ -52,8 +55,24 @@
 					? `${vehicle.milesPerYear.toLocaleString()} ${vehicle.distanceUnit}/yr`
 					: null}
 			/>
-			<Stat title="Since" value={vehicle.createdAt ? intlFormatDateUTC(vehicle.createdAt) : null} />
+			<Stat title="Since" value={history[0] ? intlFormatDateUTC(history[0].date) : null} />
 			<Stat title="VIN" value={vehicle.vin} />
 		</div>
+
+		{#if history.length}
+			<HistoryTable {history} {vehicle} />
+		{:else}
+			<EmptyState
+				heading="Add your vehicle's history"
+				details="Try adding your purchase as the first record"
+			>
+				{#snippet media()}
+					<BookOpenText size={48} class="text-ink-300" />
+				{/snippet}
+				{#snippet action()}
+					<Button size="lg" href="/vehicles/{vehicle.id}/add?notes=Purchase">Add Purchase</Button>
+				{/snippet}
+			</EmptyState>
+		{/if}
 	</div>
 </PageLayout>
