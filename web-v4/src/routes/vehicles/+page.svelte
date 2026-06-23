@@ -3,6 +3,7 @@
 	import VehicleLink from '$lib/components/vehicles/VehicleLink.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
 	import Button from '$lib/components/common/Button.svelte';
+	import PageLayout from '$lib/components/common/PageLayout.svelte';
 	import VehicleSortMenu from '$lib/components/vehicles/VehicleSortMenu.svelte';
 	import { sortVehiclesBy } from '$lib/utils/sortable';
 	import { formatMileage } from '$lib/utils/vehicle';
@@ -33,6 +34,8 @@
 		vehiclesSortOrder = user.preferences.vehiclesSortOrder;
 	});
 </script>
+
+<PageLayout>
 
 <div class="mb-6 flex justify-start gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar">
 	<Stat title="Active vehicles" value={active.length} />
@@ -109,6 +112,7 @@
 		</ul>
 	</div>
 </section>
+</PageLayout>
 
 <style>
 	.vehicles-header {
