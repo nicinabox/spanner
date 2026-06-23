@@ -1,8 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { Session } from '$lib/data/session';
-	import { Button } from '$lib';
-	import { LogOut } from 'lucide-svelte';
 	import Menu from './Menu.svelte';
 
 	interface Props {
@@ -18,7 +16,7 @@
 </script>
 
 <header
-	class="sticky top-0 z-nav flex flex-wrap items-center gap-3 p-2 bg-brand-500 text-ink-50 shadow-md"
+	class="sticky top-0 z-(--z-nav) flex flex-wrap items-center gap-3 p-2 bg-brand-500 text-ink-50 shadow-md"
 >
 	<div class="flex-1">
 		{@render start?.()}
