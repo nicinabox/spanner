@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { Session } from '$lib/data/session';
 	import Menu from './Menu.svelte';
+	import ThemeToggle from './ThemeToggle.svelte';
 
 	interface Props {
 		start?: Snippet;
@@ -41,5 +42,6 @@
 				items={[{ value: 'signout', label: 'Sign out', href: '/logout', preload: false }]}
 			/>
 		{/if}
+		<ThemeToggle />
 	</div>
 </header>

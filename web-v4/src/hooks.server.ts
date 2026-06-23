@@ -19,5 +19,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	event.locals.session = session;
 	event.locals.authToken = session?.authToken;
-	return resolve(event);
+
+	const theme = event.cookies.get('theme');
+
+	return resolve(event, {
+		transformPageChunk: ({ html }) => {
+			if (theme && theme !== 'auto') {
+				return html.replace('<html', `<html data-theme="${theme}"`);
+			}
+			return html;
+		}
+	});
 };

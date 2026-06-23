@@ -5,19 +5,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>Spanner</title>
 		<script>
-			const setTheme = (theme, prefers) => {
-				delete document.documentElement.dataset.theme;
+			const theme = document.cookie.replace(/(?:(?:^|.*;\s*)theme\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
-				if (prefers) {
-					document.documentElement.dataset.theme = theme;
+			if (theme === 'light' || theme === 'dark') {
+				document.documentElement.dataset.theme = theme;
+			} else {
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+				prefersDark.addEventListener('change', (event) => {
+					if (event.matches) {
+						document.documentElement.dataset.theme = 'dark';
+					} else {
+						delete document.documentElement.dataset.theme;
+					}
+				});
+				if (prefersDark.matches) {
+					document.documentElement.dataset.theme = 'dark';
 				}
-			};
-
-			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-			prefersDark.addEventListener('change', (event) => {
-				setTheme('dark', event.matches);
-			});
-			setTheme('dark', prefersDark.matches);
+			}
 		</script>
 		%sveltekit.head%
 	</head>
