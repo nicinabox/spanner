@@ -52,7 +52,7 @@
 {#each years as year (year)}
 	<div
 		id={`year-${year}`}
-		class="history-table group mb-8 overflow-clip rounded-md bg-surface shadow-sm"
+		class="history-table group mb-6 overflow-clip rounded-sm bg-surface shadow-sm"
 	>
 		<div class="sticky-sentinel"></div>
 		<header
@@ -61,7 +61,7 @@
 			<h2 class="text-lg font-semibold m-0">{year}</h2>
 		</header>
 		<FlexTable class="border-t-2 border-ink-200">
-			<Row class="text-xs font-bold tracking-wide text-ink-500 uppercase max-sm:hidden">
+			<Row class="text-xs font-bold tracking-wide text-ink-400 uppercase max-sm:hidden">
 				<Cell>Date</Cell>
 				<Cell>Distance</Cell>
 				{#if vehicle.preferences.enableCost}
