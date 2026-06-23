@@ -5,13 +5,15 @@
 		base: 'inline-flex items-center gap-2 px-3 h-8 min-w-8 leading-none border rounded-md text-sm font-medium whitespace-nowrap cursor-pointer transition-[filter] duration-100 ease-out-expo no-underline',
 		variants: {
 			variant: {
-				primary:
-					'bg-brand-500 text-ink-50 border-brand-500 hover:bg-brand-600 active:bg-brand-700',
+				primary: 'bg-brand-500 text-ink-50 border-brand-500 hover:bg-brand-600 active:bg-brand-700',
 				secondary:
 					'bg-transparent text-ink-900 border-brand-500 hover:bg-brand-100 active:bg-brand-300 active:text-brand-600',
 				tertiary:
 					'bg-transparent text-ink-900 border-transparent hover:bg-brand-200 active:bg-brand-300 active:text-brand-600',
 				neutral: 'bg-ink-900 text-ink-50 border-ink-900 hover:bg-ink-700 active:bg-ink-900'
+			},
+			danger: {
+				true: ''
 			},
 			size: {
 				sm: 'h-6 px-2 text-xs rounded-sm',
@@ -24,7 +26,24 @@
 		},
 		compoundVariants: [
 			{ pill: true, size: 'sm', class: 'px-2.5' },
-			{ pill: true, size: 'lg', class: 'px-4.5' }
+			{ pill: true, size: 'lg', class: 'px-4.5' },
+			{
+				danger: true,
+				variant: 'primary',
+				class:
+					'border-0 bg-negative/10 text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative'
+			},
+			{
+				danger: true,
+				variant: 'tertiary',
+				class: 'text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative'
+			},
+			{
+				danger: true,
+				variant: 'secondary',
+				class:
+					'border-negative/30 text-negative hover:bg-negative/10 active:bg-negative/30 active:text-negative'
+			}
 		],
 		defaultVariants: {
 			size: 'md'
@@ -52,6 +71,7 @@
 		icon?: boolean;
 		href?: string;
 		type?: 'button' | 'submit' | 'reset' | null;
+		danger?: boolean;
 		disabled?: boolean | null;
 		class?: ClassValue;
 		children: Snippet;
@@ -65,6 +85,7 @@
 		theme,
 		block = false,
 		icon = false,
+		danger = false,
 		href,
 		type = 'button',
 		disabled,
@@ -74,7 +95,7 @@
 	}: Props = $props();
 
 	let classes = $derived(
-		cn(buttonVariants({ variant, size, pill: radius === 'pill', block, icon }), className)
+		cn(buttonVariants({ variant, size, pill: radius === 'pill', block, danger, icon }), className)
 	);
 
 	let attrs = $derived(theme ? { 'data-theme': theme, ...rest } : rest);

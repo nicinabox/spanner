@@ -12,7 +12,8 @@
 <PageLayout>
 	{#snippet header()}
 		<Button href="/vehicles/{data.vehicle.id}" variant="neutral" theme="dark">
-			<ArrowLeft size={16} /> {data.vehicle.name}
+			<ArrowLeft size={16} />
+			{data.vehicle.name}
 		</Button>
 	{/snippet}
 
@@ -34,7 +35,7 @@
 								Remove all history, reminders, notes permanently. This cannot be undone.
 							</p>
 						</div>
-						<Button type="submit" variant="secondary" formaction="?/delete">Delete</Button>
+						<Button type="submit" formaction="?/delete" danger>Delete</Button>
 					</label>
 				</fieldset>
 			</Card>
