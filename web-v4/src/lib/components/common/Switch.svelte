@@ -38,6 +38,7 @@
 	import * as zagSwitch from '@zag-js/switch';
 	import { useMachine, normalizeProps } from '@zag-js/svelte';
 	import { cn } from '$lib/utils/cn';
+	import type { Snippet } from 'svelte';
 	import type { ClassValue } from 'svelte/elements';
 
 	type Props = {
@@ -54,10 +55,11 @@
 		id?: string;
 		size?: 'sm' | 'md' | 'lg';
 		class?: ClassValue;
+		children?: Snippet;
 	};
 
 	let {
-		name,
+		name: fieldName,
 		checked: controlledChecked,
 		defaultChecked,
 		onCheckedChange,
@@ -65,11 +67,12 @@
 		required,
 		invalid,
 		readOnly,
-		value,
+		value = 'on',
 		label,
 		id: idProp,
 		size = 'md',
-		class: className
+		class: className,
+		children
 	}: Props = $props();
 
 	let id = $props.id();
@@ -77,7 +80,7 @@
 
 	const service = useMachine(zagSwitch.machine, {
 		id: resolvedId,
-		name,
+		name: fieldName,
 		disabled,
 		required,
 		invalid,
@@ -109,7 +112,9 @@
 	<span {...api.getControlProps()} class={controlClass}>
 		<span {...api.getThumbProps()} class={thumbClass}></span>
 	</span>
-	{#if label}
+	{#if children}
+		{@render children()}
+	{:else if label}
 		<span {...api.getLabelProps()} class="text-sm font-medium text-ink-900 select-none data-disabled:opacity-50">
 			{label}
 		</span>

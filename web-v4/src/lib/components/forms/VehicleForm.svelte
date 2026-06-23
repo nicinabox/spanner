@@ -85,68 +85,77 @@
 	<fieldset class="flex flex-col gap-4">
 		<legend class="font-semibold">Preferences</legend>
 
-		<label class="flex items-center justify-between gap-3 cursor-pointer">
-			<div>
-				<span class="font-medium">Enable cost</span>
-				<p class="text-sm text-ink-500">Show cost column in History and cost field in form.</p>
-			</div>
+		<div class="flex items-center justify-between gap-3">
 			<Switch
 				name="preferences.enableCost"
 				defaultChecked={values?.preferences?.enableCost ?? true}
-			/>
-		</label>
+				class="flex-row-reverse w-full justify-between"
+			>
+				<div>
+					<span class="font-medium">Enable cost</span>
+					<p class="text-sm text-ink-500">Show cost column in History and cost field in form.</p>
+				</div>
+			</Switch>
+		</div>
 
-		<label class="flex items-center justify-between gap-3 cursor-pointer">
-			<div>
-				<span class="font-medium">Send reminder emails</span>
-				<p class="text-sm text-ink-500">
-					Receive an email for upcoming reminders 2 weeks before and on the due date.
-				</p>
-			</div>
+		<div class="flex items-center justify-between gap-3">
 			<Switch
 				name="preferences.sendReminderEmails"
 				defaultChecked={values?.preferences?.sendReminderEmails ?? true}
-			/>
-		</label>
+				class="flex-row-reverse w-full justify-between"
+			>
+				<div>
+					<span class="font-medium">Send reminder emails</span>
+					<p class="text-sm text-ink-500">
+						Receive an email for upcoming reminders 2 weeks before and on the due date.
+					</p>
+				</div>
+			</Switch>
+		</div>
 
-		<label class="flex items-center justify-between gap-3 cursor-pointer">
-			<div>
-				<span class="font-medium">Send prompt for records email</span>
-				<p class="text-sm text-ink-500">
-					Receive an email asking if you recently performed service based on your record history.
-				</p>
-			</div>
+		<div class="flex items-center justify-between gap-3">
 			<Switch
 				name="preferences.sendPromptForRecords"
 				defaultChecked={values?.preferences?.sendPromptForRecords ?? true}
-			/>
-		</label>
+				class="flex-row-reverse w-full justify-between"
+			>
+				<div>
+					<span class="font-medium">Send prompt for records email</span>
+					<p class="text-sm text-ink-500">
+						Receive an email asking if you recently performed service based on your record history.
+					</p>
+				</div>
+			</Switch>
+		</div>
 
-		<label class="flex items-center justify-between gap-3 cursor-pointer">
-			<div>
-				<span class="font-medium">Show mileage adjustment records</span>
-				<p class="text-sm text-ink-500">Show mileage adjustment records in History.</p>
-			</div>
+		<div class="flex items-center justify-between gap-3">
 			<Switch
 				name="preferences.showMileageAdjustmentRecords"
 				defaultChecked={values?.preferences?.showMileageAdjustmentRecords ?? true}
-			/>
-		</label>
+				class="flex-row-reverse w-full justify-between"
+			>
+				<div>
+					<span class="font-medium">Show mileage adjustment records</span>
+					<p class="text-sm text-ink-500">Show mileage adjustment records in History.</p>
+				</div>
+			</Switch>
+		</div>
 	</fieldset>
 
 	{#if values?.id}
 		<hr class="border-ink-200" />
 
 		<fieldset class="flex flex-col gap-4">
-			<label class="flex items-center justify-between gap-3 cursor-pointer">
+		<div class="flex items-center justify-between gap-3">
+			<Switch name="retired" defaultChecked={values?.retired} class="flex-row-reverse w-full justify-between">
 				<div>
 					<span class="font-medium">Retire</span>
 					<p class="text-sm text-ink-500">
 						Hide this vehicle from the list and stop sending reminders.
 					</p>
 				</div>
-				<Switch name="retired" defaultChecked={values?.retired} />
-			</label>
+			</Switch>
+		</div>
 		</fieldset>
 	{/if}
 
