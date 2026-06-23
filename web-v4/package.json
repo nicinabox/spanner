@@ -36,6 +36,7 @@
 		"@zag-js/menu": "^1.41.2",
 		"@zag-js/svelte": "^1.41.2",
 		"@zag-js/switch": "^1.41.2",
+		"@zag-js/tooltip": "^1.41.2",
 		"camelcase-keys": "^10.0.2",
 		"clsx": "^2.1.1",
 		"date-fns": "^4.4.0",
