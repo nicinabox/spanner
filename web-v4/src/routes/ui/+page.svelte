@@ -2,7 +2,7 @@
 	import { Button, Field, Input } from '$lib';
 </script>
 
-<main class="w-full max-w-(--max-content) mx-auto max-w-lg py-6">
+<main class="w-full mx-auto max-w-lg py-6">
 	<section>
 		<h2>Button</h2>
 

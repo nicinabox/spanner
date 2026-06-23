@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Card from '$lib/components/common/Card.svelte';
 	import VehicleForm from '$lib/components/forms/VehicleForm.svelte';
 	import type { PageProps } from './$types';
 
@@ -6,6 +7,8 @@
 </script>
 
 <div class="max-w-xl mx-auto">
-	<h1 class="text-xl mb-6">New Vehicle</h1>
-	<VehicleForm errors={form?.errors} />
+	<Card>
+		<h1>New Vehicle</h1>
+		<VehicleForm errors={form?.errors} />
+	</Card>
 </div>

@@ -2,17 +2,17 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const cardVariants = tv({
-		base: 'bg-surface',
+		base: 'bg-surface gap-6 flex flex-col',
 		variants: {
 			variant: {
-				elevated: 'shadow-md',
+				elevated: 'shadow-md border border-ink-200',
 				outline: 'border border-ink-200',
 				filled: 'bg-surface-raised'
 			},
 			size: {
-				sm: 'p-3 rounded-md',
-				md: 'p-4 rounded-lg',
-				lg: 'p-6 rounded-xl'
+				sm: 'p-4 rounded-md',
+				md: 'p-8 rounded-lg',
+				lg: 'p-10 rounded-xl'
 			}
 		},
 		defaultVariants: {

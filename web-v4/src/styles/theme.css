@@ -43,9 +43,6 @@
 	--font-sans: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 	--font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
 
-	--max-content: 72rem;
-	--max-prose: 42rem;
-
 	--z-base: 0;
 	--z-popup: 10;
 	--z-nav: 30;
