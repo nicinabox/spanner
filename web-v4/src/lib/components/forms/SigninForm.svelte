@@ -35,9 +35,7 @@
 		</p>
 
 		<div class="my-6 flex items-center gap-4">
-			<!-- <div class="h-px flex-1 bg-border"></div> -->
-			<div class="text-sm text-muted divider">OR</div>
-			<!-- <div class="h-px flex-1 bg-border"></div> -->
+			<div class="text-sm text-ink-500 divider">OR</div>
 		</div>
 
 		<fieldset class="fieldset">
@@ -72,18 +70,18 @@
 {/if}
 
 <style>
-    .divider {
-        display: flex;
-        flex: 1;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
+	.divider {
+		display: flex;
+		flex: 1;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
 
-        &::before, &::after {
-            content: "";
-            background: var(--color-canvas);
-            flex-grow: 1;
-            height: 2px;
-        }
-    }
+		&::before, &::after {
+			content: "";
+			background: var(--color-canvas);
+			flex-grow: 1;
+			height: 2px;
+		}
+	}
 </style>

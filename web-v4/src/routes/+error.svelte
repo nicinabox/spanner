@@ -5,12 +5,12 @@
 
 <div class="flex min-h-screen items-center justify-center p-4">
 	<div class="flex flex-col items-center gap-1 text-center">
-		<p class="text-3xl font-bold">
+		<p class="text-2xl font-medium">
 			{page.status}
 		</p>
-		<h1 class="text-xl font-semibold mb-4">
+		<h1 class="text-3xl font-bold mb-4">
 			{page.status === 404 ? 'Page not found' : 'Something went wrong'}
 		</h1>
-		<Button href="/">Go home</Button>
+		<Button href="/" size="lg">Go home</Button>
 	</div>
 </div>

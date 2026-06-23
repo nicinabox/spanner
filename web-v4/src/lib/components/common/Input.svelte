@@ -40,7 +40,16 @@
 	let resolvedRequired = $derived(required ?? field?.required);
 	let ariaDescribedBy = $derived(field?.describedBy);
 	let ariaInvalid = $derived(field?.invalid || undefined);
-	let classes = $derived(['input', size, className].filter(Boolean).join(' '));
+	let classes = $derived(
+		[
+			'w-full px-3 py-2 h-8 text-sm rounded-md border border-ink-200 bg-canvas text-ink-900 transition-[border-color] duration-100 ease-out-expo placeholder:text-ink-400 disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-negative focus:border-focus-ring focus:outline-none',
+			size === 'sm' && 'h-6 px-2 py-1 rounded-sm text-xs',
+			size === 'lg' && 'h-10 px-4 py-3 text-base',
+			className
+		]
+			.filter(Boolean)
+			.join(' ')
+	);
 </script>
 
 <input

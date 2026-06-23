@@ -34,7 +34,7 @@
 	});
 </script>
 
-<div class="mb-6 flex justify-start gap-16 overflow-auto pointer-coarse:no-scrollbar">
+<div class="mb-6 flex justify-start gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar">
 	<Stat title="Active vehicles" value={active.length} />
 
 	{#each vehiclesByDistanceUnit as [distanceUnit, vehicles] (distanceUnit)}
@@ -60,19 +60,19 @@
 
 				const form = document.querySelector(
 					'form[action$="updateUserPreferences"]'
-					) as HTMLFormElement | null;
-					if (form) {
-						const strategyInput = form.querySelector(
-							'input[name=strategy]'
-						) as HTMLInputElement | null;
-						const orderInput = form.querySelector('input[name=order]') as HTMLInputElement | null;
-						if (strategyInput) strategyInput.value = value[0];
-						if (orderInput) orderInput.value = value[1];
-						form.requestSubmit();
-					}
-				}}
-			/>
-		</form>
+				) as HTMLFormElement | null;
+				if (form) {
+					const strategyInput = form.querySelector(
+						'input[name=strategy]'
+					) as HTMLInputElement | null;
+					const orderInput = form.querySelector('input[name=order]') as HTMLInputElement | null;
+					if (strategyInput) strategyInput.value = value[0];
+					if (orderInput) orderInput.value = value[1];
+					form.requestSubmit();
+				}
+			}}
+		/>
+	</form>
 </header>
 
 <section>
@@ -97,7 +97,10 @@
 	</Button>
 
 	<div>
-		<ul class:hidden={!showRetired} class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0">
+		<ul
+			class:hidden={!showRetired}
+			class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0"
+		>
 			{#each retired as v (v.id)}
 				<li class="flex">
 					<VehicleLink vehicle={v} />
@@ -112,11 +115,11 @@
 		display: grid;
 		grid-template-columns: 1fr auto;
 		grid-template-areas:
-			"title new"
-			"sort sort";
-		gap: var(--space-2);
+			'title new'
+			'sort sort';
+		gap: 0.5rem;
 		align-items: center;
-		margin-bottom: var(--space-4);
+		margin-bottom: 1rem;
 	}
 
 	.vehicles-header :global(h1) {
@@ -134,8 +137,8 @@
 	}
 
 	.sort-form :global(.menu) {
-			display: block;
-		}
+		display: block;
+	}
 
 	@media (max-width: 639px) {
 		.sort-form :global([data-part='trigger']) {
@@ -146,14 +149,14 @@
 
 		.sort-form :global([data-part='trigger']) :global([data-part='indicator']) {
 			position: absolute;
-			right: var(--btn-inline-padding, var(--space-3));
+			right: var(--btn-inline-padding, 0.75rem);
 		}
 	}
 
 	@media (min-width: 640px) {
 		.vehicles-header {
 			grid-template-columns: auto 1fr auto;
-			grid-template-areas: "title new sort";
+			grid-template-areas: 'title new sort';
 		}
 
 		.sort-form {

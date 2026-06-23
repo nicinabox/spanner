@@ -40,19 +40,19 @@
 	});
 </script>
 
-<div class="field{className ? ` ${className}` : ''}" data-invalid={hasErrors || undefined}>
-	<label for={id} class="label">
+<div class="group flex flex-col gap-1 mb-4{className ? ` ${className}` : ''}" data-invalid={hasErrors || undefined}>
+	<label for={id} class="font-medium text-base group-data-invalid:text-negative">
 		{label}
-		{#if required}<span class="required" aria-hidden="true">*</span>{/if}
+		{#if required}<span class="text-negative ml-1" aria-hidden="true">*</span>{/if}
 	</label>
 
 	{@render children?.()}
 
 	{#if hint && !hasErrors}
-		<p id="{id}-hint" class="hint">{hint}</p>
+		<p id="{id}-hint" class="text-sm text-ink-400">{hint}</p>
 	{/if}
 
 	{#each fieldErrors as error (error.id)}
-		<p id="{id}-error" class="error">{error.title}</p>
+		<p id="{id}-error" class="text-sm text-negative">{error.title}</p>
 	{/each}
 </div>

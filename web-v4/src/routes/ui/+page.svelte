@@ -2,7 +2,7 @@
 	import { Button, Field, Input } from '$lib';
 </script>
 
-<main class="container max-w-lg py-6">
+<main class="w-full max-w-(--max-content) mx-auto max-w-lg py-6">
 	<section>
 		<h2>Button</h2>
 
@@ -66,16 +66,16 @@
 	section {
 		display: flex;
 		flex-direction: column;
-		margin-block: var(--space-8);
+		margin-block: 2rem;
 
 		h2 {
 			font-weight: bold;
-			margin-bottom: var(--space-3);
+			margin-bottom: 0.75rem;
 		}
 
 		h3 {
-			margin-top: var(--space-3);
-			margin-bottom: var(--space-2);
+			margin-top: 0.75rem;
+			margin-bottom: 0.5rem;
 		}
 	}
 </style>

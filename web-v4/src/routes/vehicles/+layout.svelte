@@ -7,8 +7,8 @@
 
 <AppBar session={data.session} />
 
-<div class="main">
-	<div class="container">
+<div class="py-6 px-(--main-padding)">
+	<div class="w-full mx-auto">
 		{@render children?.()}
 	</div>
 </div>

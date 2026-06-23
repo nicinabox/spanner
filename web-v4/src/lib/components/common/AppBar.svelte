@@ -17,68 +17,31 @@
 	let username = $derived(session?.email?.split('@')[0] ?? '');
 </script>
 
-<header class="appbar">
-	<div class="appbar-start">
+<header
+	class="sticky top-0 z-nav flex flex-wrap items-center gap-3 p-2 bg-brand-500 text-ink-50 shadow-md"
+>
+	<div class="flex-1">
 		{@render start?.()}
 	</div>
-	<div class="appbar-center">
+	<div class="flex-1 flex justify-center">
 		{#if center}
 			{@render center()}
 		{:else}
-			<a href="/" class="appbar-logo">
-				<img src="/logo-white.png" alt="Spanner" />
+			<a href="/">
+				<img src="/logo-white.png" alt="Spanner" class="h-[1.8rem] w-auto" />
 			</a>
 		{/if}
 	</div>
-	<div class="appbar-end">
+	<div class="flex-1 flex justify-end gap-3 items-center">
 		{#if end}
 			{@render end()}
 		{:else if session}
 			<Menu
 				trigger={username}
 				theme="dark"
-				class="text-light"
+				class="text-white"
 				items={[{ value: 'signout', label: 'Sign out', href: '/logout', preload: false }]}
 			/>
 		{/if}
 	</div>
 </header>
-
-<style>
-	.appbar {
-		position: sticky;
-		top: 0;
-		z-index: var(--z-nav);
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--space-sm);
-		padding: var(--space-2);
-		background-color: var(--color-brand);
-		color: var(--color-ink-inverted);
-		box-shadow: var(--shadow-md);
-	}
-
-	.appbar-start {
-		flex: 1;
-	}
-
-	.appbar-center {
-		flex: 1;
-		display: flex;
-		justify-content: center;
-	}
-
-	.appbar-end {
-		flex: 1;
-		display: flex;
-		justify-content: flex-end;
-		gap: var(--space-sm);
-		align-items: center;
-	}
-
-	.appbar-logo img {
-		height: 1.8rem;
-		width: auto;
-	}
-</style>

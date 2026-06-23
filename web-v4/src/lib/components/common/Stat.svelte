@@ -10,7 +10,7 @@
 
 {#if value}
 	<div class="min-w-fit py-2 whitespace-nowrap {props.class}">
-		<div class="text-sm text-muted">{title}</div>
-		<div class="text-xl font-bold">{value}</div>
+		<div class="text-sm text-ink-500">{title}</div>
+		<div class="text-2xl font-bold">{value}</div>
 	</div>
 {/if}

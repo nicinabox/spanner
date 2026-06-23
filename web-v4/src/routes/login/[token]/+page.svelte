@@ -5,9 +5,9 @@
 	let { data }: PageProps = $props();
 </script>
 
-<div class="login-page">
-	<div class="card lg">
-		<header>
+<div class="flex min-h-screen flex-col items-center justify-center p-4">
+	<div class="p-10 border border-ink-200 bg-surface shadow-lg rounded-xl">
+		<header class="mb-4">
 			<h1>Sorry, that login didn't work</h1>
 		</header>
 		<p class="text-lg mb-6">
@@ -17,19 +17,3 @@
 		<Button href="/" variant="primary" size="lg" block>Try again</Button>
 	</div>
 </div>
-
-<style>
-	.login-page {
-		display: flex;
-		min-height: 100vh;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: var(--space-md);
-	}
-
-	.card {
-		width: 100%;
-		max-width: 500px;
-	}
-</style>

@@ -115,15 +115,15 @@ export type OptionItem = {
 	ul {
 		list-style: none;
 		min-width: var(--reference-width, 15ch);
-		padding: var(--space-1);
+		padding: 0.25rem;
 		background-color: var(--color-surface-raised);
-		border: 1px solid var(--color-ink-lightest);
+		border: 1px solid var(--color-ink-200);
 		border-radius: var(--radius-md);
 		box-shadow: var(--shadow-md);
 		transform-origin: var(--transform-origin, top);
 		transition:
-			opacity var(--duration-slow) var(--ease-out-expo),
-			transform var(--duration-slow) var(--ease-out-expo);
+			opacity 0.25s var(--ease-out-expo),
+			transform 0.25s var(--ease-out-expo);
 	}
 
 	ul[data-state='open'] {
@@ -146,13 +146,13 @@ export type OptionItem = {
 	li {
 		display: flex;
 		align-items: center;
-		gap: var(--space-2);
-		padding: var(--space-1-5) var(--space-3);
+		gap: 0.5rem;
+		padding: 0.375rem 0.75rem;
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		user-select: none;
 		outline: none;
-		transition: background-color var(--duration-fast) var(--ease-out-expo);
+		transition: background-color 100ms var(--ease-out-expo);
 	}
 
 	.check-indicator {
@@ -180,13 +180,21 @@ export type OptionItem = {
 	}
 
 	li[data-type='radio'] {
-		padding-left: var(--space-1);
+		padding-left: 2rem;
+		position: relative;
+	}
+
+	li[data-type='radio'] .check-indicator {
+		position: absolute;
+		left: 0.25rem;
+		top: 50%;
+		transform: translateY(-50%);
 	}
 
 	li[role='separator'] {
 		height: 1px;
-		background-color: var(--color-ink-lightest);
-		margin: var(--space-1) 0;
+		background-color: var(--color-ink-200);
+		margin: 0.25rem 0;
 		padding: 0;
 		cursor: default;
 	}

@@ -13,29 +13,20 @@
 	let { variant = 'neutral', class: className, children }: Props = $props();
 </script>
 
-<span class="badge {variant} {className}">
+<span
+	class="inline-flex items-center gap-1 h-5 px-1.5 rounded-sm text-xs font-medium {variant === 'warning' ? 'badge-warning' : 'badge-neutral'} {className}"
+>
 	{@render children()}
 </span>
 
 <style>
-	.badge {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-1);
-		height: var(--space-5);
-		padding-inline: var(--space-1-5);
-		border-radius: var(--radius-sm);
-		font-size: var(--text-xs);
-		font-weight: var(--weight-medium);
-	}
-
-	.warning {
+	.badge-warning {
 		background: var(--color-warning);
 		color: color-mix(in oklch, var(--color-warning), black 60%);
 	}
 
-	.neutral {
-		background: color-mix(in oklch, var(--color-ink), transparent 90%);
-		color: var(--color-ink-medium);
+	.badge-neutral {
+		background: color-mix(in oklch, var(--color-ink-900), transparent 90%);
+		color: var(--color-ink-500);
 	}
 </style>
