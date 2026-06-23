@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { Button } from '$lib';
+	import Input from '$lib/components/common/Input.svelte';
 	import PageLayout from '$lib/components/common/PageLayout.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
-	import { ArrowLeft, BookOpenText } from 'lucide-svelte';
+	import { ArrowLeft, BookOpenText, PlusIcon } from 'lucide-svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import type { PageProps } from './$types';
 	import Menu from '$lib/components/common/Menu.svelte';
@@ -14,6 +15,16 @@
 
 	let vehicle = $derived(data.vehicle);
 	let history = $derived(data.history);
+
+	let searchQuery = $state('');
+
+	let filteredHistory = $derived(
+		searchQuery
+			? history.filter((item) =>
+					JSON.stringify(item).toLowerCase().includes(searchQuery.toLowerCase())
+				)
+			: history
+	);
 </script>
 
 <PageLayout>
@@ -59,9 +70,7 @@
 			<Stat title="VIN" value={vehicle.vin} />
 		</div>
 
-		{#if history.length}
-			<HistoryTable {history} {vehicle} />
-		{:else}
+		{#if !history.length}
 			<EmptyState
 				heading="Add your vehicle's history"
 				details="Try adding your purchase as the first record"
@@ -73,6 +82,34 @@
 					<Button size="lg" href="/vehicles/{vehicle.id}/add?notes=Purchase">Add Purchase</Button>
 				{/snippet}
 			</EmptyState>
+		{:else if !filteredHistory.length}
+			<div class="flex justify-between gap-10 mb-4">
+				<Input
+					type="search"
+					name="search"
+					placeholder="Search history"
+					size="lg"
+					class="w-full sm:w-1/2 lg:w-1/3 bg-ink-200/50 focus:bg-ink-50"
+					bind:value={searchQuery}
+				/>
+			</div>
+			<p class="text-center text-ink-400 py-12">No results for "{searchQuery}"</p>
+		{:else}
+			<div class="flex justify-between gap-10 mb-4">
+				<Input
+					type="search"
+					name="search"
+					placeholder="Search history"
+					size="lg"
+					class="w-full sm:w-1/2 lg:w-1/3 bg-ink-200/50 focus:bg-ink-50"
+					bind:value={searchQuery}
+				/>
+				<Button href="/vehicles/{vehicle.id}/add" size="lg">
+					<PlusIcon size={16} />
+					New...
+				</Button>
+			</div>
+			<HistoryTable history={filteredHistory} {vehicle} />
 		{/if}
 	</div>
 </PageLayout>

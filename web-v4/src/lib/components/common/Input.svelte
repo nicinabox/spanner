@@ -77,5 +77,6 @@
 	class={classes}
 	aria-describedby={ariaDescribedBy}
 	aria-invalid={ariaInvalid}
+	oninput={(e) => value = (e.target as HTMLInputElement).value}
 	{...rest}
 />
