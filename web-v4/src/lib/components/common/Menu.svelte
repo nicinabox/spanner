@@ -4,20 +4,27 @@
 	import Button from './Button.svelte';
 	import { Check, ChevronDown } from 'lucide-svelte';
 	import type { ClassValue } from 'svelte/elements';
+	import type { Snippet } from 'svelte';
 
-export type Item = { value: string; label?: string; href?: string; preload?: boolean; separator?: boolean };
+	export type Item = {
+		value: string;
+		label?: string;
+		href?: string;
+		preload?: boolean;
+		separator?: boolean;
+	};
 
-export type OptionItem = {
-	type: 'radio' | 'checkbox' | 'separator';
-	name?: string;
-	value?: string;
-	label?: string;
-	checked?: boolean;
-	onCheckedChange?: (checked: boolean) => void;
-};
+	export type OptionItem = {
+		type: 'radio' | 'checkbox' | 'separator';
+		name?: string;
+		value?: string;
+		label?: string;
+		checked?: boolean;
+		onCheckedChange?: (checked: boolean) => void;
+	};
 
 	interface Props {
-		trigger: any;
+		trigger: string | Snippet;
 		items?: Item[];
 		optionItems?: OptionItem[];
 		theme?: 'light' | 'dark';
@@ -63,7 +70,12 @@ export type OptionItem = {
 
 <div class="menu" data-theme={theme}>
 	<Button {...api.getTriggerProps()} data-theme={theme} {variant} class={className}>
-		{trigger} <span {...api.getIndicatorProps()}><ChevronDown size={16} /></span>
+		{#if typeof trigger === 'function'}
+			{@render trigger()}
+		{:else}
+			{trigger}
+		{/if}
+		<span {...api.getIndicatorProps()}><ChevronDown size={16} /></span>
 	</Button>
 
 	<div use:portal {...api.getPositionerProps()}>
@@ -83,7 +95,7 @@ export type OptionItem = {
 								{item.label ?? item.value}
 							</a>
 						{:else}
-								{item.label ?? item.value}
+							{item.label ?? item.value}
 						{/if}
 					</li>
 				{/if}
@@ -96,7 +108,10 @@ export type OptionItem = {
 					<li role="separator" class="separator"></li>
 				{:else}
 					<li {...api.getOptionItemProps(item as menu.OptionItemProps)}>
-						<span class="check-indicator" {...api.getItemIndicatorProps(item as menu.OptionItemProps)}>
+						<span
+							class="check-indicator"
+							{...api.getItemIndicatorProps(item as menu.OptionItemProps)}
+						>
 							<Check size={16} />
 						</span>
 						<span {...api.getItemTextProps(item as menu.OptionItemProps)}>{item.label}</span>

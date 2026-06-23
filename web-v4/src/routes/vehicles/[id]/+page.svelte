@@ -4,6 +4,7 @@
 	import { ArrowLeft } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import Menu from '$lib/components/common/Menu.svelte';
+	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -18,7 +19,6 @@
 			</Button>
 
 			<Menu
-				trigger={vehicle.name}
 				variant="tertiary"
 				theme="dark"
 				items={[
@@ -26,7 +26,11 @@
 					{ value: 'color', label: 'Change Color' },
 					{ value: 'retire', label: 'Retire' }
 				]}
-			></Menu>
+			>
+				{#snippet trigger()}
+					<VehicleColorIndicator color={vehicle.color} size={6} /> {vehicle.name}
+				{/snippet}
+			</Menu>
 		</div>
 	{/snippet}
 
