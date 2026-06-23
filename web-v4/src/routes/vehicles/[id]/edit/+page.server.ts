@@ -15,6 +15,7 @@ export const actions = {
 		const data = decode(formData, {
 			name: 'string',
 			vin: 'string',
+			color: 'string',
 			distanceUnit: 'string',
 			retired: 'boolean',
 			'preferences.enableCost': 'boolean',
