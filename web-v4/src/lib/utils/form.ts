@@ -34,8 +34,20 @@ export function decode(
 
 	if (schema) {
 		for (const [key, type] of Object.entries(schema)) {
-			if (type === 'boolean' && !(key in result)) {
-				result[key] = false;
+			if (type === 'boolean') {
+				const keys = key.split('.');
+				let current = result;
+				for (let i = 0; i < keys.length; i++) {
+					const part = keys[i];
+					if (i === keys.length - 1) {
+						if (!(part in current)) {
+							current[part] = false;
+						}
+					} else {
+						current[part] = current[part] || {};
+						current = current[part];
+					}
+				}
 			}
 		}
 	}
