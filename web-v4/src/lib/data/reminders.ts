@@ -19,6 +19,10 @@ export const getAllReminders = (opts: RequestOpts) => {
 	return request<Reminder[]>('/reminders', opts);
 };
 
+export const getVehicleReminders = (vehicleId: number | string, opts: RequestOpts) => {
+	return request<Reminder[]>(`/vehicles/${vehicleId}/reminders`, opts);
+};
+
 export const getReminder = (id: number | string, opts: RequestOpts) => {
 	return request<Reminder>(`/reminders/${id}`, opts);
 };
