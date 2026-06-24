@@ -32,6 +32,7 @@
 	},
 	"dependencies": {
 		"@fontsource/lato": "^5.2.7",
+		"@tailwindcss/typography": "^0.5.20",
 		"@tailwindcss/vite": "^4.3.1",
 		"@zag-js/menu": "^1.41.2",
 		"@zag-js/svelte": "^1.41.2",

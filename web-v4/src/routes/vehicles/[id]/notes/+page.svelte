@@ -1,0 +1,117 @@
+<script lang="ts">
+	import { Button } from '$lib';
+	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
+	import Markdown from '$lib/components/Markdown.svelte';
+	import EmptyState from '$lib/components/EmptyState.svelte';
+	import { page } from '$app/stores';
+	import { enhance } from '$app/forms';
+	import { NotepadText, Pencil } from 'lucide-svelte';
+	import type { PageProps } from './$types';
+
+	let { data, form }: PageProps = $props();
+
+	let vehicle = $derived(data.vehicle);
+
+	let activeTab = $derived(
+		$page.url.pathname === `/vehicles/${vehicle.id}/notes` ? 'notes' : 'history'
+	);
+
+	let view = $state<'edit' | 'preview' | 'saved'>('saved');
+	let editing = $derived(view !== 'saved');
+
+	let notesDraft = $state(vehicle.notes);
+	let dirty = $derived(notesDraft !== vehicle.notes);
+</script>
+
+<VehiclePageLayout {vehicle} {activeTab}>
+	<div class="max-w-2xl mx-auto">
+		{#if vehicle.notes || editing}
+			<header class="flex items-center mb-4 gap-2">
+				{#if editing}
+					<div class="flex rounded-lg border border-ink-200 p-0.5">
+						<Button
+							size="sm"
+							variant={view === 'edit' ? 'primary' : 'tertiary'}
+							onclick={() => (view = 'edit')}
+						>
+							Edit
+						</Button>
+						<Button
+							size="sm"
+							variant={view === 'preview' ? 'primary' : 'tertiary'}
+							onclick={() => (view = 'preview')}
+						>
+							Preview
+						</Button>
+					</div>
+
+					<div class="ml-auto flex gap-2">
+						<Button
+							variant="tertiary"
+							onclick={() => {
+								view = 'saved';
+								notesDraft = vehicle.notes;
+							}}
+						>
+							Cancel
+						</Button>
+						<Button form="notes-form" type="submit">
+							Save Notes
+							{#if dirty}
+								<span class="size-1.5 rounded-full bg-ink-50/80"></span>
+							{/if}
+						</Button>
+					</div>
+				{:else}
+					<Button class="ml-auto" variant="tertiary" onclick={() => (view = 'edit')}>
+						<Pencil size={16} />
+						Edit
+					</Button>
+				{/if}
+			</header>
+
+			{#if view === 'saved'}
+				<Markdown class="prose max-w-none dark:prose-invert" src={vehicle.notes} />
+			{:else}
+				<form
+					hidden={view === 'preview'}
+					id="notes-form"
+					method="POST"
+					action={`/vehicles/${vehicle.id}/edit?/update`}
+					use:enhance
+				>
+					<textarea
+						name="notes"
+						class="w-full min-h-40 p-3 text-sm font-mono rounded-md border border-ink-200 bg-canvas text-ink-900 focus:border-focus-ring focus:outline-none resize-y"
+						bind:value={notesDraft}></textarea>
+
+					<p class="mt-1.5 text-sm text-ink-400">
+						<a
+							class="text-brand-500 underline"
+							href="https://www.markdownguide.org/cheat-sheet/"
+							target="_blank"
+						>
+							Markdown supported
+						</a>
+					</p>
+				</form>
+
+				{#if view === 'preview'}
+					<Markdown class="prose max-w-none dark:prose-invert" src={notesDraft} />
+				{/if}
+			{/if}
+		{:else}
+			<EmptyState
+				heading="Notes are for hard-to-remember things"
+				details="Keep track of tire pressures, oil capacity, or how to reset the clock"
+			>
+				{#snippet media()}
+					<NotepadText size={48} class="text-ink-300" />
+				{/snippet}
+				{#snippet action()}
+					<Button onclick={() => (view = 'edit')}>Add Notes</Button>
+				{/snippet}
+			</EmptyState>
+		{/if}
+	</div>
+</VehiclePageLayout>

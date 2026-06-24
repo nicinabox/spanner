@@ -10,7 +10,7 @@
 </script>
 
 <PageLayout>
-	{#snippet header()}
+	{#snippet appbarStart()}
 		<Button href="/vehicles/{data.vehicle.id}" variant="neutral" theme="dark">
 			<ArrowLeft size={16} />
 			{data.vehicle.name}

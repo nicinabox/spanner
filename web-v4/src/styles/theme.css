@@ -1,4 +1,15 @@
-@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+@custom-variant dark {
+	&:where([data-theme='dark'], [data-theme='dark'] *) {
+		@slot;
+	}
+	@media (prefers-color-scheme: dark) {
+		&:where(:not([data-theme] *)) {
+			@slot;
+		}
+	}
+}
+
+@custom-variant aria-current-page (&:where([aria-current="page"]));
 
 @theme {
 	--color-brand-500: oklch(48% 0.14 276);

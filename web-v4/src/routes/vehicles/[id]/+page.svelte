@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { Button } from '$lib';
 	import Input from '$lib/components/common/Input.svelte';
-	import PageLayout from '$lib/components/common/PageLayout.svelte';
+	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
-	import { ArrowLeft, BookOpenText, PlusIcon } from 'lucide-svelte';
+	import { page } from '$app/stores';
+	import { BookOpenText, PlusIcon } from 'lucide-svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import type { PageProps } from './$types';
-	import Menu from '$lib/components/common/Menu.svelte';
-	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -17,6 +16,10 @@
 	let history = $derived(data.history);
 
 	let searchQuery = $state('');
+
+	let activeTab = $derived(
+		$page.url.pathname === `/vehicles/${vehicle.id}` ? 'history' : 'history'
+	);
 
 	let filteredHistory = $derived(
 		searchQuery
@@ -27,29 +30,7 @@
 	);
 </script>
 
-<PageLayout>
-	{#snippet header()}
-		<div class="flex gap-2">
-			<Button href="/vehicles" variant="neutral" theme="dark">
-				<ArrowLeft size={16} /> Vehicles
-			</Button>
-
-			<Menu
-				variant="tertiary"
-				theme="dark"
-				items={[
-					{ value: 'edit', label: 'Edit', href: `/vehicles/${vehicle.id}/edit` },
-					{ value: 'color', label: 'Change Color' },
-					{ value: 'retire', label: 'Retire' }
-				]}
-			>
-				{#snippet trigger()}
-					<VehicleColorIndicator color={vehicle.color} size={6} /> {vehicle.name}
-				{/snippet}
-			</Menu>
-		</div>
-	{/snippet}
-
+<VehiclePageLayout {vehicle} {activeTab}>
 	<div class="max-w-6xl mx-auto">
 		<div
 			class="mb-6 flex justify-between gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar"
@@ -112,4 +93,4 @@
 			<HistoryTable history={filteredHistory} {vehicle} />
 		{/if}
 	</div>
-</PageLayout>
+</VehiclePageLayout>
