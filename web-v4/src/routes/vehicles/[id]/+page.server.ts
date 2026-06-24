@@ -14,5 +14,15 @@ export const actions = {
 	toggleRetire: async ({ locals, params }) => {
 		const vehicle = await getVehicle(params.id!, locals);
 		await updateVehicle(params.id!, { retired: !vehicle.retired } as never, locals);
-	}
+	},
+	toggleShare: async ({ locals, params }) => {
+		const vehicle = await getVehicle(params.id!, locals);
+		await updateVehicle(
+			params.id!,
+			{
+				preferences: { ...vehicle.preferences, enableSharing: !vehicle.preferences.enableSharing },
+			} as never,
+			locals,
+		);
+	},
 } satisfies Actions;

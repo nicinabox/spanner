@@ -33,7 +33,7 @@
 		closeDelay = 0,
 		disabled,
 		interactive,
-		id: idProp
+		id: idProp,
 	}: Props = $props();
 
 	let id = $props.id();
@@ -45,7 +45,7 @@
 		closeDelay,
 		disabled,
 		interactive,
-		positioning: { placement }
+		positioning: { placement },
 	});
 
 	const api = $derived(tooltip.connect(service, normalizeProps));
@@ -58,7 +58,7 @@
 	<div {...api.getPositionerProps()}>
 		<div
 			{...api.getContentProps()}
-			class="px-2.5 py-1.5 text-xs rounded-xs bg-ink-900 text-ink-50 shadow-sm"
+			class="px-2.5 py-1.5 text-xs rounded-[4px] bg-ink-900 text-ink-50 shadow-sm"
 			in:scale={{ duration: 150, start: 0.95 }}
 			out:scale={{ duration: 100, start: 0.95 }}
 		>

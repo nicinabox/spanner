@@ -17,10 +17,10 @@
 
 <span
 	class={cn(
-		'inline-flex items-center gap-1 h-5 px-1.5 rounded-sm text-xs font-medium',
+		'inline-flex items-center gap-1 h-5 px-1.5 rounded-[4px] text-xs font-medium',
 		pill ? 'rounded-full' : '',
 		variant === 'warning' ? 'badge-warning' : 'badge-neutral',
-		className
+		className,
 	)}
 >
 	{@render children()}

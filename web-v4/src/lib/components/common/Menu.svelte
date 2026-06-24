@@ -12,7 +12,7 @@
 		href?: string;
 		preload?: boolean;
 		separator?: boolean;
-		checked?: boolean;
+		closeOnSelect?: boolean;
 	};
 
 	export type OptionItem = {
@@ -33,6 +33,7 @@
 		class?: ClassValue;
 		onSelect?: (details: { value: string }) => void;
 		id?: string;
+		itemEnd?: Snippet<[Item]>;
 	}
 
 	const defaultId = $props.id();
@@ -46,6 +47,7 @@
 		class: className,
 		id = defaultId,
 		onSelect,
+		itemEnd,
 	}: Props = $props();
 	// svelte-ignore state_referenced_locally
 	const service = useMachine(menu.machine, {
@@ -92,21 +94,24 @@
 					<li role="separator" class="separator"></li>
 				{:else}
 					{const preload = item.preload ?? true}
-					<li {...api.getItemProps({ value: item.value })}>
-						{#if item.href}
-							<a
-								href={item.href}
-								tabindex="-1"
-								data-sveltekit-preload-data={preload ? 'hover' : 'off'}
-							>
+					<li
+						{...api.getItemProps({ value: item.value, closeOnSelect: item.closeOnSelect ?? true })}
+					>
+						<span class="flex-1 min-w-0">
+							{#if item.href}
+								<a
+									href={item.href}
+									tabindex="-1"
+									data-sveltekit-preload-data={preload ? 'hover' : 'off'}
+								>
+									{item.label ?? item.value}
+								</a>
+							{:else}
 								{item.label ?? item.value}
-							</a>
-						{:else}
-							{item.label ?? item.value}
-						{/if}
-
-						{#if item.checked}
-							<Check size={16} class="ml-auto" />
+							{/if}
+						</span>
+						{#if itemEnd}
+							<span class="item-end">{@render itemEnd(item)}</span>
 						{/if}
 					</li>
 				{/if}
@@ -203,6 +208,12 @@
 		text-decoration: none;
 		display: block;
 		width: 100%;
+	}
+
+	.item-end {
+		display: inline-flex;
+		align-items: center;
+		color: var(--color-ink-400);
 	}
 
 	li[data-type='radio'] {
