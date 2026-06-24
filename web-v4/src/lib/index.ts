@@ -4,3 +4,4 @@ export { default as Field } from './components/common/Field.svelte';
 export { default as Input } from './components/common/Input.svelte';
 export { default as PageLayout } from './components/common/PageLayout.svelte';
 export { default as Switch } from './components/common/Switch.svelte';
+export { default as Textarea } from './components/common/Textarea.svelte';

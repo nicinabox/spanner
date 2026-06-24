@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button } from '$lib';
+	import { Button, Textarea } from '$lib';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
@@ -80,10 +80,11 @@
 					action={`/vehicles/${vehicle.id}/edit?/update`}
 					use:enhance
 				>
-					<textarea
+					<Textarea
 						name="notes"
-						class="w-full min-h-40 p-3 text-sm font-mono rounded-md border border-ink-200 bg-canvas text-ink-900 focus:border-focus-ring focus:outline-none resize-y"
-						bind:value={notesDraft}></textarea>
+						bind:value={notesDraft}
+						class="min-h-40 font-mono"
+					/>
 
 					<p class="mt-1.5 text-sm text-ink-400">
 						<a
