@@ -23,14 +23,13 @@
 
 <VehiclePageLayout {vehicle} {activeTab}>
 	<div class="max-w-2xl mx-auto">
-		<header class="flex items-center gap-2 mb-6">
-			<Button href={`/vehicles/${vehicle.id}/add?view=new-reminder`} class="ml-auto">
-				<PlusIcon size={16} />
-				Add Reminder
-			</Button>
-		</header>
-
 		{#if reminders.length}
+			<header class="flex items-center gap-2 mb-6">
+				<Button href={`/vehicles/${vehicle.id}/add?view=new-reminder`} class="ml-auto">
+					<PlusIcon size={16} />
+					Add Reminder
+				</Button>
+			</header>
 			<ul class="space-y-3">
 				{#each reminders as reminder (reminder.id)}
 					<li>
@@ -73,7 +72,10 @@
 							</div>
 							{#if completingId === reminder.id}
 								<div class="border-t border-ink-200 pt-4">
-									<RecordForm {vehicle} record={{ notes: reminder.notes, mileage: vehicle.estimatedMileage } as any} />
+									<RecordForm
+										{vehicle}
+										record={{ notes: reminder.notes, mileage: vehicle.estimatedMileage } as any}
+									/>
 								</div>
 							{/if}
 						</Card>
@@ -89,7 +91,9 @@
 					<Bell size={48} class="text-ink-300" />
 				{/snippet}
 				{#snippet action()}
-					<Button href={`/vehicles/${vehicle.id}/add?view=new-reminder`}>Add Reminder</Button>
+					<Button size="lg" href={`/vehicles/${vehicle.id}/add?view=new-reminder`}
+						>Add Reminder</Button
+					>
 				{/snippet}
 			</EmptyState>
 		{/if}

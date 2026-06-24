@@ -105,7 +105,7 @@
 					<NotepadText size={48} class="text-ink-300" />
 				{/snippet}
 				{#snippet action()}
-					<Button onclick={() => (view = 'edit')}>Add Notes</Button>
+					<Button size="lg" onclick={() => (view = 'edit')}>Add Notes</Button>
 				{/snippet}
 			</EmptyState>
 		{/if}

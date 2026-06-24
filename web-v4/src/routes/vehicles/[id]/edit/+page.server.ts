@@ -21,7 +21,7 @@ export const actions = {
 			'preferences.enableCost': 'boolean',
 			'preferences.sendReminderEmails': 'boolean',
 			'preferences.sendPromptForRecords': 'boolean',
-			'preferences.showMileageAdjustmentRecords': 'boolean'
+			'preferences.showMileageAdjustmentRecords': 'boolean',
 		});
 
 		try {
@@ -30,7 +30,10 @@ export const actions = {
 			return fail(422, getHTTPErrors(error));
 		}
 
-		redirect(303, `/vehicles/${params.id}`);
+		const redirectTo = formData.get('_redirect');
+		if (redirectTo) {
+			redirect(303, redirectTo as string);
+		}
 	},
 	delete: async ({ locals, params }) => {
 		try {
@@ -40,5 +43,5 @@ export const actions = {
 		}
 
 		redirect(303, '/vehicles');
-	}
+	},
 } satisfies Actions;

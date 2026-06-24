@@ -18,38 +18,40 @@
 	let searchQuery = $state('');
 
 	let activeTab = $derived(
-		$page.url.pathname === `/vehicles/${vehicle.id}` ? 'history' : 'history'
+		$page.url.pathname === `/vehicles/${vehicle.id}` ? 'history' : 'history',
 	);
 
 	let filteredHistory = $derived(
 		searchQuery
 			? history.filter((item) =>
-					JSON.stringify(item).toLowerCase().includes(searchQuery.toLowerCase())
+					JSON.stringify(item).toLowerCase().includes(searchQuery.toLowerCase()),
 				)
-			: history
+			: history,
 	);
 </script>
 
 <VehiclePageLayout {vehicle} {activeTab}>
 	<div class="max-w-6xl mx-auto">
-		<div
-			class="mb-6 flex justify-between gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar"
-		>
-			<Stat
-				title="Estimated mileage"
-				value={vehicle.estimatedMileage
-					? `${vehicle.estimatedMileage.toLocaleString()} ${vehicle.distanceUnit}`
-					: null}
-			/>
-			<Stat
-				title="Mileage rate"
-				value={vehicle.milesPerYear
-					? `${vehicle.milesPerYear.toLocaleString()} ${vehicle.distanceUnit}/yr`
-					: null}
-			/>
-			<Stat title="Since" value={history[0] ? intlFormatDateUTC(history[0].date) : null} />
-			<Stat title="VIN" value={vehicle.vin} />
-		</div>
+		{#if history.length}
+			<div
+				class="mb-6 flex justify-between gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar"
+			>
+				<Stat
+					title="Estimated mileage"
+					value={vehicle.estimatedMileage
+						? `${vehicle.estimatedMileage.toLocaleString()} ${vehicle.distanceUnit}`
+						: null}
+				/>
+				<Stat
+					title="Mileage rate"
+					value={vehicle.milesPerYear
+						? `${vehicle.milesPerYear.toLocaleString()} ${vehicle.distanceUnit}/yr`
+						: null}
+				/>
+				<Stat title="Since" value={history[0] ? intlFormatDateUTC(history[0].date) : null} />
+				<Stat title="VIN" value={vehicle.vin} />
+			</div>
+		{/if}
 
 		{#if !history.length}
 			<EmptyState
