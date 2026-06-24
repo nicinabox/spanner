@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { Button } from '$lib';
-	import PageLayout from '$lib/components/common/PageLayout.svelte';
 	import Menu from '$lib/components/common/Menu.svelte';
+	import PageLayout from '$lib/components/common/PageLayout.svelte';
 	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
-	import { ArrowLeft, BookOpenText, FileText, Bell, CalendarClock, Wrench } from 'lucide-svelte';
-	import type { Snippet } from 'svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
-	import { MediaQuery } from 'svelte/reactivity';
 	import { getOverdueRemindersCount } from '$lib/utils/reminders';
+	import { ArrowLeft, Bell, BookOpenText, FileText, Wrench } from 'lucide-svelte';
+	import type { Snippet } from 'svelte';
+	import { MediaQuery } from 'svelte/reactivity';
 	import Badge from '../common/Badge.svelte';
 
 	interface Props {
@@ -24,24 +24,24 @@
 		vehicle,
 		activeTab,
 		children,
-		backAction = { href: '/vehicles', label: 'Vehicles' }
+		backAction = { href: '/vehicles', label: 'Vehicles' },
 	}: Props = $props();
 
 	const isSmallScreen = new MediaQuery('(max-width: 640px');
 
 	const tabs = $derived([
 		{ value: 'history', label: 'History', href: `/vehicles/${vehicle.id}`, icon: BookOpenText },
-		{ value: 'notes', label: 'Notes', href: `/vehicles/${vehicle.id}/notes`, icon: FileText },
 		{
 			value: 'reminders',
 			label: 'Reminders',
 			href: `/vehicles/${vehicle.id}/reminders`,
 			badge: {
 				count: getOverdueRemindersCount(vehicle),
-				icon: Wrench
+				icon: Wrench,
 			},
-			icon: Bell
-		}
+			icon: Bell,
+		},
+		{ value: 'notes', label: 'Notes', href: `/vehicles/${vehicle.id}/notes`, icon: FileText },
 		// {
 		// 	value: 'schedules',
 		// 	label: 'Schedules',
@@ -70,7 +70,7 @@
 				items={[
 					{ value: 'edit', label: 'Edit', href: `/vehicles/${vehicle.id}/edit` },
 					{ value: 'color', label: 'Change Color' },
-					{ value: 'retire', label: 'Retire' }
+					{ value: 'retire', label: 'Retire' },
 				]}
 			>
 				{#snippet trigger()}
