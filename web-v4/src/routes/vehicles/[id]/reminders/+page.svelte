@@ -25,7 +25,7 @@
 	<div class="max-w-2xl mx-auto">
 		{#if reminders.length}
 			<header class="flex items-center gap-2 mb-6">
-				<Button href={`/vehicles/${vehicle.id}/add?view=new-reminder`} class="ml-auto">
+				<Button href={`/vehicles/${vehicle.id}/add?view=reminder`} class="ml-auto">
 					<PlusIcon size={16} />
 					Add Reminder
 				</Button>
@@ -91,9 +91,7 @@
 					<Bell size={48} class="text-ink-300" />
 				{/snippet}
 				{#snippet action()}
-					<Button size="lg" href={`/vehicles/${vehicle.id}/add?view=new-reminder`}
-						>Add Reminder</Button
-					>
+					<Button size="lg" href={`/vehicles/${vehicle.id}/add?view=reminder`}>Add Reminder</Button>
 				{/snippet}
 			</EmptyState>
 		{/if}

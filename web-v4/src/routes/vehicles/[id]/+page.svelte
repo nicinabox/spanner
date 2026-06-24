@@ -62,7 +62,9 @@
 					<BookOpenText size={48} class="text-ink-300" />
 				{/snippet}
 				{#snippet action()}
-					<Button size="lg" href="/vehicles/{vehicle.id}/add?notes=Purchase">Add Purchase</Button>
+					<Button size="lg" href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase"
+						>Add Purchase</Button
+					>
 				{/snippet}
 			</EmptyState>
 		{:else if !filteredHistory.length}

@@ -22,6 +22,13 @@
 			href: string;
 			label: string;
 		};
+		tabs?: Array<{
+			value: string;
+			label: string;
+			href: string;
+			icon: any;
+			badge?: { count: number; icon: any };
+		}>;
 	}
 
 	let {
@@ -29,32 +36,37 @@
 		activeTab,
 		children,
 		backAction = { href: '/vehicles', label: 'Vehicles' },
+		tabs: customTabs,
 	}: Props = $props();
 
 	const isSmallScreen = new MediaQuery('(max-width: 640px');
 
 	let shareOpen = $state(false);
 
-	const tabs = $derived([
-		{ value: 'history', label: 'History', href: `/vehicles/${vehicle.id}`, icon: BookOpenText },
-		{
-			value: 'reminders',
-			label: 'Reminders',
-			href: `/vehicles/${vehicle.id}/reminders`,
-			badge: {
-				count: getOverdueRemindersCount(vehicle),
-				icon: Wrench,
+	type Tab = {
+		value: string;
+		label: string;
+		href: string;
+		icon: any;
+		badge?: { count: number; icon: any };
+	};
+
+	const tabs = $derived(
+		(customTabs ?? [
+			{ value: 'history', label: 'History', href: `/vehicles/${vehicle.id}`, icon: BookOpenText },
+			{
+				value: 'reminders',
+				label: 'Reminders',
+				href: `/vehicles/${vehicle.id}/reminders`,
+				badge: {
+					count: getOverdueRemindersCount(vehicle),
+					icon: Wrench,
+				},
+				icon: Bell,
 			},
-			icon: Bell,
-		},
-		{ value: 'notes', label: 'Notes', href: `/vehicles/${vehicle.id}/notes`, icon: FileText },
-		// {
-		// 	value: 'schedules',
-		// 	label: 'Schedules',
-		// 	href: `/vehicles/${vehicle.id}/schedules`,
-		// 	icon: CalendarClock
-		// }
-	] as const);
+			{ value: 'notes', label: 'Notes', href: `/vehicles/${vehicle.id}/notes`, icon: FileText },
+		]) as Tab[],
+	);
 </script>
 
 {#snippet appbarEnd()}{/snippet}
@@ -113,7 +125,9 @@
 	{#snippet appbarCenter()}
 		<div class="flex flex-1 gap-1 flex-nowrap min-w-0">
 			{#each tabs as tab}
-				{const active = activeTab === tab.value}
+				{const active = $derived(activeTab === tab.value)}
+				{const badge = tab.badge}
+
 				<Button
 					{active}
 					href={tab.href}
@@ -124,12 +138,13 @@
 				>
 					<tab.icon size={14} />
 					{tab.label}
-					{#if 'badge' in tab && tab.badge.count}
+
+					{#if badge && badge.count}
 						<Badge variant="warning" pill class="-mr-1">
-							{#if tab.badge.icon}
-								<tab.badge.icon size={14} />
+							{#if badge.icon}
+								<badge.icon size={14} />
 							{/if}
-							{tab.badge.count}
+							{badge.count}
 						</Badge>
 					{/if}
 				</Button>
