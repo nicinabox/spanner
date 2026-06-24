@@ -8,9 +8,13 @@
 	import Row from '$lib/components/FlexTable/Row.svelte';
 	import Cell from '$lib/components/FlexTable/Cell.svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
+	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import { formatCurrency } from '$lib/utils/number';
 	import { calculateDeltaMileage, sortNewestDateFirst } from '$lib/utils/records';
+	import { Eye, EyeClosed } from 'lucide-svelte';
 	import { onMount } from 'svelte';
+	import Button from './common/Button.svelte';
+	import { pluralize } from '$lib/utils/text';
 
 	interface Props {
 		history: HistoryEntry[];
@@ -19,13 +23,35 @@
 
 	let { history, vehicle }: Props = $props();
 
-	const historyNewestFirst = $derived(history.toSorted(sortNewestDateFirst));
+	let showMileageAdjustments = $state(vehicle.preferences.showMileageAdjustmentRecords);
 
-	const groupedRecords = $derived(
-		Object.groupBy(historyNewestFirst, (record) => new Date(record.date).getFullYear())
+	const historyNewestFirst = $derived(
+		history
+			.filter((r) => showMileageAdjustments || r.recordType !== 'mileage adjustment')
+			.toSorted(sortNewestDateFirst),
 	);
 
-	const years = $derived(Object.keys(groupedRecords).sort((a, b) => Number(b) - Number(a)));
+	const allYears = $derived(
+		Object.keys(Object.groupBy(history, (r) => new Date(r.date).getFullYear())),
+	);
+
+	const hiddenCounts = $derived(
+		Object.fromEntries(
+			allYears.map((y) => {
+				const year = Number(y);
+				const count = history.filter(
+					(r) => new Date(r.date).getFullYear() === year && r.recordType === 'mileage adjustment',
+				).length;
+				return [y, count];
+			}),
+		) as Record<string, number>,
+	);
+
+	const groupedRecords = $derived(
+		Object.groupBy(historyNewestFirst, (record) => new Date(record.date).getFullYear()),
+	);
+
+	const years = $derived(allYears.toSorted((a, b) => Number(b) - Number(a)));
 
 	onMount(() => {
 		const observer = new IntersectionObserver(([entry]) => {
@@ -59,6 +85,32 @@
 			class="sticky top-0 z-10 flex rounded-t-[inherit] bg-inherit px-4 py-2 group-data-[state=top]:rounded-t-none group-data-[state=top]:shadow-sm"
 		>
 			<h2 class="text-lg font-semibold m-0">{year}</h2>
+			{#if hiddenCounts[year] > 0}
+				<div class="ml-auto">
+					<Tooltip
+						content={showMileageAdjustments
+							? 'Hide mileage adjustments'
+							: `Show ${hiddenCounts[year]} hidden ${pluralize('record', hiddenCounts[year])}`}
+					>
+						{#snippet children(triggerProps)}
+							<Button
+								{...triggerProps}
+								size="sm"
+								variant="tertiary"
+								onclick={() => (showMileageAdjustments = !showMileageAdjustments)}
+								class="flex items-center gap-1 text-xs text-ink-400 hover:text-ink-600 transition-colors"
+							>
+								<span>{hiddenCounts[year]}</span>
+								{#if showMileageAdjustments}
+									<Eye size={14} />
+								{:else}
+									<EyeClosed size={14} />
+								{/if}
+							</Button>
+						{/snippet}
+					</Tooltip>
+				</div>
+			{/if}
 		</header>
 		<FlexTable class="border-t-2 border-ink-200">
 			<Row class="text-xs font-bold tracking-wide text-ink-400 uppercase max-sm:hidden">
@@ -78,7 +130,7 @@
 					<Cell class="whitespace-nowrap max-sm:text-sm max-sm:font-bold">
 						{intlFormat(parseDateUTC(record.date), {
 							month: 'short',
-							day: 'numeric'
+							day: 'numeric',
 						})}
 					</Cell>
 					<Cell class="w-fit items-baseline gap-2 text-right whitespace-nowrap max-sm:text-sm">
