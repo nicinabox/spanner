@@ -6,23 +6,13 @@ export interface FormError {
 	title: string;
 }
 
-export const enhanceInline: SubmitFunction =
-	() =>
-	async ({ result, update }) => {
-		if (result.type === 'success') {
-			await invalidateAll();
-		} else {
-			update();
-		}
-	};
-
 export const createInlineEnhance = ({
 	onSuccess,
 	onError,
 }: { onSuccess?: () => void; onError?: () => void } = {}): SubmitFunction => {
 	return () =>
 		async ({ result, update }) => {
-			if (result.type === 'success') {
+			if (result.type === 'success' || result.type === 'redirect') {
 				await invalidateAll();
 				onSuccess?.();
 			} else {
@@ -31,6 +21,8 @@ export const createInlineEnhance = ({
 			}
 		};
 };
+
+export const enhanceInline = createInlineEnhance();
 
 export function decode(
 	formData: FormData,
