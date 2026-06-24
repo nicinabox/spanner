@@ -12,6 +12,7 @@
 		href?: string;
 		preload?: boolean;
 		separator?: boolean;
+		checked?: boolean;
 	};
 
 	export type OptionItem = {
@@ -44,13 +45,13 @@
 		variant = 'tertiary',
 		class: className,
 		id = defaultId,
-		onSelect
+		onSelect,
 	}: Props = $props();
 	// svelte-ignore state_referenced_locally
 	const service = useMachine(menu.machine, {
 		id,
 		onSelect,
-		defaultHighlightedValue: items[0]?.value
+		defaultHighlightedValue: items[0]?.value,
 	});
 	const api = $derived(menu.connect(service, normalizeProps));
 
@@ -102,6 +103,10 @@
 							</a>
 						{:else}
 							{item.label ?? item.value}
+						{/if}
+
+						{#if item.checked}
+							<Check size={16} class="ml-auto" />
 						{/if}
 					</li>
 				{/if}

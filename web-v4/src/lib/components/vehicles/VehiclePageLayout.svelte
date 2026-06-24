@@ -69,9 +69,24 @@
 				theme="dark"
 				items={[
 					{ value: 'edit', label: 'Edit', href: `/vehicles/${vehicle.id}/edit` },
-					{ value: 'color', label: 'Change Color' },
-					{ value: 'retire', label: 'Retire' },
+					{ value: 'retire', label: 'Retire', checked: vehicle.retired },
+					{ value: '', separator: true },
+					{ value: 'share', label: 'Share...' },
+					{ value: '', separator: true },
+					{
+						value: 'import-export',
+						label: 'Import/Export History',
+						href: `/vehicles/${vehicle.id}/settings`,
+					},
 				]}
+				onSelect={({ value }) => {
+					if (value === 'retire') {
+						const form = document.querySelector<HTMLFormElement>('form[action$="toggleRetire"]');
+						form?.requestSubmit();
+					}
+					if (value === 'share') {
+					}
+				}}
 			>
 				{#snippet trigger()}
 					<VehicleColorIndicator color={vehicle.color} size={6} /> {vehicle.name}
@@ -108,3 +123,5 @@
 
 	{@render children()}
 </PageLayout>
+
+<form method="POST" action={`/vehicles/${vehicle.id}?/toggleRetire`} class="hidden"></form>
