@@ -14,6 +14,7 @@
 	import type { Snippet } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 	import Badge from '../common/Badge.svelte';
+	import { vehiclePath } from '$lib/routes';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -85,7 +86,7 @@
 				variant="tertiary"
 				theme="dark"
 				items={[
-					{ value: 'edit', label: 'Edit', href: `/vehicles/${vehicle.id}/edit` },
+					{ value: 'edit', label: 'Edit', href: vehiclePath(vehicle.id, 'edit') },
 					{ value: 'retire', label: 'Retire', closeOnSelect: false },
 					{ value: '', separator: true },
 					{ value: 'share', label: 'Share...', closeOnSelect: false },
@@ -93,7 +94,7 @@
 					{
 						value: 'import-export',
 						label: 'Import/Export History',
-						href: `/vehicles/${vehicle.id}/settings`,
+						href: vehiclePath(vehicle.id, 'transfer'),
 					},
 				]}
 				onSelect={({ value }) => {
