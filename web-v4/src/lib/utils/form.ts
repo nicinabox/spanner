@@ -1,11 +1,40 @@
+import { invalidateAll } from '$app/navigation';
+import type { SubmitFunction } from '@sveltejs/kit';
+
 export interface FormError {
 	id: string;
 	title: string;
 }
 
+export const enhanceInline: SubmitFunction =
+	() =>
+	async ({ result, update }) => {
+		if (result.type === 'success') {
+			await invalidateAll();
+		} else {
+			update();
+		}
+	};
+
+export const createInlineEnhance = ({
+	onSuccess,
+	onError,
+}: { onSuccess?: () => void; onError?: () => void } = {}): SubmitFunction => {
+	return () =>
+		async ({ result, update }) => {
+			if (result.type === 'success') {
+				await invalidateAll();
+				onSuccess?.();
+			} else {
+				update();
+				onError?.();
+			}
+		};
+};
+
 export function decode(
 	formData: FormData,
-	schema?: Record<string, 'boolean' | 'string' | 'number'>
+	schema?: Record<string, 'boolean' | 'string' | 'number'>,
 ) {
 	const decodeValue = (value: FormDataEntryValue) => {
 		if (!value) return '';

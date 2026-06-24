@@ -6,15 +6,13 @@
 	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { getOverdueRemindersCount } from '$lib/utils/reminders';
-	import { page } from '$app/stores';
 	import { enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
-	import type { SubmitFunction } from '@sveltejs/kit';
 	import { ArrowLeft, Bell, BookOpenText, Check, FileText, Wrench } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 	import Badge from '../common/Badge.svelte';
 	import { vehiclePath } from '$lib/routes';
+	import { enhanceInline } from '$lib/utils/form';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -36,16 +34,6 @@
 	const isSmallScreen = new MediaQuery('(max-width: 640px');
 
 	let shareOpen = $state(false);
-
-	const keepMounted: SubmitFunction =
-		() =>
-		async ({ result, update }) => {
-			if (result.type === 'success') {
-				await invalidateAll();
-			} else {
-				update();
-			}
-		};
 
 	const tabs = $derived([
 		{ value: 'history', label: 'History', href: `/vehicles/${vehicle.id}`, icon: BookOpenText },
@@ -156,7 +144,7 @@
 	method="POST"
 	action={`/vehicles/${vehicle.id}?/toggleRetire`}
 	class="hidden"
-	use:enhance={keepMounted}
+	use:enhance={enhanceInline}
 ></form>
 
 <ShareDialog {vehicle} bind:open={shareOpen} />
