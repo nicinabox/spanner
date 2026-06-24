@@ -69,7 +69,13 @@
 </script>
 
 <div class="menu" data-theme={theme}>
-	<Button {...api.getTriggerProps()} data-theme={theme} {variant} class={className}>
+	<Button
+		{...api.getTriggerProps()}
+		active={api.open}
+		data-theme={theme}
+		{variant}
+		class={className}
+	>
 		{#if typeof trigger === 'function'}
 			{@render trigger()}
 		{:else}
@@ -79,7 +85,7 @@
 	</Button>
 
 	<div use:portal {...api.getPositionerProps()}>
-		<ul {...api.getContentProps()} hidden={undefined}>
+		<ul {...api.getContentProps()} hidden={undefined} class="z-50">
 			{#each items as item}
 				{#if item.separator}
 					<li role="separator" class="separator"></li>

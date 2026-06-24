@@ -58,13 +58,14 @@
 	{#snippet appbarCenter()}
 		<div class="flex gap-1">
 			{#each tabs as tab}
+				{const active = activeTab === tab.value}
 				<Button
+					{active}
 					href={tab.href}
 					variant="tertiary"
 					theme="dark"
 					radius="pill"
-					aria-current={activeTab === tab.value ? 'page' : undefined}
-					class="aria-current-page:bg-brand-200"
+					aria-current={active ? 'page' : undefined}
 				>
 					<tab.icon size={14} />
 					{tab.label}

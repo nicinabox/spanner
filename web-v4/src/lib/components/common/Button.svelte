@@ -2,7 +2,7 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const buttonVariants = tv({
-		base: 'inline-flex items-center gap-2 px-3 h-8 min-w-8 leading-none border rounded-md text-sm font-medium whitespace-nowrap cursor-pointer transition-[filter] duration-100 ease-out-expo no-underline',
+		base: 'inline-flex items-center gap-2 px-3 h-8 min-w-fit leading-none border rounded-md text-sm font-medium whitespace-nowrap cursor-pointer transition-[filter] duration-100 ease-out-expo no-underline',
 		variants: {
 			variant: {
 				primary: 'bg-brand-500 text-ink-50 border-brand-500 hover:bg-brand-600 active:bg-brand-700',
@@ -22,11 +22,18 @@
 			},
 			pill: { true: 'rounded-full' },
 			block: { true: 'flex w-full justify-center' },
-			icon: { true: 'px-0 justify-center' }
+			icon: { true: 'px-0 justify-center aspect-square' },
+			active: {
+				true: ''
+			}
 		},
 		compoundVariants: [
 			{ pill: true, size: 'sm', class: 'px-2.5' },
 			{ pill: true, size: 'lg', class: 'px-4.5' },
+			{ active: true, variant: 'primary', class: 'bg-brand-600' },
+			{ active: true, variant: 'secondary', class: 'bg-brand-100' },
+			{ active: true, variant: 'tertiary', class: 'bg-brand-200' },
+			{ active: true, variant: 'neutral', class: 'bg-ink-700' },
 			{
 				danger: true,
 				variant: 'primary',
@@ -69,6 +76,7 @@
 		theme?: Theme;
 		block?: boolean;
 		icon?: boolean;
+		active?: boolean;
 		href?: string;
 		type?: 'button' | 'submit' | 'reset' | null;
 		danger?: boolean;
@@ -86,6 +94,7 @@
 		block = false,
 		icon = false,
 		danger = false,
+		active = false,
 		href,
 		type = 'button',
 		disabled,
@@ -95,7 +104,10 @@
 	}: Props = $props();
 
 	let classes = $derived(
-		cn(buttonVariants({ variant, size, pill: radius === 'pill', block, danger, icon }), className)
+		cn(
+			buttonVariants({ variant, size, pill: radius === 'pill', block, active, danger, icon }),
+			className
+		)
 	);
 
 	let attrs = $derived(theme ? { 'data-theme': theme, ...rest } : rest);
