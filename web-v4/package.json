@@ -35,6 +35,7 @@
 		"@tailwindcss/typography": "^0.5.20",
 		"@tailwindcss/vite": "^4.3.1",
 		"@zag-js/menu": "^1.41.2",
+		"@zag-js/radio-group": "^1.41.2",
 		"@zag-js/svelte": "^1.41.2",
 		"@zag-js/switch": "^1.41.2",
 		"@zag-js/tooltip": "^1.41.2",

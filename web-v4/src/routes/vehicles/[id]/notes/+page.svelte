@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Textarea } from '$lib';
+	import { Button, SegmentedControl, Textarea } from '$lib';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
@@ -28,22 +28,14 @@
 		{#if vehicle.notes || editing}
 			<header class="flex items-center mb-4 gap-2">
 				{#if editing}
-					<div class="flex rounded-lg border border-ink-200 p-0.5">
-						<Button
-							size="sm"
-							variant={view === 'edit' ? 'primary' : 'tertiary'}
-							onclick={() => (view = 'edit')}
-						>
-							Edit
-						</Button>
-						<Button
-							size="sm"
-							variant={view === 'preview' ? 'primary' : 'tertiary'}
-							onclick={() => (view = 'preview')}
-						>
-							Preview
-						</Button>
-					</div>
+					<SegmentedControl
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'preview', label: 'Preview' }
+						]}
+						value={view}
+						onValueChange={(d) => view = d.value as 'edit' | 'preview'}
+					/>
 
 					<div class="ml-auto flex gap-2">
 						<Button
