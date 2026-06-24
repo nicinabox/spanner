@@ -7,18 +7,18 @@
 			variant: {
 				elevated: 'shadow-md border border-ink-200',
 				outline: 'border border-ink-200',
-				filled: 'bg-surface-raised'
+				filled: 'bg-surface-raised',
 			},
 			size: {
 				sm: 'p-4 rounded-md',
 				md: 'p-8 rounded-lg',
-				lg: 'p-10 rounded-xl'
-			}
+				lg: 'p-10 rounded-xl',
+			},
 		},
 		defaultVariants: {
 			variant: 'elevated',
-			size: 'md'
-		}
+			size: 'md',
+		},
 	});
 
 	export type CardVariant = VariantProps<typeof cardVariants>['variant'];
