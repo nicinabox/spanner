@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cn } from '$lib/utils/cn';
 	import type { Snippet } from 'svelte';
 	import type { ClassValue } from 'svelte/elements';
 
@@ -8,13 +9,19 @@
 		variant?: Variant;
 		class?: ClassValue;
 		children: Snippet;
+		pill?: boolean;
 	};
 
-	let { variant = 'neutral', class: className, children }: Props = $props();
+	let { variant = 'neutral', pill = false, class: className, children }: Props = $props();
 </script>
 
 <span
-	class="inline-flex items-center gap-1 h-5 px-1.5 rounded-sm text-xs font-medium {variant === 'warning' ? 'badge-warning' : 'badge-neutral'} {className}"
+	class={cn(
+		'inline-flex items-center gap-1 h-5 px-1.5 rounded-sm text-xs font-medium',
+		pill ? 'rounded-full' : '',
+		variant === 'warning' ? 'badge-warning' : 'badge-neutral',
+		className
+	)}
 >
 	{@render children()}
 </span>

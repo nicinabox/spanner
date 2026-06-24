@@ -1,22 +1,20 @@
 <script lang="ts">
 	import { Button } from '$lib';
 	import Card from '$lib/components/common/Card.svelte';
-	import PageLayout from '$lib/components/common/PageLayout.svelte';
 	import VehicleForm from '$lib/components/forms/VehicleForm.svelte';
-	import { ArrowLeft } from 'lucide-svelte';
 	import type { PageProps } from './$types';
+	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 
 	let { form, data }: PageProps = $props();
 </script>
 
-<PageLayout>
-	{#snippet appbarStart()}
-		<Button href="/vehicles/{data.vehicle.id}" variant="neutral" theme="dark">
-			<ArrowLeft size={16} />
-			{data.vehicle.name}
-		</Button>
-	{/snippet}
-
+<VehiclePageLayout
+	vehicle={data.vehicle}
+	backAction={{
+		href: `/vehicles/${data.vehicle.id}`,
+		label: 'Back'
+	}}
+>
 	<div class="max-w-xl mx-auto">
 		<Card>
 			<h1 class="text-xl">Edit {data.vehicle.name}</h1>
@@ -41,4 +39,4 @@
 			</Card>
 		</form>
 	</div>
-</PageLayout>
+</VehiclePageLayout>

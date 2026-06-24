@@ -3,28 +3,43 @@
 	import PageLayout from '$lib/components/common/PageLayout.svelte';
 	import Menu from '$lib/components/common/Menu.svelte';
 	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
-	import { ArrowLeft, BookOpenText, FileText, Bell, CalendarClock } from 'lucide-svelte';
+	import { ArrowLeft, BookOpenText, FileText, Bell, CalendarClock, Wrench } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { MediaQuery } from 'svelte/reactivity';
+	import { getOverdueRemindersCount } from '$lib/utils/reminders';
+	import Badge from '../common/Badge.svelte';
 
 	interface Props {
 		vehicle: Vehicle;
-		activeTab: string;
+		activeTab?: string;
 		children: Snippet;
+		backAction?: {
+			href: string;
+			label: string;
+		};
 	}
 
-	let { vehicle, activeTab, children }: Props = $props();
+	let {
+		vehicle,
+		activeTab,
+		children,
+		backAction = { href: '/vehicles', label: 'Vehicles' }
+	}: Props = $props();
 
 	const isSmallScreen = new MediaQuery('(max-width: 640px');
 
-	let tabs = [
+	const tabs = $derived([
 		{ value: 'history', label: 'History', href: `/vehicles/${vehicle.id}`, icon: BookOpenText },
 		{ value: 'notes', label: 'Notes', href: `/vehicles/${vehicle.id}/notes`, icon: FileText },
 		{
 			value: 'reminders',
 			label: 'Reminders',
 			href: `/vehicles/${vehicle.id}/reminders`,
+			badge: {
+				count: getOverdueRemindersCount(vehicle),
+				icon: Wrench
+			},
 			icon: Bell
 		}
 		// {
@@ -33,7 +48,7 @@
 		// 	href: `/vehicles/${vehicle.id}/schedules`,
 		// 	icon: CalendarClock
 		// }
-	] as const;
+	] as const);
 </script>
 
 {#snippet appbarEnd()}{/snippet}
@@ -44,9 +59,9 @@
 >
 	{#snippet appbarStart()}
 		<div class="flex gap-2">
-			<Button href="/vehicles" variant="neutral" theme="dark" icon={isSmallScreen.current}>
+			<Button href={backAction.href} variant="neutral" theme="dark" icon={isSmallScreen.current}>
 				<ArrowLeft size={16} />
-				{#if !isSmallScreen.current}Vehicles{/if}
+				{#if !isSmallScreen.current}{backAction.label}{/if}
 			</Button>
 
 			<Menu
@@ -78,6 +93,14 @@
 				>
 					<tab.icon size={14} />
 					{tab.label}
+					{#if 'badge' in tab && tab.badge.count}
+						<Badge variant="warning" pill class="-mr-1">
+							{#if tab.badge.icon}
+								<tab.badge.icon size={14} />
+							{/if}
+							{tab.badge.count}
+						</Badge>
+					{/if}
 				</Button>
 			{/each}
 		</div>
