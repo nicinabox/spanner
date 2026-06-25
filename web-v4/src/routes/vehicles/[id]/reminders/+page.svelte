@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Card } from '$lib';
+	import { Button, Card, Confirm } from '$lib';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
@@ -60,14 +60,27 @@
 											<ChevronRight size={16} />
 										</Button>
 									{/if}
-									<form
-										method="POST"
-										action={`/vehicles/${vehicle.id}/reminders/${reminder.id}?_method=DELETE`}
-									>
-										<Button icon variant="ghost" type="submit" danger>
-											<Trash2 size={14} />
-										</Button>
-									</form>
+									<Confirm title="Delete reminder?">
+										{#snippet trigger({ onOpenChange })}
+											<Button icon variant="ghost" onclick={() => onOpenChange(true)}>
+												<Trash2 size={14} />
+											</Button>
+										{/snippet}
+										{#snippet actions({ onOpenChange })}
+											<Button type="submit" danger size="lg" class="flex-1">Delete</Button>
+											<Button variant="outline" size="lg" class="flex-1" onclick={() => onOpenChange(false)}>
+												Cancel
+											</Button>
+										{/snippet}
+										<form
+											method="POST"
+											action={`/vehicles/${vehicle.id}/reminders/${reminder.id}?_method=DELETE`}
+										>
+											<p>
+												This reminder will be permanently deleted.
+											</p>
+										</form>
+									</Confirm>
 								</div>
 							</div>
 							{#if completingId === reminder.id}

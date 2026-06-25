@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Card } from '$lib';
+	import { Button, Card, Confirm } from '$lib';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import { page } from '$app/stores';
@@ -27,9 +27,24 @@
 		</Card>
 
 		<div class="mt-6">
-			<form method="POST" action="?/delete">
-				<Button variant="ghost" danger type="submit">Delete Record</Button>
-			</form>
+			<Confirm title="Delete record?">
+				{#snippet trigger({ onOpenChange })}
+					<Button variant="ghost" danger onclick={() => onOpenChange(true)}>
+						Delete Record
+					</Button>
+				{/snippet}
+				{#snippet actions({ onOpenChange })}
+						<Button type="submit" danger size="lg" class="flex-1">Delete</Button>
+					<Button variant="outline" size="lg" class="flex-1" onclick={() => onOpenChange(false)}>
+						Cancel
+					</Button>
+				{/snippet}
+				<form method="POST" action="?/delete">
+					<p>
+						This record will be permanently deleted.
+					</p>
+				</form>
+			</Confirm>
 		</div>
 	</div>
 </VehiclePageLayout>
