@@ -61,8 +61,10 @@
 			{
 				danger: true,
 				variant: 'solid',
-				class:
+				class: [
 					'border-0 bg-negative/10 text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative',
+					'dark:bg-negative/30 dark:hover:bg-negative/40 dark:active:bg-negative/50',
+				],
 			},
 			{
 				danger: true,
