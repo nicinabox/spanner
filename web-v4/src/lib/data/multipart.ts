@@ -5,22 +5,21 @@ import { HTTPError } from './client';
 const ACCEPT_HEADER = 'application/vnd.api+json; version=2';
 
 /**
- * Wrap flat form fields under `record[...]` so the Rails backend's strong
- * params (`params.require(:record).permit(...)`) see them nested.
- * Entries already starting with `record[` are passed through unchanged.
- * Entries in `skip` are dropped (e.g. `attachments_to_delete`, which the
- * SvelteKit action handles separately via the DELETE endpoint).
+ * Build a multipart FormData from a flat record object, wrapping each key
+ * under an optional `prefix[...]` so the backend can read it via strong
+ * params (`params.require(:prefix).permit(...)`). Undefined/null values
+ * are skipped.
  */
-export function nestRecordFields(source: FormData, skip: string[] = []): FormData {
-	const skipSet = new Set(skip);
+export function toMultipartFormData(
+	entries: Record<string, unknown>,
+	options: { prefix?: string } = {}
+): FormData {
+	const { prefix } = options;
 	const out = new FormData();
-	for (const [key, value] of source.entries()) {
-		if (skipSet.has(key)) continue;
-		if (key.startsWith('record[')) {
-			out.append(key, value);
-		} else {
-			out.append(`record[${key}]`, value);
-		}
+	for (const [key, value] of Object.entries(entries)) {
+		if (value === undefined || value === null) continue;
+		const name = prefix ? `${prefix}[${key}]` : key;
+		out.append(name, String(value));
 	}
 	return out;
 }

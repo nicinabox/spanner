@@ -1,6 +1,7 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { getHistoryEntry } from '$lib/data/history';
-import { uploadRecord, deleteAttachment, nestRecordFields } from '$lib/data/multipart';
+import { uploadRecord, deleteAttachment, toMultipartFormData } from '$lib/data/multipart';
+import { decode } from '$lib/utils/form';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -13,13 +14,17 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions = {
 	update: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const date = formData.get('date')?.toString();
-		const notes = formData.get('notes')?.toString() ?? '';
+		const data = decode(formData, {
+			date: 'string',
+			notes: 'string',
+			mileage: 'number',
+			cost: 'number'
+		});
 
-		if (!date) {
+		if (!data.date) {
 			return fail(400, { errors: [{ id: 'date', title: 'Date is required' }] });
 		}
-		if (!notes) {
+		if (!data.notes) {
 			return fail(400, { errors: [{ id: 'notes', title: 'Notes is required' }] });
 		}
 
@@ -29,12 +34,25 @@ export const actions = {
 			.map((s) => s.trim())
 			.filter(Boolean);
 
+		const files = formData.getAll('record[attachments][]') as File[];
+		const body = toMultipartFormData(
+			{
+				date: data.date,
+				notes: data.notes,
+				mileage: typeof data.mileage === 'number' ? data.mileage : null,
+				cost: typeof data.cost === 'number' ? data.cost : null
+			},
+			{ prefix: 'record' }
+		);
+		for (const file of files) {
+			body.append('record[attachments][]', file);
+		}
+
 		try {
 			for (const signedId of toDelete) {
 				await deleteAttachment(params.id!, params.recordId!, signedId, locals);
 			}
-			const nested = nestRecordFields(formData, ['attachments_to_delete']);
-			await uploadRecord(params.id!, params.recordId!, nested, locals);
+			await uploadRecord(params.id!, params.recordId!, body, locals);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Upload failed';
 			return fail(422, {

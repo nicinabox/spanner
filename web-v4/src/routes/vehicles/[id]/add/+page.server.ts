@@ -1,6 +1,6 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
-import { uploadRecord, nestRecordFields } from '$lib/data/multipart';
+import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder } from '$lib/data/reminders';
 import { decode } from '$lib/utils/form';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
@@ -28,9 +28,22 @@ export const actions = {
 			return fail(400, { errors: [{ id: 'notes', title: 'Notes is required' }] });
 		}
 
+		const files = formData.getAll('record[attachments][]') as File[];
+		const body = toMultipartFormData(
+			{
+				date: data.date,
+				notes: data.notes,
+				mileage: typeof data.mileage === 'number' ? data.mileage : null,
+				cost: typeof data.cost === 'number' ? data.cost : null
+			},
+			{ prefix: 'record' }
+		);
+		for (const file of files) {
+			body.append('record[attachments][]', file);
+		}
+
 		try {
-			const nested = nestRecordFields(formData);
-			await uploadRecord(params.id!, undefined, nested, locals);
+			await uploadRecord(params.id!, undefined, body, locals);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Upload failed';
 			return fail(422, {
