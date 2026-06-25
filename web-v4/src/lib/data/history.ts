@@ -1,4 +1,5 @@
 import { createAPIRequest, type RequestOpts } from './client';
+import type { Attachment } from './attachments';
 
 export type HistoryEntryType = 'mileage adjustment';
 
@@ -12,6 +13,7 @@ export interface HistoryEntry {
 	createdAt: string;
 	updatedAt: string;
 	recordType: HistoryEntryType | null;
+	attachments: Attachment[];
 }
 
 const request = createAPIRequest();
