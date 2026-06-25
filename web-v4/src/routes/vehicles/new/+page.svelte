@@ -11,13 +11,13 @@
 
 <PageLayout>
 	{#snippet appbarStart()}
-		<Button href="/vehicles" color="neutral" theme="dark">
+		<Button size="sm" href="/vehicles" color="neutral" theme="dark">
 			<ArrowLeft size={16} /> Vehicles
 		</Button>
 	{/snippet}
 
 	<div class="max-w-xl mx-auto">
-		<Card bleed>
+		<Card variant="outline" bleed>
 			<h1>New Vehicle</h1>
 			<VehicleForm errors={form?.errors} />
 		</Card>
