@@ -11,7 +11,9 @@
 	let record = $derived(data.record);
 
 	let activeTab = $derived(
-		$page.url.pathname === `/vehicles/${vehicle.id}/history/${record.id}/edit` ? 'history' : 'history'
+		$page.url.pathname === `/vehicles/${vehicle.id}/history/${record.id}/edit`
+			? 'history'
+			: 'history',
 	);
 </script>
 
@@ -30,30 +32,30 @@
 			<h1 class="text-xl">Danger Zone</h1>
 
 			<fieldset>
-				<label class="flex items-center justify-between gap-3 cursor-pointer">
+				<div class="flex items-center justify-between gap-6">
 					<div>
 						<span class="font-medium">Permanently delete</span>
-						<p class="text-sm text-ink-500">
-							This record will be permanently deleted.
-						</p>
+						<p class="text-sm text-ink-500">This record will be permanently deleted.</p>
 					</div>
 					<Confirm title="Delete record?">
 						{#snippet trigger({ onOpenChange })}
 							<Button danger onclick={() => onOpenChange(true)}>Delete</Button>
 						{/snippet}
-					{#snippet actions({ onOpenChange })}
-						<form method="POST" action="?/delete" class="flex flex-row gap-2 flex-1 sm:flex-none">
-							<Button type="submit" danger class="flex-1 sm:flex-none">Delete</Button>
-							<Button variant="outline" class="flex-1 sm:flex-none" onclick={() => onOpenChange(false)}>
-								Cancel
-							</Button>
-						</form>
-					{/snippet}
-					<p>
-						This record will be permanently deleted.
-					</p>
+						{#snippet actions({ onOpenChange })}
+							<form method="POST" action="?/delete" class="flex flex-row gap-2 flex-1 sm:flex-none">
+								<Button type="submit" danger class="flex-1 sm:flex-none">Delete</Button>
+								<Button
+									variant="outline"
+									class="flex-1 sm:flex-none"
+									onclick={() => onOpenChange(false)}
+								>
+									Cancel
+								</Button>
+							</form>
+						{/snippet}
+						<p>This record will be permanently deleted.</p>
 					</Confirm>
-				</label>
+				</div>
 			</fieldset>
 		</Card>
 	</div>

@@ -26,7 +26,7 @@
 			<h1 class="text-xl">Danger Zone</h1>
 
 			<fieldset>
-				<label class="flex items-center justify-between gap-3 cursor-pointer">
+				<div class="flex items-center justify-between gap-6">
 					<div>
 						<span class="font-medium">Permanently delete</span>
 						<p class="text-sm text-ink-500">
@@ -39,8 +39,14 @@
 						{/snippet}
 						{#snippet actions({ onOpenChange })}
 							<form method="post" class="flex flex-row gap-2 flex-1 sm:flex-none">
-								<Button type="submit" formaction="?/delete" danger class="flex-1 sm:flex-none">Delete Vehicle</Button>
-								<Button variant="outline" class="flex-1 sm:flex-none" onclick={() => onOpenChange(false)}>
+								<Button type="submit" formaction="?/delete" danger class="flex-1 sm:flex-none"
+									>Delete Vehicle</Button
+								>
+								<Button
+									variant="outline"
+									class="flex-1 sm:flex-none"
+									onclick={() => onOpenChange(false)}
+								>
 									Cancel
 								</Button>
 							</form>
@@ -49,7 +55,7 @@
 							This will permanently delete {data.vehicle.name} and all associated data.
 						</p>
 					</Confirm>
-				</label>
+				</div>
 			</fieldset>
 		</Card>
 	</div>

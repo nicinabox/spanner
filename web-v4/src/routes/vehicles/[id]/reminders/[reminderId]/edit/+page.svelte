@@ -11,7 +11,9 @@
 	let reminder = $derived(data.reminder);
 
 	let activeTab = $derived(
-		$page.url.pathname === `/vehicles/${vehicle.id}/reminders/${reminder.id}/edit` ? 'reminders' : 'reminders'
+		$page.url.pathname === `/vehicles/${vehicle.id}/reminders/${reminder.id}/edit`
+			? 'reminders'
+			: 'reminders',
 	);
 </script>
 
@@ -30,28 +32,28 @@
 			<h1 class="text-xl">Danger Zone</h1>
 
 			<fieldset>
-				<label class="flex items-center justify-between gap-3 cursor-pointer">
+				<label class="flex items-center justify-between gap-6">
 					<div>
 						<span class="font-medium">Permanently delete</span>
-						<p class="text-sm text-ink-500">
-							This reminder will be permanently deleted.
-						</p>
+						<p class="text-sm text-ink-500">This reminder will be permanently deleted.</p>
 					</div>
 					<Confirm title="Delete reminder?">
 						{#snippet trigger({ onOpenChange })}
 							<Button danger onclick={() => onOpenChange(true)}>Delete</Button>
 						{/snippet}
-					{#snippet actions({ onOpenChange })}
-					<form method="POST" action="?/delete" class="flex flex-row gap-2 flex-1 sm:flex-none">
-						<Button type="submit" danger class="flex-1 sm:flex-none">Delete</Button>
-						<Button variant="outline" class="flex-1 sm:flex-none" onclick={() => onOpenChange(false)}>
-								Cancel
-							</Button>
-						</form>
-					{/snippet}
-					<p>
-						This reminder will be permanently deleted.
-					</p>
+						{#snippet actions({ onOpenChange })}
+							<form method="POST" action="?/delete" class="flex flex-row gap-2 flex-1 sm:flex-none">
+								<Button type="submit" danger class="flex-1 sm:flex-none">Delete</Button>
+								<Button
+									variant="outline"
+									class="flex-1 sm:flex-none"
+									onclick={() => onOpenChange(false)}
+								>
+									Cancel
+								</Button>
+							</form>
+						{/snippet}
+						<p>This reminder will be permanently deleted.</p>
 					</Confirm>
 				</label>
 			</fieldset>
