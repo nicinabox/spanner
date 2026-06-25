@@ -55,7 +55,7 @@
 	--radius-lg: 0.75rem;
 	--radius-xl: 1rem;
 
-	--font-sans: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	--font-sans: 'Inter var', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 	--font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
 
 	--z-base: 0;

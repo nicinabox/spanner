@@ -1,7 +1,4 @@
 <script lang="ts">
-	import '@fontsource/lato/300.css';
-	import '@fontsource/lato/400.css';
-	import '@fontsource/lato/700.css';
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.png';
 
@@ -9,6 +6,8 @@
 </script>
 
 <svelte:head>
+	<link rel="preconnect" href="https://rsms.me"/>
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css"/>
 	<link rel="icon" type="image/png" href={favicon} />
 	{import.meta.env.HEAD_INJECTIONS}
 </svelte:head>
