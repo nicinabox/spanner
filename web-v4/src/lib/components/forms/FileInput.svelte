@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Upload } from 'lucide-svelte';
+	import { Paperclip } from 'lucide-svelte';
 	import Button from '$lib/components/common/Button.svelte';
 	import type { ButtonVariant, ButtonSize } from '$lib/components/common/Button.svelte';
 	import type { ClassValue } from 'svelte/elements';
@@ -56,7 +56,7 @@
 		type="button"
 		onclick={() => inputEl?.click()}
 	>
-		<Upload size={16} />
+		<Paperclip size={16} />
 		{label}
 	</Button>
 	<input
