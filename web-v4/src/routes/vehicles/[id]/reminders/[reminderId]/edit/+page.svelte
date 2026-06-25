@@ -23,7 +23,7 @@
 	<div class="max-w-2xl mx-auto">
 		<Card variant="outline" bleed>
 			<h1 class="text-xl font-semibold">Edit Reminder</h1>
-			<ReminderForm {vehicle} {reminder} />
+			<ReminderForm {vehicle} {reminder} action="?/update" />
 		</Card>
 
 		<Card class="mt-6" variant="outline" bleed>
@@ -41,17 +41,17 @@
 						{#snippet trigger({ onOpenChange })}
 							<Button danger onclick={() => onOpenChange(true)}>Delete</Button>
 						{/snippet}
-						{#snippet actions({ onOpenChange })}
-							<Button type="submit" danger size="lg" class="flex-1">Delete</Button>
-							<Button variant="outline" size="lg" class="flex-1" onclick={() => onOpenChange(false)}>
+					{#snippet actions({ onOpenChange })}
+					<form method="POST" action="?/delete" class="flex flex-row gap-2 flex-1 sm:flex-none">
+						<Button type="submit" danger size="lg" class="flex-1 sm:flex-none">Delete</Button>
+						<Button variant="outline" size="lg" class="flex-1 sm:flex-none" onclick={() => onOpenChange(false)}>
 								Cancel
 							</Button>
-						{/snippet}
-						<form method="POST" action="?/delete">
-							<p>
-								This reminder will be permanently deleted.
-							</p>
 						</form>
+					{/snippet}
+					<p>
+						This reminder will be permanently deleted.
+					</p>
 					</Confirm>
 				</label>
 			</fieldset>

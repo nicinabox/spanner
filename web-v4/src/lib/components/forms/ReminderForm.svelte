@@ -16,15 +16,16 @@
 		reminder?: Reminder;
 		errors?: FormError[];
 		action?: string;
+		noEnhance?: boolean;
 	}
 
-	let { vehicle, reminder, errors = [], action }: Props = $props();
+	let { vehicle, reminder, errors = [], action, noEnhance = false }: Props = $props();
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 
 	let notes = $state(reminder?.notes ?? '');
 	let reminderType = $state<ReminderType>(reminder?.reminderType ?? '');
-	let date = $state(reminder?.date ?? formatDateISO(addMonths(new Date(), 6)));
+	let date = $state(reminder?.date ? formatDateISO(new Date(reminder.date)) : formatDateISO(addMonths(new Date(), 6)));
 	let mileage = $state(reminder?.mileage?.toString() ?? '');
 
 	let estimatedDate = $state<Date | null>(null);

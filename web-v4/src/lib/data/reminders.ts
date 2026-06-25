@@ -48,19 +48,20 @@ export const createVehicleReminder = (
 };
 
 export const updateReminder = (
+	vehicleId: number | string,
 	id: number | string,
 	data: CreatableFields<Reminder>,
 	opts: RequestOpts
 ) => {
-	return request<Reminder>(`/reminders/${id}`, {
+	return request<Reminder>(`/vehicles/${vehicleId}/reminders/${id}`, {
 		...opts,
 		method: 'PUT',
 		json: data
 	});
 };
 
-export const deleteReminder = (id: number | string, opts: RequestOpts) => {
-	return request<void>(`/reminders/${id}`, {
+export const deleteReminder = (vehicleId: number | string, id: number | string, opts: RequestOpts) => {
+	return request<void>(`/vehicles/${vehicleId}/reminders/${id}`, {
 		...opts,
 		method: 'DELETE'
 	});

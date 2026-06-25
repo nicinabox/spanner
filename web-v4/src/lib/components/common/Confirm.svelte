@@ -51,7 +51,7 @@
 	{@render children()}
 
 	{#if actions}
-		<div class="mt-6 flex flex-row gap-2 sm:justify-end">
+		<div class="mt-6 flex flex-col sm:flex-row sm:justify-end gap-2">
 			{@render actions({ open, onOpenChange })}
 		</div>
 	{/if}

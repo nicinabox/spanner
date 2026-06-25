@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 export const actions = {
-	default: async ({ request, locals, params }) => {
+	update: async ({ request, locals, params }) => {
 		const formData = await request.formData();
 		const notes = formData.get('notes')?.toString() ?? '';
 		const reminderType = formData.get('reminderType')?.toString() ?? '';
@@ -23,6 +23,7 @@ export const actions = {
 		}
 
 		await updateReminder(
+			params.id!,
 			params.reminderId!,
 			{
 				notes,
@@ -37,7 +38,7 @@ export const actions = {
 	},
 
 	delete: async ({ locals, params }) => {
-		await deleteReminder(params.reminderId!, locals);
+		await deleteReminder(params.id!, params.reminderId!, locals);
 		redirect(303, `/vehicles/${params.id}/reminders`);
 	}
 } satisfies Actions;
