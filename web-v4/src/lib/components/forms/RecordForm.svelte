@@ -3,6 +3,7 @@
 	import Button from '$lib/components/common/Button.svelte';
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
+	import InputGroup from '$lib/components/common/InputGroup.svelte';
 	import Textarea from '$lib/components/common/Textarea.svelte';
 	import { formatDateISO } from '$lib/utils/date';
 	import { getCurrencySymbol } from '$lib/utils/number';
@@ -64,36 +65,26 @@
 					label={vehicle.distanceUnit === 'mi' ? 'Mileage' : 'Distance'}
 					{errors}
 				>
-					<div class="flex">
-						<Input
-							name="mileage"
-							bind:value={mileage}
-							inputmode="numeric"
-							size="lg"
-							class="flex-1 rounded-r-none"
-						/>
-						<span
-							class="inline-flex items-center rounded-r-md border border-l-0 border-ink-200 bg-ink-50 px-3 text-sm text-ink-500"
-							>{vehicle.distanceUnit}</span
-						>
-					</div>
+					<InputGroup
+						name="mileage"
+						bind:value={mileage}
+						inputmode="numeric"
+						size="lg"
+					>
+						{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
+					</InputGroup>
 				</Field>
 
 				{#if vehicle.preferences.enableCost}
 					<Field name="cost" label="Cost" {errors}>
-						<div class="flex">
-							<span
-								class="inline-flex items-center rounded-l-md border border-r-0 border-ink-200 bg-ink-50 px-3 text-sm text-ink-500"
-								>{getCurrencySymbol()}</span
-							>
-							<Input
-								name="cost"
-								bind:value={cost}
-								inputmode="numeric"
-								size="lg"
-								class="flex-1 rounded-l-none"
-							/>
-						</div>
+						<InputGroup
+							name="cost"
+							bind:value={cost}
+							inputmode="numeric"
+							size="lg"
+						>
+							{#snippet startAddon()}{getCurrencySymbol()}{/snippet}
+						</InputGroup>
 					</Field>
 				{/if}
 			</div>

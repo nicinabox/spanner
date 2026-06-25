@@ -5,6 +5,7 @@ export { default as Clipboard } from './components/common/Clipboard.svelte';
 export { default as Dialog } from './components/common/Dialog.svelte';
 export { default as Field } from './components/common/Field.svelte';
 export { default as Input } from './components/common/Input.svelte';
+export { default as InputGroup } from './components/common/InputGroup.svelte';
 export { default as PageLayout } from './components/common/PageLayout.svelte';
 export { default as SegmentedControl } from './components/common/SegmentedControl.svelte';
 export { default as Switch } from './components/common/Switch.svelte';

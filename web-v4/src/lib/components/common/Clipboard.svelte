@@ -1,19 +1,16 @@
 <script lang="ts">
 	import * as clipboard from '@zag-js/clipboard';
 	import { useMachine, normalizeProps } from '@zag-js/svelte';
-	import Button from '$lib/components/common/Button.svelte';
+	import InputGroup from './InputGroup.svelte';
 	import { Check, Copy } from 'lucide-svelte';
-	import type { Snippet } from 'svelte';
-	import Tooltip from './Tooltip.svelte';
 
 	interface Props {
 		value: string;
-		children?: Snippet;
 		timeout?: number;
 		id?: string;
 	}
 
-	let { value, children, timeout = 2000, id: idProp }: Props = $props();
+	let { value, timeout = 2000, id: idProp }: Props = $props();
 
 	let id = $props.id();
 	let resolvedId = $derived(idProp ?? id);
@@ -25,27 +22,28 @@
 	});
 
 	const api = $derived(clipboard.connect(service, normalizeProps));
+	const triggerProps = $derived(api.getTriggerProps() as Record<string, unknown>);
 </script>
 
-<div {...api.getRootProps()} class="inline-flex items-center gap-2">
-	{#if children}
-		{@render children()}
-	{/if}
-	<Tooltip content="Copy">
-		{#snippet children(props)}
-			<Button
-				{...props}
-				{...api.getTriggerProps() as Record<string, unknown>}
-				icon
-				aria-label={api.copied ? 'Copied' : 'Copy'}
-				variant="ghost"
-			>
-				{#if api.copied}
-					<Check size={14} />
-				{:else}
-					<Copy size={14} />
-				{/if}
-			</Button>
-		{/snippet}
-	</Tooltip>
-</div>
+<InputGroup
+	variant="filled"
+	name="clipboard"
+	value={value}
+	readonly
+>
+	{#snippet end()}
+		<button
+			{...triggerProps}
+			type="button"
+			tabindex="-1"
+			aria-label={api.copied ? 'Copied' : 'Copy'}
+			class="inline-flex items-center justify-center text-ink-500 cursor-pointer"
+		>
+			{#if api.copied}
+				<Check size={14} />
+			{:else}
+				<Copy size={14} />
+			{/if}
+		</button>
+	{/snippet}
+</InputGroup>

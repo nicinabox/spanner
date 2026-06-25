@@ -75,7 +75,7 @@
 
 	<fieldset class="flex flex-col gap-4">
 		<Field name="notes" label="Note" {errors} required>
-			<Input name="notes" bind:value={notes} required size="lg" />
+			<Input name="notes" bind:value={notes} required  />
 		</Field>
 
 		<Field name="reminderType" label="Remind me" {errors}>
@@ -105,7 +105,7 @@
 
 		{#if ['mileage', 'date_or_mileage'].includes(reminderType)}
 			<Field name="mileage" label={vehicle.distanceUnit === 'mi' ? 'Mileage' : 'Distance'} {errors} required>
-				<Input name="mileage" bind:value={mileage} inputmode="numeric" size="lg" />
+				<Input name="mileage" bind:value={mileage} inputmode="numeric"  />
 				{#if vehicle.estimatedMileage}
 					<p class="text-sm text-ink-400">Minimum {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}</p>
 				{/if}

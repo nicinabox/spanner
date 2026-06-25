@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { Button } from '$lib';
 	import Input from '$lib/components/common/Input.svelte';
+	import InputGroup from '$lib/components/common/InputGroup.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { page } from '$app/stores';
-	import { BookOpenText, PlusIcon } from 'lucide-svelte';
+	import { BookOpenText, PlusIcon, Search } from 'lucide-svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import type { PageProps } from './$types';
 
@@ -69,26 +70,30 @@
 			</EmptyState>
 		{:else if !filteredHistory.length}
 			<div class="flex justify-between gap-10 mb-4">
-				<Input
+				<InputGroup
 					type="search"
 					name="search"
 					placeholder="Search history"
-					size="lg"
-					class="w-full sm:w-1/2 lg:w-1/3 bg-ink-200/50 focus:bg-ink-50"
+					variant="filled"
+					class="w-full sm:w-1/2 lg:w-1/3"
 					bind:value={searchQuery}
-				/>
+				>
+					{#snippet start()}<Search size={16} />{/snippet}
+				</InputGroup>
 			</div>
 			<p class="text-center text-ink-400 py-12">No results for "{searchQuery}"</p>
 		{:else}
 			<div class="flex justify-between gap-10 mb-4">
-				<Input
+				<InputGroup
 					type="search"
 					name="search"
 					placeholder="Search history"
-					size="lg"
-					class="w-full sm:w-1/2 lg:w-1/3 bg-ink-200/50 focus:bg-ink-50"
+					variant="filled"
+					class="w-full sm:w-1/2 lg:w-1/3"
 					bind:value={searchQuery}
-				/>
+				>
+					{#snippet start()}<Search size={16} />{/snippet}
+				</InputGroup>
 				<Button href="/vehicles/{vehicle.id}/add" size="lg">
 					<PlusIcon size={16} />
 					New...

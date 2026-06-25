@@ -32,11 +32,11 @@
 
 	<fieldset class="flex flex-col gap-4">
 		<Field name="name" label="Name" {errors} required>
-			<Input name="name" value={values?.name} required size="lg" />
+			<Input name="name" value={values?.name} required  />
 		</Field>
 
 		<Field name="vin" label="VIN" {errors} hint="VIN is optional but recommended">
-			<Input name="vin" value={values?.vin ?? ''} size="lg" />
+			<Input name="vin" value={values?.vin ?? ''}  />
 		</Field>
 
 		<Field name="color" label="Color" {errors}>

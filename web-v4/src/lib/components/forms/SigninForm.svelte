@@ -40,7 +40,7 @@
 
 		<fieldset class="fieldset">
 			<Field name="token" label="Enter your token" errors={form.errors}>
-				<Input name="token" autocomplete="off" required size="lg" />
+				<Input name="token" autocomplete="off" required  />
 			</Field>
 		</fieldset>
 
@@ -59,7 +59,7 @@
 				name="email"
 				required
 			>
-				<Input {placeholder} size="lg" />
+				<Input {placeholder}  />
 			</Field>
 		</fieldset>
 

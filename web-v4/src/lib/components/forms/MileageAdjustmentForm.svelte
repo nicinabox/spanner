@@ -31,7 +31,7 @@
 
 	<fieldset class="flex flex-col gap-4">
 		<Field name="mileage" label={`Enter your current ${vehicle.distanceUnit === 'mi' ? 'mileage' : 'distance'}`} {errors} required>
-			<Input name="mileage" bind:value={mileage} inputmode="numeric" size="lg" />
+			<Input name="mileage" bind:value={mileage} inputmode="numeric"  />
 			{#if vehicle.estimatedMileage}
 				<p class="text-sm text-ink-400">Your estimated {vehicle.distanceUnit === 'mi' ? 'mileage' : 'distance'} is {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}</p>
 			{/if}

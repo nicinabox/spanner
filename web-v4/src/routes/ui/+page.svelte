@@ -1,8 +1,9 @@
 <script>
-	import { Button, Field, Input } from '$lib';
+	import { Button, Clipboard, Field, Input, InputGroup, PageLayout } from '$lib';
+	import { Mail, Search } from 'lucide-svelte';
 </script>
 
-<main class="w-full mx-auto max-w-lg py-6">
+<PageLayout>
 	<section>
 		<h2>Button</h2>
 
@@ -75,21 +76,67 @@
 		</div>
 
 		<div>
+			<h3>Variants</h3>
+			<Input name="outline" placeholder="Outline (default)" />
+			<Input variant="filled" name="filled" placeholder="Filled" />
+		</div>
+
+		<div>
+			<h3>Addons</h3>
+			<InputGroup name="start" placeholder="With start">
+				{#snippet startAddon()}${/snippet}
+			</InputGroup>
+			<InputGroup name="end" placeholder="With end">
+				{#snippet endAddon()}kg{/snippet}
+			</InputGroup>
+			<InputGroup name="both" placeholder="With both">
+				{#snippet startAddon()}https://{/snippet}
+				{#snippet endAddon()}.com{/snippet}
+			</InputGroup>
+		</div>
+
+		<div>
+			<h3>Inline</h3>
+			<InputGroup name="inline-start" placeholder="Search...">
+				{#snippet start()}<Search size={16} />{/snippet}
+			</InputGroup>
+			<InputGroup name="inline-end" placeholder="Email">
+				{#snippet end()}<Mail size={16} />{/snippet}
+			</InputGroup>
+		</div>
+
+		<div>
 			<h3>Standalone</h3>
 			<Input name="search" type="search" placeholder="Search..." />
 		</div>
 	</section>
-</main>
+
+	<section>
+		<h2>Clipboard</h2>
+		<div>
+			<Clipboard value="Hello, world!" />
+			<Clipboard value="https://example.com/abc123" />
+		</div>
+	</section>
+</PageLayout>
 
 <style>
 	section {
 		display: flex;
 		flex-direction: column;
 		margin-block: 2rem;
+		gap: 2rem;
+
+		div {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 0.75rem;
+		}
 
 		h2 {
 			font-weight: bold;
-			margin-bottom: 0.75rem;
+			margin-bottom: 0.25rem;
 		}
 
 		h3 {

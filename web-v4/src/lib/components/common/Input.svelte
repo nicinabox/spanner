@@ -2,19 +2,25 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const inputVariants = tv({
-		base: 'w-full px-3 h-8 text-sm rounded-md border border-ink-200 bg-canvas text-ink-900 transition-[border-color] duration-100 ease-out-expo placeholder:text-ink-400 disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-negative focus:border-focus-ring focus:outline-none',
+		base: 'w-full px-3 h-10 text-base rounded-md border border-ink-200 bg-canvas text-ink-900 transition-shadow transition-colors duration-100 ease-out-expo placeholder:text-ink-400 disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-negative focus-visible:border-focus-ring focus-visible:outline-2 focus-visible:outline-focus-ring focus-visible:outline-offset-0',
 		variants: {
+			variant: {
+				outline: '',
+				filled: 'border-0 bg-ink-100 focus:bg-ink-50'
+			},
 			size: {
-				sm: 'h-6 px-2 rounded-sm text-xs',
+				sm: 'h-8 px-2 rounded-sm text-base',
 				md: '',
-				lg: 'h-10 px-4 text-base'
+				lg: 'h-12 px-4 text-base'
 			}
 		},
 		defaultVariants: {
-			size: 'md'
+			size: 'md',
+			variant: 'outline'
 		}
 	});
 
+	export type InputVariant = VariantProps<typeof inputVariants>['variant'];
 	export type InputSize = VariantProps<typeof inputVariants>['size'];
 </script>
 
@@ -32,13 +38,16 @@
 	};
 
 	type Props = Omit<HTMLInputAttributes, 'size'> & {
+		variant?: InputVariant;
 		size?: InputSize;
 		class?: string;
+		ref?: HTMLInputElement | null;
 	};
 
 	let field = getContext<FieldContext | undefined>('field');
 
 	let {
+		variant,
 		size,
 		name,
 		type = 'text',
@@ -51,6 +60,7 @@
 		inputmode,
 		pattern,
 		class: className,
+		ref = $bindable(),
 		...rest
 	}: Props = $props();
 
@@ -59,10 +69,11 @@
 	let resolvedRequired = $derived(required ?? field?.required);
 	let ariaDescribedBy = $derived(field?.describedBy);
 	let ariaInvalid = $derived(field?.invalid || undefined);
-	let classes = $derived(cn(inputVariants({ size }), className));
+	let classes = $derived(cn(inputVariants({ variant, size }), className));
 </script>
 
 <input
+	bind:this={ref}
 	id={resolvedId}
 	name={resolvedName}
 	{type}

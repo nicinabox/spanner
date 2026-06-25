@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils/cn';
-	import { inputVariants, type InputSize } from './Input.svelte';
+	import { inputVariants, type InputSize, type InputVariant } from './Input.svelte';
 	import { getContext } from 'svelte';
 	import type { HTMLSelectAttributes } from 'svelte/elements';
 
@@ -15,6 +15,7 @@
 	type Option = { value: string; label: string };
 
 	type Props = Omit<HTMLSelectAttributes, 'size'> & {
+		variant?: InputVariant;
 		size?: InputSize;
 		options: Option[];
 		class?: string;
@@ -23,6 +24,7 @@
 	let field = getContext<FieldContext | undefined>('field');
 
 	let {
+		variant,
 		size,
 		name,
 		value = $bindable(),
@@ -38,7 +40,7 @@
 	let resolvedRequired = $derived(required ?? field?.required);
 	let ariaDescribedBy = $derived(field?.describedBy);
 	let ariaInvalid = $derived(field?.invalid || undefined);
-	let classes = $derived(cn(inputVariants({ size }), className));
+	let classes = $derived(cn(inputVariants({ variant, size }), className));
 </script>
 
 <select
