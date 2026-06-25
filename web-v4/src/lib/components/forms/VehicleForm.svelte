@@ -163,6 +163,6 @@
 	{/if}
 
 	<div class="flex gap-3">
-		<Button type="submit" size="lg">Save {values?.name || 'vehicle'}</Button>
+		<Button type="submit">Save {values?.name || 'vehicle'}</Button>
 	</div>
 </form>

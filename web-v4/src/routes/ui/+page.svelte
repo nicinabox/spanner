@@ -37,15 +37,17 @@
 
 		<div>
 			<h3>Radius</h3>
-			<Button size="sm" radius="pill">Next</Button>
-			<Button radius="pill">Next</Button>
-			<Button size="lg" radius="pill">Next</Button>
+			<Button size="xs" pill>Next</Button>
+			<Button size="sm" pill>Next</Button>
+			<Button size="md" pill>Next</Button>
+			<Button size="lg" pill>Next</Button>
 		</div>
 
 		<div>
 			<h3>Sizes</h3>
+			<Button variant="solid" size="xs">Next</Button>
 			<Button variant="solid" size="sm">Next</Button>
-			<Button variant="solid">Next</Button>
+			<Button variant="solid" size="md">Next</Button>
 			<Button variant="solid" size="lg">Next</Button>
 		</div>
 	</section>

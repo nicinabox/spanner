@@ -77,7 +77,13 @@
 >
 	{#snippet appbarStart()}
 		<div class="flex gap-2">
-			<Button href={backAction.href} color="neutral" theme="dark" icon={isSmallScreen.current}>
+			<Button
+				size="sm"
+				href={backAction.href}
+				color="neutral"
+				theme="dark"
+				icon={isSmallScreen.current}
+			>
 				<ArrowLeft size={16} />
 				{#if !isSmallScreen.current}{backAction.label}{/if}
 			</Button>
@@ -85,6 +91,7 @@
 			<Menu
 				variant="ghost"
 				theme="dark"
+				size="sm"
 				items={[
 					{ value: 'edit', label: 'Edit', href: vehiclePath(vehicle.id, 'edit') },
 					{ value: 'retire', label: 'Retire', closeOnSelect: false },
@@ -133,7 +140,8 @@
 					href={tab.href}
 					variant="ghost"
 					theme="dark"
-					radius="pill"
+					pill
+					size="sm"
 					aria-current={active ? 'page' : undefined}
 				>
 					<tab.icon size={14} />

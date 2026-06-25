@@ -31,11 +31,6 @@ export const actions = {
 			return fail(422, getHTTPErrors(error));
 		}
 
-		// const redirectTo = formData.get('_redirect');
-		// if (redirectTo) {
-		// 	redirect(303, redirectTo as string);
-		//       }
-
 		redirect(303, vehiclePath(Number(params.id)));
 	},
 	delete: async ({ locals, params }) => {

@@ -17,14 +17,14 @@
 	let retired = $derived(
 		sortVehiclesBy(
 			data.vehicles.filter((v) => v.retired),
-			['created_at', 'desc']
-		)
+			['created_at', 'desc'],
+		),
 	);
 
 	let showRetired = $state(false);
 
 	let vehiclesByDistanceUnit = $derived(
-		Object.entries(Object.groupBy(active, (v) => v.distanceUnit)) as [DistanceUnit, Vehicle[]][]
+		Object.entries(Object.groupBy(active, (v) => v.distanceUnit)) as [DistanceUnit, Vehicle[]][],
 	);
 
 	let user = $derived(form?.user ?? data.user);
@@ -36,82 +36,82 @@
 </script>
 
 <PageLayout>
+	<div class="mb-6 flex justify-start gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar">
+		<Stat title="Active vehicles" value={active.length} />
 
-<div class="mb-6 flex justify-start gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar">
-	<Stat title="Active vehicles" value={active.length} />
-
-	{#each vehiclesByDistanceUnit as [distanceUnit, vehicles] (distanceUnit)}
-		{@const total = vehicles.reduce((acc, v) => acc + (v.milesPerYear ?? 0), 0)}
-		<Stat title={`Total ${distanceUnit} per year`} value={formatMileage(total, distanceUnit)} />
-	{/each}
-</div>
-
-<header class="vehicles-header">
-	<h1 class="text-xl">Vehicles</h1>
-
-	<Button href="/vehicles/new" variant="ghost" class="new-btn">
-		<PlusIcon size={16} /> New
-	</Button>
-
-	<form method="POST" action="?/updateUserPreferences" use:enhance class="sort-form">
-		<input type="hidden" value={vehiclesSortOrder[0]} name="strategy" />
-		<input type="hidden" value={vehiclesSortOrder[1]} name="order" />
-		<VehicleSortMenu
-			sortable={vehiclesSortOrder}
-			onSelect={(value) => {
-				vehiclesSortOrder = value;
-
-				const form = document.querySelector(
-					'form[action$="updateUserPreferences"]'
-				) as HTMLFormElement | null;
-				if (form) {
-					const strategyInput = form.querySelector(
-						'input[name=strategy]'
-					) as HTMLInputElement | null;
-					const orderInput = form.querySelector('input[name=order]') as HTMLInputElement | null;
-					if (strategyInput) strategyInput.value = value[0];
-					if (orderInput) orderInput.value = value[1];
-					form.requestSubmit();
-				}
-			}}
-		/>
-	</form>
-</header>
-
-<section>
-	<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0">
-		{#each sortVehiclesBy(active, vehiclesSortOrder) as v (v.id)}
-			<li class="flex">
-				<VehicleLink vehicle={v} />
-			</li>
+		{#each vehiclesByDistanceUnit as [distanceUnit, vehicles] (distanceUnit)}
+			{@const total = vehicles.reduce((acc, v) => acc + (v.milesPerYear ?? 0), 0)}
+			<Stat title={`Total ${distanceUnit} per year`} value={formatMileage(total, distanceUnit)} />
 		{/each}
-	</ul>
-</section>
+	</div>
 
-<section class="mt-8">
-	<Button
-		aria-pressed={showRetired}
-		class="my-4"
-		variant="outline"
-		onclick={() => (showRetired = !showRetired)}
-	>
-		{showRetired ? 'Hide' : 'Show'} retired
-		<ChevronRight size={16} class={showRetired ? 'rotate-90' : ''} />
-	</Button>
+	<header class="vehicles-header">
+		<h1 class="text-xl">Vehicles</h1>
 
-	<div>
-		<ul
-			class:hidden={!showRetired}
-			class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0"
-		>
-			{#each retired as v (v.id)}
+		<Button size="sm" href="/vehicles/new" variant="ghost" class="new-btn">
+			<PlusIcon size={16} /> New
+		</Button>
+
+		<form method="POST" action="?/updateUserPreferences" use:enhance class="sort-form">
+			<input type="hidden" value={vehiclesSortOrder[0]} name="strategy" />
+			<input type="hidden" value={vehiclesSortOrder[1]} name="order" />
+			<VehicleSortMenu
+				size="sm"
+				sortable={vehiclesSortOrder}
+				onSelect={(value) => {
+					vehiclesSortOrder = value;
+
+					const form = document.querySelector(
+						'form[action$="updateUserPreferences"]',
+					) as HTMLFormElement | null;
+					if (form) {
+						const strategyInput = form.querySelector(
+							'input[name=strategy]',
+						) as HTMLInputElement | null;
+						const orderInput = form.querySelector('input[name=order]') as HTMLInputElement | null;
+						if (strategyInput) strategyInput.value = value[0];
+						if (orderInput) orderInput.value = value[1];
+						form.requestSubmit();
+					}
+				}}
+			/>
+		</form>
+	</header>
+
+	<section>
+		<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0">
+			{#each sortVehiclesBy(active, vehiclesSortOrder) as v (v.id)}
 				<li class="flex">
 					<VehicleLink vehicle={v} />
 				</li>
 			{/each}
 		</ul>
-	</div>
-</section>
+	</section>
+
+	<section class="mt-8">
+		<Button
+			aria-pressed={showRetired}
+			class="my-4"
+			variant="outline"
+			onclick={() => (showRetired = !showRetired)}
+		>
+			{showRetired ? 'Hide' : 'Show'} retired
+			<ChevronRight size={16} class={showRetired ? 'rotate-90' : ''} />
+		</Button>
+
+		<div>
+			<ul
+				class:hidden={!showRetired}
+				class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-0"
+			>
+				{#each retired as v (v.id)}
+					<li class="flex">
+						<VehicleLink vehicle={v} />
+					</li>
+				{/each}
+			</ul>
+		</div>
+	</section>
 </PageLayout>
 
 <style>

@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { Button } from '$lib';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
+	import type { ButtonSize } from '$lib/components/common/Button.svelte';
 	import { Sun, Moon, Monitor } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
 	type Theme = 'light' | 'dark' | 'auto';
+
+	let { size }: { size?: ButtonSize } = $props();
 
 	let theme = $state<Theme>('auto');
 
@@ -43,7 +46,7 @@
 
 <Tooltip content={tooltipContent}>
 	{#snippet children(props)}
-		<Button {...props} variant="ghost" icon theme="dark" onclick={cycle}>
+		<Button {...props} variant="ghost" icon theme="dark" {size} onclick={cycle}>
 			{#if theme === 'light'}
 				<Sun size={18} />
 			{:else if theme === 'dark'}

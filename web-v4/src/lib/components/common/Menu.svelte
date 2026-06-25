@@ -2,6 +2,7 @@
 	import * as menu from '@zag-js/menu';
 	import { portal, useMachine, normalizeProps } from '@zag-js/svelte';
 	import Button from './Button.svelte';
+	import type { ButtonSize } from './Button.svelte';
 	import { Check, ChevronDown } from 'lucide-svelte';
 	import type { ClassValue } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
@@ -31,6 +32,7 @@
 		theme?: 'light' | 'dark';
 		variant?: 'solid' | 'outline' | 'ghost';
 		color?: 'brand' | 'neutral';
+		size?: ButtonSize;
 		class?: ClassValue;
 		onSelect?: (details: { value: string }) => void;
 		id?: string;
@@ -46,6 +48,7 @@
 		theme,
 		variant = 'ghost',
 		color,
+		size,
 		class: className,
 		id = defaultId,
 		onSelect,
@@ -80,6 +83,7 @@
 		data-theme={theme}
 		{variant}
 		{color}
+		{size}
 		class={className}
 	>
 		{#if typeof trigger === 'function'}

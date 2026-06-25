@@ -43,8 +43,8 @@
 						{/snippet}
 					{#snippet actions({ onOpenChange })}
 					<form method="POST" action="?/delete" class="flex flex-row gap-2 flex-1 sm:flex-none">
-						<Button type="submit" danger size="lg" class="flex-1 sm:flex-none">Delete</Button>
-						<Button variant="outline" size="lg" class="flex-1 sm:flex-none" onclick={() => onOpenChange(false)}>
+						<Button type="submit" danger class="flex-1 sm:flex-none">Delete</Button>
+						<Button variant="outline" class="flex-1 sm:flex-none" onclick={() => onOpenChange(false)}>
 								Cancel
 							</Button>
 						</form>

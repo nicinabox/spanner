@@ -120,7 +120,7 @@
 	</fieldset>
 
 	<div class="flex gap-3">
-		<Button type="submit" size="lg">
+		<Button type="submit">
 			{reminder ? 'Update' : 'Create'} Reminder
 		</Button>
 	</div>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Menu, { type OptionItem } from '$lib/components/common/Menu.svelte';
+	import type { ButtonSize } from '$lib/components/common/Button.svelte';
 	import type { Order, Sortable } from '$lib/data/vehicles';
 	import {
 		orderToHuman,
@@ -11,10 +12,11 @@
 
 	interface Props {
 		sortable?: Sortable;
+		size?: ButtonSize;
 		onSelect?: (value: Sortable) => void;
 	}
 
-	let { sortable = ['created_at', 'desc'], onSelect }: Props = $props();
+	let { sortable = ['created_at', 'desc'], size, onSelect }: Props = $props();
 
 	let sortStrategy = $derived(sortable[0]);
 	let sortOrder = $derived(sortable[1]);
@@ -47,4 +49,5 @@
 <Menu
 	trigger="Order By: {orderToHuman(sortable)} {vehicleSortStrategyToHuman[sortStrategy]}"
 	{optionItems}
+	{size}
 />

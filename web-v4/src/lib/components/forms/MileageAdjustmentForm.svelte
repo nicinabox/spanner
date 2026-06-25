@@ -42,6 +42,6 @@
 	<input type="hidden" name="recordType" value="mileage adjustment" />
 
 	<div class="flex gap-3">
-		<Button type="submit" size="lg">Update Mileage</Button>
+		<Button type="submit">Update Mileage</Button>
 	</div>
 </form>

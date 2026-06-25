@@ -55,17 +55,27 @@
 									</p>
 								</div>
 								<div class="flex items-center gap-2">
+									<Button
+										size="sm"
+										href={`/vehicles/${vehicle.id}/reminders/${reminder.id}/edit`}
+										variant="ghost"
+									>
+										Edit
+									</Button>
 									{#if completingId === reminder.id}
-										<Button variant="ghost" onclick={() => (completingId = null)}>Cancel</Button>
+										<Button size="sm" variant="outline" onclick={() => (completingId = null)}
+											>Cancel</Button
+										>
 									{:else}
-										<Button variant="outline" onclick={() => (completingId = reminder.id)}>
+										<Button
+											size="sm"
+											variant="outline"
+											onclick={() => (completingId = reminder.id)}
+										>
 											Complete
 											<ChevronRight size={16} />
 										</Button>
 									{/if}
-									<Button href={`/vehicles/${vehicle.id}/reminders/${reminder.id}/edit`} variant="ghost">
-										Edit
-									</Button>
 								</div>
 							</div>
 							{#if completingId === reminder.id}
@@ -89,7 +99,7 @@
 					<Bell size={48} class="text-ink-300" />
 				{/snippet}
 				{#snippet action()}
-					<Button size="lg" href={`/vehicles/${vehicle.id}/add?view=reminder`}>Add Reminder</Button>
+					<Button href={`/vehicles/${vehicle.id}/add?view=reminder`}>Add Reminder</Button>
 				{/snippet}
 			</EmptyState>
 		{/if}

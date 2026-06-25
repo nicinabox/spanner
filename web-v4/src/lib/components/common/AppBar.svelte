@@ -22,7 +22,7 @@
 	class={cn(
 		'sticky top-0 z-40 bg-brand-500 text-ink-50 shadow-md',
 		'flex flex-wrap items-center *:flex-1 gap-3 p-2',
-		className
+		className,
 	)}
 >
 	<div>
@@ -44,9 +44,10 @@
 			<Menu
 				trigger={username}
 				theme="dark"
+				size="sm"
 				items={[{ value: 'signout', label: 'Sign out', href: '/logout', preload: false }]}
 			/>
-			<ThemeToggle />
+			<ThemeToggle size="sm" />
 		{/if}
 	</div>
 </header>

@@ -23,13 +23,13 @@
 		{#if vehicle.preferences.enableSharing}
 			<div class="mt-4 flex flex-col gap-3">
 				<Clipboard value={shareUrl} />
-				<Button type="submit" size="lg" variant="solid" danger class="self-start mt-2">
+				<Button type="submit" variant="solid" danger class="self-start mt-2">
 					Stop Sharing
 				</Button>
 			</div>
 		{:else}
 			<div class="mt-4">
-				<Button type="submit" size="lg" variant="solid">Enable Sharing</Button>
+				<Button type="submit" variant="solid">Enable Sharing</Button>
 			</div>
 		{/if}
 	</form>

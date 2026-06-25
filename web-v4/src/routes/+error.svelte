@@ -11,6 +11,6 @@
 		<h1 class="text-3xl font-bold mb-4">
 			{page.status === 404 ? 'Page not found' : 'Something went wrong'}
 		</h1>
-		<Button href="/" size="lg">Go home</Button>
+		<Button href="/">Go home</Button>
 	</div>
 </div>

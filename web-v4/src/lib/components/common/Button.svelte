@@ -2,43 +2,59 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const buttonVariants = tv({
-		base: 'inline-flex items-center justify-center gap-2 px-3 h-8 min-w-fit leading-none border rounded-md text-sm font-semibold whitespace-nowrap cursor-pointer transition-[filter] duration-100 ease-out-expo no-underline',
+		base: 'inline-flex items-center justify-center gap-2 px-3 h-8 min-w-fit leading-none border rounded-md text-sm font-medium whitespace-nowrap cursor-pointer transition-[filter] duration-100 ease-out-expo no-underline',
 		variants: {
 			variant: {
 				solid: 'bg-brand-500 text-white border-brand-500 hover:bg-brand-600 active:bg-brand-700',
 				outline:
-					'bg-transparent text-brand-600 dark:text-ink-600 border-brand-500 hover:bg-brand-100 active:bg-brand-300 active:text-brand-600',
+					'bg-transparent text-brand-600 dark:text-brand-800 border-brand-500 hover:bg-brand-200 active:bg-brand-300 active:text-brand-600',
 				ghost:
-					'bg-transparent text-ink-900 border-transparent hover:bg-brand-200 active:bg-brand-300 active:text-brand-600'
+					'bg-transparent text-ink-900 border-transparent hover:bg-brand-200 active:bg-brand-300 active:text-brand-600',
 			},
 			color: {
 				brand: '',
-				neutral: ''
+				neutral: '',
 			},
 			danger: {
-				true: ''
+				true: '',
 			},
 			size: {
-				sm: 'h-6 px-2 text-xs rounded-sm',
-				md: 'h-8 px-3 text-sm',
-				lg: 'h-10 px-4 text-base'
+				xs: 'h-6 px-2 text-xs rounded-sm',
+				sm: 'h-8 px-3 text-sm',
+				md: 'h-10 px-4 text-base',
+				lg: 'h-12 px-5 text-lg',
 			},
 			pill: { true: 'rounded-full' },
 			block: { true: 'flex w-full justify-center' },
 			icon: { true: 'px-0 justify-center aspect-square' },
 			active: {
-				true: ''
-			}
+				true: '',
+			},
 		},
 		compoundVariants: [
-			{ pill: true, size: 'sm', class: 'px-2.5' },
-			{ pill: true, size: 'lg', class: 'px-4.5' },
+			{ pill: true, size: 'xs', class: 'px-2.5' },
+			{ pill: true, size: 'md', class: 'px-4.5' },
+			{ pill: true, size: 'lg', class: 'px-5.5' },
 			{ active: true, variant: 'solid', class: 'bg-brand-600' },
 			{ active: true, variant: 'outline', class: 'bg-brand-100' },
 			{ active: true, variant: 'ghost', class: 'bg-brand-200' },
-			{ color: 'neutral', variant: 'solid', class: 'bg-ink-900 text-ink-50 border-ink-900 hover:bg-ink-700 active:bg-ink-900' },
-			{ color: 'neutral', variant: 'outline', class: 'bg-transparent text-ink-900 border-ink-300 hover:bg-ink-100 active:bg-ink-300 active:text-ink-600' },
-			{ color: 'neutral', variant: 'ghost', class: 'bg-transparent text-ink-900 border-transparent hover:bg-ink-200 active:bg-ink-300 active:text-ink-600' },
+			{
+				color: 'neutral',
+				variant: 'solid',
+				class: 'bg-ink-900 text-ink-50 border-ink-900 hover:bg-ink-700 active:bg-ink-900',
+			},
+			{
+				color: 'neutral',
+				variant: 'outline',
+				class:
+					'bg-transparent text-ink-900 border-ink-300 hover:bg-ink-100 active:bg-ink-300 active:text-ink-600',
+			},
+			{
+				color: 'neutral',
+				variant: 'ghost',
+				class:
+					'bg-transparent text-ink-900 border-transparent hover:bg-ink-200 active:bg-ink-300 active:text-ink-600',
+			},
 			{ color: 'neutral', active: true, variant: 'solid', class: 'bg-ink-700' },
 			{ color: 'neutral', active: true, variant: 'outline', class: 'bg-ink-100' },
 			{ color: 'neutral', active: true, variant: 'ghost', class: 'bg-ink-200' },
@@ -46,24 +62,25 @@
 				danger: true,
 				variant: 'solid',
 				class:
-					'border-0 bg-negative/10 text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative'
+					'border-0 bg-negative/10 text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative',
 			},
 			{
 				danger: true,
 				variant: 'ghost',
-				class: 'text-ink-900 hover:text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative'
+				class:
+					'text-ink-900 hover:text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative',
 			},
 			{
 				danger: true,
 				variant: 'outline',
 				class:
-					'border-negative/30 text-negative hover:bg-negative/10 active:bg-negative/30 active:text-negative'
-			}
+					'border-negative/30 text-negative hover:bg-negative/10 active:bg-negative/30 active:text-negative',
+			},
 		],
 		defaultVariants: {
 			size: 'md',
-			color: 'brand'
-		}
+			color: 'brand',
+		},
 	});
 
 	export type ButtonVariant = VariantProps<typeof buttonVariants>['variant'];
@@ -76,13 +93,12 @@
 	import type { Snippet } from 'svelte';
 	import type { ClassValue } from 'svelte/elements';
 
-	type Radius = 'pill';
 	type Theme = 'light' | 'dark';
 
 	type Props = {
 		variant?: ButtonVariant;
 		color?: ButtonColor;
-		radius?: Radius;
+		pill?: boolean;
 		size?: ButtonSize;
 		theme?: Theme;
 		block?: boolean;
@@ -101,7 +117,7 @@
 		variant = 'solid',
 		color = 'brand',
 		size = 'md',
-		radius,
+		pill = false,
 		theme,
 		block = false,
 		icon = false,
@@ -116,10 +132,7 @@
 	}: Props = $props();
 
 	let classes = $derived(
-		cn(
-			buttonVariants({ variant, color, size, pill: radius === 'pill', block, active, danger, icon }),
-			className
-		)
+		cn(buttonVariants({ variant, color, size, pill, block, active, danger, icon }), className),
 	);
 
 	let attrs = $derived(theme ? { 'data-theme': theme, ...rest } : rest);

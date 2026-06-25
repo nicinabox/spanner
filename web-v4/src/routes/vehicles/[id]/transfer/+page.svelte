@@ -29,7 +29,7 @@
 		<Card bleed>
 			<h2 class="text-lg font-semibold">Export History</h2>
 			<p>Download your vehicle's complete history as a CSV file.</p>
-			<Button href={`/vehicles/${vehicle.id}/export`} size="lg" class="self-start">
+			<Button href={`/vehicles/${vehicle.id}/export`} class="self-start">
 				<Download size={16} />
 				Export CSV
 			</Button>
@@ -60,7 +60,7 @@
 						onchange={(e) => (selectedFile = (e.target as HTMLInputElement).files?.[0] ?? null)}
 					/>
 				</label>
-				<Button type="submit" size="lg">Import</Button>
+				<Button type="submit">Import</Button>
 			</form>
 		</Card>
 	</div>

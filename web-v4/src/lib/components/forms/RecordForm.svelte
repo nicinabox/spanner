@@ -22,7 +22,9 @@
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 
-	let date = $state(record?.date ? formatDateISO(new Date(record.date)) : formatDateISO(new Date()));
+	let date = $state(
+		record?.date ? formatDateISO(new Date(record.date)) : formatDateISO(new Date()),
+	);
 	let mileage = $state(record?.mileage?.toString() ?? '');
 	let notes = $state(record?.notes ?? '');
 	let cost = $state(record?.cost ?? '');
@@ -46,18 +48,12 @@
 		<div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4 md:gap-7">
 			<div>
 				<Field name="date" label="Date" {errors} required>
-					<Input
-						type="date"
-						name="date"
-						bind:value={date}
-						required
-						size="lg"
-					/>
+					<Input type="date" name="date" bind:value={date} required />
 				</Field>
 			</div>
 			<div class="space-y-4">
 				<Field name="notes" label="Notes" {errors} required>
-					<Textarea name="notes" bind:value={notes} required class="min-h-[100px] font-mono" />
+					<Textarea name="notes" bind:value={notes} required class="min-h-[100px]" />
 				</Field>
 
 				<Field
@@ -65,24 +61,14 @@
 					label={vehicle.distanceUnit === 'mi' ? 'Mileage' : 'Distance'}
 					{errors}
 				>
-					<InputGroup
-						name="mileage"
-						bind:value={mileage}
-						inputmode="numeric"
-						size="lg"
-					>
+					<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
 						{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
 					</InputGroup>
 				</Field>
 
 				{#if vehicle.preferences.enableCost}
 					<Field name="cost" label="Cost" {errors}>
-						<InputGroup
-							name="cost"
-							bind:value={cost}
-							inputmode="numeric"
-							size="lg"
-						>
+						<InputGroup name="cost" bind:value={cost} inputmode="numeric">
 							{#snippet startAddon()}{getCurrencySymbol()}{/snippet}
 						</InputGroup>
 					</Field>
@@ -92,7 +78,7 @@
 	</fieldset>
 
 	<div class="flex gap-3">
-		<Button type="submit" size="lg">
+		<Button type="submit">
 			{record ? 'Update' : 'Create'} Record
 		</Button>
 	</div>
