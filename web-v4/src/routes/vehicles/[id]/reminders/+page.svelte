@@ -34,7 +34,7 @@
 				{#each reminders as reminder (reminder.id)}
 					<li>
 						<Card variant="outline" size="sm" class="gap-3">
-							<div class="flex items-center justify-between gap-4">
+							<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 								<div class="space-y-1">
 									<p class="font-semibold text-lg">{reminder.notes}</p>
 									<p class="text-base text-ink-500">
