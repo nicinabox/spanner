@@ -10,16 +10,17 @@
 	interface Props {
 		vehicle: Vehicle;
 		errors?: FormError[];
+		action?: string;
 	}
 
-	let { vehicle, errors = [] }: Props = $props();
+	let { vehicle, errors = [], action }: Props = $props();
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 
 	let mileage = $state('');
 </script>
 
-<form method="POST" action={`/vehicles/${vehicle.id}/records`} use:enhance class="flex flex-col gap-6">
+<form method="POST" action={action ?? `/vehicles/${vehicle.id}/records`} use:enhance class="flex flex-col gap-6">
 	{#if formErrors.length > 0}
 		<div role="alert" class="p-3 rounded-md bg-negative/10 text-negative text-sm">
 			{#each formErrors as e}

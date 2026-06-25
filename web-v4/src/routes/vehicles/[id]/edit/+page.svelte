@@ -4,6 +4,7 @@
 	import VehicleForm from '$lib/components/forms/VehicleForm.svelte';
 	import type { PageProps } from './$types';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
+	import { vehiclePath } from '$lib/routes';
 
 	let { form, data }: PageProps = $props();
 </script>
@@ -11,12 +12,12 @@
 <VehiclePageLayout
 	vehicle={data.vehicle}
 	backAction={{
-		href: `/vehicles/${data.vehicle.id}`,
-		label: 'Back'
+		href: vehiclePath(data.vehicle.id),
+		label: 'Back',
 	}}
 >
 	<div class="max-w-xl mx-auto">
-		<Card>
+		<Card variant="outline">
 			<h1 class="text-xl">Edit {data.vehicle.name}</h1>
 			<VehicleForm errors={form?.errors} values={data.vehicle} action="?/update" />
 		</Card>

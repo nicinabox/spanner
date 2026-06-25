@@ -72,7 +72,7 @@
 					{ value: 'mi', label: 'Miles' },
 					{ value: 'km', label: 'Kilometers' },
 					{ value: 'hr', label: 'Hours' },
-					{ value: 'nmi', label: 'Nautical Miles' }
+					{ value: 'nmi', label: 'Nautical Miles' },
 				]}
 				value={values?.distanceUnit}
 				size="lg"

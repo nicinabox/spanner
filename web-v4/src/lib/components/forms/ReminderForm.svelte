@@ -15,9 +15,10 @@
 		vehicle: Vehicle;
 		reminder?: Reminder;
 		errors?: FormError[];
+		action?: string;
 	}
 
-	let { vehicle, reminder, errors = [] }: Props = $props();
+	let { vehicle, reminder, errors = [], action }: Props = $props();
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 
@@ -63,7 +64,7 @@
 	});
 </script>
 
-<form method="POST" action={`/vehicles/${vehicle.id}/reminders${reminder ? `/${reminder.id}` : ''}`} use:enhance class="flex flex-col gap-6">
+<form method="POST" action={action ?? `/vehicles/${vehicle.id}/reminders${reminder ? `/${reminder.id}` : ''}`} use:enhance class="flex flex-col gap-6">
 	{#if formErrors.length > 0}
 		<div role="alert" class="p-3 rounded-md bg-negative/10 text-negative text-sm">
 			{#each formErrors as e}

@@ -56,11 +56,11 @@
 			<h1 class="text-xl font-semibold">{title}</h1>
 
 			{#if view === 'record'}
-				<RecordForm {vehicle} record={{ notes: notesParam } as any} />
+				<RecordForm {vehicle} record={{ notes: notesParam } as any} action="?/record" />
 			{:else if view === 'reminder'}
-				<ReminderForm {vehicle} />
+				<ReminderForm {vehicle} action="?/reminder" />
 			{:else if view === 'mileage-adjustment'}
-				<MileageAdjustmentForm {vehicle} />
+				<MileageAdjustmentForm {vehicle} action="?/mileage-adjustment" />
 			{/if}
 		</Card>
 	</div>

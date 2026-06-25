@@ -35,6 +35,18 @@ export const createReminder = (data: CreatableFields<Reminder>, opts: RequestOpt
 	});
 };
 
+export const createVehicleReminder = (
+	vehicleId: number | string,
+	data: CreatableFields<Reminder>,
+	opts: RequestOpts
+) => {
+	return request<Reminder>(`/vehicles/${vehicleId}/reminders`, {
+		...opts,
+		method: 'POST',
+		json: data
+	});
+};
+
 export const updateReminder = (
 	id: number | string,
 	data: CreatableFields<Reminder>,

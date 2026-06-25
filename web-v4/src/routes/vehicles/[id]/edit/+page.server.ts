@@ -3,6 +3,7 @@ import { getHTTPErrors } from '$lib/utils/actions';
 import { decode } from '$lib/utils/form';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { vehiclePath } from '$lib/routes';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
@@ -30,10 +31,12 @@ export const actions = {
 			return fail(422, getHTTPErrors(error));
 		}
 
-		const redirectTo = formData.get('_redirect');
-		if (redirectTo) {
-			redirect(303, redirectTo as string);
-		}
+		// const redirectTo = formData.get('_redirect');
+		// if (redirectTo) {
+		// 	redirect(303, redirectTo as string);
+		//       }
+
+		redirect(303, vehiclePath(Number(params.id)));
 	},
 	delete: async ({ locals, params }) => {
 		try {
