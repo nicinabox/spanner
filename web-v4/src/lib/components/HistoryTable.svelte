@@ -96,7 +96,7 @@
 							<Button
 								{...triggerProps}
 								size="sm"
-								variant="tertiary"
+								variant="ghost"
 								onclick={() => (showMileageAdjustments = !showMileageAdjustments)}
 								class="flex items-center gap-1 text-xs text-ink-400 hover:text-ink-600 transition-colors"
 							>

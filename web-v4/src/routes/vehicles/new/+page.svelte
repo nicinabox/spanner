@@ -11,7 +11,7 @@
 
 <PageLayout>
 	{#snippet appbarStart()}
-		<Button href="/vehicles" variant="neutral" theme="dark">
+		<Button href="/vehicles" color="neutral" theme="dark">
 			<ArrowLeft size={16} /> Vehicles
 		</Button>
 	{/snippet}

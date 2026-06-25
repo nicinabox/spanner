@@ -53,9 +53,9 @@
 								</div>
 								<div class="flex items-center gap-2">
 									{#if completingId === reminder.id}
-										<Button variant="tertiary" onclick={() => (completingId = null)}>Cancel</Button>
+										<Button variant="ghost" onclick={() => (completingId = null)}>Cancel</Button>
 									{:else}
-										<Button variant="secondary" onclick={() => (completingId = reminder.id)}>
+										<Button variant="outline" onclick={() => (completingId = reminder.id)}>
 											Complete
 											<ChevronRight size={16} />
 										</Button>
@@ -64,7 +64,7 @@
 										method="POST"
 										action={`/vehicles/${vehicle.id}/reminders/${reminder.id}?_method=DELETE`}
 									>
-										<Button icon variant="tertiary" type="submit" danger>
+										<Button icon variant="ghost" type="submit" danger>
 											<Trash2 size={14} />
 										</Button>
 									</form>

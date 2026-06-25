@@ -13,6 +13,6 @@
 			This login link may have expired or already been used. Login links are valid for 15 minutes
 			and can only be used once.
 		</p>
-		<Button href="/" variant="primary" size="lg" block>Try again</Button>
+		<Button href="/" variant="solid" size="lg" block>Try again</Button>
 	</Card>
 </div>

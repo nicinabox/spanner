@@ -8,11 +8,30 @@
 
 		<div>
 			<h3>Variants</h3>
-			<Button variant="primary">Next</Button>
-			<Button variant="secondary">Next</Button>
-			<Button variant="tertiary">Next</Button>
-			<Button variant="neutral">Next</Button>
+			<Button variant="solid">Next</Button>
+			<Button variant="outline">Next</Button>
+			<Button variant="ghost">Next</Button>
+			<Button color="neutral">Next</Button>
 			<Button disabled>Next</Button>
+		</div>
+
+		<div>
+			<h3>Colors</h3>
+			<div>
+				<h4>Solid</h4>
+				<Button color="brand">Brand</Button>
+				<Button color="neutral">Neutral</Button>
+			</div>
+			<div>
+				<h4>Outline</h4>
+				<Button variant="outline" color="brand">Brand</Button>
+				<Button variant="outline" color="neutral">Neutral</Button>
+			</div>
+			<div>
+				<h4>Ghost</h4>
+				<Button variant="ghost" color="brand">Brand</Button>
+				<Button variant="ghost" color="neutral">Neutral</Button>
+			</div>
 		</div>
 
 		<div>
@@ -24,9 +43,9 @@
 
 		<div>
 			<h3>Sizes</h3>
-			<Button variant="primary" size="sm">Next</Button>
-			<Button variant="primary">Next</Button>
-			<Button variant="primary" size="lg">Next</Button>
+			<Button variant="solid" size="sm">Next</Button>
+			<Button variant="solid">Next</Button>
+			<Button variant="solid" size="lg">Next</Button>
 		</div>
 	</section>
 

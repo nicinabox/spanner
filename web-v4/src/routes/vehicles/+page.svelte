@@ -49,7 +49,7 @@
 <header class="vehicles-header">
 	<h1 class="text-xl">Vehicles</h1>
 
-	<Button href="/vehicles/new" variant="tertiary" class="new-btn">
+	<Button href="/vehicles/new" variant="ghost" class="new-btn">
 		<PlusIcon size={16} /> New
 	</Button>
 
@@ -92,7 +92,7 @@
 	<Button
 		aria-pressed={showRetired}
 		class="my-4"
-		variant="secondary"
+		variant="outline"
 		onclick={() => (showRetired = !showRetired)}
 	>
 		{showRetired ? 'Hide' : 'Show'} retired

@@ -41,7 +41,7 @@
 
 						<div class="ml-auto flex gap-2">
 							<Button
-								variant="tertiary"
+								variant="ghost"
 								onclick={() => {
 									view = 'saved';
 									notesDraft = vehicle.notes;
@@ -57,7 +57,7 @@
 							</Button>
 						</div>
 					{:else}
-						<Button class="ml-auto" variant="tertiary" onclick={() => (view = 'edit')}>
+						<Button class="ml-auto" variant="ghost" onclick={() => (view = 'edit')}>
 							<Pencil size={16} />
 							Edit
 						</Button>

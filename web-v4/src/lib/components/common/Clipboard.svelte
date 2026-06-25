@@ -38,7 +38,7 @@
 				{...api.getTriggerProps() as Record<string, unknown>}
 				icon
 				aria-label={api.copied ? 'Copied' : 'Copy'}
-				variant="tertiary"
+				variant="ghost"
 			>
 				{#if api.copied}
 					<Check size={14} />

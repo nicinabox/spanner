@@ -32,13 +32,13 @@
 					/>
 					<Clipboard value={shareUrl} />
 				</div>
-				<Button type="submit" size="lg" variant="primary" danger class="self-start mt-2">
+				<Button type="submit" size="lg" variant="solid" danger class="self-start mt-2">
 					Stop Sharing
 				</Button>
 			</div>
 		{:else}
 			<div class="mt-4">
-				<Button type="submit" size="lg" variant="primary">Enable Sharing</Button>
+				<Button type="submit" size="lg" variant="solid">Enable Sharing</Button>
 			</div>
 		{/if}
 	</form>

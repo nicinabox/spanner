@@ -45,7 +45,7 @@
 				class="space-y-4"
 			>
 				<label class="flex items-center gap-3 cursor-pointer">
-					<Button variant="secondary" as="span">
+					<Button variant="outline" as="span">
 						<Upload size={16} />
 						Choose File
 					</Button>

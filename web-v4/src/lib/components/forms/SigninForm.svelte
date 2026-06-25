@@ -46,7 +46,7 @@
 
 		<div class="mt-4 flex flex-col gap-3">
 			<Button type="submit" block size="lg">Sign in</Button>
-			<Button href="/" variant="tertiary" size="lg" block>Back</Button>
+			<Button href="/" variant="ghost" size="lg" block>Back</Button>
 		</div>
 	</form>
 {:else}

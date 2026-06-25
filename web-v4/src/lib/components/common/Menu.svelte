@@ -29,7 +29,8 @@
 		items?: Item[];
 		optionItems?: OptionItem[];
 		theme?: 'light' | 'dark';
-		variant?: 'primary' | 'secondary' | 'tertiary' | 'neutral';
+		variant?: 'solid' | 'outline' | 'ghost';
+		color?: 'brand' | 'neutral';
 		class?: ClassValue;
 		onSelect?: (details: { value: string }) => void;
 		id?: string;
@@ -43,7 +44,8 @@
 		items = [],
 		optionItems = [],
 		theme,
-		variant = 'tertiary',
+		variant = 'ghost',
+		color,
 		class: className,
 		id = defaultId,
 		onSelect,
@@ -77,6 +79,7 @@
 		active={api.open}
 		data-theme={theme}
 		{variant}
+		{color}
 		class={className}
 	>
 		{#if typeof trigger === 'function'}

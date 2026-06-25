@@ -43,7 +43,7 @@
 
 <Tooltip content={tooltipContent}>
 	{#snippet children(props)}
-		<Button {...props} variant="tertiary" icon theme="dark" onclick={cycle}>
+		<Button {...props} variant="ghost" icon theme="dark" onclick={cycle}>
 			{#if theme === 'light'}
 				<Sun size={18} />
 			{:else if theme === 'dark'}

@@ -28,7 +28,7 @@
 
 		<div class="mt-6">
 			<form method="POST" action="?/delete">
-				<Button variant="tertiary" danger type="submit">Delete Record</Button>
+				<Button variant="ghost" danger type="submit">Delete Record</Button>
 			</form>
 		</div>
 	</div>

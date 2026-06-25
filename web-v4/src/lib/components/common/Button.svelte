@@ -5,12 +5,15 @@
 		base: 'inline-flex items-center gap-2 px-3 h-8 min-w-fit leading-none border rounded-md text-sm font-semibold whitespace-nowrap cursor-pointer transition-[filter] duration-100 ease-out-expo no-underline',
 		variants: {
 			variant: {
-				primary: 'bg-brand-500 text-ink-50 border-brand-500 hover:bg-brand-600 active:bg-brand-700',
-				secondary:
-					'bg-transparent text-ink-900 border-brand-500 hover:bg-brand-100 active:bg-brand-300 active:text-brand-600',
-				tertiary:
-					'bg-transparent text-ink-900 border-transparent hover:bg-brand-200 active:bg-brand-300 active:text-brand-600',
-				neutral: 'bg-ink-900 text-ink-50 border-ink-900 hover:bg-ink-700 active:bg-ink-900'
+				solid: 'bg-brand-500 text-white border-brand-500 hover:bg-brand-600 active:bg-brand-700',
+				outline:
+					'bg-transparent text-brand-600 dark:text-ink-600 border-brand-500 hover:bg-brand-100 active:bg-brand-300 active:text-brand-600',
+				ghost:
+					'bg-transparent text-ink-900 border-transparent hover:bg-brand-200 active:bg-brand-300 active:text-brand-600'
+			},
+			color: {
+				brand: '',
+				neutral: ''
 			},
 			danger: {
 				true: ''
@@ -30,34 +33,41 @@
 		compoundVariants: [
 			{ pill: true, size: 'sm', class: 'px-2.5' },
 			{ pill: true, size: 'lg', class: 'px-4.5' },
-			{ active: true, variant: 'primary', class: 'bg-brand-600' },
-			{ active: true, variant: 'secondary', class: 'bg-brand-100' },
-			{ active: true, variant: 'tertiary', class: 'bg-brand-200' },
-			{ active: true, variant: 'neutral', class: 'bg-ink-700' },
+			{ active: true, variant: 'solid', class: 'bg-brand-600' },
+			{ active: true, variant: 'outline', class: 'bg-brand-100' },
+			{ active: true, variant: 'ghost', class: 'bg-brand-200' },
+			{ color: 'neutral', variant: 'solid', class: 'bg-ink-900 text-ink-50 border-ink-900 hover:bg-ink-700 active:bg-ink-900' },
+			{ color: 'neutral', variant: 'outline', class: 'bg-transparent text-ink-900 border-ink-300 hover:bg-ink-100 active:bg-ink-300 active:text-ink-600' },
+			{ color: 'neutral', variant: 'ghost', class: 'bg-transparent text-ink-900 border-transparent hover:bg-ink-200 active:bg-ink-300 active:text-ink-600' },
+			{ color: 'neutral', active: true, variant: 'solid', class: 'bg-ink-700' },
+			{ color: 'neutral', active: true, variant: 'outline', class: 'bg-ink-100' },
+			{ color: 'neutral', active: true, variant: 'ghost', class: 'bg-ink-200' },
 			{
 				danger: true,
-				variant: 'primary',
+				variant: 'solid',
 				class:
 					'border-0 bg-negative/10 text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative'
 			},
 			{
 				danger: true,
-				variant: 'tertiary',
-				class: 'text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative'
+				variant: 'ghost',
+				class: 'text-ink-900 hover:text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative'
 			},
 			{
 				danger: true,
-				variant: 'secondary',
+				variant: 'outline',
 				class:
 					'border-negative/30 text-negative hover:bg-negative/10 active:bg-negative/30 active:text-negative'
 			}
 		],
 		defaultVariants: {
-			size: 'md'
+			size: 'md',
+			color: 'brand'
 		}
 	});
 
 	export type ButtonVariant = VariantProps<typeof buttonVariants>['variant'];
+	export type ButtonColor = VariantProps<typeof buttonVariants>['color'];
 	export type ButtonSize = VariantProps<typeof buttonVariants>['size'];
 </script>
 
@@ -71,6 +81,7 @@
 
 	type Props = {
 		variant?: ButtonVariant;
+		color?: ButtonColor;
 		radius?: Radius;
 		size?: ButtonSize;
 		theme?: Theme;
@@ -87,7 +98,8 @@
 	};
 
 	let {
-		variant = 'primary',
+		variant = 'solid',
+		color = 'brand',
 		size = 'md',
 		radius,
 		theme,
@@ -105,7 +117,7 @@
 
 	let classes = $derived(
 		cn(
-			buttonVariants({ variant, size, pill: radius === 'pill', block, active, danger, icon }),
+			buttonVariants({ variant, color, size, pill: radius === 'pill', block, active, danger, icon }),
 			className
 		)
 	);
