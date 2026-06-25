@@ -6,13 +6,13 @@ import type { Session } from '$lib/data/session';
 export const sessionOptions: SessionOptions = {
 	password: CLIENT_SECRET,
 	cookieName: 'session',
-	ttl: 5_184_000, // 60 days
+	ttl: 7_776_000, // 90 days
 	cookieOptions: {
 		secure: false,
 		httpOnly: true,
 		sameSite: 'lax',
-		maxAge: 5_184_000 - 60 // expire cookie 60s before seal
-	}
+		maxAge: 7_776_000 - 60, // expire cookie 60s before seal
+	},
 };
 
 export const getSession = async (cookies: Cookies) => {
@@ -30,7 +30,7 @@ export const setSession = async (cookies: Cookies, session: Session) => {
 	const sealed = await sealData({ session }, sessionOptions);
 	cookies.set(sessionOptions.cookieName, sealed, {
 		path: '/',
-		...sessionOptions.cookieOptions
+		...sessionOptions.cookieOptions,
 	});
 };
 
