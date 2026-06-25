@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { Button, Card } from '$lib';
+	import FileInput from '$lib/components/forms/FileInput.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import { page } from '$app/stores';
-	import { Download, Upload } from 'lucide-svelte';
+	import { Download } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import { vehiclePath } from '$lib/routes';
 
@@ -45,20 +46,14 @@
 				class="space-y-4"
 			>
 				<label class="flex items-center gap-3 cursor-pointer">
-					<Button variant="outline" as="span">
-						<Upload size={16} />
-						Choose File
-					</Button>
+					<FileInput
+						name="file"
+						accept=".csv"
+						onChange={(input) => (selectedFile = input.files?.[0] ?? null)}
+					/>
 					<span class="text-sm text-ink-400">
 						{selectedFile ? selectedFile.name : 'No file chosen'}
 					</span>
-					<input
-						type="file"
-						name="file"
-						accept=".csv"
-						class="hidden"
-						onchange={(e) => (selectedFile = (e.target as HTMLInputElement).files?.[0] ?? null)}
-					/>
 				</label>
 				<Button type="submit">Import</Button>
 			</form>

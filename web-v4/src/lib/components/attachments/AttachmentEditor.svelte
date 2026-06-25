@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Paperclip, Trash2, RotateCcw } from 'lucide-svelte';
 	import Button from '$lib/components/common/Button.svelte';
+	import FileInput from '$lib/components/forms/FileInput.svelte';
 	import type { Attachment } from '$lib/data/attachments';
 	import { ATTACHMENT_SIZE_LIMIT } from '$lib/data/attachments';
 	import { formatBytes } from '$lib/utils/bytes';
@@ -16,10 +17,8 @@
 
 	let fileError = $state<string | null>(null);
 	let files: FileList | undefined = $state();
-	let inputEl: HTMLInputElement | undefined = $state();
 
-	function handleChange(event: Event) {
-		const input = event.target as HTMLInputElement;
+	function handleFileInput(input: HTMLInputElement) {
 		const list = input.files;
 		if (!list) return;
 		for (const file of Array.from(list)) {
@@ -99,18 +98,11 @@
 	{/if}
 
 	<div>
-		<Button variant="outline" size="sm" onclick={() => inputEl?.click()}>
-			<Paperclip size={16} />
-			Add files
-		</Button>
-		<input
-			bind:this={inputEl}
-			bind:files
-			type="file"
-			multiple
+		<FileInput
 			name="record[attachments][]"
-			class="hidden"
-			onchange={handleChange}
+			multiple
+			buttonLabel="Add files"
+			onChange={handleFileInput}
 		/>
 		{#if fileError}
 			<p class="text-sm text-negative mt-1">{fileError}</p>
