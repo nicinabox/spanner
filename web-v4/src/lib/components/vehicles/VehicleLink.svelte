@@ -32,7 +32,7 @@
 		{/if}
 	</div>
 	<div class="flex flex-col">
-		<span class="font-bold text-always-light">{name}</span>
+		<span class="font-semibold text-always-light">{name}</span>
 		<span class="text-sm text-always-light/60">
 			{formatMileage(estimatedMileage, distanceUnit)}
 			&bull;

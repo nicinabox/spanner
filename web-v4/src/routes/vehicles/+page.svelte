@@ -28,11 +28,7 @@
 	);
 
 	let user = $derived(form?.user ?? data.user);
-	let vehiclesSortOrder = $state(['created_at', 'asc'] as Sortable);
-
-	$effect(() => {
-		vehiclesSortOrder = user.preferences.vehiclesSortOrder;
-	});
+	let vehiclesSortOrder = $state<Sortable>(user.preferences.vehiclesSortOrder);
 </script>
 
 <PageLayout>
