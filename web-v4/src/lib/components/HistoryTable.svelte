@@ -189,11 +189,9 @@
 				</Row>
 
 				{#if isExpanded}
-					<Row class="bg-surface border-t border-ink-200">
-						<Cell class="w-full p-3">
-							<AttachmentList attachments={record.attachments} />
-						</Cell>
-					</Row>
+					<div class="bg-surface border-t border-ink-200 px-4 py-3">
+						<AttachmentList attachments={record.attachments} />
+					</div>
 				{/if}
 			{/each}
 		</FlexTable>
