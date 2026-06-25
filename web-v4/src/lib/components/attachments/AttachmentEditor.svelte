@@ -16,7 +16,6 @@
 
 	let fileError = $state<string | null>(null);
 	let files: FileList | undefined = $state();
-	let inputEl: HTMLInputElement | undefined = $state();
 
 	function handleChange(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -86,7 +85,7 @@
 		<div>
 			<h4 class="text-sm font-medium mb-2">New files to upload</h4>
 			<ul class="flex flex-col gap-1 text-sm">
-				{#each selectedFiles as file (file.name + file.size)}
+				{#each selectedFiles as file, i (file.name + '_' + file.lastModified + '_' + i)}
 					<li class="flex items-center gap-2">
 						<Paperclip size={14} class="text-ink-400 shrink-0" />
 						<span class="truncate flex-1 min-w-0" title={file.name}>{file.name}</span>
@@ -100,12 +99,11 @@
 
 	<div>
 		<label class="inline-flex items-center gap-2 cursor-pointer">
-			<Button variant="outline" as="span">
+			<Button variant="outline">
 				<Paperclip size={16} />
 				Add files
 			</Button>
 			<input
-				bind:this={inputEl}
 				bind:files
 				type="file"
 				multiple
