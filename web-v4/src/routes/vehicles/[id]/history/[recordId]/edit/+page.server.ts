@@ -1,6 +1,6 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { getHistoryEntry } from '$lib/data/history';
-import { uploadRecord, deleteAttachment } from '$lib/data/multipart';
+import { uploadRecord, deleteAttachment, nestRecordFields } from '$lib/data/multipart';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 export const actions = {
-	default: async ({ request, locals, params }) => {
+	update: async ({ request, locals, params }) => {
 		const formData = await request.formData();
 		const date = formData.get('date')?.toString();
 		const notes = formData.get('notes')?.toString() ?? '';
@@ -33,7 +33,8 @@ export const actions = {
 			for (const signedId of toDelete) {
 				await deleteAttachment(params.id!, params.recordId!, signedId, locals);
 			}
-			await uploadRecord(params.id!, params.recordId!, formData, locals);
+			const nested = nestRecordFields(formData, ['attachments_to_delete']);
+			await uploadRecord(params.id!, params.recordId!, nested, locals);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Upload failed';
 			return fail(422, {

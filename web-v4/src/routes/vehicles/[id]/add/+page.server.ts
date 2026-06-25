@@ -1,7 +1,8 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
-import { uploadRecord } from '$lib/data/multipart';
+import { uploadRecord, nestRecordFields } from '$lib/data/multipart';
 import { createVehicleReminder } from '$lib/data/reminders';
+import { decode } from '$lib/utils/form';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -13,18 +14,23 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions = {
 	record: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const date = formData.get('date')?.toString();
-		const notes = formData.get('notes')?.toString() ?? '';
+		const data = decode(formData, {
+			date: 'string',
+			notes: 'string',
+			mileage: 'number',
+			cost: 'number'
+		});
 
-		if (!date) {
+		if (!data.date) {
 			return fail(400, { errors: [{ id: 'date', title: 'Date is required' }] });
 		}
-		if (!notes) {
+		if (!data.notes) {
 			return fail(400, { errors: [{ id: 'notes', title: 'Notes is required' }] });
 		}
 
 		try {
-			await uploadRecord(params.id!, undefined, formData, locals);
+			const nested = nestRecordFields(formData);
+			await uploadRecord(params.id!, undefined, nested, locals);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Upload failed';
 			return fail(422, {
@@ -37,22 +43,24 @@ export const actions = {
 
 	reminder: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const notes = formData.get('notes')?.toString();
-		const reminderType = formData.get('reminderType')?.toString() ?? '';
-		const date = formData.get('date')?.toString();
-		const mileage = formData.get('mileage')?.toString();
+		const data = decode(formData, {
+			notes: 'string',
+			reminderType: 'string',
+			date: 'string',
+			mileage: 'number'
+		});
 
-		if (!notes) {
+		if (!data.notes) {
 			return fail(400, { errors: [{ id: 'notes', title: 'Note is required' }] });
 		}
 
 		await createVehicleReminder(
 			params.id!,
 			{
-				notes,
-				reminderType: reminderType || null,
-				date: date || null,
-				mileage: mileage ? Number(mileage) : null
+				notes: data.notes as string,
+				reminderType: (data.reminderType as string) || null,
+				date: (data.date as string) || null,
+				mileage: typeof data.mileage === 'number' ? data.mileage : null
 			} as never,
 			locals
 		);
@@ -62,9 +70,9 @@ export const actions = {
 
 	'mileage-adjustment': async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const mileage = formData.get('mileage')?.toString();
+		const data = decode(formData, { mileage: 'number' });
 
-		if (!mileage) {
+		if (typeof data.mileage !== 'number') {
 			return fail(400, { errors: [{ id: 'mileage', title: 'Mileage is required' }] });
 		}
 
@@ -74,7 +82,7 @@ export const actions = {
 			{
 				date: new Date().toISOString().split('T')[0],
 				notes: 'Mileage adjustment',
-				mileage: Number(mileage),
+				mileage: data.mileage,
 				recordType: 'mileage adjustment'
 			} as never,
 			locals

@@ -4,6 +4,27 @@ import { HTTPError } from './client';
 
 const ACCEPT_HEADER = 'application/vnd.api+json; version=2';
 
+/**
+ * Wrap flat form fields under `record[...]` so the Rails backend's strong
+ * params (`params.require(:record).permit(...)`) see them nested.
+ * Entries already starting with `record[` are passed through unchanged.
+ * Entries in `skip` are dropped (e.g. `attachments_to_delete`, which the
+ * SvelteKit action handles separately via the DELETE endpoint).
+ */
+export function nestRecordFields(source: FormData, skip: string[] = []): FormData {
+	const skipSet = new Set(skip);
+	const out = new FormData();
+	for (const [key, value] of source.entries()) {
+		if (skipSet.has(key)) continue;
+		if (key.startsWith('record[')) {
+			out.append(key, value);
+		} else {
+			out.append(`record[${key}]`, value);
+		}
+	}
+	return out;
+}
+
 export async function uploadRecord(
 	vehicleId: string | number,
 	recordId: string | number | undefined,

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import Button from '$lib/components/common/Button.svelte';
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
@@ -19,7 +20,9 @@
 		action?: string;
 	}
 
-	let { vehicle, record, errors = [], action }: Props = $props();
+	let { vehicle, record, errors = [], action = '' }: Props = $props();
+
+	let recordId = record?.id;
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 	let attachmentErrors = $derived(errors.filter((e) => e.id === 'attachments'));
@@ -32,6 +35,7 @@
 	let cost = $state(record?.cost ?? '');
 
 	let markedForDeletion = $state<string[]>([]);
+	let selectedFiles = $state<File[]>([]);
 
 	function handleMarkDelete(id: string) {
 		if (!markedForDeletion.includes(id)) {
@@ -42,13 +46,53 @@
 	function handleRestore(id: string) {
 		markedForDeletion = markedForDeletion.filter((x) => x !== id);
 	}
+
+	let formAction = $derived(action);
+
+	// Custom submit: rebuild FormData with the staged files because the
+	// browser's FileList can't be edited (no per-file removal API).
+	const submit: SubmitFunction = ({ formData, cancel }) => {
+		const fd = new FormData();
+		for (const [key, value] of formData.entries()) {
+			if (key.startsWith('record[attachments]')) continue;
+			fd.append(key, value);
+		}
+		for (const file of selectedFiles) {
+			fd.append('record[attachments][]', file);
+		}
+		cancel();
+		fetch(formAction, {
+			method: 'POST',
+			body: fd,
+			headers: { Accept: 'application/json' },
+		})
+			.then(async (response) => {
+				if (response.redirected) {
+					window.location.href = response.url;
+					return;
+				}
+				if (response.ok) {
+					window.location.href = `/vehicles/${vehicle.id}`;
+					return;
+				}
+				// Re-render the page with returned errors so the user sees them.
+				const html = await response.text();
+				document.open();
+				document.write(html);
+				document.close();
+			})
+			.catch(() => {
+				// Network error — leave the user on the form to retry.
+			});
+		return () => {};
+	};
 </script>
 
 <form
 	method="POST"
-	action={action ?? `/vehicles/${vehicle.id}/records${record?.id ? `/${record.id}` : ''}`}
+	action={formAction}
 	enctype="multipart/form-data"
-	use:enhance
+	use:enhance={submit}
 	class="flex flex-col gap-6"
 >
 	{#if formErrors.length > 0}
@@ -86,6 +130,7 @@
 		<AttachmentEditor
 			existing={record?.attachments ?? []}
 			{markedForDeletion}
+			bind:selectedFiles
 			onMarkDelete={handleMarkDelete}
 			onRestore={handleRestore}
 		/>
@@ -95,7 +140,7 @@
 
 	<div class="flex gap-3">
 		<Button type="submit">
-			{record ? 'Update' : 'Create'} Record
+			{recordId ? 'Update' : 'Create'} Record
 		</Button>
 	</div>
 </form>

@@ -11,7 +11,7 @@
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import { formatCurrency } from '$lib/utils/number';
 	import { calculateDeltaMileage, sortNewestDateFirst } from '$lib/utils/records';
-	import { Eye, EyeClosed, ChevronDown, ChevronRight, Paperclip } from 'lucide-svelte';
+	import { Eye, EyeClosed } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import Button from './common/Button.svelte';
 	import { pluralize } from '$lib/utils/text';
@@ -25,15 +25,6 @@
 	let { history, vehicle }: Props = $props();
 
 	let showMileageAdjustments = $state(vehicle.preferences.showMileageAdjustmentRecords);
-
-	let expandedIds = $state<Set<number>>(new Set());
-
-	function toggleExpanded(id: number) {
-		const next = new Set(expandedIds);
-		if (next.has(id)) next.delete(id);
-		else next.add(id);
-		expandedIds = next;
-	}
 
 	const historyNewestFirst = $derived(
 		history
@@ -135,8 +126,6 @@
 
 			{#each groupedRecords[Number(year)] as record (record.id)}
 				{@const deltaMileage = calculateDeltaMileage(record, historyNewestFirst)}
-				{@const isExpanded = expandedIds.has(record.id)}
-				{@const hasAttachments = record.attachments.length > 0}
 
 				<Row class="text-md even:bg-gray-100 dark:even:bg-surface max-sm:gap-1">
 					<Cell class="whitespace-nowrap max-sm:text-sm max-sm:font-bold">
@@ -159,26 +148,13 @@
 					{/if}
 					<Cell class="w-full max-sm:py-1">
 						<Markdown src={record.notes} />
-					</Cell>
-					<Cell class="ml-auto flex items-center gap-2">
-						{#if hasAttachments}
-							<Button
-								size="xs"
-								variant="ghost"
-								color="neutral"
-								onclick={() => toggleExpanded(record.id)}
-								aria-label={isExpanded ? 'Hide attachments' : 'Show attachments'}
-								aria-expanded={isExpanded}
-							>
-								<Paperclip size={14} />
-								<span>{record.attachments.length}</span>
-								{#if isExpanded}
-									<ChevronDown size={12} />
-								{:else}
-									<ChevronRight size={12} />
-								{/if}
-							</Button>
+						{#if record.attachments.length > 0}
+							<div class="mt-2">
+								<AttachmentList attachments={record.attachments} />
+							</div>
 						{/if}
+					</Cell>
+					<Cell class="ml-auto">
 						<a
 							class="text-sm underline text-brand-500 hover:text-brand-600"
 							href={`/vehicles/${vehicle.id}/history/${record.id}/edit`}
@@ -187,12 +163,6 @@
 						</a>
 					</Cell>
 				</Row>
-
-				{#if isExpanded}
-					<div class="bg-surface border-t border-ink-200 px-4 py-3">
-						<AttachmentList attachments={record.attachments} />
-					</div>
-				{/if}
 			{/each}
 		</FlexTable>
 	</div>

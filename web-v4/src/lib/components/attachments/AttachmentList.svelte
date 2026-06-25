@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Paperclip } from 'lucide-svelte';
 	import type { Attachment } from '$lib/data/attachments';
-	import { formatBytes } from '$lib/utils/bytes';
 
 	interface Props {
 		attachments: Attachment[];
@@ -18,12 +17,13 @@
 				<a
 					href={att.url}
 					download={att.filename}
+					target="_blank"
+					rel="noopener noreferrer"
 					class="text-brand-500 hover:text-brand-600 hover:underline truncate flex-1 min-w-0"
 					title={att.filename}
 				>
 					{att.filename}
 				</a>
-				<span class="text-ink-400 text-xs whitespace-nowrap">{formatBytes(att.byteSize)}</span>
 			</li>
 		{/each}
 	</ul>
