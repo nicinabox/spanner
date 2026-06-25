@@ -45,12 +45,12 @@
 		<div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4 md:gap-7">
 			<div>
 				<Field name="date" label="Date" {errors} required>
-					<input
+					<Input
 						type="date"
 						name="date"
 						bind:value={date}
 						required
-						class="block w-full rounded-md border border-ink-200 bg-white px-3 py-2 text-sm"
+						size="lg"
 					/>
 				</Field>
 			</div>

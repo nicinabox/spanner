@@ -94,7 +94,12 @@
 
 		{#if ['date', 'date_or_mileage'].includes(reminderType)}
 			<Field name="date" label="Date" {errors} required>
-				<input type="date" name="date" bind:value={date} class="block w-full rounded-md border border-ink-200 bg-white px-3 py-2 text-sm" />
+			<Input
+					type="date"
+					name="date"
+					bind:value={date}
+					required
+				/>
 			</Field>
 		{/if}
 

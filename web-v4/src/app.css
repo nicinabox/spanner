@@ -1,3 +1,12 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @import './styles/theme.css';
+
+/* Date input matches other inputs */
+input[type="date"] {
+	width: 100%;
+	min-width: 0;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
