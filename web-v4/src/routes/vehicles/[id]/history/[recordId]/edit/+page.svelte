@@ -21,30 +21,40 @@
 	backAction={{ href: `/vehicles/${vehicle.id}`, label: 'Back' }}
 >
 	<div class="max-w-2xl mx-auto">
-		<Card variant="outline">
+		<Card variant="outline" bleed>
 			<h1 class="text-xl font-semibold">Edit Record</h1>
 			<RecordForm {vehicle} {record} />
 		</Card>
 
-		<div class="mt-6">
-			<Confirm title="Delete record?">
-				{#snippet trigger({ onOpenChange })}
-					<Button variant="ghost" danger onclick={() => onOpenChange(true)}>
-						Delete Record
-					</Button>
-				{/snippet}
-				{#snippet actions({ onOpenChange })}
-						<Button type="submit" danger size="lg" class="flex-1">Delete</Button>
-					<Button variant="outline" size="lg" class="flex-1" onclick={() => onOpenChange(false)}>
-						Cancel
-					</Button>
-				{/snippet}
-				<form method="POST" action="?/delete">
-					<p>
-						This record will be permanently deleted.
-					</p>
-				</form>
-			</Confirm>
-		</div>
+		<Card class="mt-6" variant="outline" bleed>
+			<h1 class="text-xl">Danger Zone</h1>
+
+			<fieldset>
+				<label class="flex items-center justify-between gap-3 cursor-pointer">
+					<div>
+						<span class="font-medium">Permanently delete</span>
+						<p class="text-sm text-ink-500">
+							This record will be permanently deleted.
+						</p>
+					</div>
+					<Confirm title="Delete record?">
+						{#snippet trigger({ onOpenChange })}
+							<Button danger onclick={() => onOpenChange(true)}>Delete</Button>
+						{/snippet}
+						{#snippet actions({ onOpenChange })}
+							<Button type="submit" danger size="lg" class="flex-1">Delete</Button>
+							<Button variant="outline" size="lg" class="flex-1" onclick={() => onOpenChange(false)}>
+								Cancel
+							</Button>
+						{/snippet}
+						<form method="POST" action="?/delete">
+							<p>
+								This record will be permanently deleted.
+							</p>
+						</form>
+					</Confirm>
+				</label>
+			</fieldset>
+		</Card>
 	</div>
 </VehiclePageLayout>

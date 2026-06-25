@@ -11,8 +11,8 @@
 			},
 			size: {
 				sm: 'p-4 rounded-md',
-				md: 'p-8 rounded-lg',
-				lg: 'p-10 rounded-xl',
+				md: 'p-6 sm:p-8 rounded-lg',
+				lg: 'p-8 sm:p-10 rounded-xl',
 			},
 		},
 		defaultVariants: {
@@ -33,15 +33,28 @@
 	type Props = {
 		variant?: CardVariant;
 		size?: CardSize;
+		bleed?: boolean;
 		class?: ClassValue;
 		children: Snippet;
 	};
 
-	let { variant = 'elevated', size = 'md', class: className, children }: Props = $props();
+	let { variant = 'elevated', size = 'md', bleed = false, class: className, children }: Props = $props();
 
 	let classes = $derived(cn(cardVariants({ variant, size }), className));
 </script>
 
-<div class={classes}>
+<div class={classes} class:bleed>
 	{@render children()}
 </div>
+
+<style>
+	@media (max-width: 639px) {
+		.bleed {
+			margin-left: calc(-1 * var(--main-padding));
+			margin-right: calc(-1 * var(--main-padding));
+			border-left-width: 0;
+			border-right-width: 0;
+			border-radius: 0;
+		}
+	}
+</style>

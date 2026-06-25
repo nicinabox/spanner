@@ -26,7 +26,7 @@
 	}}
 >
 	<div class="max-w-2xl mx-auto space-y-6">
-		<Card>
+		<Card bleed>
 			<h2 class="text-lg font-semibold">Export History</h2>
 			<p>Download your vehicle's complete history as a CSV file.</p>
 			<Button href={`/vehicles/${vehicle.id}/export`} size="lg" class="self-start">
@@ -35,7 +35,7 @@
 			</Button>
 		</Card>
 
-		<Card>
+		<Card bleed>
 			<h2 class="text-lg font-semibold">Import History</h2>
 			<p>Upload a CSV file to import records. The file must match the export format.</p>
 			<form

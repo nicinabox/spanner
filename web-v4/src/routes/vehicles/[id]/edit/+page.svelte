@@ -17,12 +17,12 @@
 	}}
 >
 	<div class="max-w-xl mx-auto">
-		<Card variant="outline">
+		<Card variant="outline" bleed>
 			<h1 class="text-xl">Edit {data.vehicle.name}</h1>
 			<VehicleForm errors={form?.errors} values={data.vehicle} action="?/update" />
 		</Card>
 
-		<Card class="mt-6" variant="outline">
+		<Card class="mt-6" variant="outline" bleed>
 			<h1 class="text-xl">Danger Zone</h1>
 
 			<fieldset>

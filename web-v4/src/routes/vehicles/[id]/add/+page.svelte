@@ -52,7 +52,7 @@
 	backAction={{ href: `/vehicles/${vehicle.id}`, label: 'Back' }}
 >
 	<div class="max-w-2xl mx-auto">
-		<Card variant="outline">
+		<Card variant="outline" bleed>
 			<h1 class="text-xl font-semibold">{title}</h1>
 
 			{#if view === 'record'}

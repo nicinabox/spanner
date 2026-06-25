@@ -17,7 +17,7 @@
 	{/snippet}
 
 	<div class="max-w-xl mx-auto">
-		<Card>
+		<Card bleed>
 			<h1>New Vehicle</h1>
 			<VehicleForm errors={form?.errors} />
 		</Card>

@@ -27,7 +27,7 @@
 <VehiclePageLayout {vehicle} {activeTab}>
 	<div class="max-w-2xl mx-auto">
 		{#if vehicle.notes || editing}
-			<Card variant="outline">
+			<Card variant="outline" bleed>
 				<header class="flex items-center mb-4 gap-2">
 					{#if editing}
 						<SegmentedControl
