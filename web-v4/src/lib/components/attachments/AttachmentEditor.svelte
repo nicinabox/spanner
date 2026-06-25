@@ -16,6 +16,7 @@
 
 	let fileError = $state<string | null>(null);
 	let files: FileList | undefined = $state();
+	let inputEl: HTMLInputElement | undefined = $state();
 
 	function handleChange(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -98,20 +99,19 @@
 	{/if}
 
 	<div>
-		<label class="inline-flex items-center gap-2 cursor-pointer">
-			<Button variant="outline">
-				<Paperclip size={16} />
-				Add files
-			</Button>
-			<input
-				bind:files
-				type="file"
-				multiple
-				name="record[attachments][]"
-				class="hidden"
-				onchange={handleChange}
-			/>
-		</label>
+		<Button variant="outline" size="sm" onclick={() => inputEl?.click()}>
+			<Paperclip size={16} />
+			Add files
+		</Button>
+		<input
+			bind:this={inputEl}
+			bind:files
+			type="file"
+			multiple
+			name="record[attachments][]"
+			class="hidden"
+			onchange={handleChange}
+		/>
 		{#if fileError}
 			<p class="text-sm text-negative mt-1">{fileError}</p>
 		{/if}
