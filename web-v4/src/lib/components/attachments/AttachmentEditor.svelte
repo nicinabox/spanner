@@ -16,7 +16,7 @@
 	let { existing, markedForDeletion, onMarkDelete, onRestore }: Props = $props();
 
 	let fileError = $state<string | null>(null);
-	let files: FileList | undefined = $state();
+	let files: FileList | null = $state(null);
 
 	function handleFileInput(input: HTMLInputElement) {
 		const list = input.files;
@@ -25,14 +25,14 @@
 			if (file.size > ATTACHMENT_SIZE_LIMIT) {
 				fileError = `"${file.name}" exceeds 10MB limit`;
 				input.value = '';
-				files = undefined;
+				files = null;
 				return;
 			}
 		}
 		fileError = null;
 	}
 
-	let selectedFiles = $derived(files ? Array.from(files) : []);
+	let selectedFiles: File[] = $derived(files ? Array.from(files) : []);
 </script>
 
 <div class="flex flex-col gap-4">
@@ -99,6 +99,7 @@
 
 	<div>
 		<FileInput
+			bind:files
 			name="record[attachments][]"
 			multiple
 			buttonLabel="Add files"
