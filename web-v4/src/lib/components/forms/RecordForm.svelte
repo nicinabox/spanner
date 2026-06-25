@@ -5,6 +5,7 @@
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
 	import Textarea from '$lib/components/common/Textarea.svelte';
+	import AttachmentEditor from '$lib/components/attachments/AttachmentEditor.svelte';
 	import { formatDateISO } from '$lib/utils/date';
 	import { getCurrencySymbol } from '$lib/utils/number';
 	import type { HistoryEntry } from '$lib/data/history';
@@ -21,18 +22,32 @@
 	let { vehicle, record, errors = [], action }: Props = $props();
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
+	let attachmentErrors = $derived(errors.filter((e) => e.id === 'attachments'));
 
 	let date = $state(
-		record?.date ? formatDateISO(new Date(record.date)) : formatDateISO(new Date()),
+		record?.date ? formatDateISO(new Date(record.date)) : formatDateISO(new Date())
 	);
 	let mileage = $state(record?.mileage?.toString() ?? '');
 	let notes = $state(record?.notes ?? '');
 	let cost = $state(record?.cost ?? '');
+
+	let markedForDeletion = $state<string[]>([]);
+
+	function handleMarkDelete(id: string) {
+		if (!markedForDeletion.includes(id)) {
+			markedForDeletion = [...markedForDeletion, id];
+		}
+	}
+
+	function handleRestore(id: string) {
+		markedForDeletion = markedForDeletion.filter((x) => x !== id);
+	}
 </script>
 
 <form
 	method="POST"
 	action={action ?? `/vehicles/${vehicle.id}/records${record?.id ? `/${record.id}` : ''}`}
+	enctype="multipart/form-data"
 	use:enhance
 	class="flex flex-col gap-6"
 >
@@ -76,6 +91,17 @@
 			</div>
 		</div>
 	</fieldset>
+
+	<Field name="attachments" label="Attachments" errors={attachmentErrors}>
+		<AttachmentEditor
+			existing={record?.attachments ?? []}
+			{markedForDeletion}
+			onMarkDelete={handleMarkDelete}
+			onRestore={handleRestore}
+		/>
+	</Field>
+
+	<input type="hidden" name="attachments_to_delete" value={markedForDeletion.join(',')} />
 
 	<div class="flex gap-3">
 		<Button type="submit">
