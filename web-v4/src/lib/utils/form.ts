@@ -24,6 +24,15 @@ export const createInlineEnhance = ({
 
 export const enhanceInline = createInlineEnhance();
 
+/**
+ * Split a FormData key into nesting segments. Accepts both dot notation
+ * (`preferences.enableCost`) and Rails-style bracket notation (`record[date]`).
+ * Empty segments (from a trailing `[...]`) are dropped.
+ */
+function splitKey(key: string): string[] {
+	return key.split(/[.[\]]+/).filter(Boolean);
+}
+
 export function decode(
 	formData: FormData,
 	schema?: Record<string, 'boolean' | 'string' | 'number'>,
@@ -39,7 +48,7 @@ export function decode(
 	const result: Record<string, any> = {};
 
 	for (const [key, value] of formData.entries()) {
-		const keys = key.split('.');
+		const keys = splitKey(key);
 		let current = result;
 
 		for (let i = 0; i < keys.length; i++) {
@@ -56,7 +65,7 @@ export function decode(
 	if (schema) {
 		for (const [key, type] of Object.entries(schema)) {
 			if (type === 'boolean') {
-				const keys = key.split('.');
+				const keys = splitKey(key);
 				let current = result;
 				for (let i = 0; i < keys.length; i++) {
 					const part = keys[i];

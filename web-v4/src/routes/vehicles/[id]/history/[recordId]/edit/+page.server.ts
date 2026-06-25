@@ -1,46 +1,72 @@
 import { getVehicle } from '$lib/data/vehicles';
-import { getHistoryEntry, updateHistoryEntry, deleteHistoryEntry } from '$lib/data/history';
+import { getHistoryEntry } from '$lib/data/history';
+import { uploadRecord, deleteAttachment, toMultipartFormData } from '$lib/data/multipart';
+import { decode } from '$lib/utils/form';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
 	const record = await getHistoryEntry(params.id!, params.recordId!, locals);
-
 	return { vehicle, record };
 };
 
 export const actions = {
-	default: async ({ request, locals, params }) => {
+	update: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const notes = formData.get('notes')?.toString() ?? '';
-		const date = formData.get('date')?.toString();
-		const mileage = formData.get('mileage')?.toString();
-		const cost = formData.get('cost')?.toString();
+		const data = decode(formData, {
+			date: 'string',
+			notes: 'string',
+			mileage: 'number',
+			cost: 'number'
+		});
 
-		if (!date) {
+		if (!data.date) {
 			return fail(400, { errors: [{ id: 'date', title: 'Date is required' }] });
 		}
-		if (!notes) {
+		if (!data.notes) {
 			return fail(400, { errors: [{ id: 'notes', title: 'Notes is required' }] });
 		}
 
-		await updateHistoryEntry(
-			params.id!,
-			params.recordId!,
+		// Process deletions BEFORE update so the multipart PUT doesn't include them.
+		const toDelete = (formData.get('attachments_to_delete')?.toString() ?? '')
+			.split(',')
+			.map((s) => s.trim())
+			.filter(Boolean);
+
+		const files = formData.getAll('record[attachments][]') as File[];
+		const body = toMultipartFormData(
 			{
-				date,
-				notes,
-				mileage: mileage ? Number(mileage) : null,
-				cost: cost || null
-			} as never,
-			locals
+				date: data.date,
+				notes: data.notes,
+				mileage: typeof data.mileage === 'number' ? data.mileage : null,
+				cost: typeof data.cost === 'number' ? data.cost : null
+			},
+			{ prefix: 'record' }
 		);
+		for (const file of files) {
+			body.append('record[attachments][]', file);
+		}
+
+		try {
+			for (const signedId of toDelete) {
+				await deleteAttachment(params.id!, params.recordId!, signedId, locals);
+			}
+			await uploadRecord(params.id!, params.recordId!, body, locals);
+		} catch (err) {
+			const message = err instanceof Error ? err.message : 'Upload failed';
+			return fail(422, {
+				errors: [{ id: 'form', title: message }]
+			});
+		}
 
 		redirect(303, `/vehicles/${params.id}`);
 	},
 
 	delete: async ({ locals, params }) => {
+		// Note: also need to delete attachments on record delete, but backend
+		// handles this automatically via Active Storage dependent destroy.
+		const { deleteHistoryEntry } = await import('$lib/data/history');
 		await deleteHistoryEntry(params.id!, params.recordId!, locals);
 		redirect(303, `/vehicles/${params.id}`);
 	}

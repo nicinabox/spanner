@@ -15,6 +15,7 @@
 	import { onMount } from 'svelte';
 	import Button from './common/Button.svelte';
 	import { pluralize } from '$lib/utils/text';
+	import AttachmentList from './attachments/AttachmentList.svelte';
 
 	interface Props {
 		history: HistoryEntry[];
@@ -147,6 +148,11 @@
 					{/if}
 					<Cell class="w-full max-sm:py-1">
 						<Markdown src={record.notes} />
+						{#if record.attachments.length > 0}
+							<div class="mt-2">
+								<AttachmentList attachments={record.attachments} />
+							</div>
+						{/if}
 					</Cell>
 					<Cell class="ml-auto">
 						<a

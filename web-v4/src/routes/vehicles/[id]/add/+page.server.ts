@@ -1,6 +1,8 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
+import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder } from '$lib/data/reminders';
+import { decode } from '$lib/utils/form';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -12,50 +14,66 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions = {
 	record: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const notes = formData.get('notes')?.toString() ?? '';
-		const date = formData.get('date')?.toString();
-		const mileage = formData.get('mileage')?.toString();
-		const cost = formData.get('cost')?.toString();
+		const data = decode(formData, {
+			date: 'string',
+			notes: 'string',
+			mileage: 'number',
+			cost: 'number'
+		});
 
-		if (!date) {
+		if (!data.date) {
 			return fail(400, { errors: [{ id: 'date', title: 'Date is required' }] });
 		}
-		if (!notes) {
+		if (!data.notes) {
 			return fail(400, { errors: [{ id: 'notes', title: 'Notes is required' }] });
 		}
 
-		await createHistoryEntry(
-			params.id!,
+		const files = formData.getAll('record[attachments][]') as File[];
+		const body = toMultipartFormData(
 			{
-				date,
-				notes,
-				mileage: mileage ? Number(mileage) : null,
-				cost: cost || null
-			} as never,
-			locals
+				date: data.date,
+				notes: data.notes,
+				mileage: typeof data.mileage === 'number' ? data.mileage : null,
+				cost: typeof data.cost === 'number' ? data.cost : null
+			},
+			{ prefix: 'record' }
 		);
+		for (const file of files) {
+			body.append('record[attachments][]', file);
+		}
+
+		try {
+			await uploadRecord(params.id!, undefined, body, locals);
+		} catch (err) {
+			const message = err instanceof Error ? err.message : 'Upload failed';
+			return fail(422, {
+				errors: [{ id: 'form', title: message }]
+			});
+		}
 
 		redirect(303, `/vehicles/${params.id}`);
 	},
 
 	reminder: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const notes = formData.get('notes')?.toString();
-		const reminderType = formData.get('reminderType')?.toString() ?? '';
-		const date = formData.get('date')?.toString();
-		const mileage = formData.get('mileage')?.toString();
+		const data = decode(formData, {
+			notes: 'string',
+			reminderType: 'string',
+			date: 'string',
+			mileage: 'number'
+		});
 
-		if (!notes) {
+		if (!data.notes) {
 			return fail(400, { errors: [{ id: 'notes', title: 'Note is required' }] });
 		}
 
 		await createVehicleReminder(
 			params.id!,
 			{
-				notes,
-				reminderType: reminderType || null,
-				date: date || null,
-				mileage: mileage ? Number(mileage) : null
+				notes: data.notes as string,
+				reminderType: (data.reminderType as string) || null,
+				date: (data.date as string) || null,
+				mileage: typeof data.mileage === 'number' ? data.mileage : null
 			} as never,
 			locals
 		);
@@ -65,18 +83,19 @@ export const actions = {
 
 	'mileage-adjustment': async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const mileage = formData.get('mileage')?.toString();
+		const data = decode(formData, { mileage: 'number' });
 
-		if (!mileage) {
+		if (typeof data.mileage !== 'number') {
 			return fail(400, { errors: [{ id: 'mileage', title: 'Mileage is required' }] });
 		}
 
+		// Mileage-only adjustment doesn't expose attachment UI, so keep the JSON path.
 		await createHistoryEntry(
 			params.id!,
 			{
 				date: new Date().toISOString().split('T')[0],
 				notes: 'Mileage adjustment',
-				mileage: Number(mileage),
+				mileage: data.mileage,
 				recordType: 'mileage adjustment'
 			} as never,
 			locals
