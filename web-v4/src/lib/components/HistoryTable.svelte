@@ -78,11 +78,11 @@
 {#each years as year (year)}
 	<div
 		id={`year-${year}`}
-		class="history-table group mb-6 overflow-clip rounded-sm bg-surface shadow-sm"
+		class="history-table group mb-6 overflow-clip rounded-sm bg-surface-raised shadow-sm"
 	>
 		<div class="sticky-sentinel"></div>
 		<header
-			class="sticky top-0 z-10 flex rounded-t-[inherit] bg-inherit px-4 py-2 group-data-[state=top]:rounded-t-none group-data-[state=top]:shadow-sm"
+			class="sticky top-0 z-10 items-center flex rounded-t-[inherit] bg-inherit px-4 py-2 group-data-[state=top]:rounded-t-none group-data-[state=top]:shadow-sm"
 		>
 			<h2 class="text-lg font-semibold m-0">{year}</h2>
 			{#if hiddenCounts[year] > 0}
@@ -95,10 +95,10 @@
 						{#snippet children(triggerProps)}
 							<Button
 								{...triggerProps}
-								size="sm"
+								size="xs"
+								color="neutral"
 								variant="ghost"
 								onclick={() => (showMileageAdjustments = !showMileageAdjustments)}
-								class="flex items-center gap-1 text-xs text-ink-400 hover:text-ink-600 transition-colors"
 							>
 								<span>{hiddenCounts[year]}</span>
 								{#if showMileageAdjustments}
@@ -126,7 +126,7 @@
 			{#each groupedRecords[Number(year)] as record (record.id)}
 				{@const deltaMileage = calculateDeltaMileage(record, historyNewestFirst)}
 
-				<Row class="text-md even:bg-ink-50 max-sm:gap-1">
+				<Row class="text-md even:bg-gray-100 dark:even:bg-surface max-sm:gap-1">
 					<Cell class="whitespace-nowrap max-sm:text-sm max-sm:font-bold">
 						{intlFormat(parseDateUTC(record.date), {
 							month: 'short',
