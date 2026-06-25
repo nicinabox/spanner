@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { Button, Card, Confirm } from '$lib';
+	import { Button, Card } from '$lib';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { page } from '$app/stores';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import { formatMileage } from '$lib/utils/vehicle';
-	import { Bell, ChevronRight, PlusIcon, Trash2 } from 'lucide-svelte';
+	import { Bell, ChevronRight, PlusIcon } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -38,16 +38,19 @@
 								<div class="space-y-1">
 									<p class="font-semibold text-lg">{reminder.notes}</p>
 									<p class="text-base text-ink-500">
-										Reminder scheduled for
-										{#if reminder.reminderDate}
-											{intlFormatDateUTC(reminder.reminderDate)}
-										{:else if reminder.date}
-											{intlFormatDateUTC(reminder.date)}
+										{#if !reminder.reminderType}
+											No reminder set
 										{:else}
-											an unspecified date
-										{/if}
-										{#if reminder.mileage}
-											at {formatMileage(reminder.mileage, vehicle.distanceUnit)}
+											Reminder scheduled for
+											{#if reminder.reminderDate || reminder.date}
+												{intlFormatDateUTC(reminder.reminderDate ?? reminder.date!)}
+												{#if reminder.mileage}
+													or
+												{/if}
+											{/if}
+											{#if reminder.mileage}
+												{formatMileage(reminder.mileage, vehicle.distanceUnit)}
+											{/if}
 										{/if}
 									</p>
 								</div>
@@ -60,27 +63,9 @@
 											<ChevronRight size={16} />
 										</Button>
 									{/if}
-									<Confirm title="Delete reminder?">
-										{#snippet trigger({ onOpenChange })}
-											<Button icon variant="ghost" onclick={() => onOpenChange(true)}>
-												<Trash2 size={14} />
-											</Button>
-										{/snippet}
-										{#snippet actions({ onOpenChange })}
-											<Button type="submit" danger size="lg" class="flex-1">Delete</Button>
-											<Button variant="outline" size="lg" class="flex-1" onclick={() => onOpenChange(false)}>
-												Cancel
-											</Button>
-										{/snippet}
-										<form
-											method="POST"
-											action={`/vehicles/${vehicle.id}/reminders/${reminder.id}?_method=DELETE`}
-										>
-											<p>
-												This reminder will be permanently deleted.
-											</p>
-										</form>
-									</Confirm>
+									<Button href={`/vehicles/${vehicle.id}/reminders/${reminder.id}/edit`} variant="ghost">
+										Edit
+									</Button>
 								</div>
 							</div>
 							{#if completingId === reminder.id}

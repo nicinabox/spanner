@@ -75,7 +75,6 @@
 					{ value: 'nmi', label: 'Nautical Miles' },
 				]}
 				value={values?.distanceUnit}
-				size="lg"
 			/>
 		</Field>
 	</fieldset>

@@ -46,7 +46,7 @@
 <select
 	id={resolvedId}
 	name={resolvedName}
-	{value}
+	bind:value
 	required={resolvedRequired}
 	{disabled}
 	class={classes}

@@ -88,7 +88,6 @@
 					{ value: 'date', label: 'On a date' },
 					{ value: 'mileage', label: 'At a mileage' }
 				]}
-				size="lg"
 			/>
 		</Field>
 
