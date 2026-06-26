@@ -66,20 +66,6 @@
 					<Button href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase">Add Purchase</Button>
 				{/snippet}
 			</EmptyState>
-		{:else if !filteredHistory.length}
-			<div class="flex justify-between gap-10 mb-4">
-				<InputGroup
-					type="search"
-					name="search"
-					placeholder="Search history"
-					variant="filled"
-					class="w-full sm:w-1/2 lg:w-1/3"
-					bind:value={searchQuery}
-				>
-					{#snippet start()}<Search size={16} />{/snippet}
-				</InputGroup>
-			</div>
-			<p class="text-center text-ink-400 py-12">No results for "{searchQuery}"</p>
 		{:else}
 			<div class="flex justify-between gap-10 mb-4">
 				<InputGroup
@@ -97,7 +83,12 @@
 					New...
 				</Button>
 			</div>
-			<HistoryTable history={filteredHistory} {vehicle} />
+
+			{#if !filteredHistory.length}
+				<p class="text-center text-ink-400 py-12">No results for "{searchQuery}"</p>
+			{:else}
+				<HistoryTable history={filteredHistory} {vehicle} />
+			{/if}
 		{/if}
 	</div>
 </VehiclePageLayout>
