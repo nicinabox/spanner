@@ -76,7 +76,7 @@
 	});
 </script>
 
-<div class="relative" data-theme={theme}>
+<div class="relative leading-none" data-theme={theme}>
 	<Button
 		{...api.getTriggerProps()}
 		active={api.open}
@@ -158,5 +158,3 @@
 		</ul>
 	</div>
 </div>
-
-
