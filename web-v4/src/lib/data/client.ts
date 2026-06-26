@@ -28,6 +28,13 @@ export type UpdatableFields<T> = Partial<Omit<T, NonUpdatableFields>>;
 
 const tokenAuthHeader = (token: string | undefined) => (token ? `Token ${token}` : undefined);
 
+/**
+ * Current browser UTC offset as a signed number string (e.g. `-5`, `5.5`).
+ * `Date#getTimezoneOffset` returns minutes WEST of UTC, hence the negation.
+ */
+export const getTimeZoneOffset = (): string =>
+	((new Date().getTimezoneOffset() / 60) * -1).toString();
+
 export class HTTPError<T = string> extends Error {
 	data: T;
 
@@ -59,6 +66,8 @@ export function createAPIRequest(initialConfig: FetcherConfig = apiConfig) {
 
 		const url = new URL(endpoint, config.baseUrl);
 		const headers = new Headers({ ...config.headers, ...options.headers });
+
+		headers.set('Time-Zone-Offset', getTimeZoneOffset());
 
 		const authHeaderValue = config.authHeaderValue(authToken);
 		if (authHeaderValue) {
