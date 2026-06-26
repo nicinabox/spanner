@@ -34,6 +34,7 @@ class Vehicle < ApplicationRecord
 
   def prompt_for_new_record!
     return unless preferences.send_prompt_for_records
+    return unless user.reminder_eligible?
 
     date = estimated_next_record_date
     return unless date && (date <= Time.zone.today.beginning_of_day)
