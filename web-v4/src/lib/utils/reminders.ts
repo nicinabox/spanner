@@ -9,10 +9,15 @@ export const getOverdueRemindersCount = (vehicle: Vehicle) => {
 	return vehicle.reminders.filter(isReminderOverdue).length;
 };
 
-export const isReminderOverdue = (reminder: Reminder) => {
-	if (!reminder.reminderDate) return false;
-	const date = parseDateUTC(reminder.reminderDate);
-	return new Date() > date;
+export const isReminderOverdue = (reminder: Reminder, estimatedMileage?: number) => {
+	if (reminder.reminderDate) {
+		const date = parseDateUTC(reminder.reminderDate);
+		if (new Date() > date) return true;
+	}
+	if (reminder.mileage && estimatedMileage != null && estimatedMileage >= reminder.mileage) {
+		return true;
+	}
+	return false;
 };
 
 export const getNewestRecordMileage = (records: HistoryEntry[] | undefined) => {

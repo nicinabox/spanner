@@ -7,6 +7,7 @@
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import { formatMileage } from '$lib/utils/vehicle';
 	import { Bell, ChevronRight, PlusIcon } from 'lucide-svelte';
+	import { isReminderOverdue } from '$lib/utils/reminders';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -36,7 +37,12 @@
 						<Card variant="outline" size="sm" class="gap-3">
 							<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 								<div class="space-y-1">
-									<p class="font-semibold text-lg">{reminder.notes}</p>
+									<p class="font-semibold text-lg flex items-center gap-3">
+										{#if isReminderOverdue(reminder, vehicle.estimatedMileage)}
+											<span class="w-2 h-2 rounded-full bg-warning shrink-0"></span>
+										{/if}
+										{reminder.notes}
+									</p>
 									<p class="text-base text-ink-500">
 										{#if !reminder.reminderType}
 											No reminder set
