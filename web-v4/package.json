@@ -20,6 +20,7 @@
 		"@sveltejs/adapter-node": "^5.5.7",
 		"@sveltejs/kit": "^2.63.0",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
+		"@types/node": "^26.0.1",
 		"@vitest/browser-playwright": "^4.1.8",
 		"playwright": "^1.60.0",
 		"prettier": "^3.8.3",
@@ -32,6 +33,7 @@
 		"vitest-browser-svelte": "^2.1.1"
 	},
 	"dependencies": {
+		"@sentry/sveltekit": "^10.61.0",
 		"@tailwindcss/typography": "^0.5.20",
 		"@tailwindcss/vite": "^4.3.1",
 		"@zag-js/clipboard": "^1.41.2",
