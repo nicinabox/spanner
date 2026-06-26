@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
 
 	return {
 		define: {
-            __APP_VERSION__: `v4.${new Date().toISOString().slice(0, 10).replaceAll('-', '.'))}`,
+			__APP_VERSION__: `v4.${new Date().toISOString().slice(0, 10).replaceAll('-', '.')}`,
 		},
 		server: {
 			allowedHosts: ['.local', '.ts.net'],
