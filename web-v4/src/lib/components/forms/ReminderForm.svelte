@@ -25,7 +25,11 @@
 
 	let notes = $state(reminder?.notes ?? '');
 	let reminderType = $state<ReminderType>(reminder?.reminderType ?? '');
-	let date = $state(reminder?.date ? formatDateISO(new Date(reminder.date)) : formatDateISO(addMonths(new Date(), 6)));
+	let date = $state(
+		reminder?.date
+			? formatDateISO(new Date(reminder.date))
+			: formatDateISO(addMonths(new Date(), 6)),
+	);
 	let mileage = $state(reminder?.mileage?.toString() ?? '');
 
 	let estimatedDate = $state<Date | null>(null);
@@ -34,20 +38,14 @@
 
 	$effect(() => {
 		const estimate = async () => {
-			if (mileageNum > 0 && mileageNum >= (vehicle.estimatedMileage ?? 0)) {
+			if (mileageNum > 0) {
 				try {
-					const resp = await fetch(
-						`/vehicles/${vehicle.id}/reminders/estimate_date`,
-						{
-							method: 'POST',
-							headers: { 'Content-Type': 'application/json' },
-							body: JSON.stringify({
-								mileage: mileageNum,
-								date,
-								reminder_type: reminderType
-							})
-						}
-					);
+					const params = new URLSearchParams({
+						'reminder[mileage]': mileageNum.toString(),
+						'reminder[date]': date,
+						'reminder[reminder_type]': reminderType,
+					});
+					const resp = await fetch(`/api/vehicles/${vehicle.id}/reminders/estimate_date?${params}`);
 					if (resp.ok) {
 						const data = await resp.json();
 						if (data.reminder_date) {
@@ -65,7 +63,12 @@
 	});
 </script>
 
-<form method="POST" action={action ?? `/vehicles/${vehicle.id}/reminders${reminder ? `/${reminder.id}` : ''}`} use:enhance class="flex flex-col gap-6">
+<form
+	method="POST"
+	action={action ?? `/vehicles/${vehicle.id}/reminders${reminder ? `/${reminder.id}` : ''}`}
+	use:enhance
+	class="flex flex-col gap-6"
+>
 	{#if formErrors.length > 0}
 		<div role="alert" class="p-3 rounded-md bg-negative/10 text-negative text-sm">
 			{#each formErrors as e}
@@ -76,7 +79,7 @@
 
 	<fieldset class="flex flex-col gap-4">
 		<Field name="notes" label="Note" {errors} required>
-			<Input name="notes" bind:value={notes} required  />
+			<Input name="notes" bind:value={notes} required />
 		</Field>
 
 		<Field name="reminderType" label="Remind me" {errors}>
@@ -87,33 +90,35 @@
 					{ value: '', label: "Don't remind me" },
 					{ value: 'date_or_mileage', label: 'On a date or mileage, whichever is first' },
 					{ value: 'date', label: 'On a date' },
-					{ value: 'mileage', label: 'At a mileage' }
+					{ value: 'mileage', label: 'At a mileage' },
 				]}
 			/>
 		</Field>
 
 		{#if ['date', 'date_or_mileage'].includes(reminderType)}
 			<Field name="date" label="Date" {errors} required>
-			<Input
-					type="date"
-					name="date"
-					bind:value={date}
-					required
-				/>
+				<Input type="date" name="date" bind:value={date} required />
 			</Field>
 		{/if}
 
 		{#if ['mileage', 'date_or_mileage'].includes(reminderType)}
-			<Field name="mileage" label={vehicle.distanceUnit === 'mi' ? 'Mileage' : 'Distance'} {errors} required>
-				<Input name="mileage" bind:value={mileage} inputmode="numeric"  />
+			<Field
+				name="mileage"
+				label={vehicle.distanceUnit === 'mi' ? 'Mileage' : 'Distance'}
+				{errors}
+				required
+			>
+				<Input name="mileage" bind:value={mileage} inputmode="numeric" />
 				{#if vehicle.estimatedMileage}
-					<p class="text-sm text-ink-400">Minimum {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}</p>
+					<p class="text-sm text-ink-400">
+						Estimated mileage {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}
+					</p>
 				{/if}
 			</Field>
 		{/if}
 
 		{#if estimatedDate && ['date_or_mileage', 'mileage'].includes(reminderType)}
-			<div class="rounded-md border-l-4 border-info bg-info/10 px-4 py-3 text-sm">
+			<div class="rounded-md text-info border border-info bg-info/10 px-4 py-3 text-sm">
 				Estimated for {intlFormatDate(estimatedDate)}
 			</div>
 		{/if}

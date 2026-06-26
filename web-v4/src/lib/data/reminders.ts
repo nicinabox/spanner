@@ -31,19 +31,19 @@ export const createReminder = (data: CreatableFields<Reminder>, opts: RequestOpt
 	return request<Reminder>('/reminders', {
 		...opts,
 		method: 'POST',
-		json: data
+		json: data,
 	});
 };
 
 export const createVehicleReminder = (
 	vehicleId: number | string,
 	data: CreatableFields<Reminder>,
-	opts: RequestOpts
+	opts: RequestOpts,
 ) => {
 	return request<Reminder>(`/vehicles/${vehicleId}/reminders`, {
 		...opts,
 		method: 'POST',
-		json: data
+		json: data,
 	});
 };
 
@@ -51,18 +51,32 @@ export const updateReminder = (
 	vehicleId: number | string,
 	id: number | string,
 	data: CreatableFields<Reminder>,
-	opts: RequestOpts
+	opts: RequestOpts,
 ) => {
 	return request<Reminder>(`/vehicles/${vehicleId}/reminders/${id}`, {
 		...opts,
 		method: 'PUT',
-		json: data
+		json: data,
 	});
 };
 
-export const deleteReminder = (vehicleId: number | string, id: number | string, opts: RequestOpts) => {
+export const deleteReminder = (
+	vehicleId: number | string,
+	id: number | string,
+	opts: RequestOpts,
+) => {
 	return request<void>(`/vehicles/${vehicleId}/reminders/${id}`, {
 		...opts,
-		method: 'DELETE'
+		method: 'DELETE',
+	});
+};
+
+export const estimateReminderDate = async (
+	vehicleId: number | string,
+	params: { mileage: number; date: string; reminderType: string },
+): Promise<{ reminderDate: string }> => {
+	return request(`/vehicles/${vehicleId}/reminders/estimate_date`, {
+		method: 'GET',
+		params,
 	});
 };
