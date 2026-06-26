@@ -8,16 +8,21 @@ class HourlyJob < ApplicationJob
   end
 
   def today_reminders_in_timezone
-    # rubocop:disable Rails/FindEach
-    ActiveSupport::TimeZone.all.each do |tz|
-      # rubocop:enable Rails/FindEach
-      local_time = Time.zone.now.in_time_zone(tz)
+    # Iterate the offsets users have actually stored, not all `ActiveSupport::TimeZone.all`
+    # entries. Many timezones share the same integer offset (e.g. UTC, Edinburgh,
+    # Lisbon, London, Monrovia all at 0h), so iterating them all would dispatch
+    # the same user multiple times per run. Using the stored offset also matches
+    # what the client sends (current offset including DST).
+    User.distinct.pluck(:time_zone_offset).each do |stored_offset|
+      next if stored_offset.blank?
+
+      offset_hours = stored_offset.to_f
+      local_time = Time.zone.now + offset_hours.hours
       next unless local_time.hour.zero?
 
-      time_zone_offset = tz.utc_offset / (60 * 60)
       date = local_time.to_date
 
-      User.where(time_zone_offset: time_zone_offset).find_each do |user|
+      User.where(time_zone_offset: stored_offset).find_each do |user|
         next unless user.reminder_eligible?
 
         dispatch_manual_reminders(user, date)
