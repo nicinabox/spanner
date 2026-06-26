@@ -38,7 +38,7 @@
 	--color-surface: oklch(98% 0.002 240);
 	--color-surface-raised: oklch(99% 0.001 240);
 	--color-overlay: oklch(40% 0.02 232);
-	--color-positive: oklch(70% 0.15 145);
+	--color-positive: oklch(50% 0.15 145);
 	--color-negative: oklch(58% 0.2 25);
 	--color-warning: oklch(78% 0.15 85);
 	--color-info: oklch(66% 0.14 257);
@@ -96,6 +96,7 @@
 	--color-surface: oklch(24% 0.017 232);
 	--color-surface-raised: oklch(27% 0.015 232);
 	--color-overlay: oklch(8% 0.02 232);
+	--color-positive: oklch(65% 0.15 145);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -124,6 +125,7 @@
 		--color-surface: oklch(24% 0.017 232);
 		--color-surface-raised: oklch(27% 0.015 232);
 		--color-overlay: oklch(8% 0.02 232);
+		--color-positive: oklch(65% 0.15 145);
 	}
 }
 

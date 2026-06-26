@@ -36,14 +36,23 @@
 		bleed?: boolean;
 		class?: ClassValue;
 		children: Snippet;
+		heading?: string;
 	};
 
-	let { variant = 'elevated', size = 'md', bleed = false, class: className, children }: Props = $props();
+	let {
+		variant = 'elevated',
+		size = 'md',
+		bleed = false,
+		class: className,
+		heading,
+		children,
+	}: Props = $props();
 
 	let classes = $derived(cn(cardVariants({ variant, size }), className));
 </script>
 
 <div class={classes} class:bleed>
+	<h2 class="font-bold text-xl">{heading}</h2>
 	{@render children()}
 </div>
 

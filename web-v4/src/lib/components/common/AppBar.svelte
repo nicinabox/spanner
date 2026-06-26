@@ -45,7 +45,7 @@
 				trigger={username}
 				theme="dark"
 				size="sm"
-				items={[{ value: 'signout', label: 'Sign out', href: '/logout', preload: false }]}
+				items={[{ value: 'settings', label: 'Settings', href: '/settings', preload: false }, { value: 'signout', label: 'Sign out', href: '/logout', preload: false }]}
 			/>
 			<ThemeToggle size="sm" />
 		{/if}

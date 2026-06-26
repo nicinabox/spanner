@@ -1,15 +1,15 @@
-import {sequence} from '@sveltejs/kit/hooks';
+import { sequence } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
 import { getSession, setSession } from '$lib/utils/session';
 import { redirect, type Handle } from '@sveltejs/kit';
 
-const protectedRoutes = ['^/vehicles'];
+const protectedRoutes = ['^/vehicles', '^/settings'];
 
 const isProtected = (url: string) => {
-				const { pathname } = new URL(url);
-				return protectedRoutes.some((pattern) => {
-								return new RegExp(pattern, 'i').test(pathname);
-				});
+	const { pathname } = new URL(url);
+	return protectedRoutes.some((pattern) => {
+		return new RegExp(pattern, 'i').test(pathname);
+	});
 };
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
@@ -34,7 +34,8 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 				return html.replace('<html', `<html data-theme="${theme}"`);
 			}
 			return html;
-		}
+		},
 	});
 });
+
 export const handleError = Sentry.handleErrorWithSentry();
