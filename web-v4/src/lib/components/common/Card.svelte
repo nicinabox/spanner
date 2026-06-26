@@ -52,7 +52,9 @@
 </script>
 
 <div class={classes} class:bleed>
-	<h2 class="font-bold text-xl">{heading}</h2>
+	{#if heading}
+		<h2 class="font-bold text-xl">{heading}</h2>
+	{/if}
 	{@render children()}
 </div>
 
