@@ -23,3 +23,19 @@ export const isReminderOverdue = (reminder: Reminder, estimatedMileage?: number)
 export const getNewestRecordMileage = (records: HistoryEntry[] | undefined) => {
 	return records?.toSorted(sortNewestDateFirst)[0] ?? 0;
 };
+
+export const sortRemindersByDue = (reminders: Reminder[], estimatedMileage?: number) => {
+	return [...reminders].sort((a, b) => {
+		const aOverdue = isReminderOverdue(a, estimatedMileage);
+		const bOverdue = isReminderOverdue(b, estimatedMileage);
+		if (aOverdue && !bOverdue) return -1;
+		if (!aOverdue && bOverdue) return 1;
+
+		const aDate = a.reminderDate ?? a.date;
+		const bDate = b.reminderDate ?? b.date;
+		if (!aDate && !bDate) return 0;
+		if (!aDate) return 1;
+		if (!bDate) return -1;
+		return new Date(aDate).getTime() - new Date(bDate).getTime();
+	});
+};
