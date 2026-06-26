@@ -147,6 +147,7 @@ class User < ApplicationRecord
   end
 
   def reminder_eligible?
+    return false if unsubscribed_at?
     return false if email_bounced_at.present?
     return false if days_since_last_seen.nil? && created_at.before?(REMINDER_CUTOFF_DAYS.days.ago)
     return false if days_since_last_seen && days_since_last_seen > REMINDER_CUTOFF_DAYS
