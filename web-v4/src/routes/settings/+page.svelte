@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Card, Field, Input, PageLayout } from '$lib';
+	import { Button, Card, Confirm, Field, Input, PageLayout } from '$lib';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -45,6 +45,41 @@
 					</div>
 				</form>
 			{/if}
+		</Card>
+
+		<Card class="mt-6" variant="outline" bleed heading="Delete Account">
+			<fieldset>
+				<div class="flex items-center justify-between gap-6">
+					<div>
+						<span class="font-medium">Permanently delete your account</span>
+						<p class="text-sm text-ink-500">
+							Your vehicles, records, and all data will be deleted. You can sign in again within 30 days to restore your account.
+						</p>
+					</div>
+					<Confirm title="Delete account?">
+						{#snippet trigger({ onOpenChange })}
+							<Button danger onclick={() => onOpenChange(true)}>Delete</Button>
+						{/snippet}
+						{#snippet actions({ onOpenChange })}
+							<form method="post" class="flex flex-row gap-2 flex-1 sm:flex-none">
+								<Button type="submit" formaction="?/delete" danger class="flex-1 sm:flex-none"
+									>Delete Account</Button
+								>
+								<Button
+									variant="outline"
+									class="flex-1 sm:flex-none"
+									onclick={() => onOpenChange(false)}
+								>
+									Cancel
+								</Button>
+							</form>
+						{/snippet}
+						<p>
+							This will immediately delete your account and sign you out. You have 30 days to sign in again to restore your data.
+						</p>
+					</Confirm>
+				</div>
+			</fieldset>
 		</Card>
 	</div>
 </PageLayout>

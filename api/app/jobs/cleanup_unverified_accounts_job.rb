@@ -17,17 +17,19 @@ class CleanupUnverifiedAccountsJob < ApplicationJob
   private
 
   def delete_never_logged_in
-    User.where.missing(:sessions, :vehicles)
-        .where(users: { created_at: ...NEVER_LOGGED_IN_CUTOFF.ago })
-        .where.not(admin: true)
-        .destroy_all
+    users = User.where.missing(:sessions, :vehicles)
+               .where(users: { created_at: ...NEVER_LOGGED_IN_CUTOFF.ago })
+               .where.not(admin: true)
+    Session.where(user_id: users.pluck(:id)).delete_all
+    users.delete_all
   end
 
   def delete_bounced_accounts
-    User.where.missing(:sessions, :vehicles)
-        .where.not(email_bounced_at: nil)
-        .where.not(admin: true)
-        .destroy_all
+    users = User.where.missing(:sessions, :vehicles)
+               .where.not(email_bounced_at: nil)
+               .where.not(admin: true)
+    Session.where(user_id: users.pluck(:id)).delete_all
+    users.delete_all
   end
 
   def delete_inactive_accounts
@@ -38,6 +40,7 @@ class CleanupUnverifiedAccountsJob < ApplicationJob
                        .pluck(:id)
                        .uniq
 
-    User.where(id: inactive_ids).destroy_all
+    Session.where(user_id: inactive_ids).delete_all
+    User.where(id: inactive_ids).delete_all
   end
 end

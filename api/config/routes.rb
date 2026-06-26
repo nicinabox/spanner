@@ -40,6 +40,7 @@ Rails.application.routes.draw do
 
     get 'user', to: 'users#index'
     put 'user', to: 'users#update'
+    delete 'user', to: 'users#destroy'
     post 'user/email_change', to: 'users#request_email_change', as: 'email_change_user'
 
     delete 'sessions/:id', to: 'sessions#destroy'

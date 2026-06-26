@@ -8,6 +8,11 @@ class DailyJob < ApplicationJob
     upcoming_schedules
     delete_expired_sessions
     cleanup_unverified_accounts
+    purge_deleted_accounts
+  end
+
+  def purge_deleted_accounts
+    PurgeDeletedAccountsJob.perform_later
   end
 
   def cleanup_unverified_accounts

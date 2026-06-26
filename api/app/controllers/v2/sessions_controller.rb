@@ -13,7 +13,11 @@ module V2
     def create
       email = params[:email].strip.downcase
       host = params[:host]
-      user = User.find_by email: email
+      user = User.unscoped.find_by(email: email)
+
+      if user&.deleted?
+        user.restore!
+      end
 
       unless user
         user = User.create! email: email, time_zone_offset: time_zone_offset

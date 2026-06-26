@@ -25,6 +25,23 @@ class User < ApplicationRecord
 
   store_accessor :preferences
 
+  scope :deleted, -> { where.not(deleted_at: nil) }
+
+  def destroy
+    return if deleted_at?
+
+    update!(deleted_at: Time.current)
+    sessions.destroy_all
+  end
+
+  def restore!
+    update!(deleted_at: nil)
+  end
+
+  def deleted?
+    deleted_at?
+  end
+
   has_many :sessions, dependent: :destroy
   has_many :vehicles, dependent: :destroy
   has_many :reminders, through: :vehicles

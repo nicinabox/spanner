@@ -1,7 +1,7 @@
 import { env } from '$env/dynamic/private';
-import { requestEmailChange } from '$lib/data/settings';
+import { requestEmailChange, deleteAccount } from '$lib/data/settings';
 import { getHTTPErrors } from '$lib/utils/actions';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -25,5 +25,15 @@ export const actions = {
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
 		}
+	},
+
+	delete: async ({ locals }) => {
+		try {
+			await deleteAccount(locals);
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
+		}
+
+		redirect(303, '/');
 	},
 } satisfies Actions;

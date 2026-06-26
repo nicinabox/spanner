@@ -9,3 +9,7 @@ export const requestEmailChange = (email: string, host: string, opts: RequestOpt
 		json: { user: { email }, host },
 	});
 };
+
+export const deleteAccount = (opts: RequestOpts) => {
+	return request(`/user`, { ...opts, method: 'DELETE' });
+};
