@@ -109,5 +109,6 @@
 
 	div :global(textarea) {
 		background: transparent;
+		border-radius: inherit;
 	}
 </style>

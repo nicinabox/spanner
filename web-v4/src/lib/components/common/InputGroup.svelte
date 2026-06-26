@@ -68,7 +68,13 @@
 				{autocomplete}
 				{inputmode}
 				{pattern}
-				class={cn(start && 'pl-10', end && 'pr-10', startAddon && 'rounded-l-none', endAddon && 'rounded-r-none')}
+				class={cn(
+					start && 'pl-10',
+					end && 'pr-10',
+					startAddon && 'rounded-l-none',
+					endAddon && 'rounded-r-none',
+					(startAddon || endAddon) && 'focus-visible:z-10',
+				)}
 				{...rest}
 			/>
 			{#if start}
@@ -107,7 +113,12 @@
 			{autocomplete}
 			{inputmode}
 			{pattern}
-			class={cn('flex-1', startAddon && 'rounded-l-none', endAddon && 'rounded-r-none')}
+			class={cn(
+				'flex-1',
+				startAddon && 'rounded-l-none',
+				endAddon && 'rounded-r-none',
+				(startAddon || endAddon) && 'focus-visible:z-10',
+			)}
 			{...rest}
 		/>
 	{/if}
