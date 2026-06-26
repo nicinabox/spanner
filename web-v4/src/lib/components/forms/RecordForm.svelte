@@ -36,6 +36,7 @@
 
 	let markedForDeletion = $state<string[]>([]);
 	let selectedFiles = $state<File[]>([]);
+	let submitting = $state(false);
 
 	function handleMarkDelete(id: string) {
 		if (!markedForDeletion.includes(id)) {
@@ -52,6 +53,7 @@
 	// Custom submit: rebuild FormData with the staged files because the
 	// browser's FileList can't be edited (no per-file removal API).
 	const submit: SubmitFunction = ({ formData, cancel }) => {
+		submitting = true;
 		const fd = new FormData();
 		for (const [key, value] of formData.entries()) {
 			if (key.startsWith('record[attachments]')) continue;
@@ -83,6 +85,9 @@
 			})
 			.catch(() => {
 				// Network error — leave the user on the form to retry.
+			})
+			.finally(() => {
+				submitting = false;
 			});
 		return () => {};
 	};
@@ -139,7 +144,7 @@
 	<input type="hidden" name="attachments_to_delete" value={markedForDeletion.join(',')} />
 
 	<div class="flex gap-3">
-		<Button type="submit">
+		<Button type="submit" disabled={submitting}>
 			{recordId ? 'Update' : 'Create'} Record
 		</Button>
 	</div>
