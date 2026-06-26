@@ -32,7 +32,7 @@
 	}}
 >
 	<div class="max-w-2xl mx-auto space-y-6">
-		<Card bleed>
+		<Card bleed variant="outline">
 			<h2 class="text-lg font-semibold">Export History</h2>
 			<p>Download your vehicle's complete history as a CSV file.</p>
 			<Button href={`/vehicles/${vehicle.id}/export`} class="self-start">
@@ -41,9 +41,18 @@
 			</Button>
 		</Card>
 
-		<Card bleed>
+		<Card bleed variant="outline">
 			<h2 class="text-lg font-semibold">Import History</h2>
-			<p>Upload a CSV file to import records. The file must match the export format.</p>
+			<p>Upload a CSV file to import records.</p>
+			<div>
+				<p class="font-medium">CSV format:</p>
+				<div class="rounded-md bg-ink-100 p-4 text-base space-y-1 font-mono">
+					<code class="block">date,cost,mileage,notes</code>
+					<code class="block">2024-01-15,45.00,52500,"Oil change"</code>
+					<code class="block">2024-06-20,,54200,"Tire rotation"</code>
+				</div>
+			</div>
+
 			<form
 				method="POST"
 				action={`/vehicles/${vehicle.id}/import`}
