@@ -18,16 +18,16 @@ class CleanupUnverifiedAccountsJob < ApplicationJob
 
   def delete_never_logged_in
     users = User.where.missing(:sessions, :vehicles)
-               .where(users: { created_at: ...NEVER_LOGGED_IN_CUTOFF.ago })
-               .where.not(admin: true)
+                .where(users: { created_at: ...NEVER_LOGGED_IN_CUTOFF.ago })
+                .where.not(admin: true)
     Session.where(user_id: users.pluck(:id)).delete_all
     users.delete_all
   end
 
   def delete_bounced_accounts
     users = User.where.missing(:sessions, :vehicles)
-               .where.not(email_bounced_at: nil)
-               .where.not(admin: true)
+                .where.not(email_bounced_at: nil)
+                .where.not(admin: true)
     Session.where(user_id: users.pluck(:id)).delete_all
     users.delete_all
   end

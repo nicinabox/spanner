@@ -147,13 +147,16 @@ class User < ApplicationRecord
   end
 
   def reminder_eligible?
-    return false if unsubscribed_at?
-    return false if email_bounced_at.present?
-    return false if days_since_last_seen.nil? && created_at.before?(REMINDER_CUTOFF_DAYS.days.ago)
-    return false if days_since_last_seen && days_since_last_seen > REMINDER_CUTOFF_DAYS
-    return true if last_reminder_sent_at.nil?
+    return false if unsubscribed_at? || email_bounced_at.present?
+    return false if inactive?
 
-    (Time.zone.now - last_reminder_sent_at) >= reminder_backoff_interval
+    last_reminder_sent_at.nil? || (Time.zone.now - last_reminder_sent_at) >= reminder_backoff_interval
+  end
+
+  def inactive?
+    return true if days_since_last_seen.nil? && created_at.before?(REMINDER_CUTOFF_DAYS.days.ago)
+
+    days_since_last_seen && days_since_last_seen > REMINDER_CUTOFF_DAYS
   end
 
   def record_reminder_sent!

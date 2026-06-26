@@ -2,7 +2,7 @@
 
 require 'constraints/api_constraint'
 
-Rails.application.routes.draw do
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   root 'status#index'
 
   scope module: :v2 do

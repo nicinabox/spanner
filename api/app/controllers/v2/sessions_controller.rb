@@ -15,9 +15,7 @@ module V2
       host = params[:host]
       user = User.unscoped.find_by(email: email)
 
-      if user&.deleted?
-        user.restore!
-      end
+      user.restore! if user&.deleted?
 
       unless user
         user = User.create! email: email, time_zone_offset: time_zone_offset
@@ -25,19 +23,7 @@ module V2
       end
 
       if user
-        login_token = SecureRandom.urlsafe_base64
-        user.update!(
-          login_token: login_token,
-          login_token_valid_until: 15.minutes.from_now
-        )
-        Rails.logger.debug { "Login token for user #{user.email}: #{login_token}" } if Rails.env.development?
-
-        if params[:platform] == 'mobile'
-          LoginMailer.login_token(user).deliver_later
-        else
-          LoginMailer.login_link(user, host: host).deliver_later
-        end
-
+        issue_login_token(user, host)
         head :no_content
       else
         respond_with_errors(user)
@@ -86,6 +72,21 @@ module V2
       )
       session.save
       session.user.update!(time_zone_offset: time_zone_offset)
+    end
+
+    def issue_login_token(user, host)
+      login_token = SecureRandom.urlsafe_base64
+      user.update!(
+        login_token: login_token,
+        login_token_valid_until: 15.minutes.from_now
+      )
+      Rails.logger.debug { "Login token for user #{user.email}: #{login_token}" } if Rails.env.development?
+
+      if params[:platform] == 'mobile'
+        LoginMailer.login_token(user).deliver_later
+      else
+        LoginMailer.login_link(user, host: host).deliver_later
+      end
     end
   end
 end
