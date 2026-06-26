@@ -6,18 +6,18 @@
 		variants: {
 			variant: {
 				outline: '',
-				filled: 'border-0 bg-ink-100 focus:bg-ink-50'
+				filled: 'border-0 bg-ink-100 focus:bg-ink-50',
 			},
 			size: {
 				sm: 'text-base rounded-sm',
 				md: 'text-base',
-				lg: 'text-base'
-			}
+				lg: 'text-base',
+			},
 		},
 		defaultVariants: {
 			size: 'md',
-			variant: 'outline'
-		}
+			variant: 'outline',
+		},
 	});
 
 	export type TextareaVariant = VariantProps<typeof textareaVariants>['variant'];
@@ -79,9 +79,8 @@
 		{readonly}
 		aria-describedby={ariaDescribedBy}
 		aria-invalid={ariaInvalid}
-		oninput={(e) => value = (e.target as HTMLTextAreaElement).value}
-		{...rest}
-	></textarea>
+		oninput={(e) => (value = (e.target as HTMLTextAreaElement).value)}
+		{...rest}></textarea>
 </div>
 
 <style>
@@ -95,10 +94,12 @@
 		visibility: hidden;
 		grid-area: 1 / 1;
 		word-wrap: break-word;
+		min-width: 0;
 	}
 
 	div :global(textarea) {
 		grid-area: 1 / 1;
+		min-width: 0;
 	}
 
 	div::after,
