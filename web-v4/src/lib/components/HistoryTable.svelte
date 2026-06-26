@@ -147,7 +147,7 @@
 							{record.cost ? formatCurrency(Number(record.cost)) : '--'}
 						</Cell>
 					{/if}
-					<Cell class="w-full max-sm:py-1">
+					<Cell class="w-full max-sm:py-1 flex flex-col">
 						<Markdown src={record.notes} />
 						{#if record.attachments.length > 0}
 							<div class="mt-2">
