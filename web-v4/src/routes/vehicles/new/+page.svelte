@@ -5,9 +5,14 @@
 	import VehicleForm from '$lib/components/forms/VehicleForm.svelte';
 	import { ArrowLeft } from 'lucide-svelte';
 	import type { PageProps } from './$types';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { form }: PageProps = $props();
 </script>
+
+<svelte:head>
+	<title>{pageTitle('New Vehicle')}</title>
+</svelte:head>
 
 <PageLayout>
 	{#snippet appbarStart()}

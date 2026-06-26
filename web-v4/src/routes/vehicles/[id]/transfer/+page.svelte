@@ -6,6 +6,7 @@
 	import { Download } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import { vehiclePath } from '$lib/routes';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data }: PageProps = $props();
 
@@ -17,6 +18,10 @@
 		$page.url.pathname === `/vehicles/${vehicle.id}/transfer` ? 'history' : 'history',
 	);
 </script>
+
+<svelte:head>
+	<title>{pageTitle('Import/Export', data.vehicle.name)}</title>
+</svelte:head>
 
 <VehiclePageLayout
 	{vehicle}

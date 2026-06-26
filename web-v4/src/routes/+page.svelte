@@ -2,9 +2,14 @@
 	import Card from '$lib/components/common/Card.svelte';
 	import SigninForm from '$lib/components/forms/SigninForm.svelte';
 	import type { PageProps } from './$types';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { form }: PageProps = $props();
 </script>
+
+<svelte:head>
+	<title>{pageTitle()}</title>
+</svelte:head>
 
 <main class="max-w-2xl w-full mx-auto px-4">
 	<div class="flex min-h-screen flex-col items-center">

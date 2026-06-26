@@ -10,6 +10,7 @@
 	import { BookOpenText, PlusIcon, Search } from 'lucide-svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import type { PageProps } from './$types';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data }: PageProps = $props();
 
@@ -30,6 +31,10 @@
 			: history,
 	);
 </script>
+
+<svelte:head>
+	<title>{pageTitle(data.vehicle.name)}</title>
+</svelte:head>
 
 <VehiclePageLayout {vehicle} {activeTab}>
 	<div class="max-w-6xl mx-auto">

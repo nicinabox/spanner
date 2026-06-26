@@ -4,6 +4,7 @@
 	import ReminderForm from '$lib/components/forms/ReminderForm.svelte';
 	import { page } from '$app/stores';
 	import type { PageProps } from './$types';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data, form }: PageProps = $props();
 
@@ -16,6 +17,10 @@
 			: 'reminders',
 	);
 </script>
+
+<svelte:head>
+	<title>{pageTitle('Edit Reminder', data.vehicle.name)}</title>
+</svelte:head>
 
 <VehiclePageLayout
 	{vehicle}

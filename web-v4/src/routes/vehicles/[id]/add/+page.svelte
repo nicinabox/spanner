@@ -7,6 +7,7 @@
 	import { page } from '$app/stores';
 	import { Bell, Gauge, PlusIcon } from 'lucide-svelte';
 	import type { PageProps } from './$types';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data, form }: PageProps = $props();
 
@@ -44,6 +45,10 @@
 		},
 	]);
 </script>
+
+<svelte:head>
+	<title>{pageTitle('Add Record', data.vehicle.name)}</title>
+</svelte:head>
 
 <VehiclePageLayout
 	{vehicle}

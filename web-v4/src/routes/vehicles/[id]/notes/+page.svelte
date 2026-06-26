@@ -8,6 +8,7 @@
 	import { NotepadText, Pencil } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import { createInlineEnhance } from '$lib/utils/form';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data, form }: PageProps = $props();
 
@@ -23,6 +24,10 @@
 	let notesDraft = $state(vehicle.notes);
 	let dirty = $derived(notesDraft !== vehicle.notes);
 </script>
+
+<svelte:head>
+	<title>{pageTitle('Notes', data.vehicle.name)}</title>
+</svelte:head>
 
 <VehiclePageLayout {vehicle} {activeTab}>
 	<div class="max-w-2xl mx-auto">

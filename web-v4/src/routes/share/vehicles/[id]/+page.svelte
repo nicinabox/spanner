@@ -6,6 +6,7 @@
 	import { BookOpenText } from 'lucide-svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import type { PageProps } from './$types';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data }: PageProps = $props();
 
@@ -14,7 +15,7 @@
 </script>
 
 <svelte:head>
-	<title>{vehicle.name} — Spanner</title>
+	<title>{pageTitle(vehicle.name)}</title>
 </svelte:head>
 
 <AppBar />
@@ -27,15 +28,15 @@
 	{#if history.length}
 		<div class="mb-6 flex gap-12 overflow-auto pointer-coarse:no-scrollbar">
 			<Stat title="Since" value={intlFormatDateUTC(history[0].date)} />
-			<Stat title="Mileage" value={`${vehicle.estimatedMileage?.toLocaleString()} ${vehicle.distanceUnit}`} />
+			<Stat
+				title="Mileage"
+				value={`${vehicle.estimatedMileage?.toLocaleString()} ${vehicle.distanceUnit}`}
+			/>
 		</div>
 
 		<HistoryTable {history} {vehicle} editable={false} />
 	{:else}
-		<EmptyState
-			heading="No history yet"
-			details="This vehicle doesn't have any service records."
-		>
+		<EmptyState heading="No history yet" details="This vehicle doesn't have any service records.">
 			{#snippet media()}
 				<BookOpenText size={48} class="text-ink-300" />
 			{/snippet}

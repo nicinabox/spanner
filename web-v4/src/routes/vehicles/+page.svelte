@@ -11,6 +11,7 @@
 	import type { DistanceUnit, Sortable, Vehicle } from '$lib/data/vehicles';
 	import type { PageProps } from './$types';
 	import { enhance } from '$app/forms';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data, form }: PageProps = $props();
 
@@ -31,6 +32,10 @@
 	let user = $derived(form?.user ?? data.user);
 	let vehiclesSortOrder = $state<Sortable>(user.preferences.vehiclesSortOrder);
 </script>
+
+<svelte:head>
+	<title>{pageTitle('Vehicles')}</title>
+</svelte:head>
 
 <PageLayout>
 	{#if data.vehicles.length === 0}

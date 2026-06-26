@@ -2,12 +2,17 @@
 	import { enhance } from '$app/forms';
 	import { Button, Card, Confirm, Field, Input, PageLayout } from '$lib';
 	import type { PageProps } from './$types';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data, form }: PageProps = $props();
 
 	let success = $derived(form?.success);
 	let newEmail = $derived(form?.email ?? '');
 </script>
+
+<svelte:head>
+	<title>{pageTitle('Settings')}</title>
+</svelte:head>
 
 <PageLayout>
 	<div class="max-w-xl mx-auto">
@@ -53,7 +58,8 @@
 					<div>
 						<span class="font-medium">Permanently delete your account</span>
 						<p class="text-sm text-ink-500">
-							Your vehicles, records, and all data will be deleted. You can sign in again within 30 days to restore your account.
+							Your vehicles, records, and all data will be deleted. You can sign in again within 30
+							days to restore your account.
 						</p>
 					</div>
 					<Confirm title="Delete account?">
@@ -75,7 +81,8 @@
 							</form>
 						{/snippet}
 						<p>
-							This will immediately delete your account and sign you out. You have 30 days to sign in again to restore your data.
+							This will immediately delete your account and sign you out. You have 30 days to sign
+							in again to restore your data.
 						</p>
 					</Confirm>
 				</div>

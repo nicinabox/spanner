@@ -5,9 +5,14 @@
 	import type { PageProps } from './$types';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import { vehiclePath } from '$lib/routes';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { form, data }: PageProps = $props();
 </script>
+
+<svelte:head>
+	<title>{pageTitle('Edit Vehicle', data.vehicle.name)}</title>
+</svelte:head>
 
 <VehiclePageLayout
 	vehicle={data.vehicle}

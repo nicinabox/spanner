@@ -4,6 +4,7 @@
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import { page } from '$app/stores';
 	import type { PageProps } from './$types';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data }: PageProps = $props();
 
@@ -16,6 +17,10 @@
 			: 'history',
 	);
 </script>
+
+<svelte:head>
+	<title>{pageTitle('Edit Record', data.vehicle.name)}</title>
+</svelte:head>
 
 <VehiclePageLayout
 	{vehicle}

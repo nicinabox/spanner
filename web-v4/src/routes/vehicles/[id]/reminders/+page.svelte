@@ -9,6 +9,7 @@
 	import { Bell, ChevronRight, PlusIcon } from 'lucide-svelte';
 	import { isReminderOverdue, sortRemindersByDue } from '$lib/utils/reminders';
 	import type { PageProps } from './$types';
+	import { pageTitle } from '$lib/utils/site';
 
 	let { data }: PageProps = $props();
 
@@ -23,6 +24,10 @@
 
 	let sortedReminders = $derived(sortRemindersByDue(reminders, vehicle.estimatedMileage));
 </script>
+
+<svelte:head>
+	<title>{pageTitle('Reminders', data.vehicle.name)}</title>
+</svelte:head>
 
 <VehiclePageLayout {vehicle} {activeTab}>
 	<div class="max-w-2xl mx-auto">
@@ -51,13 +56,17 @@
 										{:else}
 											Due
 											{#if reminder.reminderDate || reminder.date}
-												<span class="font-semibold">{intlFormatDateUTC(reminder.reminderDate ?? reminder.date!)}</span>
+												<span class="font-semibold"
+													>{intlFormatDateUTC(reminder.reminderDate ?? reminder.date!)}</span
+												>
 												{#if reminder.mileage}
 													or
 												{/if}
 											{/if}
 											{#if reminder.mileage}
-												<span class="font-semibold">{formatMileage(reminder.mileage, vehicle.distanceUnit)}</span>
+												<span class="font-semibold"
+													>{formatMileage(reminder.mileage, vehicle.distanceUnit)}</span
+												>
 											{/if}
 										{/if}
 									</p>
