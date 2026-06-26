@@ -8,7 +8,7 @@
 	import { Bell, Gauge, PlusIcon } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 
-	let { data }: PageProps = $props();
+	let { data, form }: PageProps = $props();
 
 	let vehicle = $derived(data.vehicle);
 
@@ -58,7 +58,7 @@
 			{#if view === 'record'}
 				<RecordForm {vehicle} record={{ notes: notesParam } as any} action="?/record" />
 			{:else if view === 'reminder'}
-				<ReminderForm {vehicle} action="?/reminder" />
+				<ReminderForm {vehicle} action="?/reminder" errors={form?.errors} />
 			{:else if view === 'mileage-adjustment'}
 				<MileageAdjustmentForm {vehicle} action="?/mileage-adjustment" />
 			{/if}
