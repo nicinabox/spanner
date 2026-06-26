@@ -1,5 +1,6 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { getReminder, updateReminder, deleteReminder } from '$lib/data/reminders';
+import { getHTTPErrors } from '$lib/utils/actions';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -22,17 +23,21 @@ export const actions = {
 			return fail(400, { errors: [{ id: 'notes', title: 'Note is required' }] });
 		}
 
-		await updateReminder(
-			params.id!,
-			params.reminderId!,
-			{
-				notes,
-				reminderType: reminderType || null,
-				date: date || null,
-				mileage: mileage ? Number(mileage) : null
-			} as never,
-			locals
-		);
+		try {
+			await updateReminder(
+				params.id!,
+				params.reminderId!,
+				{
+					notes,
+					reminderType: reminderType || null,
+					date: date || null,
+					mileage: mileage ? Number(mileage) : null
+				} as never,
+				locals
+			);
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
+		}
 
 		redirect(303, `/vehicles/${params.id}/reminders`);
 	},

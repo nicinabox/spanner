@@ -5,7 +5,7 @@
 	import { page } from '$app/stores';
 	import type { PageProps } from './$types';
 
-	let { data }: PageProps = $props();
+	let { data, form }: PageProps = $props();
 
 	let vehicle = $derived(data.vehicle);
 	let reminder = $derived(data.reminder);
@@ -25,7 +25,7 @@
 	<div class="max-w-2xl mx-auto">
 		<Card variant="outline" bleed>
 			<h1 class="text-xl font-semibold">Edit Reminder</h1>
-			<ReminderForm {vehicle} {reminder} action="?/update" />
+			<ReminderForm {vehicle} {reminder} action="?/update" errors={form?.errors} />
 		</Card>
 
 		<Card class="mt-6" variant="outline" bleed>

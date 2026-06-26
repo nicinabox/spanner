@@ -3,6 +3,7 @@ import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder } from '$lib/data/reminders';
 import { decode } from '$lib/utils/form';
+import { getHTTPErrors } from '$lib/utils/actions';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -67,16 +68,20 @@ export const actions = {
 			return fail(400, { errors: [{ id: 'notes', title: 'Note is required' }] });
 		}
 
-		await createVehicleReminder(
-			params.id!,
-			{
-				notes: data.notes as string,
-				reminderType: (data.reminderType as string) || null,
-				date: (data.date as string) || null,
-				mileage: typeof data.mileage === 'number' ? data.mileage : null
-			} as never,
-			locals
-		);
+		try {
+			await createVehicleReminder(
+				params.id!,
+				{
+					notes: data.notes as string,
+					reminderType: (data.reminderType as string) || null,
+					date: (data.date as string) || null,
+					mileage: typeof data.mileage === 'number' ? data.mileage : null
+				} as never,
+				locals
+			);
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
+		}
 
 		redirect(303, `/vehicles/${params.id}/reminders`);
 	},
