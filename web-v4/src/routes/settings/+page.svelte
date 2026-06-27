@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { ArrowLeft } from 'lucide-svelte';
 	import { Button, Card, Confirm, Field, Input, PageLayout } from '$lib';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
@@ -15,6 +16,12 @@
 </svelte:head>
 
 <PageLayout>
+	{#snippet appbarStart()}
+		<Button size="sm" href="/vehicles" color="neutral" theme="dark">
+			<ArrowLeft size={16} /> Vehicles
+		</Button>
+	{/snippet}
+
 	<div class="max-w-xl mx-auto">
 		<h1 class="text-2xl font-semibold mb-6">Settings</h1>
 
