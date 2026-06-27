@@ -7,6 +7,11 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
+
+	if (vehicle.retired) {
+		redirect(303, `/vehicles/${params.id}`);
+	}
+
 	const record = await getHistoryEntry(params.id!, params.recordId!, locals);
 	return { vehicle, record };
 };

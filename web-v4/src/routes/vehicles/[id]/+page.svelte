@@ -67,9 +67,11 @@
 				{#snippet media()}
 					<BookOpenText size={48} class="text-ink-300" />
 				{/snippet}
-				{#snippet action()}
-					<Button href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase">Add Purchase</Button>
-				{/snippet}
+				{#if !vehicle.retired}
+					{#snippet action()}
+						<Button href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase">Add Purchase</Button>
+					{/snippet}
+				{/if}
 			</EmptyState>
 		{:else}
 			<div class="flex justify-between gap-10 mb-4">
@@ -83,16 +85,18 @@
 				>
 					{#snippet start()}<Search size={16} />{/snippet}
 				</InputGroup>
-				<Button href="/vehicles/{vehicle.id}/add">
-					<PlusIcon size={16} />
-					New...
-				</Button>
+				{#if !vehicle.retired}
+					<Button href="/vehicles/{vehicle.id}/add">
+						<PlusIcon size={16} />
+						New...
+					</Button>
+				{/if}
 			</div>
 
 			{#if !filteredHistory.length}
 				<p class="text-center text-ink-400 py-12">No results for "{searchQuery}"</p>
 			{:else}
-				<HistoryTable history={filteredHistory} {vehicle} />
+				<HistoryTable history={filteredHistory} {vehicle} editable={!vehicle.retired} />
 			{/if}
 		{/if}
 	</div>
