@@ -18,7 +18,7 @@ worker_thread = Thread.new do
     worker.start
   rescue StandardError => e
     Rails.logger.error { "[worker] QueueClassic worker crashed: #{e.message}" }
-    Bugsnag.notify(e) if defined?(Bugsnag)
+    Sentry.capture_exception(e)
     raise
   end
 end

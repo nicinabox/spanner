@@ -7,11 +7,10 @@ class ApplicationController < ActionController::API
 
   before_action :authenticate
   before_action :set_active_storage_url_options
-  before_bugsnag_notify :add_user_info_to_bugsnag
 
   rescue_from StandardError do |e|
     log_exception(e)
-    Bugsnag.notify(e)
+    Sentry.capture_exception(e)
     respond_with_error(e.message, status: 500)
   end
 
@@ -31,13 +30,6 @@ class ApplicationController < ActionController::API
   end
 
   protected
-
-  def add_user_info_to_bugsnag(notification)
-    notification.user = {
-      email: current_user.email,
-      id: current_user.id
-    }
-  end
 
   attr_reader :current_user, :current_session
 
