@@ -33,7 +33,7 @@
 			{@render center()}
 		{:else}
 			<a href="/">
-				<img src="/logo-white.png" alt="Spanner" class="h-[1.8rem] w-auto" />
+				<img src="/icons/app-icon-white.png" alt="Spanner" class="h-[1.8rem] w-auto" />
 			</a>
 		{/if}
 	</div>
@@ -45,7 +45,10 @@
 				trigger={username}
 				theme="dark"
 				size="sm"
-				items={[{ value: 'settings', label: 'Settings', href: '/settings', preload: false }, { value: 'signout', label: 'Sign out', href: '/logout', preload: false }]}
+				items={[
+					{ value: 'settings', label: 'Settings', href: '/settings', preload: false },
+					{ value: 'signout', label: 'Sign out', href: '/logout', preload: false },
+				]}
 			/>
 			<ThemeToggle size="sm" />
 		{/if}
