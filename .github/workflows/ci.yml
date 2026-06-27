@@ -1,96 +1,121 @@
 name: CI
 
 on:
-    push:
-        branches: [main, master]
-    pull_request:
-        branches: [main, master]
-    workflow_dispatch:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
 
 jobs:
-    api:
-        name: API - Lint & Test
-        runs-on: ubuntu-latest
+  api:
+    name: API - Lint & Test
+    runs-on: ubuntu-latest
 
-        services:
-            postgres:
-                image: postgres:16
-                env:
-                    POSTGRES_USER: spanner
-                    POSTGRES_PASSWORD: spanner
-                    POSTGRES_DB: spanner_api_test
-                ports:
-                    - 5432:5432
-                options: >-
-                    --health-cmd pg_isready
-                    --health-interval 10s
-                    --health-timeout 5s
-                    --health-retries 5
-
+    services:
+      postgres:
+        image: postgres:16
         env:
-            RAILS_ENV: test
-            POSTGRES_USER: spanner
-            POSTGRES_PASSWORD: spanner
-            POSTGRES_HOST: localhost
-            POSTGRES_DB: spanner_api_test
+          POSTGRES_USER: spanner
+          POSTGRES_PASSWORD: spanner
+          POSTGRES_DB: spanner_api_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-        defaults:
-            run:
-                working-directory: api
+    env:
+      RAILS_ENV: test
+      POSTGRES_USER: spanner
+      POSTGRES_PASSWORD: spanner
+      POSTGRES_HOST: localhost
+      POSTGRES_DB: spanner_api_test
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    defaults:
+      run:
+        working-directory: api
 
-            - name: Set up Ruby
-              uses: ruby/setup-ruby@v1
-              with:
-                  ruby-version: 3.4.6
-                  bundler-cache: true
-                  working-directory: api
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Set up test database
-              run: bin/rails db:schema:load
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.6
+          bundler-cache: true
+          working-directory: api
 
-            - name: Run RuboCop
-              run: bundle exec rubocop
+      - name: Set up test database
+        run: bin/rails db:schema:load
 
-            - name: Run Rails tests
-              run: bin/rails test
+      - name: Run RuboCop
+        run: bundle exec rubocop
 
-    web:
-        name: Web - Lint, Type Check, Test & Build
-        runs-on: ubuntu-latest
+      - name: Run Rails tests
+        run: bin/rails test
 
-        env:
-            CLIENT_SECRET: ci-test-secret-must-be-at-least-32-characters-long
-            PROXY_HOST: http://localhost:3001
-            BUGSNAG_API_KEY: ''
-            HEAD_INJECTIONS: ''
+  web:
+    name: Web - Lint, Type Check, Test & Build
+    runs-on: ubuntu-latest
 
-        defaults:
-            run:
-                working-directory: web
+    env:
+      CLIENT_SECRET: ci-test-secret-must-be-at-least-32-characters-long
+      PROXY_HOST: http://localhost:3001
+      BUGSNAG_API_KEY: ""
+      HEAD_INJECTIONS: ""
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    defaults:
+      run:
+        working-directory: web
 
-            - name: Set up Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-                  cache: yarn
-                  cache-dependency-path: web/yarn.lock
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Install dependencies
-              run: yarn install --frozen-lockfile
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: web/yarn.lock
 
-            - name: Run ESLint
-              run: yarn lint
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-            - name: Run TypeScript type check
-              run: yarn typecheck
+      - name: Run ESLint
+        run: yarn lint
 
-            - name: Build Next.js application
-              run: yarn build
+      - name: Run TypeScript type check
+        run: yarn typecheck
+
+      - name: Build Next.js application
+        run: yarn build
+
+  web-v4:
+    name: Web-v4 - Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: web-v4
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web-v4/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build SvelteKit application
+        run: npm run build
