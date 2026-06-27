@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { Button, Card } from '$lib';
+	import { Button, Card, Switch } from '$lib';
 	import FileInput from '$lib/components/forms/FileInput.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import { page } from '$app/stores';
-	import { Download } from 'lucide-svelte';
+	import { Download, TriangleAlert } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import { vehiclePath } from '$lib/routes';
 	import { pageTitle } from '$lib/utils/site';
 
-	let { data }: PageProps = $props();
+	let { data, form }: PageProps = $props();
 
 	let vehicle = $derived(data.vehicle);
 
@@ -17,6 +17,8 @@
 	let activeTab = $derived(
 		$page.url.pathname === `/vehicles/${vehicle.id}/transfer` ? 'history' : 'history',
 	);
+
+	let formErrors = $derived(form?.errors ?? []);
 </script>
 
 <svelte:head>
@@ -35,7 +37,7 @@
 		<Card bleed variant="outline">
 			<h2 class="text-lg font-semibold">Export History</h2>
 			<p>Download your vehicle's complete history as a CSV file.</p>
-			<Button href={`/vehicles/${vehicle.id}/export`} class="self-start">
+			<Button href={`/api/vehicles/${vehicle.id}/export`} class="self-start">
 				<Download size={16} />
 				Export CSV
 			</Button>
@@ -53,15 +55,23 @@
 				</div>
 			</div>
 
+			{#if formErrors.length > 0}
+				<div role="alert" class="p-3 rounded-md bg-negative/10 text-negative text-sm">
+					{#each formErrors as e}
+						<p>{e.title}</p>
+					{/each}
+				</div>
+			{/if}
+
 			<form
 				method="POST"
-				action={`/vehicles/${vehicle.id}/import`}
+				action="?/import"
 				enctype="multipart/form-data"
 				class="space-y-4"
 			>
 				<label class="flex items-center gap-3 cursor-pointer">
 					<FileInput
-						name="file"
+						name="vehicle[import_file]"
 						accept=".csv"
 						onChange={(input) => (selectedFile = input.files?.[0] ?? null)}
 					/>
@@ -69,6 +79,16 @@
 						{selectedFile ? selectedFile.name : 'No file chosen'}
 					</span>
 				</label>
+
+				<Switch name="vehicle[fuelly]" value="true">
+					This data is from Fuelly
+				</Switch>
+
+				<div class="flex items-start gap-2 p-3 rounded-md bg-warning/10 text-warning text-sm">
+					<TriangleAlert size={16} class="mt-0.5 shrink-0" />
+					<span>This will replace all your existing records for this vehicle!</span>
+				</div>
+
 				<Button type="submit">Import</Button>
 			</form>
 		</Card>

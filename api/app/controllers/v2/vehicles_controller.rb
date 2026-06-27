@@ -53,6 +53,8 @@ module V2
       else
         Importer.records(vehicle, contents)
       end
+
+      head :ok
     end
 
     def export

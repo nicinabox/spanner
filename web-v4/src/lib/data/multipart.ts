@@ -75,6 +75,29 @@ export async function deleteAttachment(
 	}
 }
 
+export async function importRecords(
+	vehicleId: string | number,
+	formData: FormData,
+	opts: RequestOpts
+): Promise<void> {
+	const headers = new Headers({ Accept: ACCEPT_HEADER });
+	if (opts.authToken) {
+		headers.set('Authorization', `Token ${opts.authToken}`);
+	}
+
+	const response = await fetch(`${PROXY_HOST}/vehicles/${vehicleId}/import`, {
+		method: 'POST',
+		headers,
+		body: formData
+	});
+
+	if (!response.ok) {
+		const text = await response.text();
+		const data = text ? safeParse(text) : text;
+		throw new HTTPError(response, data);
+	}
+}
+
 function safeParse(text: string): unknown {
 	try {
 		return JSON.parse(text);

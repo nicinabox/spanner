@@ -5,8 +5,19 @@ require 'csv'
 class Importer
   def self.records(vehicle, contents)
     rows = CSV.parse(contents, headers: true)
-    vehicle.records.delete_all
-    vehicle.records.create!(rows.map(&:to_h))
+
+    ActiveRecord::Base.transaction do
+      record_ids = vehicle.record_ids
+
+      RecordClassification.where(record_id: record_ids).delete_all
+      vehicle.service_schedules
+             .where(last_completed_record_id: record_ids)
+             .update_all(last_completed_record_id: nil)
+      ActiveStorage::Attachment.where(record_id: record_ids, record_type: 'Record').delete_all
+
+      vehicle.records.where(id: record_ids).delete_all
+      vehicle.records.create!(rows.map(&:to_h))
+    end
   end
 
   def self.fuelly(vehicle, contents)
@@ -19,7 +30,17 @@ class Importer
       }
     end
 
-    vehicle.records.delete_all
-    vehicle.records.create!(rows)
+    ActiveRecord::Base.transaction do
+      record_ids = vehicle.record_ids
+
+      RecordClassification.where(record_id: record_ids).delete_all
+      vehicle.service_schedules
+             .where(last_completed_record_id: record_ids)
+             .update_all(last_completed_record_id: nil)
+      ActiveStorage::Attachment.where(record_id: record_ids, record_type: 'Record').delete_all
+
+      vehicle.records.where(id: record_ids).delete_all
+      vehicle.records.create!(rows)
+    end
   end
 end
