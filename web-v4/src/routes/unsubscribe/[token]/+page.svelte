@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AppIcon from '$lib/components/common/AppIcon.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -12,12 +13,8 @@
 
 <div class="flex min-h-screen max-w-prose mx-auto flex-col items-center justify-center px-4">
 	<div class="text-center">
-		<img src="/icons/app-icon.png" alt="Spanner" class="h-14 w-auto mx-auto block dark:hidden" />
-		<img
-			src="/icons/app-icon-white.png"
-			alt="Spanner"
-			class="h-14 w-auto mx-auto hidden dark:block"
-		/>
+		<AppIcon />
+
 		<h1 class="text-2xl font-semibold mt-6 mb-2">
 			{isError ? 'Something went wrong' : 'Unsubscribed'}
 		</h1>
