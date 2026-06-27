@@ -99,6 +99,12 @@ jobs:
     name: Web-v4 - Build
     runs-on: ubuntu-latest
 
+    env:
+      CLIENT_SECRET: ci-test-secret-must-be-at-least-32-characters-long
+      PROXY_HOST: http://localhost:3001
+      PUBLIC_SENTRY_DSN: ""
+      HEAD_INJECTIONS: ""
+
     defaults:
       run:
         working-directory: web-v4
