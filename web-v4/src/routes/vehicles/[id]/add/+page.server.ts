@@ -1,7 +1,7 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
-import { createVehicleReminder } from '$lib/data/reminders';
+import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
 import { decode } from '$lib/utils/form';
 import { getHTTPErrors } from '$lib/utils/actions';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 export const actions = {
-	record: async ({ request, locals, params }) => {
+	record: async ({ request, locals, params, url }) => {
 		const formData = await request.formData();
 		const data = decode(formData, {
 			date: 'string',
@@ -28,6 +28,8 @@ export const actions = {
 		if (!data.notes) {
 			return fail(400, { errors: [{ id: 'notes', title: 'Notes is required' }] });
 		}
+
+		const reminderId = url.searchParams.get('reminder_id');
 
 		const files = formData.getAll('record[attachments][]') as File[];
 		const body = toMultipartFormData(
@@ -45,6 +47,9 @@ export const actions = {
 
 		try {
 			await uploadRecord(params.id!, undefined, body, locals);
+			if (reminderId) {
+				await deleteReminder(params.id!, reminderId, locals);
+			}
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Upload failed';
 			return fail(422, {

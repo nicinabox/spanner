@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import Button from '$lib/components/common/Button.svelte';
 	import Field from '$lib/components/common/Field.svelte';
@@ -69,12 +70,8 @@
 			headers: { Accept: 'application/json' },
 		})
 			.then(async (response) => {
-				if (response.redirected) {
-					window.location.href = response.url;
-					return;
-				}
-				if (response.ok) {
-					window.location.href = `/vehicles/${vehicle.id}`;
+				if (response.ok || response.redirected) {
+					goto(`/vehicles/${vehicle.id}`, { invalidateAll: true });
 					return;
 				}
 				// Re-render the page with returned errors so the user sees them.

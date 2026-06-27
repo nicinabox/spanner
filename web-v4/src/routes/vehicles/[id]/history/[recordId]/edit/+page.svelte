@@ -2,6 +2,8 @@
 	import { Button, Card, Confirm } from '$lib';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
+	import { enhance } from '$app/forms';
+	import { invalidate, goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
@@ -47,7 +49,14 @@
 							<Button danger onclick={() => onOpenChange(true)}>Delete</Button>
 						{/snippet}
 						{#snippet actions({ onOpenChange })}
-							<form method="POST" action="?/delete" class="flex flex-row gap-2 flex-1 sm:flex-none">
+							<form method="POST" action="?/delete" use:enhance={() => {
+									return async ({ result }) => {
+										if (result.type === 'redirect') {
+											await invalidate(() => true);
+											goto(result.location, { invalidateAll: true });
+										}
+									};
+								}} class="flex flex-row gap-2 flex-1 sm:flex-none">
 								<Button type="submit" danger class="flex-1 sm:flex-none">Delete</Button>
 								<Button
 									variant="outline"

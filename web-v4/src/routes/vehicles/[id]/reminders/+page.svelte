@@ -100,7 +100,7 @@
 									<RecordForm
 										{vehicle}
 										record={{ notes: reminder.notes, mileage: vehicle.estimatedMileage } as any}
-										action={`/vehicles/${vehicle.id}/add?/record`}
+										action={`/vehicles/${vehicle.id}/add?/record&reminder_id=${reminder.id}`}
 									/>
 								</div>
 							{/if}
