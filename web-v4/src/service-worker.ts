@@ -27,7 +27,7 @@ self.addEventListener('activate', (event) => {
 	);
 });
 
-// Network-first for navigations, fall back to cache or offline page
+// Cache-first for navigations, fall back to network then offline page
 self.addEventListener('fetch', (event) => {
 	const { request } = event;
 
@@ -36,18 +36,30 @@ self.addEventListener('fetch', (event) => {
 	event.respondWith(
 		(async () => {
 			const cached = await caches.match(request);
+			if (cached) {
+				// Serve from cache immediately, revalidate in background
+				fetch(request)
+					.then((response) => {
+						if (response.ok) {
+							const clone = response.clone();
+							caches.open(CACHE).then((cache) => cache.put(request, clone));
+						}
+					})
+					.catch(() => {});
+				return cached;
+			}
+
+			// No cached version — try network, fall back to offline page
 			try {
 				const response = await fetch(request);
 				if (response.ok) {
 					const clone = response.clone();
 					const cache = await caches.open(CACHE);
 					cache.put(request, clone);
-					return response;
 				}
-				// Non-OK response — prefer cached copy if available
-				return cached || (await caches.match('/offline')) || response;
+				return response;
 			} catch {
-				return cached || (await caches.match('/offline')) || Response.error();
+				return (await caches.match('/offline')) || Response.error();
 			}
 		})()
 	);
