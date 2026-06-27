@@ -8,7 +8,7 @@ const CACHE = `spanner-${version}`;
 // Precache app shell on install
 self.addEventListener('install', (event) => {
 	event.waitUntil(
-		caches.open(CACHE).then((cache) => cache.addAll(ASSETS))
+		caches.open(CACHE).then((cache) => Promise.allSettled(ASSETS.map((url) => cache.add(url))))
 	);
 	self.skipWaiting();
 });
@@ -38,10 +38,12 @@ self.addEventListener('fetch', (event) => {
 					const clone = response.clone();
 					const cache = await caches.open(CACHE);
 					cache.put(request, clone);
+					return response;
 				}
-				return response;
+				// Non-OK response — prefer cached copy if available
+				return cached || (await caches.match('/offline.html')) || response;
 			} catch {
-				return cached || (await caches.match('/offline.html'));
+				return cached || (await caches.match('/offline.html')) || Response.error();
 			}
 		})()
 	);
