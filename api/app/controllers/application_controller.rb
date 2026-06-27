@@ -77,7 +77,7 @@ class ApplicationController < ActionController::API
   def respond_with_errors(object)
     render json: {
       errors: ErrorSerializer.serialize(object)
-    }, status: :unprocessable_entity
+    }, status: :unprocessable_content
   end
 
   def respond_with_error(detail, **args)
