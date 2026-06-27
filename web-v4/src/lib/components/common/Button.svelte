@@ -6,10 +6,14 @@
 		variants: {
 			variant: {
 				solid: 'bg-brand-500 text-white border-brand-500 hover:bg-brand-600 active:bg-brand-700',
-				outline:
-					'bg-transparent text-brand-600 dark:text-brand-800 border-brand-500 hover:bg-brand-200 active:bg-brand-300 active:text-brand-600',
-				ghost:
-					'bg-transparent text-ink-900 border-transparent hover:bg-brand-200 active:bg-brand-300 active:text-brand-600',
+				outline: [
+					'bg-transparent text-ink-900 border-brand-300 hover:bg-brand-300 active:bg-brand-300',
+					'dark:text-brand-900 dark:hover:bg-brand-200 dark:active:bg-brand-100',
+				],
+				ghost: [
+					'bg-transparent text-ink-900 border-0 hover:bg-brand-200 active:bg-brand-300',
+					'dark:text-brand-900 dark:active:bg-brand-100',
+				],
 			},
 			color: {
 				brand: '',
@@ -36,7 +40,7 @@
 			{ pill: true, size: 'md', class: 'px-4.5' },
 			{ pill: true, size: 'lg', class: 'px-5.5' },
 			{ active: true, variant: 'solid', class: 'bg-brand-600' },
-			{ active: true, variant: 'outline', class: 'bg-brand-100' },
+			{ active: true, variant: 'outline', class: 'bg-brand-200' },
 			{ active: true, variant: 'ghost', class: 'bg-brand-200' },
 			{
 				color: 'neutral',

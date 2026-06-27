@@ -104,9 +104,11 @@
 
 		<section class="mt-8">
 			<Button
+				active={showRetired}
 				aria-pressed={showRetired}
 				class="my-4"
 				variant="outline"
+				size="sm"
 				onclick={() => (showRetired = !showRetired)}
 			>
 				{showRetired ? 'Hide' : 'Show'} retired

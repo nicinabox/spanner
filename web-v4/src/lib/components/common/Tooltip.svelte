@@ -22,6 +22,7 @@
 		closeDelay?: number;
 		disabled?: boolean;
 		interactive?: boolean;
+		closeOnClick?: boolean;
 		id?: string;
 	}
 
@@ -33,6 +34,7 @@
 		closeDelay = 0,
 		disabled,
 		interactive,
+		closeOnClick,
 		id: idProp,
 	}: Props = $props();
 
@@ -45,6 +47,7 @@
 		closeDelay,
 		disabled,
 		interactive,
+		closeOnClick,
 		positioning: { placement },
 	});
 

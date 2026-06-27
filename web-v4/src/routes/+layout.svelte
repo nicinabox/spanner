@@ -44,7 +44,10 @@
 <div class="min-h-screen flex flex-col">
 	{@render children()}
 
-	<footer class="flex items-center justify-between text-sm py-4 px-(--main-padding) mt-auto">
+	<footer
+		class="flex items-center justify-between text-sm py-4 px-(--main-padding) mt-auto"
+		style="padding-bottom: calc(1rem + env(safe-area-inset-bottom))"
+	>
 		<a href="/legal">Legal</a>
 		<Badge>{__APP_VERSION__}</Badge>
 	</footer>

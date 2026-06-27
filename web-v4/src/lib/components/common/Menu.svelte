@@ -62,6 +62,12 @@
 	});
 	const api = $derived(menu.connect(service, normalizeProps));
 
+	// Omit onpointerdown from trigger props so the browser applies :active CSS
+	const triggerProps = $derived.by(() => {
+		const { onpointerdown: _od, ...rest } = api.getTriggerProps();
+		return rest;
+	});
+
 	let highlighted = $state(false);
 
 	$effect(() => {
@@ -78,7 +84,7 @@
 
 <div class="relative leading-none" data-theme={theme}>
 	<Button
-		{...api.getTriggerProps()}
+		{...triggerProps}
 		active={api.open}
 		data-theme={theme}
 		{variant}

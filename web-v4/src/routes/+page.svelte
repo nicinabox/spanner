@@ -11,7 +11,7 @@
 	<title>{pageTitle()}</title>
 </svelte:head>
 
-<main class="max-w-2xl w-full mx-auto px-4">
+<main class="max-w-md w-full mx-auto px-4">
 	<div class="flex min-h-screen flex-col items-center">
 		<div class="flex flex-1 flex-col items-center justify-center my-4">
 			<img src="/icons/app-icon.png" alt="Spanner" class="h-14 w-auto block dark:hidden" />

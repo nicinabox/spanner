@@ -157,12 +157,13 @@
 					</Cell>
 					<Cell class="ml-auto">
 						{#if editable}
-							<a
-								class="text-sm underline text-brand-500 hover:text-brand-600"
+							<Button
+								size="xs"
+								variant="ghost"
 								href={`/vehicles/${vehicle.id}/history/${record.id}/edit`}
 							>
 								Edit
-							</a>
+							</Button>
 						{/if}
 					</Cell>
 				</Row>

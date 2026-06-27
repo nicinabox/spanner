@@ -14,7 +14,7 @@
 	onMount(() => {
 		const stored = document.cookie.replace(
 			/(?:(?:^|.*;\s*)theme\s*\=\s*([^;]*).*$)|^.*$/,
-			'$1'
+			'$1',
 		) as Theme;
 		if (stored) theme = stored;
 		apply(theme);
@@ -40,11 +40,11 @@
 			? 'Switch to dark mode'
 			: theme === 'dark'
 				? 'Switch to auto mode'
-				: 'Switch to light mode'
+				: 'Switch to light mode',
 	);
 </script>
 
-<Tooltip content={tooltipContent}>
+<Tooltip content={tooltipContent} closeOnClick={false}>
 	{#snippet children(props)}
 		<Button {...props} variant="ghost" icon theme="dark" {size} onclick={cycle}>
 			{#if theme === 'light'}

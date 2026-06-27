@@ -10,6 +10,7 @@
 }
 
 @custom-variant aria-current-page (&:where([aria-current="page"]));
+@custom-variant aria-pressed (&:where([aria-pressed="true"]));
 
 @theme {
 	--color-brand-100: oklch(94% 0.012 276);
@@ -173,6 +174,10 @@
 
 	a {
 		color: var(--color-brand-500);
+
+		@variant dark {
+			color: var(--color-brand-600);
+		}
 	}
 
 	@media (any-hover: hover) {

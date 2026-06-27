@@ -19,7 +19,7 @@
 					download={att.filename}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-brand-500 hover:text-brand-600 hover:underline truncate flex-1 min-w-0"
+					class="hover:underline truncate flex-1 min-w-0"
 					title={att.filename}
 				>
 					{att.filename}
