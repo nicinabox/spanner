@@ -2,7 +2,7 @@
 
 module V2
   class UsersController < ApplicationController
-    skip_before_action :authenticate, only: %i[confirm_email]
+    skip_before_action :authenticate, only: %i[confirm_email unsubscribe]
 
     def index
       render json: current_user
@@ -45,6 +45,15 @@ module V2
     def destroy
       current_user.destroy
       head :no_content
+    end
+
+    def unsubscribe
+      user = User.find_by(unsubscribe_token: params[:token])
+
+      return render json: { message: 'Invalid or expired unsubscribe link.' }, status: :ok unless user
+
+      user.update!(unsubscribed_at: Time.zone.now, unsubscribe_token: nil)
+      render json: { message: "You've been unsubscribed. You'll no longer receive email reminders." }, status: :ok
     end
 
     private

@@ -38,6 +38,10 @@ class User < ApplicationRecord
     update!(deleted_at: nil)
   end
 
+  def generate_unsubscribe_token!
+    update!(unsubscribe_token: SecureRandom.urlsafe_base64(16))
+  end
+
   def deleted?
     deleted_at?
   end

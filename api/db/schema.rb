@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_26_142637) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_27_005045) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -154,6 +154,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_26_142637) do
     t.datetime "email_bounced_at"
     t.datetime "deleted_at"
     t.datetime "unsubscribed_at"
+    t.string "unsubscribe_token"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["email_confirmation_token"], name: "index_users_on_email_confirmation_token"
   end
