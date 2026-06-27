@@ -115,7 +115,7 @@
 			{/if}
 		</header>
 		<FlexTable class="border-t-2 border-ink-200">
-			<Row class="text-xs font-bold tracking-wide text-ink-400 uppercase max-sm:hidden">
+			<Row class="text-xs font-medium tracking-wide text-ink-400 uppercase max-sm:hidden">
 				<Cell>Date</Cell>
 				<Cell>Distance</Cell>
 				{#if vehicle.preferences.enableCost}
@@ -143,11 +143,11 @@
 						</span>
 					</Cell>
 					{#if vehicle.preferences.enableCost}
-						<Cell class="ml-auto text-right tabular-nums max-sm:text-sm">
+						<Cell class="max-sm:ml-auto text-right tabular-nums max-sm:text-sm">
 							{record.cost ? formatCurrency(Number(record.cost)) : '--'}
 						</Cell>
 					{/if}
-					<Cell class="w-full max-sm:py-1 flex flex-col">
+					<Cell class="w-full max-sm:order-1 max-sm:py-1 flex flex-col">
 						<Markdown src={record.notes} />
 						{#if record.attachments.length > 0}
 							<div class="mt-2">
@@ -155,7 +155,7 @@
 							</div>
 						{/if}
 					</Cell>
-					<Cell class="ml-auto">
+					<Cell>
 						{#if editable}
 							<Button
 								size="xs"
