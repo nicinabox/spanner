@@ -19,10 +19,6 @@ export const deleteAccount = (opts: RequestOpts) => {
 	return request(`/user`, { ...opts, method: 'DELETE' });
 };
 
-export const unsubscribe = (token: string) => {
-	return publicRequest<{ message: string }>(`/unsubscribe/${token}`);
-};
-
 export type UnsubscribeContext = {
 	unsubscribedAt: string | null;
 	vehicle?: {
