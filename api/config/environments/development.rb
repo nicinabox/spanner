@@ -42,7 +42,7 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
 
   config.action_mailer.default_url_options = {
-    host: 'http://localhost:8080'
+    host: 'http://localhost:5173'
   }
 
   # Raises error for missing translations

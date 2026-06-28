@@ -19,7 +19,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def frontend_preferences_url(token, vehicle_id: nil)
-    base = Rails.application.config.x.web_url.to_s.chomp('/')
+    base = ActionMailer::Base.default_url_options[:host].to_s.chomp('/')
     path = "/preferences/#{token}"
     path += "?vehicle_id=#{vehicle_id}" if vehicle_id
     "#{base}#{path}"
