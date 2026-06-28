@@ -60,8 +60,8 @@
 
 		{#if !history.length}
 			<EmptyState
-				heading="Add your vehicle's history"
-				details="Try adding your purchase as the first record"
+				heading="No history yet"
+				details="Start with your purchase as the first record."
 			>
 				{#snippet media()}
 					<BookOpenText size={48} class="text-ink-300" />

@@ -36,7 +36,7 @@
 
 		<HistoryTable {history} {vehicle} editable={false} />
 	{:else}
-		<EmptyState heading="No history yet" details="This vehicle doesn't have any service records.">
+		<EmptyState heading="No history yet" details="The owner hasn't added any service records yet.">
 			{#snippet media()}
 				<BookOpenText size={48} class="text-ink-300" />
 			{/snippet}

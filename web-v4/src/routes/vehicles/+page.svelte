@@ -40,7 +40,7 @@
 <PageLayout>
 	{#if data.vehicles.length === 0}
 		<EmptyState
-			heading="Add your first vehicle to get started"
+			heading="Add your first vehicle"
 			details="Track maintenance, reminders, and service history for all your vehicles."
 		>
 			{#snippet action()}
