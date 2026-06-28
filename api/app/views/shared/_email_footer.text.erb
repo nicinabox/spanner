@@ -1,0 +1,6 @@
+<% return if user.unsubscribed_at.present? %>
+---
+Manage email preferences: <%= frontend_preferences_url(user.account_token) %>
+<% if local_assigns[:vehicle] %>
+Notifications for <%= vehicle.name %>: <%= frontend_preferences_url(user.account_token, vehicle_id: vehicle.id) %>
+<% end %>
