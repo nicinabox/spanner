@@ -8,4 +8,7 @@ You have some reminders coming up in <%= time_ago_in_words @date %>.
     * <%= reminder.notes %>
   <% end %>
 
+  Manage notifications for <%= vehicle.name %>: <%= frontend_preferences_url(@user.account_token, vehicle_id: vehicle.id) %>
+
 <% end %>
+

@@ -115,4 +115,6 @@ Rails.application.configure do
   Rails.application.routes.default_url_options[:host] = URI.parse(ENV.fetch('APP_URL', 'http://localhost:3000')).host
   Rails.application.routes.default_url_options[:protocol] =
     ENV.fetch('APP_URL', 'http://localhost:3000').start_with?('https') ? 'https' : 'http'
+
+  config.x.web_url = ENV.fetch('WEB_URL', 'https://spanner.app')
 end

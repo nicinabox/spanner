@@ -1,3 +1,4 @@
+export { default as Alert } from './components/common/Alert.svelte';
 export { default as AppBar } from './components/common/AppBar.svelte';
 export { default as Button } from './components/common/Button.svelte';
 export { default as Card } from './components/common/Card.svelte';

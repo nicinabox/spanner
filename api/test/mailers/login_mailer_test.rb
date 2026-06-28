@@ -13,7 +13,7 @@ class LoginMailerTest < ActionMailer::TestCase
     assert_match 'Sign in to Spanner', mail.subject
     assert_equal ['user1@test'], mail.to
     assert_equal [ENV.fetch('FROM_EMAIL', 'noreply@localhost')], mail.from
-    assert_match 'Hello', mail.body.encoded
-    assert_match 'data:image/png;base64,', mail.body.encoded
+    assert_match 'Hello', mail.html_part.body.to_s
+    assert_match 'data:image/png;base64,', mail.html_part.body.to_s
   end
 end

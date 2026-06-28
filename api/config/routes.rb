@@ -10,7 +10,11 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
     get 'login(/:login_token)', to: 'sessions#login', as: 'login'
     get 'confirm_email(/:token)', to: 'users#confirm_email', as: 'confirm_email'
-    get 'unsubscribe(/:token)', to: 'users#unsubscribe', as: 'unsubscribe'
+    scope 'account(/:token)' do
+      get  '/',                  to: 'users#account',            as: 'account'
+      post '/',                  to: 'users#account_action',     as: 'account_action'
+      post '/preferences',       to: 'users#account_preferences', as: 'account_preferences'
+    end
 
     post 'webhooks/postmark', to: 'postmark#webhook'
   end
