@@ -57,7 +57,7 @@ class RemindersMailerTest < ActionMailer::TestCase
 
     mail = RemindersMailer.reminder_today(user, [reminder])
 
-    refute_match 'Manage email preferences', mail.html_part.body.to_s
+    assert_no_match 'Manage email preferences', mail.html_part.body.to_s
   end
 
   test 'new users get an account_token automatically' do

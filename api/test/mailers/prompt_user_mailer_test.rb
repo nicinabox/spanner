@@ -20,7 +20,7 @@ class PromptUserMailerTest < ActionMailer::TestCase
   test 'add_first_vehicle has no per-vehicle link' do
     mail = PromptUserMailer.add_first_vehicle(@user)
 
-    refute_match 'Notifications for', mail.html_part.body.to_s
+    assert_no_match 'Notifications for', mail.html_part.body.to_s
   end
 
   test 'add_record includes per-vehicle preferences link' do

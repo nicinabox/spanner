@@ -215,8 +215,8 @@ module V2
            params: { vehicle_id: vehicle.id, send_reminder_emails: false, send_prompt_for_records: false }
       assert_response :success
       vehicle.reload
-      refute vehicle.preferences.send_reminder_emails
-      refute vehicle.preferences.send_prompt_for_records
+      assert_not vehicle.preferences.send_reminder_emails
+      assert_not vehicle.preferences.send_prompt_for_records
     end
 
     test 'should return 404 when updating prefs for vehicle not owned' do

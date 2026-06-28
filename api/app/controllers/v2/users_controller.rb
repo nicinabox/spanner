@@ -80,7 +80,7 @@ module V2
       when 'reactivate'
         user.update!(unsubscribed_at: nil)
       else
-        return render json: { error: 'unknown_action' }, status: :unprocessable_entity
+        return render json: { error: 'unknown_action' }, status: :unprocessable_content
       end
 
       render json: { unsubscribed_at: user.unsubscribed_at&.iso8601 }, status: :ok
@@ -91,7 +91,7 @@ module V2
       return render json: { error: 'not_found' }, status: :not_found unless user
 
       vehicle_id = params[:vehicle_id]
-      return render json: { error: 'vehicle_id_required' }, status: :unprocessable_entity if vehicle_id.blank?
+      return render json: { error: 'vehicle_id_required' }, status: :unprocessable_content if vehicle_id.blank?
 
       vehicle = user.vehicles.find_by(id: vehicle_id)
       return render json: { error: 'not_found' }, status: :not_found unless vehicle
