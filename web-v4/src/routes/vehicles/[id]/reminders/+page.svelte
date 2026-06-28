@@ -45,7 +45,7 @@
 					<li>
 						<Card variant="outline" size="sm" class="gap-3">
 							<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-								<div class="space-y-1">
+								<div class="space-y-0">
 									<p class="font-semibold text-lg flex items-center gap-3">
 										{#if isReminderOverdue(reminder, vehicle.estimatedMileage)}
 											<span class="w-2 h-2 rounded-full bg-warning shrink-0"></span>
@@ -58,7 +58,7 @@
 										{:else}
 											Due
 											{#if reminder.reminderDate || reminder.date}
-												<span class="font-semibold"
+												<span
 													>{intlFormatDateUTC(reminder.reminderDate ?? reminder.date!)}</span
 												>
 												{#if reminder.mileage}
@@ -66,9 +66,7 @@
 												{/if}
 											{/if}
 											{#if reminder.mileage}
-												<span class="font-semibold"
-													>{formatMileage(reminder.mileage, vehicle.distanceUnit)}</span
-												>
+												<span>{formatMileage(reminder.mileage, vehicle.distanceUnit)}</span>
 											{/if}
 										{/if}
 									</p>
