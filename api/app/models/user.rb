@@ -53,6 +53,7 @@ class User < ApplicationRecord
 
   before_save { |user| user.email = user.email.strip.downcase if user.email }
   before_save { |user| user.unconfirmed_email = user.unconfirmed_email.strip.downcase if user.unconfirmed_email }
+  before_create { |user| user.account_token ||= SecureRandom.urlsafe_base64(16) }
 
   # Begins an email change request. Stores the requested (new) email and a
   # single-use confirmation token, but does NOT modify the current `email`.

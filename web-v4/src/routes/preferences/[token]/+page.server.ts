@@ -1,4 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
+import { HTTPError } from '$lib/data/client';
 import {
 	getUnsubscribeContext,
 	saveVehiclePreferences,
@@ -18,8 +19,11 @@ export const load: PageServerLoad = async ({ params, url }) => {
 	try {
 		const context = await getUnsubscribeContext(token, vehicleId);
 		return context;
-	} catch {
-		return { error: 'Invalid or expired link.' };
+	} catch (err) {
+		if (err instanceof HTTPError) {
+			return { error: 'Invalid or expired link.' };
+		}
+		return { error: "Couldn't reach the server. Please try again later." };
 	}
 };
 
@@ -33,13 +37,13 @@ export const actions = {
 			return fail(422, { error: 'Vehicle is required.' });
 		}
 
-		const send_reminder_emails = formData.get('send_reminder_emails') === 'on';
-		const send_prompt_for_records = formData.get('send_prompt_for_records') === 'on';
+		const sendReminderEmails = formData.get('send_reminder_emails') === 'on';
+		const sendPromptForRecords = formData.get('send_prompt_for_records') === 'on';
 
 		try {
 			await saveVehiclePreferences(token, vehicleId, {
-				send_reminder_emails,
-				send_prompt_for_records
+				sendReminderEmails,
+				sendPromptForRecords
 			});
 			return { success: true };
 		} catch {
@@ -47,23 +51,25 @@ export const actions = {
 		}
 	},
 
-	unsubscribe: async ({ params }) => {
+	unsubscribe: async ({ params, url }) => {
 		const token = params.token!;
+		const vehicleId = url.searchParams.get('vehicle_id');
 		try {
 			await unsubscribeAction(token, 'unsubscribe');
 		} catch {
 			return fail(422, { error: "Couldn't unsubscribe. Please try again." });
 		}
-		throw redirect(303, `/preferences/${token}`);
+		throw redirect(303, vehicleId ? `/preferences/${token}?vehicle_id=${vehicleId}` : `/preferences/${token}`);
 	},
 
-	reactivate: async ({ params }) => {
+	reactivate: async ({ params, url }) => {
 		const token = params.token!;
+		const vehicleId = url.searchParams.get('vehicle_id');
 		try {
 			await unsubscribeAction(token, 'reactivate');
 		} catch {
 			return fail(422, { error: "Couldn't reactivate. Please try again." });
 		}
-		throw redirect(303, `/preferences/${token}`);
+		throw redirect(303, vehicleId ? `/preferences/${token}?vehicle_id=${vehicleId}` : `/preferences/${token}`);
 	}
 } satisfies Actions;

@@ -39,9 +39,12 @@ class RemindersMailerTest < ActionMailer::TestCase
 
     mail = RemindersMailer.reminder_today(user, [reminder])
     expected_url = ApplicationMailer.new.frontend_preferences_url(user.account_token)
+    expected_vehicle_url = ApplicationMailer.new.frontend_preferences_url(user.account_token, vehicle_id: vehicle.id)
 
     assert_match 'Manage email preferences', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s
+    assert_match 'Manage notifications for Test Car', mail.html_part.body.to_s
+    assert_match expected_vehicle_url, mail.html_part.body.to_s
     assert_match 'Manage email preferences', mail.text_part.body.to_s
   end
 
@@ -55,5 +58,10 @@ class RemindersMailerTest < ActionMailer::TestCase
     mail = RemindersMailer.reminder_today(user, [reminder])
 
     refute_match 'Manage email preferences', mail.html_part.body.to_s
+  end
+
+  test 'new users get an account_token automatically' do
+    user = User.create!(email: 'autotoken-test@example.com')
+    assert_not_nil user.account_token
   end
 end
