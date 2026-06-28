@@ -8,6 +8,7 @@
 	import { Bell, Gauge, PlusIcon } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
+	import { mileageLabel } from '$lib/utils/vehicle';
 
 	let { data, form }: PageProps = $props();
 
@@ -20,7 +21,7 @@
 		{
 			record: 'New Record',
 			reminder: 'New Reminder',
-			'mileage-adjustment': 'Mileage Adjustment',
+			'mileage-adjustment': 'Adjust Mileage',
 		}[view] ?? 'New Record',
 	);
 
@@ -65,6 +66,9 @@
 			{:else if view === 'reminder'}
 				<ReminderForm {vehicle} action="?/reminder" errors={form?.errors} />
 			{:else if view === 'mileage-adjustment'}
+				<p>
+					Correct your {mileageLabel(vehicle.distanceUnit)} estimate when you haven't had recent service and the estimate is off significantly from actual {mileageLabel(vehicle.distanceUnit)}.
+				</p>
 				<MileageAdjustmentForm {vehicle} action="?/mileage-adjustment" />
 			{/if}
 		</Card>

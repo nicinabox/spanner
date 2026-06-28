@@ -36,7 +36,7 @@
 				{#if !vehicle.retired}
 					<Button href={`/vehicles/${vehicle.id}/add?view=reminder`} class="ml-auto">
 						<PlusIcon size={16} />
-						Add Reminder
+						New Reminder
 					</Button>
 				{/if}
 			</header>
@@ -118,11 +118,19 @@
 				{#snippet media()}
 					<Bell size={48} class="text-ink-300" />
 				{/snippet}
-				{#if !vehicle.retired}
-					{#snippet action()}
-						<Button href={`/vehicles/${vehicle.id}/add?view=reminder`}>Add Reminder</Button>
-					{/snippet}
-				{/if}
+				{#snippet action()}
+					{#if vehicle.retired}
+						<Button disabled>
+							<PlusIcon size={18} />
+							New Reminder
+						</Button>
+					{:else}
+						<Button href={`/vehicles/${vehicle.id}/add?view=reminder`}>
+							<PlusIcon size={18} />
+							New Reminder
+						</Button>
+					{/if}
+				{/snippet}
 			</EmptyState>
 		{/if}
 	</div>

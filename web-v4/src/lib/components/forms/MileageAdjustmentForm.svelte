@@ -3,7 +3,7 @@
 	import Button from '$lib/components/common/Button.svelte';
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
-	import { formatMileage } from '$lib/utils/vehicle';
+	import { formatMileage, mileageLabel, MileageLabel } from '$lib/utils/vehicle';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
 
@@ -30,10 +30,10 @@
 	{/if}
 
 	<fieldset class="flex flex-col gap-4">
-		<Field name="mileage" label={`Enter your current ${vehicle.distanceUnit === 'mi' ? 'mileage' : 'distance'}`} {errors} required>
+		<Field name="mileage" label={`Enter your current ${mileageLabel(vehicle.distanceUnit)}`} {errors} required>
 			<Input name="mileage" bind:value={mileage} inputmode="numeric"  />
 			{#if vehicle.estimatedMileage}
-				<p class="text-sm text-ink-400">Your estimated {vehicle.distanceUnit === 'mi' ? 'mileage' : 'distance'} is {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}</p>
+				<p class="text-sm text-ink-400">Your estimated {mileageLabel(vehicle.distanceUnit)} is {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}</p>
 			{/if}
 		</Field>
 	</fieldset>

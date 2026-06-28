@@ -4,9 +4,10 @@
 	import Button from '$lib/components/common/Button.svelte';
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
+	import InputGroup from '$lib/components/common/InputGroup.svelte';
 	import NativeSelect from '$lib/components/common/NativeSelect.svelte';
 	import { formatDateISO, intlFormatDate, parseDateUTC } from '$lib/utils/date';
-	import { formatMileage } from '$lib/utils/vehicle';
+	import { formatMileage, mileageLabel, MileageLabel } from '$lib/utils/vehicle';
 	import type { Reminder, ReminderType } from '$lib/data/reminders';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
@@ -104,14 +105,16 @@
 		{#if ['mileage', 'date_or_mileage'].includes(reminderType)}
 			<Field
 				name="mileage"
-				label={vehicle.distanceUnit === 'mi' ? 'Mileage' : 'Distance'}
+				label={MileageLabel(vehicle.distanceUnit)}
 				{errors}
 				required
 			>
-				<Input name="mileage" bind:value={mileage} inputmode="numeric" />
+				<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
+					{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
+				</InputGroup>
 				{#if vehicle.estimatedMileage}
 					<p class="text-sm text-ink-400">
-						Estimated mileage {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}
+						Estimated {mileageLabel(vehicle.distanceUnit)} {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}
 					</p>
 				{/if}
 			</Field>

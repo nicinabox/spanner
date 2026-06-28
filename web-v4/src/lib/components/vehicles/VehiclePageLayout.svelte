@@ -10,6 +10,7 @@
 	import { ArrowLeft, Bell, BookOpenText, Check, FileText, Wrench } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
+	import { tick } from 'svelte';
 	import Badge from '../common/Badge.svelte';
 	import { vehiclePath } from '$lib/routes';
 	import { enhanceInline } from '$lib/utils/form';
@@ -67,6 +68,14 @@
 			{ value: 'notes', label: 'Notes', href: `/vehicles/${vehicle.id}/notes`, icon: FileText },
 		]) as Tab[],
 	);
+
+	$effect(() => {
+		activeTab;
+		tick().then(() => {
+			const active = document.querySelector<HTMLElement>('header [aria-current="page"]');
+			active?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+		});
+	});
 </script>
 
 {#snippet appbarEnd()}{/snippet}
@@ -130,7 +139,7 @@
 		</div>
 	{/snippet}
 	{#snippet appbarCenter()}
-		<div class="flex flex-1 gap-1 flex-nowrap min-w-0">
+		<div class="flex flex-1 gap-1 flex-nowrap min-w-0 *:flex-1">
 			{#each tabs as tab}
 				{const active = $derived(activeTab === tab.value)}
 				{const badge = tab.badge}

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Button } from '$lib';
-	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
@@ -67,11 +66,19 @@
 				{#snippet media()}
 					<BookOpenText size={48} class="text-ink-300" />
 				{/snippet}
-				{#if !vehicle.retired}
-					{#snippet action()}
-						<Button href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase">Add Purchase</Button>
-					{/snippet}
-				{/if}
+				{#snippet action()}
+					{#if vehicle.retired}
+						<Button disabled>
+							<PlusIcon size={18} />
+							Add Purchase
+						</Button>
+					{:else}
+						<Button href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase">
+							<PlusIcon size={18} />
+							Add Purchase
+						</Button>
+					{/if}
+				{/snippet}
 			</EmptyState>
 		{:else}
 			<div class="flex justify-between gap-10 mb-4">

@@ -10,6 +10,7 @@
 	import AttachmentEditor from '$lib/components/attachments/AttachmentEditor.svelte';
 	import { formatDateISO } from '$lib/utils/date';
 	import { getCurrencySymbol } from '$lib/utils/number';
+	import { MileageLabel } from '$lib/utils/vehicle';
 	import type { HistoryEntry } from '$lib/data/history';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
@@ -31,7 +32,7 @@
 	let date = $state(
 		record?.date ? formatDateISO(new Date(record.date)) : formatDateISO(new Date()),
 	);
-	let mileage = $state(record?.mileage?.toString() ?? '');
+	let mileage = $state(record?.mileage?.toString() ?? vehicle.estimatedMileage?.toString() ?? '');
 	let notes = $state(record?.notes ?? '');
 	let cost = $state(record?.cost ?? '');
 
@@ -113,7 +114,7 @@
 			<Textarea name="notes" bind:value={notes} required class="min-h-[100px]" />
 		</Field>
 
-		<Field name="mileage" label={vehicle.distanceUnit === 'mi' ? 'Mileage' : 'Distance'} {errors}>
+		<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} {errors}>
 			<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
 				{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
 			</InputGroup>
