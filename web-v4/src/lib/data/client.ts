@@ -2,6 +2,8 @@ import camelcaseKeys from 'camelcase-keys';
 import snakeCaseKeys from 'snakecase-keys';
 import { apiConfig } from './config';
 
+export { apiConfig };
+
 export type Transport = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 
 export interface FetcherConfig {

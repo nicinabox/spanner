@@ -1,11 +1,9 @@
-import { createAPIRequest, type RequestOpts } from './client';
+import { apiConfig, createAPIRequest, type RequestOpts } from './client';
 
 const request = createAPIRequest();
 
 // Public client — no auth headers for unsubscribe
-const publicRequest = createAPIRequest({
-	authHeaderValue: () => undefined,
-});
+const publicRequest = createAPIRequest({ ...apiConfig, authHeaderValue: () => undefined });
 
 export const requestEmailChange = (email: string, host: string, opts: RequestOpts) => {
 	return request(`/user/email_change`, {
