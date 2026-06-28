@@ -5,6 +5,7 @@
 	import Button from '$lib/components/common/Button.svelte';
 	import Card from '$lib/components/common/Card.svelte';
 	import Switch from '$lib/components/common/Switch.svelte';
+	import { pageTitle } from '$lib/utils/site';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -13,7 +14,7 @@
 </script>
 
 <svelte:head>
-	<title>Manage notifications — Spanner</title>
+	<title>{pageTitle('Manage notifications')}</title>
 </svelte:head>
 
 <div class="flex min-h-screen max-w-2xl mx-auto flex-col gap-6 px-4 py-12">
