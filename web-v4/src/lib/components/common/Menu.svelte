@@ -100,7 +100,7 @@
 		<span {...api.getIndicatorProps()}><ChevronDown size={16} /></span>
 	</Button>
 
-	<div use:portal {...api.getPositionerProps()}>
+	<div use:portal {...api.getPositionerProps()} inert={!api.open}>
 		<ul
 			{...api.getContentProps()}
 			hidden={undefined}
