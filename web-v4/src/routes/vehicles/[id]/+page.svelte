@@ -60,7 +60,7 @@
 	<div class="max-w-6xl mx-auto">
 		{#if history.length}
 			<div
-				class="mb-6 flex justify-between gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar"
+				class="mb-6 flex gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar"
 			>
 				{#if nextReminder}
 					<a
