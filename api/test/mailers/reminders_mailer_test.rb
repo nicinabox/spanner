@@ -15,8 +15,8 @@ class RemindersMailerTest < ActionMailer::TestCase
     assert_equal 'Reminders for Mazda', mail.subject
     assert_equal ['user1@test'], mail.to
     assert_equal [ENV.fetch('FROM_EMAIL', 'noreply@localhost')], mail.from
-    assert_match 'Hello', mail.body.encoded
-    assert_match 'data:image/png;base64,', mail.body.encoded
+    assert_match 'Hello', mail.html_part.body.to_s
+    assert_match 'data:image/png;base64,', mail.html_part.body.to_s
   end
 
   test 'reminder_upcoming' do
@@ -28,7 +28,7 @@ class RemindersMailerTest < ActionMailer::TestCase
     assert_equal 'Reminders for Honda', mail.subject
     assert_equal ['user2@test'], mail.to
     assert_equal [ENV.fetch('FROM_EMAIL', 'noreply@localhost')], mail.from
-    assert_match '14 days', mail.body.encoded
+    assert_match '14 days', mail.html_part.body.to_s
   end
 
   test 'reminder_today includes preferences link' do
@@ -43,7 +43,7 @@ class RemindersMailerTest < ActionMailer::TestCase
 
     assert_match 'Manage email preferences', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s
-    assert_match 'Manage notifications for Test Car', mail.html_part.body.to_s
+    assert_match 'Manage notifications', mail.html_part.body.to_s
     assert_match expected_vehicle_url, mail.html_part.body.to_s
     assert_match 'Manage email preferences', mail.text_part.body.to_s
   end

@@ -23,19 +23,19 @@ class PromptUserMailerTest < ActionMailer::TestCase
     assert_no_match 'Notifications for', mail.html_part.body.to_s
   end
 
-  test 'add_record includes per-vehicle preferences link' do
+  test 'add_record includes preferences link' do
     mail = PromptUserMailer.add_record(@user, @vehicle)
-    expected_url = ApplicationMailer.new.frontend_preferences_url(@user.account_token, vehicle_id: @vehicle.id)
+    expected_url = ApplicationMailer.new.frontend_preferences_url(@user.account_token)
 
-    assert_match 'Manage notifications for Test Car', mail.html_part.body.to_s
+    assert_match 'Manage email preferences', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s
   end
 
-  test 'add_first_record includes per-vehicle preferences link' do
+  test 'add_first_record includes preferences link' do
     mail = PromptUserMailer.add_first_record(@user, @vehicle)
-    expected_url = ApplicationMailer.new.frontend_preferences_url(@user.account_token, vehicle_id: @vehicle.id)
+    expected_url = ApplicationMailer.new.frontend_preferences_url(@user.account_token)
 
-    assert_match 'Manage notifications for Test Car', mail.html_part.body.to_s
+    assert_match 'Manage email preferences', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s
   end
 end
