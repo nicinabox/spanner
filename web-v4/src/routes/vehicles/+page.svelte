@@ -4,6 +4,7 @@
 	import Stat from '$lib/components/common/Stat.svelte';
 	import Button from '$lib/components/common/Button.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
+	import InstallButton from '$lib/components/common/InstallButton.svelte';
 	import PageLayout from '$lib/components/common/PageLayout.svelte';
 	import VehicleSortMenu from '$lib/components/vehicles/VehicleSortMenu.svelte';
 	import { sortVehiclesBy } from '$lib/utils/sortable';
@@ -38,6 +39,9 @@
 </svelte:head>
 
 <PageLayout>
+	{#snippet appbarStart()}
+		<InstallButton />
+	{/snippet}
 	{#if data.vehicles.length === 0}
 		<EmptyState
 			heading="Add your first vehicle"
