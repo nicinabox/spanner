@@ -89,11 +89,17 @@
 			{#if isUnsubscribed}
 				<p>You are currently unsubscribed from all Spanner emails.</p>
 				<form method="POST" action="?/reactivate" use:enhance>
+					{#if data.vehicle?.id}
+						<input type="hidden" name="vehicle_id" value={data.vehicle.id} />
+					{/if}
 					<Button type="submit">Reactivate</Button>
 				</form>
 			{:else}
 				<p>Stop receiving reminder emails for all vehicles.</p>
 				<form method="POST" action="?/unsubscribe" use:enhance>
+					{#if data.vehicle?.id}
+						<input type="hidden" name="vehicle_id" value={data.vehicle.id} />
+					{/if}
 					<Button type="submit" danger>Unsubscribe from all</Button>
 				</form>
 			{/if}

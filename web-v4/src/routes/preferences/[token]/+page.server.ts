@@ -3,7 +3,7 @@ import { HTTPError } from '$lib/data/client';
 import {
 	getUnsubscribeContext,
 	saveVehiclePreferences,
-	unsubscribeAction
+	unsubscribeAction,
 } from '$lib/data/settings';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -20,10 +20,7 @@ export const load: PageServerLoad = async ({ params, url }) => {
 		const context = await getUnsubscribeContext(token, vehicleId);
 		return context;
 	} catch (err) {
-		if (err instanceof HTTPError) {
-			return { error: 'Invalid or expired link.' };
-		}
-		return { error: "Couldn't reach the server. Please try again later." };
+		return { error: 'Invalid or expired link.' };
 	}
 };
 
@@ -43,7 +40,7 @@ export const actions = {
 		try {
 			await saveVehiclePreferences(token, vehicleId, {
 				sendReminderEmails,
-				sendPromptForRecords
+				sendPromptForRecords,
 			});
 			return { success: true };
 		} catch {
@@ -51,25 +48,35 @@ export const actions = {
 		}
 	},
 
-	unsubscribe: async ({ params, url }) => {
+	unsubscribe: async ({ params, request }) => {
 		const token = params.token!;
-		const vehicleId = url.searchParams.get('vehicle_id');
+		const formData = await request.formData();
+		const vehicleIdRaw = formData.get('vehicle_id');
+		const vehicleId = typeof vehicleIdRaw === 'string' && vehicleIdRaw !== '' ? Number(vehicleIdRaw) : null;
 		try {
 			await unsubscribeAction(token, 'unsubscribe');
 		} catch {
 			return fail(422, { error: "Couldn't unsubscribe. Please try again." });
 		}
-		throw redirect(303, vehicleId ? `/preferences/${token}?vehicle_id=${vehicleId}` : `/preferences/${token}`);
+		throw redirect(
+			303,
+			vehicleId ? `/preferences/${token}?vehicle_id=${vehicleId}` : `/preferences/${token}`,
+		);
 	},
 
-	reactivate: async ({ params, url }) => {
+	reactivate: async ({ params, request }) => {
 		const token = params.token!;
-		const vehicleId = url.searchParams.get('vehicle_id');
+		const formData = await request.formData();
+		const vehicleIdRaw = formData.get('vehicle_id');
+		const vehicleId = typeof vehicleIdRaw === 'string' && vehicleIdRaw !== '' ? Number(vehicleIdRaw) : null;
 		try {
 			await unsubscribeAction(token, 'reactivate');
 		} catch {
 			return fail(422, { error: "Couldn't reactivate. Please try again." });
 		}
-		throw redirect(303, vehicleId ? `/preferences/${token}?vehicle_id=${vehicleId}` : `/preferences/${token}`);
-	}
+		throw redirect(
+			303,
+			vehicleId ? `/preferences/${token}?vehicle_id=${vehicleId}` : `/preferences/${token}`,
+		);
+	},
 } satisfies Actions;
