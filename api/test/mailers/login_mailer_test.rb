@@ -5,6 +5,7 @@ require 'test_helper'
 class LoginMailerTest < ActionMailer::TestCase
   setup do
     new_session
+    @user.update!(account_token: 'login-mailer-test-token') if @user.account_token.nil?
   end
 
   test 'login_link' do
