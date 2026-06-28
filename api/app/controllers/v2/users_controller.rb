@@ -48,11 +48,11 @@ module V2
     end
 
     def unsubscribe
-      user = User.find_by(unsubscribe_token: params[:token])
+      user = User.find_by(account_token: params[:token])
 
       return render json: { message: 'Invalid or expired unsubscribe link.' }, status: :ok unless user
 
-      user.update!(unsubscribed_at: Time.zone.now, unsubscribe_token: nil)
+      user.update!(unsubscribed_at: Time.zone.now, account_token: nil)
       render json: { message: "You've been unsubscribed. You'll no longer receive email reminders." }, status: :ok
     end
 
