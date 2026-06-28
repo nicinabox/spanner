@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <%= stylesheet_link_tag :email %>
   </head>
   <body>
     <div id="root">
       <div class="content">
         <div class="logo">
-          <img src="<%= logo_data_uri %>" height="50" alt="Spanner" />
+          <%= image_tag logo_data_uri, height: "50", alt: "Spanner" %>
         </div>
 
         <% if @user %>
           <p>
             Hello <%= @user.email %>!
           </p>
-        <%end %>
+        <% end %>
 
         <%= yield %>
 
         <% app_url = ENV.fetch('APP_URL', 'http://localhost:3000') %>
         <div class="footer">
           <% if @user && @user.unsubscribed_at.nil? %>
-            <small>
-              <%= link_to 'Manage email preferences', frontend_preferences_url(@user.account_token) %>
-            </small>
+            <div>
+                <small class="text-muted">
+                    <%= link_to 'Manage email preferences', frontend_preferences_url(@user.account_token), class: 'text-muted' %>
+                </small>
+            </div>
           <% end %>
-          <small class="text-muted">
-            View all your vehicles at
-            <a class="text-muted" href="<%= app_url %>"><%= app_url %></a>
-          </small>
+          <div>
+            <small class="text-muted">
+                View all your vehicles at
+                <%= link_to app_url, app_url, class: 'text-muted' %>
+            </small>
+          </div>
           <div>
             <small class="text-muted">
               Thanks for using Spanner!

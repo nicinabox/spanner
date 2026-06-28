@@ -27,7 +27,7 @@ class PromptUserMailerTest < ActionMailer::TestCase
     mail = PromptUserMailer.add_record(@user, @vehicle)
     expected_url = ApplicationMailer.new.frontend_preferences_url(@user.account_token, vehicle_id: @vehicle.id)
 
-    assert_match 'Notifications for Test Car', mail.html_part.body.to_s
+    assert_match 'Manage notifications for Test Car', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s
   end
 
@@ -35,7 +35,7 @@ class PromptUserMailerTest < ActionMailer::TestCase
     mail = PromptUserMailer.add_first_record(@user, @vehicle)
     expected_url = ApplicationMailer.new.frontend_preferences_url(@user.account_token, vehicle_id: @vehicle.id)
 
-    assert_match 'Notifications for Test Car', mail.html_part.body.to_s
+    assert_match 'Manage notifications for Test Car', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s
   end
 end

@@ -15,10 +15,6 @@
   </ul>
   <p>
     <%= link_to 'View', vehicle_url(vehicle), class: 'button button-small' %>
-  </p>
-  <p style="font-size: small;">
-    <%= link_to "Manage notifications for #{vehicle.name}", frontend_preferences_url(@user.account_token, vehicle_id: vehicle.id) %>
+    <%= link_to "Manage notifications", frontend_preferences_url(@user.account_token, vehicle_id: vehicle.id), class: 'button button-small button-outline' %>
   </p>
 <% end %>
-
-<%= render 'shared/email_footer', user: @user %>

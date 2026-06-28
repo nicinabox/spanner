@@ -3,22 +3,20 @@
 </p>
 
 <% @reminders.group_by(&:vehicle).each do |vehicle, reminders| %>
-  <h3>
-    <%= vehicle.name %>
-  </h3>
-  <ul>
-    <% reminders.each do |reminder| %>
-      <li>
-        <%= reminder.notes %>
-      </li>
-    <% end %>
-  </ul>
-  <p>
-    <%= link_to 'View', vehicle_url(vehicle), class: 'button button-small' %>
-  </p>
-  <p style="font-size: small;">
-    <%= link_to "Manage notifications for #{vehicle.name}", frontend_preferences_url(@user.account_token, vehicle_id: vehicle.id) %>
-  </p>
+  <div class="section">
+    <h3>
+        <%= vehicle.name %>
+    </h3>
+    <ul>
+        <% reminders.each do |reminder| %>
+        <li>
+            <%= reminder.notes %>
+        </li>
+        <% end %>
+    </ul>
+    <p>
+        <%= link_to 'View', vehicle_url(vehicle), class: 'button button-small' %>
+        <%= link_to "Manage notifications", frontend_preferences_url(@user.account_token, vehicle_id: vehicle.id), class: 'button button-small button-outline' %>
+    </p>
+  </div>
 <% end %>
-
-<%= render 'shared/email_footer', user: @user %>

@@ -1,9 +1,9 @@
 body {
     font-family:
-        'Inter var',
+        "Inter var",
         system-ui,
         -apple-system,
-        'Segoe UI',
+        "Segoe UI",
         Roboto,
         sans-serif;
     font-size: 16px;
@@ -27,6 +27,11 @@ body {
 }
 
 .logo {
+    margin-bottom: 32px;
+}
+
+.section {
+    margin-top: 32px;
     margin-bottom: 32px;
 }
 
@@ -67,10 +72,27 @@ small {
     padding: 6px 12px;
     margin: 0;
     font-size: 14px;
-    border-radius: 999px;
+    border-radius: 6px;
 }
 
-h1, h2, h3 {
+.button.button-outline {
+    background: transparent;
+    color: #1a2438;
+    border: 1px solid #aaaeb5;
+    font-weight: 500;
+}
+
+.button.button-outline:hover {
+    background: #eceef5;
+}
+
+.button.button-outline.button-small {
+    padding: 5px 11px;
+}
+
+h1,
+h2,
+h3 {
     color: #1a2438;
     line-height: 1.25;
     margin: 0 0 12px 0;
@@ -104,4 +126,10 @@ hr {
     border: 0;
     border-top: 1px solid #d5d7dd;
     margin: 24px 0;
+}
+
+code {
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    font-size: 1.2em;
 }
