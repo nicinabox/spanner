@@ -30,4 +30,30 @@ class RemindersMailerTest < ActionMailer::TestCase
     assert_equal [ENV.fetch('FROM_EMAIL', 'noreply@localhost')], mail.from
     assert_match '14 days', mail.body.encoded
   end
+
+  test 'reminder_today includes preferences link' do
+    user = User.create!(email: 'prefs-link-test@example.com')
+    user.generate_account_token!
+    vehicle = user.vehicles.create!(name: 'Test Car', distance_unit: 'mi')
+    reminder = Reminder.new(notes: 'Oil change', vehicle: vehicle, date: Time.zone.today)
+
+    mail = RemindersMailer.reminder_today(user, [reminder])
+    expected_url = ApplicationMailer.new.frontend_preferences_url(user.account_token)
+
+    assert_match 'Manage email preferences', mail.html_part.body.to_s
+    assert_match expected_url, mail.html_part.body.to_s
+    assert_match 'Manage email preferences', mail.text_part.body.to_s
+  end
+
+  test 'reminder_today omits footer when user is unsubscribed' do
+    user = User.create!(email: 'unsubs-test@example.com')
+    user.generate_account_token!
+    user.update!(unsubscribed_at: Time.zone.now)
+    vehicle = user.vehicles.create!(name: 'Test Car', distance_unit: 'mi')
+    reminder = Reminder.new(notes: 'Oil change', vehicle: vehicle, date: Time.zone.today)
+
+    mail = RemindersMailer.reminder_today(user, [reminder])
+
+    refute_match 'Manage email preferences', mail.html_part.body.to_s
+  end
 end

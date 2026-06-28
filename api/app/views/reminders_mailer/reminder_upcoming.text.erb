@@ -9,3 +9,5 @@ You have some reminders coming up in <%= time_ago_in_words @date %>.
   <% end %>
 
 <% end %>
+
+<%= render 'shared/email_footer', user: @user %>
