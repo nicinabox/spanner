@@ -2,7 +2,7 @@
 
 module V2
   class UsersController < ApplicationController
-    skip_before_action :authenticate, only: %i[confirm_email unsubscribe]
+    skip_before_action :authenticate, only: %i[confirm_email account account_action account_preferences]
 
     def index
       render json: current_user
@@ -47,13 +47,68 @@ module V2
       head :no_content
     end
 
-    def unsubscribe
+    def account
       user = User.find_by(account_token: params[:token])
+      return render json: { error: 'not_found' }, status: :not_found unless user
 
-      return render json: { message: 'Invalid or expired unsubscribe link.' }, status: :ok unless user
+      payload = { unsubscribed_at: user.unsubscribed_at&.iso8601 }
 
-      user.update!(unsubscribed_at: Time.zone.now, account_token: nil)
-      render json: { message: "You've been unsubscribed. You'll no longer receive email reminders." }, status: :ok
+      if params[:vehicle_id].present?
+        vehicle = user.vehicles.find_by(id: params[:vehicle_id])
+        return render json: { error: 'not_found' }, status: :not_found unless vehicle
+
+        payload[:vehicle] = {
+          id: vehicle.id,
+          name: vehicle.name,
+          preferences: {
+            send_reminder_emails: vehicle.preferences.send_reminder_emails,
+            send_prompt_for_records: vehicle.preferences.send_prompt_for_records
+          }
+        }
+      end
+
+      render json: payload, status: :ok
+    end
+
+    def account_action
+      user = User.find_by(account_token: params[:token])
+      return render json: { error: 'not_found' }, status: :not_found unless user
+
+      case params[:action_type]
+      when 'unsubscribe'
+        user.update!(unsubscribed_at: Time.zone.now)
+      when 'reactivate'
+        user.update!(unsubscribed_at: nil)
+      else
+        return render json: { error: 'unknown_action' }, status: :unprocessable_entity
+      end
+
+      render json: { unsubscribed_at: user.unsubscribed_at&.iso8601 }, status: :ok
+    end
+
+    def account_preferences
+      user = User.find_by(account_token: params[:token])
+      return render json: { error: 'not_found' }, status: :not_found unless user
+
+      vehicle_id = params[:vehicle_id]
+      return render json: { error: 'vehicle_id_required' }, status: :unprocessable_entity if vehicle_id.blank?
+
+      vehicle = user.vehicles.find_by(id: vehicle_id)
+      return render json: { error: 'not_found' }, status: :not_found unless vehicle
+
+      vehicle.update!(
+        preferences: vehicle.preferences.to_hash.merge(
+          'send_reminder_emails' => ActiveModel::Type::Boolean.new.cast(params[:send_reminder_emails]),
+          'send_prompt_for_records' => ActiveModel::Type::Boolean.new.cast(params[:send_prompt_for_records])
+        )
+      )
+
+      render json: {
+        preferences: {
+          send_reminder_emails: vehicle.preferences.send_reminder_emails,
+          send_prompt_for_records: vehicle.preferences.send_prompt_for_records
+        }
+      }, status: :ok
     end
 
     private

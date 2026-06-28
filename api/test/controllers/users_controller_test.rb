@@ -131,5 +131,112 @@ module V2
       get confirm_email_url(token)
       assert_response :success
     end
+
+    test 'should return account context with valid token' do
+      @user.generate_account_token!
+      token = @user.reload.account_token
+
+      get account_url(token)
+      assert_response :success
+      body = JSON.parse(@response.body)
+      assert_nil body['unsubscribed_at']
+      assert_nil body['vehicle']
+    end
+
+    test 'should return vehicle context when vehicle_id is provided' do
+      @user.generate_account_token!
+      token = @user.reload.account_token
+      vehicle = @user.vehicles.create!(name: 'Test', distance_unit: 'mi')
+      vehicle.update!(preferences: { 'send_reminder_emails' => false, 'send_prompt_for_records' => true })
+
+      get account_url(token, vehicle_id: vehicle.id)
+      assert_response :success
+      body = JSON.parse(@response.body)
+      assert_equal vehicle.id, body.dig('vehicle', 'id')
+      assert_equal 'Test', body.dig('vehicle', 'name')
+      assert_equal false, body.dig('vehicle', 'preferences', 'send_reminder_emails')
+      assert_equal true, body.dig('vehicle', 'preferences', 'send_prompt_for_records')
+    end
+
+    test 'should return 404 for invalid token on account context' do
+      get account_url('not-a-real-token')
+      assert_response :not_found
+    end
+
+    test 'should return 404 when vehicle_id does not belong to token user' do
+      other_user = User.create!(email: 'other@example.com')
+      other_vehicle = other_user.vehicles.create!(name: 'Other', distance_unit: 'mi')
+      @user.generate_account_token!
+      token = @user.reload.account_token
+
+      get account_url(token, vehicle_id: other_vehicle.id)
+      assert_response :not_found
+    end
+
+    test 'should unsubscribe via POST account_action' do
+      @user.generate_account_token!
+      token = @user.reload.account_token
+
+      post account_action_url(token), params: { action_type: 'unsubscribe' }
+      assert_response :success
+      assert_not_nil @user.reload.unsubscribed_at
+      assert_equal @user.account_token, token # token unchanged for undo
+    end
+
+    test 'should reactivate via POST account_action' do
+      @user.generate_account_token!
+      @user.update!(unsubscribed_at: 1.day.ago)
+      token = @user.reload.account_token
+
+      post account_action_url(token), params: { action_type: 'reactivate' }
+      assert_response :success
+      assert_nil @user.reload.unsubscribed_at
+    end
+
+    test 'should reject POST account_action with invalid action' do
+      @user.generate_account_token!
+      token = @user.reload.account_token
+
+      post account_action_url(token), params: { action_type: 'banana' }
+      assert_response :unprocessable_entity
+    end
+
+    test 'should return 404 on POST account_action with invalid token' do
+      post account_action_url('bogus'), params: { action_type: 'unsubscribe' }
+      assert_response :not_found
+    end
+
+    test 'should update vehicle preferences' do
+      @user.generate_account_token!
+      token = @user.reload.account_token
+      vehicle = @user.vehicles.create!(name: 'Test', distance_unit: 'mi')
+
+      post account_preferences_url(token),
+           params: { vehicle_id: vehicle.id, send_reminder_emails: false, send_prompt_for_records: false }
+      assert_response :success
+      vehicle.reload
+      refute vehicle.preferences.send_reminder_emails
+      refute vehicle.preferences.send_prompt_for_records
+    end
+
+    test 'should return 404 when updating prefs for vehicle not owned' do
+      other_user = User.create!(email: 'other@example.com')
+      other_vehicle = other_user.vehicles.create!(name: 'Other', distance_unit: 'mi')
+      @user.generate_account_token!
+      token = @user.reload.account_token
+
+      post account_preferences_url(token),
+           params: { vehicle_id: other_vehicle.id, send_reminder_emails: false, send_prompt_for_records: false }
+      assert_response :not_found
+    end
+
+    test 'should return 422 when updating prefs without vehicle_id' do
+      @user.generate_account_token!
+      token = @user.reload.account_token
+
+      post account_preferences_url(token),
+           params: { send_reminder_emails: false, send_prompt_for_records: false }
+      assert_response :unprocessable_entity
+    end
   end
 end
