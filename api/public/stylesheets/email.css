@@ -1,58 +1,107 @@
 body {
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 18px;
-  color: #222;
-  background: #f7f7f7;
+    font-family:
+        'Inter var',
+        system-ui,
+        -apple-system,
+        'Segoe UI',
+        Roboto,
+        sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1a2438;
+    background: #eceef5;
 }
 
 #root {
-  background: #f7f7f7;
-  padding: 50px 15px;
+    background: #eceef5;
+    padding: 48px 16px;
 }
 
-.content{
-  max-width: 500px;
-  min-height: 500px;
-  margin: 0 auto;
-  padding: 30px;
-  background: #fff;
-  border: 1px solid #ddd;
+.content {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 32px;
+    background: #ffffff;
+    border: 1px solid #d5d7dd;
+    border-radius: 12px;
 }
 
 .logo {
-  margin-bottom: 40px;
+    margin-bottom: 32px;
 }
 
 .footer {
-  border-top: 1px solid #ddd;
-  margin-top: 30px;
-  padding: 10px 0;
+    border-top: 1px solid #d5d7dd;
+    margin-top: 32px;
+    padding-top: 16px;
+    line-height: 1.5;
+    color: #5d636f;
 }
 
 .text-muted {
-  color: #aaa;
+    color: #5d636f;
 }
 
 a {
-  color: #565196;
+    color: #4a52ab;
+    text-decoration: underline;
+    text-underline-offset: 2px;
 }
 
 small {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 .button {
-  display: inline-block;
-  background: #565196;
-  color: #fff;
-  font-weight: bold;
-  padding: 12px 20px;
-  text-decoration: none;
-  margin: 20px 0;
+    display: inline-block;
+    background: #4a52ab;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin: 20px 0;
 }
 
 .button.button-small {
-  padding: 6px 12px;
-  margin: 0;
-  font-size: 16px;
+    padding: 6px 12px;
+    margin: 0;
+    font-size: 14px;
+    border-radius: 999px;
+}
+
+h1, h2, h3 {
+    color: #1a2438;
+    line-height: 1.25;
+    margin: 0 0 12px 0;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+p {
+    margin: 0 0 12px 0;
+}
+
+ul {
+    margin: 0 0 12px 0;
+    padding-left: 20px;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #d5d7dd;
+    margin: 24px 0;
 }
