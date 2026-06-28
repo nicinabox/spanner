@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Alert from '$lib/components/common/Alert.svelte';
 	import AppIcon from '$lib/components/common/AppIcon.svelte';
 	import Button from '$lib/components/common/Button.svelte';
 	import Card from '$lib/components/common/Card.svelte';
@@ -28,65 +29,70 @@
 	{:else}
 		{#if data.vehicle}
 			<Card variant="outline" bleed>
-				<h2 class="text-lg font-semibold mb-4">{data.vehicle.name}</h2>
+				<h2 class="text-lg font-bold">{data.vehicle.name}</h2>
 
 				{#if form?.error}
-					<div role="alert" class="p-3 mb-4 rounded-md bg-negative/10 text-negative text-sm">
+					<Alert role="alert" variant="negative">
 						{form.error}
-					</div>
+					</Alert>
 				{:else if form?.success}
-					<div role="status" class="p-3 mb-4 rounded-md bg-positive/10 text-positive text-sm">
-						Preferences saved.
-					</div>
+					<Alert role="status" variant="positive">Preferences saved.</Alert>
 				{/if}
 
-				<form method="POST" action="?/update" use:enhance class="flex flex-col gap-4">
+				<form method="POST" action="?/update" use:enhance={() => {
+					return async ({ update }) => {
+						await update({ reset: false });
+					};
+				}} class="flex flex-col gap-6">
 					<input type="hidden" name="vehicle_id" value={data.vehicle.id} />
 
-					<Switch
-						name="send_reminder_emails"
-						defaultChecked={data.vehicle.preferences.sendReminderEmails}
-						class="flex-row-reverse w-full justify-between gap-6"
-					>
-						<div>
-							<span class="font-medium">Send reminder emails</span>
-							<p class="text-sm text-ink-500 font-normal">
-								Receive an email for upcoming reminders 2 weeks before and on the due date.
-							</p>
-						</div>
-					</Switch>
+					<fieldset class="flex flex-col gap-4">
+						{#key data.vehicle.preferences}
+							<Switch
+								name="send_reminder_emails"
+								defaultChecked={data.vehicle.preferences.sendReminderEmails}
+								class="flex-row-reverse w-full justify-between gap-6"
+							>
+								<div>
+									<span class="font-medium">Send reminder emails</span>
+									<p class="text-sm text-ink-500 font-normal">
+										Receive an email for upcoming reminders 2 weeks before and on the due date.
+									</p>
+								</div>
+							</Switch>
 
-					<Switch
-						name="send_prompt_for_records"
-						defaultChecked={data.vehicle.preferences.sendPromptForRecords}
-						class="flex-row-reverse w-full justify-between gap-6"
-					>
-						<div>
-							<span class="font-medium">Send prompt for records email</span>
-							<p class="text-sm text-ink-500 font-normal">
-								Receive a weekly prompt asking you to log a record.
-							</p>
-						</div>
-					</Switch>
+							<Switch
+								name="send_prompt_for_records"
+								defaultChecked={data.vehicle.preferences.sendPromptForRecords}
+								class="flex-row-reverse w-full justify-between gap-6"
+							>
+								<div>
+									<span class="font-medium">Send prompt for records email</span>
+									<p class="text-sm text-ink-500 font-normal">
+										Receive a weekly prompt asking you to log a record.
+									</p>
+								</div>
+							</Switch>
+						{/key}
+					</fieldset>
 
-					<Button type="submit">Save preferences</Button>
+					<div class="flex gap-3">
+						<Button type="submit" class="grow-0">Save preferences</Button>
+					</div>
 				</form>
 			</Card>
 		{/if}
 
 		<Card variant="outline" bleed>
-			<h2 class="text-lg font-semibold mb-2">All emails</h2>
-			<p class="text-sm text-ink-500 mb-4">
-				{isUnsubscribed
-					? 'You are currently unsubscribed from all Spanner emails.'
-					: 'Stop receiving all reminder and prompt emails from Spanner.'}
-			</p>
+			<h2 class="text-lg font-bold">All email notifications</h2>
 
 			{#if isUnsubscribed}
+				<p>You are currently unsubscribed from all Spanner emails.</p>
 				<form method="POST" action="?/reactivate" use:enhance>
 					<Button type="submit">Reactivate</Button>
 				</form>
 			{:else}
+				<p>Stop receiving reminder emails for all vehicles.</p>
 				<form method="POST" action="?/unsubscribe" use:enhance>
 					<Button type="submit" danger>Unsubscribe from all</Button>
 				</form>
