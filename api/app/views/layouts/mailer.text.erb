@@ -5,3 +5,12 @@ Hello <%= @user.email %>!
 <%end %>
 
 <%= yield %>
+
+<% app_url = ENV.fetch('APP_URL', 'http://localhost:3000') %>
+<% if @user && @user.unsubscribed_at.nil? %>
+Manage email preferences: <%= frontend_preferences_url(@user.account_token) %>
+<% end %>
+---
+View all your vehicles at <%= app_url %>
+
+Thanks for using Spanner!

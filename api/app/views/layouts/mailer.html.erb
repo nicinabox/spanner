@@ -21,6 +21,11 @@
 
         <% app_url = ENV.fetch('APP_URL', 'http://localhost:3000') %>
         <div class="footer">
+          <% if @user && @user.unsubscribed_at.nil? %>
+            <small>
+              <%= link_to 'Manage email preferences', frontend_preferences_url(@user.account_token) %>
+            </small>
+          <% end %>
           <small class="text-muted">
             View all your vehicles at
             <a class="text-muted" href="<%= app_url %>"><%= app_url %></a>
