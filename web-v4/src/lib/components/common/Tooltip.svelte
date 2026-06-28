@@ -54,9 +54,8 @@
 	const api = $derived(tooltip.connect(service, normalizeProps));
 </script>
 
-<div>
-	{@render children(api.getTriggerProps() as Record<string, unknown>)}
-</div>
+{@render children(api.getTriggerProps() as Record<string, unknown>)}
+
 {#if api.open}
 	<div {...api.getPositionerProps()}>
 		<div

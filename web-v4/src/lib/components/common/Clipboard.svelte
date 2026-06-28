@@ -3,6 +3,8 @@
 	import { useMachine, normalizeProps } from '@zag-js/svelte';
 	import InputGroup from './InputGroup.svelte';
 	import { Check, Copy } from 'lucide-svelte';
+	import Button from './Button.svelte';
+	import Tooltip from './Tooltip.svelte';
 
 	interface Props {
 		value: string;
@@ -23,27 +25,31 @@
 
 	const api = $derived(clipboard.connect(service, normalizeProps));
 	const triggerProps = $derived(api.getTriggerProps() as Record<string, unknown>);
+
+	let label = $derived(api.copied ? 'Copied' : 'Copy');
 </script>
 
-<InputGroup
-	variant="filled"
-	name="clipboard"
-	value={value}
-	readonly
->
+<InputGroup variant="filled" name="clipboard" {value} readonly>
 	{#snippet end()}
-		<button
-			{...triggerProps}
-			type="button"
-			tabindex="-1"
-			aria-label={api.copied ? 'Copied' : 'Copy'}
-			class="inline-flex items-center justify-center text-ink-500 cursor-pointer"
-		>
-			{#if api.copied}
-				<Check size={14} />
-			{:else}
-				<Copy size={14} />
-			{/if}
-		</button>
+		<Tooltip content={label}>
+			{#snippet children(tooltipProps)}
+				<Button
+					{...tooltipProps}
+					{...triggerProps}
+					aria-label={label}
+					class="-mr-2"
+					variant="ghost"
+					color="neutral"
+					size="sm"
+					icon
+				>
+					{#if api.copied}
+						<Check size={14} />
+					{:else}
+						<Copy size={14} />
+					{/if}
+				</Button>
+			{/snippet}
+		</Tooltip>
 	{/snippet}
 </InputGroup>
