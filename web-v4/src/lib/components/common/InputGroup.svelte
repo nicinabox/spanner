@@ -11,6 +11,7 @@
 		class?: string;
 		start?: Snippet;
 		end?: Snippet;
+		onEndClick?: () => void;
 		startAddon?: Snippet;
 		endAddon?: Snippet;
 	};
@@ -30,6 +31,7 @@
 		pattern,
 		start,
 		end,
+		onEndClick,
 		startAddon,
 		endAddon,
 		class: className,
@@ -91,8 +93,11 @@
 				<button
 					type="button"
 					tabindex="-1"
-					onclick={focusInput}
-					class="absolute inset-y-0 right-0 flex items-center px-3 cursor-text text-ink-500"
+					onclick={() => {
+						onEndClick?.();
+						focusInput();
+					}}
+					class="absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer text-ink-500 hover:text-ink-800"
 				>
 					{@render end()}
 				</button>
