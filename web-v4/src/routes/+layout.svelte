@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-	{__HEAD_INJECTIONS__}
+	{@html __HEAD_INJECTIONS__}
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">
