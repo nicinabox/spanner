@@ -147,7 +147,7 @@
 							{record.cost ? formatCurrency(Number(record.cost)) : '--'}
 						</Cell>
 					{/if}
-					<Cell class="w-full max-sm:order-1 max-sm:py-1 flex flex-col">
+					<Cell class="w-full max-sm:order-2 max-sm:py-1 flex flex-col">
 						<Markdown src={record.notes} />
 						{#if record.attachments.length > 0}
 							<div class="mt-2">
@@ -155,7 +155,7 @@
 							</div>
 						{/if}
 					</Cell>
-					<Cell>
+					<Cell class="max-sm:order-1 {!vehicle.preferences.enableCost ? 'max-sm:ml-auto' : ''}">
 						{#if editable}
 							<Button
 								size="xs"
