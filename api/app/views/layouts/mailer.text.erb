@@ -6,7 +6,7 @@ Hello <%= @user.email %>!
 
 <%= yield %>
 
-<% app_url = ENV.fetch('APP_URL', 'http://localhost:3000') %>
+<% app_url = Rails.configuration.x.web_url %>
 <% if @user && @user.unsubscribed_at.nil? %>
 Manage email preferences: <%= frontend_preferences_url(@user.account_token) %>
 <% end %>

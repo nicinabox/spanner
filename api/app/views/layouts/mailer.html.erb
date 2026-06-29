@@ -19,7 +19,7 @@
 
         <%= yield %>
 
-        <% app_url = ENV.fetch('APP_URL', 'http://localhost:3000') %>
+        <% app_url = Rails.configuration.x.web_url %>
         <div class="footer">
           <% if @user && @user.unsubscribed_at.nil? %>
             <div>

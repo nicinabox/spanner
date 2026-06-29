@@ -17,7 +17,7 @@ export const actions = {
 			return fail(422, { errors: [{ id: 'email', title: "Email can't be blank" }] });
 		}
 
-		const host = env.PUBLIC_HOST || url.origin;
+		const host = env.WEB_URL || url.origin;
 
 		try {
 			await requestEmailChange(email.trim(), host, locals);

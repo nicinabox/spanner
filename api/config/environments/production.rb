@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
-  host = ENV.fetch('APP_URL', 'http://localhost:3000')
   api_host = ENV.fetch('API_HOST', nil)
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -112,9 +111,9 @@ Rails.application.configure do
   config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE', 'amazon').to_sym
   config.active_storage.service_urls_expire_in = 5.minutes
 
-  Rails.application.routes.default_url_options[:host] = URI.parse(ENV.fetch('APP_URL', 'http://localhost:3000')).host
-  Rails.application.routes.default_url_options[:protocol] =
-    ENV.fetch('APP_URL', 'http://localhost:3000').start_with?('https') ? 'https' : 'http'
-
   config.x.web_url = ENV.fetch('WEB_URL', 'https://spanner.app')
+
+  Rails.application.routes.default_url_options[:host] = URI.parse(config.x.web_url).host
+  Rails.application.routes.default_url_options[:protocol] =
+    config.x.web_url.start_with?('https') ? 'https' : 'http'
 end

@@ -34,12 +34,13 @@ The app runs at `http://localhost:5173` and proxies API requests to `http://loca
 
 Create a `.env` file (or use `.env.development` for defaults):
 
-| Variable | Purpose | Required |
-|---|---|---|
-| `CLIENT_SECRET` | iron-session cookie encryption key | Yes |
-| `PROXY_HOST` | API backend URL | Yes (default: `http://localhost:3001`) |
+| Variable        | Purpose                            | Required                               |
+| --------------- | ---------------------------------- | -------------------------------------- |
+| `CLIENT_SECRET` | iron-session cookie encryption key | Yes                                    |
+| `API_URL`       | API backend URL                    | Yes (default: `http://localhost:3001`) |
 
 Generate a secret:
+
 ```bash
 openssl rand -base64 32
 ```
@@ -106,8 +107,8 @@ const vehicles = await request<Vehicle[]>('/vehicles');
 
 // Example: create a record
 const record = await request<Record>('/vehicles/1/records', {
-  method: 'POST',
-  json: { date: '2025-07-14', notes: 'Oil change', mileage: 85000 }
+	method: 'POST',
+	json: { date: '2025-07-14', notes: 'Oil change', mileage: 85000 },
 });
 ```
 
@@ -121,6 +122,7 @@ const record = await request<Record>('/vehicles/1/records', {
 6. `hooks.server.ts` checks the cookie on every request and redirects unauthenticated users away from protected routes
 
 Protected routes are defined in `hooks.server.ts`:
+
 ```typescript
 const protectedRoutes = ['^/vehicles'];
 ```
@@ -147,6 +149,7 @@ npm run test:unit -- --run  # Run once (CI)
 ```
 
 Test files are co-located with their components:
+
 - `src/**/*.svelte.{test,spec}.{js,ts}` — browser tests
 - `src/**/*.{test,spec}.{js,ts}` — server/unit tests
 

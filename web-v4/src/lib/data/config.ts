@@ -1,7 +1,7 @@
-import { PROXY_HOST } from '$env/static/private';
+import { API_URL } from '$env/static/private';
 
 export const apiConfig = {
-	baseUrl: PROXY_HOST,
+	baseUrl: API_URL,
 	headers: {
 		'Content-Type': 'application/json',
 		Accept: 'application/vnd.api+json; version=2',

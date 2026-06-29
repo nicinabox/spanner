@@ -1,4 +1,4 @@
-import { PROXY_HOST } from '$env/static/private';
+import { API_URL } from '$env/static/private';
 import type { RequestOpts } from './client';
 import { HTTPError } from './client';
 
@@ -12,7 +12,7 @@ const ACCEPT_HEADER = 'application/vnd.api+json; version=2';
  */
 export function toMultipartFormData(
 	entries: Record<string, unknown>,
-	options: { prefix?: string } = {}
+	options: { prefix?: string } = {},
 ): FormData {
 	const { prefix } = options;
 	const out = new FormData();
@@ -28,11 +28,11 @@ export async function uploadRecord(
 	vehicleId: string | number,
 	recordId: string | number | undefined,
 	formData: FormData,
-	opts: RequestOpts
+	opts: RequestOpts,
 ): Promise<unknown> {
 	const path = recordId
-		? `${PROXY_HOST}/vehicles/${vehicleId}/records/${recordId}`
-		: `${PROXY_HOST}/vehicles/${vehicleId}/records`;
+		? `${API_URL}/vehicles/${vehicleId}/records/${recordId}`
+		: `${API_URL}/vehicles/${vehicleId}/records`;
 	const headers = new Headers({ Accept: ACCEPT_HEADER });
 	if (opts.authToken) {
 		headers.set('Authorization', `Token ${opts.authToken}`);
@@ -41,7 +41,7 @@ export async function uploadRecord(
 	const response = await fetch(path, {
 		method: recordId ? 'PUT' : 'POST',
 		body: formData,
-		headers
+		headers,
 	});
 
 	const text = await response.text();
@@ -56,7 +56,7 @@ export async function deleteAttachment(
 	vehicleId: string | number,
 	recordId: string | number,
 	signedId: string,
-	opts: RequestOpts
+	opts: RequestOpts,
 ): Promise<void> {
 	const headers = new Headers({ Accept: ACCEPT_HEADER });
 	if (opts.authToken) {
@@ -64,8 +64,8 @@ export async function deleteAttachment(
 	}
 
 	const response = await fetch(
-		`${PROXY_HOST}/vehicles/${vehicleId}/records/${recordId}/attachments/${signedId}`,
-		{ method: 'DELETE', headers }
+		`${API_URL}/vehicles/${vehicleId}/records/${recordId}/attachments/${signedId}`,
+		{ method: 'DELETE', headers },
 	);
 
 	if (!response.ok) {
@@ -78,17 +78,17 @@ export async function deleteAttachment(
 export async function importRecords(
 	vehicleId: string | number,
 	formData: FormData,
-	opts: RequestOpts
+	opts: RequestOpts,
 ): Promise<void> {
 	const headers = new Headers({ Accept: ACCEPT_HEADER });
 	if (opts.authToken) {
 		headers.set('Authorization', `Token ${opts.authToken}`);
 	}
 
-	const response = await fetch(`${PROXY_HOST}/vehicles/${vehicleId}/import`, {
+	const response = await fetch(`${API_URL}/vehicles/${vehicleId}/import`, {
 		method: 'POST',
 		headers,
-		body: formData
+		body: formData,
 	});
 
 	if (!response.ok) {

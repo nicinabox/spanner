@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('$env/static/private', () => ({
-	PROXY_HOST: 'http://api.test'
+	API_URL: 'http://api.test',
 }));
 
 import { uploadRecord, deleteAttachment } from './multipart';
@@ -12,9 +12,9 @@ describe('uploadRecord', () => {
 	});
 
 	it('POSTs FormData on create', async () => {
-		const fetchMock = vi.mocked(fetch).mockResolvedValue(
-			new Response(JSON.stringify({ id: 1 }), { status: 201 })
-		);
+		const fetchMock = vi
+			.mocked(fetch)
+			.mockResolvedValue(new Response(JSON.stringify({ id: 1 }), { status: 201 }));
 		const form = new FormData();
 		form.append('date', '2024-01-15');
 		const file = new File(['content'], 'test.pdf', { type: 'application/pdf' });
@@ -31,9 +31,9 @@ describe('uploadRecord', () => {
 	});
 
 	it('PUTs FormData on edit', async () => {
-		const fetchMock = vi.mocked(fetch).mockResolvedValue(
-			new Response(JSON.stringify({ id: 1 }), { status: 200 })
-		);
+		const fetchMock = vi
+			.mocked(fetch)
+			.mockResolvedValue(new Response(JSON.stringify({ id: 1 }), { status: 200 }));
 		const form = new FormData();
 
 		await uploadRecord(42, 7, form, { authToken: 'tok-123' });
@@ -45,13 +45,13 @@ describe('uploadRecord', () => {
 
 	it('throws on backend error with parsed body', async () => {
 		vi.mocked(fetch).mockResolvedValue(
-			new Response(JSON.stringify({ error: 'too large' }), { status: 422 })
+			new Response(JSON.stringify({ error: 'too large' }), { status: 422 }),
 		);
 		const form = new FormData();
 
-		await expect(
-			uploadRecord(42, undefined, form, { authToken: 'tok' })
-		).rejects.toThrow('HTTP Error: 422');
+		await expect(uploadRecord(42, undefined, form, { authToken: 'tok' })).rejects.toThrow(
+			'HTTP Error: 422',
+		);
 	});
 });
 

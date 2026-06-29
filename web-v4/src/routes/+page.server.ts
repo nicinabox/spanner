@@ -21,7 +21,7 @@ export const actions = {
 		const data = Object.fromEntries(formData);
 
 		// Pass the frontend host for email links
-		const host = env.PUBLIC_HOST || url.origin;
+		const host = env.WEB_URL || url.origin;
 
 		try {
 			await session.create({ email: data.email as string, host });
