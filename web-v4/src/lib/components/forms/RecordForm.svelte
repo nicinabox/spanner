@@ -26,8 +26,12 @@
 
 	let recordId = record?.id;
 
-	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
-	let attachmentErrors = $derived(errors.filter((e) => e.id === 'attachments'));
+	// Merge page-provided errors (from SvelteKit form prop) with action errors
+	// set by the custom fetch handler below.
+	let actionErrors = $state<FormError[]>([]);
+	let allErrors = $derived([...errors, ...actionErrors]);
+	let formErrors = $derived(allErrors.filter((e) => e.id === 'form'));
+	let attachmentErrors = $derived(allErrors.filter((e) => e.id === 'attachments'));
 
 	let date = $state(
 		record?.date ? formatDateISO(new Date(record.date)) : formatDateISO(new Date()),
@@ -56,6 +60,7 @@
 	// browser's FileList can't be edited (no per-file removal API).
 	const submit: SubmitFunction = ({ formData, cancel }) => {
 		submitting = true;
+		actionErrors = [];
 		const fd = new FormData();
 		for (const [key, value] of formData.entries()) {
 			if (key.startsWith('record[attachments]')) continue;
@@ -71,15 +76,17 @@
 			headers: { Accept: 'application/json' },
 		})
 			.then(async (response) => {
-				if (response.ok || response.redirected) {
-					goto(`/vehicles/${vehicle.id}`, { invalidateAll: true });
+				const result = await response.json();
+				if (result.type === 'redirect') {
+					await goto(result.location, { invalidateAll: true });
 					return;
 				}
-				// Re-render the page with returned errors so the user sees them.
-				const html = await response.text();
-				document.open();
-				document.write(html);
-				document.close();
+				if (result.type === 'failure' && result.data?.errors) {
+					actionErrors = result.data.errors;
+					return;
+				}
+				// Unexpected response — navigate to vehicle page as fallback.
+				await goto(`/vehicles/${vehicle.id}`, { invalidateAll: true });
 			})
 			.catch(() => {
 				// Network error — leave the user on the form to retry.
@@ -107,21 +114,21 @@
 	{/if}
 
 	<fieldset class="flex flex-col gap-4">
-		<Field name="date" label="Date" {errors} required>
+		<Field name="date" label="Date" errors={allErrors} required>
 			<Input type="date" name="date" bind:value={date} required />
 		</Field>
-		<Field name="notes" label="Notes" {errors} required>
+		<Field name="notes" label="Notes" errors={allErrors} required>
 			<Textarea name="notes" bind:value={notes} required class="min-h-30" />
 		</Field>
 
-		<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} {errors}>
+		<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} errors={allErrors}>
 			<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
 				{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
 			</InputGroup>
 		</Field>
 
 		{#if vehicle.preferences.enableCost}
-			<Field name="cost" label="Cost" {errors}>
+			<Field name="cost" label="Cost" errors={allErrors}>
 				<InputGroup name="cost" bind:value={cost} inputmode="numeric">
 					{#snippet startAddon()}{getCurrencySymbol()}{/snippet}
 				</InputGroup>
