@@ -4,6 +4,7 @@ import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
 import { decode } from '$lib/utils/form';
 import { getHTTPErrors } from '$lib/utils/actions';
+import { validateAttachmentFile } from '$lib/utils/file-validation';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -37,6 +38,28 @@ export const actions = {
 		const reminderId = url.searchParams.get('reminder_id');
 
 		const files = formData.getAll('record[attachments][]') as File[];
+
+		if (files.length > 10) {
+			return fail(422, {
+				errors: [{ id: 'attachments', title: 'Maximum 10 files per record' }]
+			});
+		}
+
+		// Validate file types server-side (magic bytes + fork bomb prevention)
+		for (const file of files) {
+			if (file.size === 0) {
+				return fail(422, {
+					errors: [{ id: 'attachments', title: `"${file.name}" is empty` }]
+				});
+			}
+			const result = await validateAttachmentFile(file, { maxSize: 10 * 1024 * 1024 });
+			if (!result.valid) {
+				return fail(422, {
+					errors: [{ id: 'attachments', title: result.reason }]
+				});
+			}
+		}
+
 		const body = toMultipartFormData(
 			{
 				date: data.date,
