@@ -2,11 +2,11 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const textareaVariants = tv({
-		base: 'w-full rounded-md border border-ink-200 bg-canvas text-ink-900 transition-shadow transition-colors duration-100 ease-out-expo placeholder:text-ink-400 disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-negative focus-visible:border-focus-ring focus-visible:outline-2 focus-visible:outline-focus-ring focus-visible:outline-offset-0 resize-none',
+		base: 'w-full rounded-md border border-ink-200 bg-canvas text-ink-900 transition duration-150 ease-in-out shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)] placeholder:text-ink-400 disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-negative focus-within:bg-ink-50 focus-within:border-focus-ring focus-within:outline-2 focus-within:outline-focus-ring focus-within:outline-offset-0 resize-none',
 		variants: {
 			variant: {
 				outline: '',
-				filled: 'border-0 bg-ink-100 focus:bg-ink-50',
+				filled: 'border-0 bg-ink-200/60',
 				plain: 'border-0 bg-transparent',
 			},
 			size: {

@@ -111,7 +111,7 @@
 			<Input type="date" name="date" bind:value={date} required />
 		</Field>
 		<Field name="notes" label="Notes" {errors} required>
-			<Textarea name="notes" bind:value={notes} required class="min-h-[100px]" />
+			<Textarea name="notes" bind:value={notes} required class="min-h-30" />
 		</Field>
 
 		<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} {errors}>

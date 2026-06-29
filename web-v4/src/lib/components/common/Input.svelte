@@ -2,22 +2,22 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const inputVariants = tv({
-		base: 'w-full px-3 h-10 text-base rounded-md border border-ink-200 bg-canvas text-ink-900 transition-shadow transition-colors duration-100 ease-out-expo placeholder:text-ink-400 disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-negative focus-visible:border-focus-ring focus-visible:outline-2 focus-visible:outline-focus-ring focus-visible:outline-offset-0',
+		base: 'w-full px-3 h-10 text-base rounded-md border border-ink-200 bg-canvas text-ink-900 transition duration-150 ease-in-out shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)] placeholder:text-ink-400 disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-negative focus:bg-ink-50 focus-visible:border-focus-ring focus-visible:outline-2 focus-visible:outline-focus-ring focus-visible:outline-offset-0',
 		variants: {
 			variant: {
 				outline: '',
-				filled: 'border-0 bg-ink-100 focus:bg-ink-50'
+				filled: 'border-0 bg-ink-200/60',
 			},
 			size: {
 				sm: 'h-8 px-2 rounded-sm text-base',
 				md: '',
-				lg: 'h-12 px-4 text-base'
-			}
+				lg: 'h-12 px-4 text-base',
+			},
 		},
 		defaultVariants: {
 			size: 'md',
-			variant: 'outline'
-		}
+			variant: 'outline',
+		},
 	});
 
 	export type InputVariant = VariantProps<typeof inputVariants>['variant'];
@@ -88,6 +88,6 @@
 	class={classes}
 	aria-describedby={ariaDescribedBy}
 	aria-invalid={ariaInvalid}
-	oninput={(e) => value = (e.target as HTMLInputElement).value}
+	oninput={(e) => (value = (e.target as HTMLInputElement).value)}
 	{...rest}
 />
