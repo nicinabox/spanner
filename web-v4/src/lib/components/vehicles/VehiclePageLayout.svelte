@@ -82,7 +82,7 @@
 
 <PageLayout
 	appbarEnd={isSmallScreen.current ? appbarEnd : undefined}
-	appbarClass="grid grid-cols-[1fr_auto_1fr] max-sm:grid-cols-2 items-center gap-3 p-2"
+	appbarClass="grid grid-cols-[1fr_auto_1fr] max-sm:grid-cols-2 items-center gap-3 p-2 *:data-[center]:justify-start"
 >
 	{#snippet appbarStart()}
 		<div class="flex gap-2">
