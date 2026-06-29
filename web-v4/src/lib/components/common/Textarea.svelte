@@ -7,7 +7,8 @@
 			variant: {
 				outline: '',
 				filled: 'border-0 bg-ink-200/60',
-				plain: 'border-0 bg-transparent',
+				plain:
+					'border-0 bg-transparent shadow-none focus-within:outline-0 focus-within:bg-transparent',
 			},
 			size: {
 				sm: 'text-base rounded-sm',
