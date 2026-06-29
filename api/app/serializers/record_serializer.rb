@@ -14,8 +14,16 @@ class RecordSerializer < ActiveModel::Serializer
         filename: attachment.filename.to_s,
         content_type: attachment.content_type,
         byte_size: attachment.byte_size,
-        url: rails_blob_url(attachment.blob, expires_in: 7.days, only_path: true)
+        url: attachment_url(attachment)
       }
     end
+  end
+
+  private
+
+  def attachment_url(attachment)
+    attachment.url(expires_in: 7.days)
+  rescue ArgumentError
+    rails_blob_url(attachment.blob, expires_in: 7.days, only_path: true)
   end
 end
