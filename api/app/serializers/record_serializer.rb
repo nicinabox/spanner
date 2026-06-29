@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RecordSerializer < ActiveModel::Serializer
+  include Rails.application.routes.url_helpers
+
   attributes :id, :created_at, :updated_at, :date, :cost, :mileage, :notes, :record_type, :vehicle_id, :attachments
 
   has_many :classifications, serializer: ClassificationSerializer
@@ -12,7 +14,7 @@ class RecordSerializer < ActiveModel::Serializer
         filename: attachment.filename.to_s,
         content_type: attachment.content_type,
         byte_size: attachment.byte_size,
-        url: attachment.url(expires_in: 7.days)
+        url: rails_blob_url(attachment.blob, expires_in: 7.days, only_path: true)
       }
     end
   end
