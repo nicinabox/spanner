@@ -12,7 +12,7 @@ class RecordSerializer < ActiveModel::Serializer
         filename: attachment.filename.to_s,
         content_type: attachment.content_type,
         byte_size: attachment.byte_size,
-        url: attachment.url(expires_in: 5.minutes)
+        url: attachment.url(expires_in: 7.days)
       }
     end
   end
