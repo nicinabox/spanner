@@ -7,6 +7,7 @@
 			variant: {
 				outline: '',
 				filled: 'border-0 bg-ink-100 focus:bg-ink-50',
+				plain: 'border-0 bg-transparent',
 			},
 			size: {
 				sm: 'text-base rounded-sm',
@@ -67,7 +68,7 @@
 	let classes = $derived(cn(textareaVariants({ variant, size }), className));
 </script>
 
-<div class="grid {classes}" data-replicated-value={value}>
+<div class="grid relative {classes}" data-replicated-value={value} data-variant={variant}>
 	<textarea
 		id={resolvedId}
 		name={resolvedName}
@@ -84,10 +85,6 @@
 </div>
 
 <style>
-	div {
-		position: relative;
-	}
-
 	div::after {
 		content: attr(data-replicated-value) ' ';
 		white-space: pre-wrap;
@@ -112,4 +109,8 @@
 		background: transparent;
 		border-radius: inherit;
 	}
+
+	/*div[data-variant='plain'] :global(textarea:focus-visible) {
+		outline: none;
+	}*/
 </style>

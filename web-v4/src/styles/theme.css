@@ -72,6 +72,10 @@
 	--main-padding: clamp(1ch, 3vw, 3ch);
 }
 
+@theme inline {
+	--color-selection-bg: color-mix(in oklch, var(--color-brand-500) 25%, var(--color-canvas));
+}
+
 [data-theme='dark'] {
 	--color-brand-100: oklch(30% 0.05 276);
 	--color-brand-200: oklch(38% 0.06 276);
@@ -98,6 +102,7 @@
 	--color-surface-raised: oklch(27% 0.015 232);
 	--color-overlay: oklch(8% 0.02 232);
 	--color-positive: oklch(65% 0.15 145);
+	--color-selection-bg: color-mix(in oklch, var(--color-brand-500) 60%, var(--color-canvas));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -127,6 +132,7 @@
 		--color-surface-raised: oklch(27% 0.015 232);
 		--color-overlay: oklch(8% 0.02 232);
 		--color-positive: oklch(65% 0.15 145);
+		--color-selection-bg: color-mix(in oklch, var(--color-brand-500) 60%, var(--color-canvas));
 	}
 }
 
@@ -214,6 +220,10 @@
 	:focus-visible {
 		outline: 3px solid var(--color-focus-ring);
 		outline-offset: 0px;
+	}
+
+	::selection {
+		background-color: var(--color-selection-bg);
 	}
 
 	button:disabled,

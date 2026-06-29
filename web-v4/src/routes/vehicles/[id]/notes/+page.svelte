@@ -30,14 +30,14 @@
 </svelte:head>
 
 <VehiclePageLayout {vehicle} {activeTab}>
-	<div class="max-w-2xl mx-auto">
+	<div class="max-w-3xl mx-auto">
 		{#if vehicle.notes || editing}
 			<Card variant="outline" bleed class="gap-4">
 				<header class="flex items-center gap-2">
 					{#if editing}
 						<SegmentedControl
 							items={[
-								{ value: 'edit', label: 'Edit' },
+								{ value: 'edit', label: 'Write' },
 								{ value: 'preview', label: 'Preview' },
 							]}
 							value={view}
@@ -83,14 +83,15 @@
 							},
 						})}
 					>
-						<Textarea name="notes" bind:value={notesDraft} class="min-h-40 font-mono" />
+						<Textarea
+							name="notes"
+							bind:value={notesDraft}
+							class="min-h-40 font-mono *:focus-visible:outline-none"
+							variant="plain"
+						/>
 
-						<p class="mt-1.5 text-sm text-ink-400">
-							<a
-								class="text-brand-500 underline"
-								href="https://www.markdownguide.org/cheat-sheet/"
-								target="_blank"
-							>
+						<p class="mt-1.5 text-sm">
+							<a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">
 								Markdown supported
 							</a>
 						</p>
