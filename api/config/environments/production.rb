@@ -75,7 +75,7 @@ Rails.application.configure do
   end
 
   config.action_mailer.default_url_options = {
-    host: URI.parse(config.x.web_url).host
+    host: URI.parse(ENV.fetch('WEB_URL', 'https://spanner.app')).host
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
