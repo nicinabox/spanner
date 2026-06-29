@@ -9,5 +9,5 @@ export const getHTTPErrors = (error: unknown): { errors: FormError[] } => {
 	if (error instanceof HTTPError) {
 		return error.data;
 	}
-	return { errors: ['An unexpected error occurred'] };
+	return { errors: [{ id: 'form', title: 'An unexpected error occurred' }] };
 };
