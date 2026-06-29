@@ -6,10 +6,10 @@ Next-generation frontend for Spanner — a vehicle tracking and maintenance appl
 
 - **Framework**: SvelteKit 2 with Svelte 5
 - **Language**: TypeScript 6
-- **Styling**: Custom CSS
+- **Styling**: Tailwind
 - **Auth**: iron-session (cookie-based)
 - **API Client**: Custom fetch wrapper with camelcase/snakecase conversion
-- **Testing**: Vitest with Playwright
+- **Testing**: Vitest
 - **Formatting**: Prettier
 
 ## Prerequisites
