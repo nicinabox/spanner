@@ -139,7 +139,7 @@
 		</div>
 	{/snippet}
 	{#snippet appbarCenter()}
-		<div class="flex flex-1 gap-1 flex-nowrap min-w-0 *:flex-1">
+		<div class="flex flex-1 gap-1 flex-nowrap *:flex-1 mx-2 *:first:scroll-ml-2 *:last:scroll-mr-2">
 			{#each tabs as tab}
 				{const active = $derived(activeTab === tab.value)}
 				{const badge = tab.badge}

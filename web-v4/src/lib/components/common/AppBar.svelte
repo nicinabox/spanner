@@ -29,7 +29,7 @@
 		{@render start?.()}
 	</div>
 	<div
-		class="flex justify-center overflow-x-auto max-sm:col-span-2 max-sm:row-start-2 pb-2 -mb-2 max-sm:-mx-2"
+		class="flex justify-start overflow-x-auto max-sm:col-span-2 max-sm:row-start-2 pb-2 -mb-2 max-sm:-mx-2"
 	>
 		{#if center}
 			{@render center()}
