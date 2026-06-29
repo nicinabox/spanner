@@ -1,7 +1,11 @@
+import { redirect } from '@sveltejs/kit';
 import { HTTPError } from '$lib/data/client';
 import type { FormError } from './form';
 
 export const getHTTPErrors = (error: unknown): { errors: FormError[] } => {
+	if (error instanceof HTTPError && error.status === 401) {
+		throw redirect(307, '/');
+	}
 	if (error instanceof HTTPError) {
 		return error.data;
 	}

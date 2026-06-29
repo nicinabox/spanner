@@ -1,7 +1,8 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
-import { getSession, setSession } from '$lib/utils/session';
-import { redirect, type Handle } from '@sveltejs/kit';
+import { getSession, setSession, clearSession } from '$lib/utils/session';
+import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
+import { HTTPError } from '$lib/data/client';
 
 const protectedRoutes = ['^/vehicles', '^/settings'];
 
@@ -38,4 +39,9 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	});
 });
 
-export const handleError = Sentry.handleErrorWithSentry();
+export const handleError: HandleServerError = ({ error }) => {
+	if (error instanceof HTTPError && error.status === 401) {
+		throw redirect(307, '/');
+	}
+	return Sentry.handleErrorWithSentry()({ error } as any);
+};

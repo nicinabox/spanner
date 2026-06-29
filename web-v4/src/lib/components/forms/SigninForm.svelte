@@ -20,7 +20,7 @@
 		'neo@matrix',
 		'marty@hillvalley',
 		'bender@bendinguniverse',
-		'frodo@bagendshire'
+		'frodo@bagendshire',
 	];
 
 	const placeholder = placeholderEmails[Math.floor(Math.random() * placeholderEmails.length)];
@@ -35,12 +35,12 @@
 		</p>
 
 		<div class="my-6 flex items-center gap-4">
-			<div class="text-sm text-ink-500 divider">OR</div>
+			<div class="text-xs text-ink-500 font-medium tracking-wider divider">OR</div>
 		</div>
 
 		<fieldset class="fieldset">
 			<Field name="token" label="Enter your token" errors={form.errors}>
-				<Input name="token" autocomplete="off" required  />
+				<Input name="token" autocomplete="off" required />
 			</Field>
 		</fieldset>
 
@@ -59,7 +59,7 @@
 				name="email"
 				required
 			>
-				<Input {placeholder}  />
+				<Input {placeholder} />
 			</Field>
 		</fieldset>
 
@@ -77,9 +77,10 @@
 		justify-content: center;
 		gap: 1rem;
 
-		&::before, &::after {
-			content: "";
-			background: var(--color-canvas);
+		&::before,
+		&::after {
+			content: '';
+			background: var(--color-ink-100);
 			flex-grow: 1;
 			height: 2px;
 		}

@@ -34,6 +34,13 @@ export const setSession = async (cookies: Cookies, session: Session) => {
 	});
 };
 
+export const clearSession = (cookies: Cookies) => {
+	cookies.delete(sessionOptions.cookieName, {
+		path: '/',
+		...sessionOptions.cookieOptions,
+	});
+};
+
 export const getAuthToken = async (cookies: Cookies) => {
 	const session = await getSession(cookies);
 	return session?.authToken;

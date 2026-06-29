@@ -40,12 +40,13 @@ export const getTimeZoneOffset = (): string =>
 	((new Date().getTimezoneOffset() / 60) * -1).toString();
 
 export class HTTPError<T = string> extends Error {
+	status: number;
 	data: T;
 
 	constructor(response: Response, data: T) {
 		super('');
 		this.name = 'HTTPError';
-
+		this.status = response.status;
 		this.message = `HTTP Error: ${response.status}`;
 		this.data = data;
 	}
