@@ -27,10 +27,10 @@ class DailyJob < ApplicationJob
       next unless user.reminder_eligible?
 
       user_reminders.each do |r|
-        Rails.logger.info {
+        Rails.logger.info do
           "[DailyJob] Sending reminder #{r.id} for vehicle #{r.vehicle_id} " \
-          "(send_reminder_emails=#{r.vehicle.preferences.send_reminder_emails})"
-        }
+            "(send_reminder_emails=#{r.vehicle.preferences.send_reminder_emails})"
+        end
       end
 
       NotificationDispatcher.dispatch(:reminder_upcoming, user: user, reminders: user_reminders)
@@ -61,22 +61,22 @@ class DailyJob < ApplicationJob
 
   def reminders_on(date)
     reminders = Reminder.where(reminder_date: date.all_day)
-    Rails.logger.info {
+    Rails.logger.info do
       "[DailyJob] reminders_on(#{date}): found #{reminders.size} raw reminders"
-    }
+    end
     filtered = reminders.select do |r|
       prefs = r.vehicle.preferences
       allowed = prefs.send_reminder_emails
-      Rails.logger.info {
+      Rails.logger.info do
         "[DailyJob] reminder #{r.id} (vehicle #{r.vehicle_id}): " \
-        "send_reminder_emails=#{allowed.inspect} " \
-        "raw_prefs=#{r.vehicle.read_attribute(:preferences).inspect}"
-      }
+          "send_reminder_emails=#{allowed.inspect} " \
+          "raw_prefs=#{r.vehicle.read_attribute(:preferences).inspect}"
+      end
       allowed
     end
-    Rails.logger.info {
+    Rails.logger.info do
       "[DailyJob] reminders_on: #{filtered.size} after filter"
-    }
+    end
     filtered
   end
 end

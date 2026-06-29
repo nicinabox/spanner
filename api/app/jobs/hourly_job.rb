@@ -35,23 +35,23 @@ class HourlyJob < ApplicationJob
 
   def dispatch_manual_reminders(user, date)
     reminders = user.reminders.where(reminder_date: date.all_day)
-    Rails.logger.info {
+    Rails.logger.info do
       "[HourlyJob] dispatch_manual_reminders(user=#{user.id}, date=#{date}): " \
-      "found #{reminders.size} raw reminders"
-    }
-    filtered = reminders.select { |r|
+        "found #{reminders.size} raw reminders"
+    end
+    filtered = reminders.select do |r|
       prefs = r.vehicle.preferences
       allowed = prefs.send_reminder_emails
-      Rails.logger.info {
+      Rails.logger.info do
         "[HourlyJob] reminder #{r.id} (vehicle #{r.vehicle_id}): " \
-        "send_reminder_emails=#{allowed.inspect} " \
-        "raw_prefs=#{r.vehicle.read_attribute(:preferences).inspect}"
-      }
+          "send_reminder_emails=#{allowed.inspect} " \
+          "raw_prefs=#{r.vehicle.read_attribute(:preferences).inspect}"
+      end
       allowed
-    }
-    Rails.logger.info {
+    end
+    Rails.logger.info do
       "[HourlyJob] dispatch_manual_reminders: #{filtered.size} after filter"
-    }
+    end
     return if filtered.empty?
 
     NotificationDispatcher.dispatch(:reminder_today, user: user, reminders: filtered)
