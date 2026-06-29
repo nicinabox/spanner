@@ -29,7 +29,7 @@
 	let label = $derived(api.copied ? 'Copied' : 'Copy');
 </script>
 
-<InputGroup variant="filled" name="clipboard" {value} readonly>
+<InputGroup variant="filled" name="clipboard" {value} readonly onfocus={(e) => (e.target as HTMLInputElement)?.select()}>
 	{#snippet end()}
 		<Tooltip content={label}>
 			{#snippet children(tooltipProps)}
@@ -37,11 +37,12 @@
 					{...tooltipProps}
 					{...triggerProps}
 					aria-label={label}
-					class="-mr-2"
+					class="-mx-2"
 					variant="ghost"
 					color="neutral"
 					size="sm"
 					icon
+					onpointerdown={(e: PointerEvent) => e.stopPropagation()}
 				>
 					{#if api.copied}
 						<Check size={14} />

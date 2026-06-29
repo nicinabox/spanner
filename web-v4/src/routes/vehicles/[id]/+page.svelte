@@ -178,12 +178,17 @@
 					variant="filled"
 					class="w-full sm:w-1/2 lg:w-1/3"
 					bind:value={searchQuery}
-					onEndClick={() => (searchQuery = '')}
 				>
 					{#snippet start()}<Search size={16} />{/snippet}
 					{#snippet end()}
 						{#if searchQuery}
-							<X size={16} />
+							<button
+								type="button"
+								onclick={() => (searchQuery = '')}
+								class="flex rounded-xs items-center text-ink-500 hover:text-ink-800 p-3 -mx-3"
+							>
+								<X size={16} />
+							</button>
 						{/if}
 					{/snippet}
 				</InputGroup>
