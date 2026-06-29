@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import { version } from '$app/environment';
 	import Badge from '$lib/components/common/Badge.svelte';
 
 	let { children } = $props();
@@ -17,6 +18,6 @@
 		style="padding-bottom: calc(1rem + env(safe-area-inset-bottom))"
 	>
 		<a href="/legal">Legal</a>
-		<Badge>{__APP_VERSION__}</Badge>
+		<Badge>{version}</Badge>
 	</footer>
 </div>

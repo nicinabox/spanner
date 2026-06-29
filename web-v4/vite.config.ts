@@ -11,9 +11,6 @@ export default defineConfig(({ mode }) => {
 
 	return {
 		define: {
-			__APP_VERSION__: JSON.stringify(
-				`v4.${new Date().toISOString().slice(0, 10).replaceAll('-', '.')}`,
-			),
 			__HEAD_INJECTIONS__: JSON.stringify(env.HEAD_INJECTIONS ?? ''),
 		},
 		server: {
@@ -38,6 +35,9 @@ export default defineConfig(({ mode }) => {
 					},
 				},
 				adapter: adapter(),
+				version: {
+					name: `v4.${new Date().toISOString().slice(0, 10).replaceAll('-', '.')}`,
+				},
 			}),
 		],
 		test: {
