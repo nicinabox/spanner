@@ -18,3 +18,4 @@ declare module 'insane' {
 }
 
 declare const __APP_VERSION__: string;
+declare const __HEAD_INJECTIONS__: string;

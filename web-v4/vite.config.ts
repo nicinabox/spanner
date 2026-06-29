@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
 			__APP_VERSION__: JSON.stringify(
 				`v4.${new Date().toISOString().slice(0, 10).replaceAll('-', '.')}`,
 			),
+			__HEAD_INJECTIONS__: JSON.stringify(env.HEAD_INJECTIONS ?? ''),
 		},
 		server: {
 			allowedHosts: ['.local', '.ts.net'],
