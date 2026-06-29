@@ -120,7 +120,7 @@
 							size="sm"
 							class="py-2 px-4 gap-0 min-w-60 hover:bg-surface-raised"
 						>
-							<p class="text-lg font-semibold flex items-center gap-2">
+							<p class="text-lg font-medium flex items-center gap-2">
 								{#if reminderOverdue}
 									<span class="w-1.5 h-1.5 rounded-full bg-warning shrink-0"></span>
 								{/if}
