@@ -11,6 +11,7 @@
 	import type { Reminder, ReminderType } from '$lib/data/reminders';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
+	import { Alert } from '$lib';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -103,27 +104,23 @@
 		{/if}
 
 		{#if ['mileage', 'date_or_mileage'].includes(reminderType)}
-			<Field
-				name="mileage"
-				label={MileageLabel(vehicle.distanceUnit)}
-				{errors}
-				required
-			>
+			<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} {errors} required>
 				<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
 					{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
 				</InputGroup>
 				{#if vehicle.estimatedMileage}
 					<p class="text-sm text-ink-400">
-						Estimated {mileageLabel(vehicle.distanceUnit)} {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}
+						Estimated {mileageLabel(vehicle.distanceUnit)}
+						{formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}
 					</p>
 				{/if}
 			</Field>
 		{/if}
 
 		{#if estimatedDate && ['date_or_mileage', 'mileage'].includes(reminderType)}
-			<div class="rounded-md text-info border border-info bg-info/10 px-4 py-3 text-sm">
+			<Alert variant="info">
 				Estimated for {intlFormatDate(estimatedDate)}
-			</div>
+			</Alert>
 		{/if}
 	</fieldset>
 
