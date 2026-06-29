@@ -2,6 +2,7 @@ import { getVehicle } from '$lib/data/vehicles';
 import { getHistoryEntry } from '$lib/data/history';
 import { uploadRecord, deleteAttachment, toMultipartFormData } from '$lib/data/multipart';
 import { decode } from '$lib/utils/form';
+import { validateAttachments } from '$lib/utils/file-validation';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -40,6 +41,15 @@ export const actions = {
 			.filter(Boolean);
 
 		const files = formData.getAll('record[attachments][]') as File[];
+
+		// Validate file count, types, and sizes server-side
+		const validation = await validateAttachments(files);
+		if (!validation.valid) {
+			return fail(422, {
+				errors: [{ id: 'attachments', title: validation.reason }]
+			});
+		}
+
 		const body = toMultipartFormData(
 			{
 				date: data.date,
