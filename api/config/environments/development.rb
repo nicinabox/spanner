@@ -57,6 +57,4 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options[:host] = 'localhost:3001'
   Rails.application.routes.default_url_options[:protocol] = 'http'
-
-  config.x.web_url = ENV.fetch('WEB_URL', 'http://localhost:3001')
 end

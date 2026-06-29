@@ -34,5 +34,7 @@ module SpannerApi
 
     config.active_job.queue_adapter = :queue_classic
     config.action_mailer.deliver_later_queue_name = 'default'
+
+    config.x.web_url = ENV.fetch('WEB_URL', 'http://localhost:3000')
   end
 end

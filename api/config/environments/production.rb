@@ -75,7 +75,7 @@ Rails.application.configure do
   end
 
   config.action_mailer.default_url_options = {
-    host: URI.parse(ENV.fetch('WEB_URL', 'https://spanner.app')).host
+    host: URI.parse(config.x.web_url).host
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -110,8 +110,6 @@ Rails.application.configure do
   # to use disk storage (requires a persistent volume mount).
   config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE', 'amazon').to_sym
   config.active_storage.service_urls_expire_in = 5.minutes
-
-  config.x.web_url = ENV.fetch('WEB_URL', 'https://spanner.app')
 
   Rails.application.routes.default_url_options[:host] = URI.parse(config.x.web_url).host
   Rails.application.routes.default_url_options[:protocol] =
