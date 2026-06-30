@@ -38,12 +38,20 @@
 
 	let mode = $state<'default' | 'password'>('default');
 	let email = $state('');
+	let password = $state('');
 	let emailError = $state('');
 	let formErrors = $state<FormError[]>([]);
 
 	// Sync with server form errors, resetting on mode change
 	$effect(() => {
 		formErrors = (form as FormErrors)?.errors ?? [];
+	});
+
+	// When password manager fills the password field in default mode, transition to password mode
+	$effect(() => {
+		if (mode === 'default' && password) {
+			mode = 'password';
+		}
 	});
 </script>
 
@@ -68,67 +76,21 @@
 			<Button href="/" variant="ghost" block>Back</Button>
 		</div>
 	</form>
-{:else if mode === 'password'}
-	{#if formErrors.length > 0}
-		<Alert class="mb-4">
-			{formErrors[0]?.title || 'Invalid email or password'}
-		</Alert>
-	{/if}
-	<form method="post" action="?/login" use:enhance class="w-full">
-		<fieldset class="fieldset min-w-0">
-			<Field
-				label="Email"
-				errors={emailError
-					? [{ id: 'email', title: emailError }]
-					: formErrors.filter((e: FormError) => e.id === 'email')}
-				name="email"
-				required
-			>
-				<Input
-					{placeholder}
-					type="email"
-					name="email"
-					autocomplete="email"
-					value={email}
-					oninput={(e) => {
-						email = (e.target as HTMLInputElement).value;
-						emailError = '';
-					}}
-					required
-				/>
-			</Field>
-		</fieldset>
-
-		<fieldset class="fieldset min-w-0">
-			<Field label="Password" name="password" required>
-				<Input name="password" type="password" autocomplete="current-password" required />
-			</Field>
-		</fieldset>
-
-		<div class="mt-4 flex flex-col gap-3">
-			<Button type="submit" block>Sign in</Button>
-			<Button variant="ghost" block href={`/reset-password?email=${encodeURIComponent(email)}`}
-				>Forgot password?</Button
-			>
-			<Button
-				variant="ghost"
-				block
-				onclick={() => {
-					mode = 'default';
-					formErrors = [];
-				}}>Back</Button
-			>
-		</div>
-	</form>
 {:else}
-	<form method="post" action="?/magicLink" use:enhance class="w-full">
+	<form method="post" action="?/login" use:enhance class="w-full">
+		{#if formErrors.length > 0}
+			<Alert class="mb-4">
+				{formErrors[0]?.title || 'Invalid email or password'}
+			</Alert>
+		{/if}
+
 		<fieldset class="fieldset min-w-0">
 			<Field
 				label="Email"
 				errors={emailError
 					? [{ id: 'email', title: emailError }]
 					: formErrors.filter((e: FormError) => e.id === 'email')}
-				hint="New here? We'll create your account automatically."
+				hint={mode === 'default' ? "New here? We'll create your account automatically." : undefined}
 				name="email"
 				required
 			>
@@ -145,28 +107,57 @@
 					required
 				/>
 			</Field>
-			<Input name="password" type="hidden" />
+		</fieldset>
+
+		<fieldset class="fieldset min-w-0" class:sr-only={mode === 'default'}>
+			<Field label="Password" name="password" required>
+				<Input
+					name="password"
+					type="password"
+					autocomplete="current-password"
+					value={password}
+					oninput={(e) => {
+						password = (e.target as HTMLInputElement).value;
+					}}
+					required={mode === 'password'}
+				/>
+			</Field>
 		</fieldset>
 
 		<div class="mt-4 flex flex-col gap-3">
-			{#if emailEnabled}
-				<Button type="submit" variant="solid" block>Send me a link</Button>
-			{/if}
-			<Button
-				type="button"
-				variant="outline"
-				block
-				onclick={() => {
-					if (email.trim()) {
-						mode = 'password';
+			{#if mode === 'default'}
+				{#if emailEnabled}
+					<Button type="submit" variant="solid" block>Send me a link</Button>
+				{/if}
+				<Button
+					type="button"
+					variant="outline"
+					block
+					onclick={() => {
+						if (email.trim()) {
+							mode = 'password';
+							formErrors = [];
+						} else {
+							emailError = 'Enter your email first';
+						}
+					}}
+				>
+					Sign in with password
+				</Button>
+			{:else}
+				<Button type="submit" block>Sign in</Button>
+				<Button variant="ghost" block href={`/reset-password?email=${encodeURIComponent(email)}`}
+					>Forgot password?</Button
+				>
+				<Button
+					variant="ghost"
+					block
+					onclick={() => {
+						mode = 'default';
 						formErrors = [];
-					} else {
-						emailError = 'Enter your email first';
-					}
-				}}
-			>
-				Sign in with password
-			</Button>
+					}}>Back</Button
+				>
+			{/if}
 		</div>
 	</form>
 {/if}
