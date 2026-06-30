@@ -6,6 +6,7 @@ import { setSession } from '$lib/utils/session';
 import { getCurrentUser } from '$lib/data/user';
 import { safeAsync } from '$lib/utils/async';
 import { getHTTPErrors } from '$lib/utils/actions';
+import { loginSchema, parseForm, tokenSchema } from '$lib/utils/schema';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const [user] = await safeAsync(getCurrentUser(locals));
@@ -22,13 +23,18 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	login: async ({ request, cookies, url }) => {
 		const formData = await request.formData();
-		const data = Object.fromEntries(formData);
+		const parsed = parseForm(formData, loginSchema);
+
+		if (parsed.errors) {
+			return fail(401, { errors: parsed.errors });
+		}
+
 		const host = WEB_URL || url.origin;
 
 		try {
 			const result = await session.login({
-				email: data.email as string,
-				password: (data.password as string) || undefined,
+				email: parsed.data.email,
+				password: parsed.data.password || undefined,
 				host,
 			});
 
@@ -48,12 +54,17 @@ export const actions = {
 
 	magicLink: async ({ request, url }) => {
 		const formData = await request.formData();
-		const data = Object.fromEntries(formData);
+		const parsed = parseForm(formData, loginSchema);
+
+		if (parsed.errors) {
+			return fail(422, { errors: parsed.errors });
+		}
+
 		const host = WEB_URL || url.origin;
 
 		try {
 			await session.login({
-				email: data.email as string,
+				email: parsed.data.email,
 				host,
 			});
 
@@ -68,18 +79,14 @@ export const actions = {
 
 	signin: async ({ cookies, request }) => {
 		const formData = await request.formData();
-		const data = Object.fromEntries(formData);
+		const parsed = parseForm(formData, tokenSchema);
 
-		const token = data.token as string;
-		if (!token || token.trim() === '') {
-			return fail(422, {
-				status: 'pending',
-				errors: [{ id: 'token', title: "Token can't be blank" }],
-			});
+		if (parsed.errors) {
+			return fail(422, { status: 'pending', errors: parsed.errors });
 		}
 
 		try {
-			const sess = await session.signin(token);
+			const sess = await session.signin(parsed.data.token);
 			await setSession(cookies, sess);
 		} catch (error) {
 			return fail(422, { status: 'pending', ...getHTTPErrors(error) });

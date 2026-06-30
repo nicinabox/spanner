@@ -3,6 +3,7 @@ import { requestEmailChange, deleteAccount } from '$lib/data/settings';
 import { setPassword } from '$lib/data/session';
 import { getCurrentUser } from '$lib/data/user';
 import { getHTTPErrors } from '$lib/utils/actions';
+import { parseForm, changeEmailSchema, changePasswordSchema } from '$lib/utils/schema';
 import { safeAsync } from '$lib/utils/async';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
@@ -18,17 +19,17 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	changeEmail: async ({ request, locals, url }) => {
 		const formData = await request.formData();
-		const email = formData.get('email') as string;
+		const parsed = parseForm(formData, changeEmailSchema);
 
-		if (!email || email.trim() === '') {
-			return fail(422, { errors: [{ id: 'email', title: "Email can't be blank" }] });
+		if (parsed.errors) {
+			return fail(422, { errors: parsed.errors });
 		}
 
 		const host = WEB_URL || url.origin;
 
 		try {
-			await requestEmailChange(email.trim(), host, locals);
-			return { emailSuccess: true, email: email.trim() };
+			await requestEmailChange(parsed.data.email, host, locals);
+			return { emailSuccess: true, email: parsed.data.email };
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
 		}
@@ -36,23 +37,14 @@ export const actions = {
 
 	changePassword: async ({ request, locals }) => {
 		const formData = await request.formData();
-		const data = Object.fromEntries(formData);
+		const parsed = parseForm(formData, changePasswordSchema);
 
-		const password = data.password as string;
-		if (!password || password.length < 8) {
-			return fail(422, {
-				errors: [{ id: 'password', title: 'Password must be at least 8 characters' }],
-			});
-		}
-
-		if (password !== data.confirm_password) {
-			return fail(422, {
-				errors: [{ id: 'confirm_password', title: 'Passwords do not match' }],
-			});
+		if (parsed.errors) {
+			return fail(422, { errors: parsed.errors });
 		}
 
 		try {
-			await setPassword({ password }, locals);
+			await setPassword({ password: parsed.data.password }, locals);
 			return { passwordSuccess: true };
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));

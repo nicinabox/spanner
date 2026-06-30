@@ -1,6 +1,7 @@
 import { resetPassword } from '$lib/data/session';
 import { setSession } from '$lib/utils/session';
 import { HTTPError } from '$lib/data/client';
+import { parseForm, resetPasswordSchema } from '$lib/utils/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -15,33 +16,24 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 export const actions = {
 	reset: async ({ request, params, cookies }) => {
 		const formData = await request.formData();
-		const data = Object.fromEntries(formData);
+		const parsed = parseForm(formData, resetPasswordSchema);
 
-		const password = data.password as string;
-		if (!password || password.length < 8) {
-			return fail(422, {
-				errors: [{ id: 'password', title: 'Password must be at least 8 characters' }]
-			});
-		}
-
-		if (password !== data.confirm_password) {
-			return fail(422, {
-				errors: [{ id: 'confirm_password', title: 'Passwords do not match' }]
-			});
+		if (parsed.errors) {
+			return fail(422, { errors: parsed.errors });
 		}
 
 		try {
-			const session = await resetPassword(params.token, { password });
+			const session = await resetPassword(params.token, { password: parsed.data.password });
 			await setSession(cookies, session);
 		} catch (error) {
 			if (error instanceof HTTPError && error.status === 422) {
 				return fail(422, error.data);
 			}
 			return fail(401, {
-				errors: [{ id: 'form', title: 'Invalid or expired reset link' }]
+				errors: [{ id: 'form', title: 'Invalid or expired reset link' }],
 			});
 		}
 
 		redirect(303, '/vehicles');
-	}
+	},
 } satisfies Actions;
