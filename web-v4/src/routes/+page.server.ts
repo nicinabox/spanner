@@ -26,25 +26,27 @@ export const actions = {
 		const data = Object.fromEntries(formData);
 		const host = env.WEB_URL || url.origin;
 
-		const result = await session.login({
-			email: data.email as string,
-			password: (data.password as string) || undefined,
-			host
-		});
+		try {
+			const result = await session.login({
+				email: data.email as string,
+				password: (data.password as string) || undefined,
+				host
+			});
 
-		// Success: API returns session JSON with auth_token
-		if (result && typeof result === 'object' && 'authToken' in result) {
-			await setSession(cookies, result as session.Session);
-			redirect(303, '/vehicles');
+			// Success: API returns session JSON with auth_token
+			if (result && typeof result === 'object' && 'authToken' in result) {
+				await setSession(cookies, result as session.Session);
+				redirect(303, '/vehicles');
+			}
+
+			// 202: magic link sent (no-password account or auto-created)
+			return { status: 'pending' };
+		} catch (error) {
+			// 401 from login endpoint — show error, don't redirect to /
+			return fail(401, {
+				errors: [{ id: 'form', title: 'Invalid email or password' }]
+			});
 		}
-
-		// Check for error response (401)
-		if (result && typeof result === 'object' && 'error' in result) {
-			return fail(401, { errors: [{ id: 'form', title: 'Invalid email or password' }] });
-		}
-
-		// 202: magic link sent (no-password account or auto-created)
-		return { status: 'pending' };
 	},
 
 	// Magic link only (no password)
@@ -53,14 +55,19 @@ export const actions = {
 		const data = Object.fromEntries(formData);
 		const host = env.WEB_URL || url.origin;
 
-		await session.login({
-			email: data.email as string,
-			host
-		});
+		try {
+			await session.login({
+				email: data.email as string,
+				host
+			});
 
-		// 202: magic link sent (or auto-created)
-		return { status: 'pending' };
+			// 202: magic link sent (or auto-created)
+			return { status: 'pending' };
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
+		}
 	},
+
 	signin: async ({ cookies, request }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
