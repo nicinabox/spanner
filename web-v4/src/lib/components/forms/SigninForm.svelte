@@ -145,6 +145,7 @@
 					required
 				/>
 			</Field>
+			<Input name="password" type="hidden" />
 		</fieldset>
 
 		<div class="mt-4 flex flex-col gap-3">
