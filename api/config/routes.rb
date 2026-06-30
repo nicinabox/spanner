@@ -7,6 +7,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   scope module: :v2 do
     post 'sessions', to: 'sessions#create'
+    post 'login', to: 'logins#create', as: nil
 
     get 'login(/:login_token)', to: 'sessions#login', as: 'login'
     get 'confirm_email(/:token)', to: 'users#confirm_email', as: 'confirm_email'
@@ -15,6 +16,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       post '/',                  to: 'users#account_action',     as: 'account_action'
       post '/preferences',       to: 'users#account_preferences', as: 'account_preferences'
     end
+
+    post 'password/reset', to: 'passwords#create_reset'
+    post 'password/reset/:token', to: 'passwords#reset'
 
     post 'webhooks/postmark', to: 'postmark#webhook'
   end
@@ -47,6 +51,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     put 'user', to: 'users#update'
     delete 'user', to: 'users#destroy'
     post 'user/email_change', to: 'users#request_email_change', as: 'email_change_user'
+
+    put 'password', to: 'passwords#update'
 
     delete 'sessions/:id', to: 'sessions#destroy'
     get 'sessions', to: 'sessions#index'

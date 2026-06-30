@@ -11,6 +11,7 @@ module ActiveSupport
 
     setup do
       seed_classifications
+      Rack::Attack.cache.store.clear if Rack::Attack.cache.store.respond_to?(:clear)
     end
 
     # Make Action Mailer test helpers (assert_emails, etc.) available in all tests.

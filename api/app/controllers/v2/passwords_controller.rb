@@ -1,0 +1,62 @@
+# frozen_string_literal: true
+
+module V2
+  class PasswordsController < ApplicationController
+    include SessionCreation
+    skip_before_action :authenticate, only: %i[create_reset reset]
+
+    # PUT /password — set or change password
+    def update
+      unless current_user.password_enabled? || params[:password].present?
+        respond_with_error 'Password is required', status: :unprocessable_content
+        return
+      end
+
+      if current_user.password_enabled?
+        # Changing existing password — require current_password
+        unless current_user.authenticate(params[:current_password].to_s)
+          respond_with_error 'Current password is incorrect', status: :unauthorized
+          return
+        end
+      end
+
+      if params[:password].to_s.length < 8
+        respond_with_error 'Password is too short (minimum is 8 characters)', status: :unprocessable_content
+        return
+      end
+
+      current_user.update!(password: params[:password])
+      head :no_content
+    end
+
+    # POST /password/reset — request reset (always 202)
+    def create_reset
+      email = params[:email].to_s.strip.downcase
+      user = User.unscoped.find_by(email: email)
+
+      if user&.password_enabled?
+        PasswordMailer.reset_link(user).deliver_later
+      end
+
+      head :accepted
+    end
+
+    # POST /password/reset/:token — redeem reset token
+    def reset
+      user = User.find_by_password_reset_token(params[:token])
+
+      if user
+        if params[:password].to_s.length < 8
+          respond_with_error 'Password is too short (minimum is 8 characters)', status: :unprocessable_content
+          return
+        end
+
+        user.update!(password: params[:password])
+        session = create_session!(user)
+        render json: session
+      else
+        respond_with_error 'Invalid or expired reset token', status: :unauthorized
+      end
+    end
+  end
+end
