@@ -5,6 +5,7 @@
 	import { type ActionData } from '../../../routes/$types';
 	import Field from '../common/Field.svelte';
 	import Input from '../common/Input.svelte';
+	import Alert from '../common/Alert.svelte';
 
 	interface Props {
 		form: ActionData;
@@ -35,8 +36,12 @@
 	let mode = $state<'default' | 'password'>('default');
 	let email = $state('');
 	let emailError = $state('');
+	let formErrors = $state<ActionData['errors']>([]);
 
-
+	// Sync with server form errors, resetting on mode change
+	$effect(() => {
+		formErrors = form?.errors ?? [];
+	});
 </script>
 
 {#if form?.status === 'pending'}
@@ -61,24 +66,55 @@
 		</div>
 	</form>
 {:else if mode === 'password'}
-	{#if form?.errors && form.errors.length > 0}
-		<div class="mb-4 p-3 rounded-md bg-red-50 text-red-700 text-sm">
-			{form.errors[0]?.title || 'Invalid email or password'}
-		</div>
+	{#if formErrors.length > 0}
+		<Alert class="mb-4">
+			{formErrors[0]?.title || 'Invalid email or password'}
+		</Alert>
 	{/if}
 	<form method="post" action="?/login" use:enhance class="w-full">
-		<input type="hidden" name="email" value={email} />
 		<fieldset class="fieldset min-w-0">
-			<div class="text-base text-ink-900 mb-2">{email}</div>
-			<Field label="Password" name="password">
+			<Field
+				label="Email"
+				errors={emailError
+					? [{ id: 'email', title: emailError }]
+					: formErrors.filter((e) => e.id === 'email')}
+				name="email"
+				required
+			>
+				<Input
+					{placeholder}
+					type="email"
+					name="email"
+					autocomplete="email"
+					value={email}
+					oninput={(e) => {
+						email = (e.target as HTMLInputElement).value;
+						emailError = '';
+					}}
+					required
+				/>
+			</Field>
+		</fieldset>
+
+		<fieldset class="fieldset min-w-0">
+			<Field label="Password" name="password" required>
 				<Input name="password" type="password" autocomplete="current-password" required />
 			</Field>
 		</fieldset>
 
 		<div class="mt-4 flex flex-col gap-3">
 			<Button type="submit" block>Sign in</Button>
-			<Button variant="ghost" block href={`/reset-password?email=${encodeURIComponent(email)}`}>Forgot password?</Button>
-			<Button variant="ghost" block onclick={() => { mode = 'default'; }}>Back</Button>
+			<Button variant="ghost" block href={`/reset-password?email=${encodeURIComponent(email)}`}
+				>Forgot password?</Button
+			>
+			<Button
+				variant="ghost"
+				block
+				onclick={() => {
+					mode = 'default';
+					formErrors = [];
+				}}>Back</Button
+			>
 		</div>
 	</form>
 {:else}
@@ -88,7 +124,7 @@
 				label="Email"
 				errors={emailError
 					? [{ id: 'email', title: emailError }]
-					: form?.errors?.filter((e) => e.id === 'email')}
+					: formErrors.filter((e) => e.id === 'email')}
 				hint="New here? We'll create your account automatically."
 				name="email"
 				required
@@ -119,6 +155,7 @@
 				onclick={() => {
 					if (email.trim()) {
 						mode = 'password';
+						formErrors = [];
 					} else {
 						emailError = 'Enter your email first';
 					}
