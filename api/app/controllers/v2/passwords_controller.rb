@@ -3,6 +3,7 @@
 module V2
   class PasswordsController < ApplicationController
     include SessionCreation
+
     skip_before_action :authenticate, only: %i[create_reset reset]
 
     # PUT /password — set or change password
@@ -22,16 +23,14 @@ module V2
       email = params[:email].to_s.strip.downcase
       user = User.unscoped.find_by(email: email)
 
-      if user&.password_enabled?
-        PasswordMailer.reset_link(user).deliver_later
-      end
+      PasswordMailer.reset_link(user).deliver_later if user&.password_enabled?
 
       head :accepted
     end
 
     # POST /password/reset/:token — redeem reset token
     def reset
-      user = User.find_by_password_reset_token(params[:token])
+      user = User.find_by(password_reset_token: params[:token])
 
       if user
         if params[:password].to_s.length < 8

@@ -9,7 +9,7 @@ class LoginsControllerTest < ActionDispatch::IntegrationTest
     user.save!
 
     post '/login', params: { email: user.email, password: 'password123' },
-         headers: { accept: 'application/json; version=2' }
+                   headers: { accept: 'application/json; version=2' }
 
     assert_response :success
     assert_not_empty response_body['auth_token']
@@ -22,19 +22,19 @@ class LoginsControllerTest < ActionDispatch::IntegrationTest
     user.save!
 
     post '/login', params: { email: user.email, password: 'wrongpassword' },
-         headers: { accept: 'application/json; version=2' }
+                   headers: { accept: 'application/json; version=2' }
 
     assert_response :unauthorized
   end
 
   test 'login with password for non-existent email returns 401 (no enumeration)' do
     post '/login', params: { email: 'nobody@test', password: 'password123' },
-         headers: { accept: 'application/json; version=2' }
+                   headers: { accept: 'application/json; version=2' }
 
     assert_response :unauthorized
     assert_no_difference 'User.count' do
       post '/login', params: { email: 'nobody2@test', password: 'password123' },
-           headers: { accept: 'application/json; version=2' }
+                     headers: { accept: 'application/json; version=2' }
     end
   end
 
@@ -45,7 +45,7 @@ class LoginsControllerTest < ActionDispatch::IntegrationTest
 
     assert_emails 1 do
       post '/login', params: { email: user.email, host: 'localhost' },
-           headers: { accept: 'application/json; version=2' }
+                     headers: { accept: 'application/json; version=2' }
     end
 
     assert_response :accepted
@@ -56,7 +56,7 @@ class LoginsControllerTest < ActionDispatch::IntegrationTest
 
     assert_emails 1 do
       post '/login', params: { email: user.email, host: 'localhost' },
-           headers: { accept: 'application/json; version=2' }
+                     headers: { accept: 'application/json; version=2' }
     end
 
     assert_response :accepted
@@ -67,7 +67,7 @@ class LoginsControllerTest < ActionDispatch::IntegrationTest
       # 2 emails: magic link + prompt to add first vehicle (delayed)
       assert_emails 2 do
         post '/login', params: { email: 'newuser@test', host: 'localhost' },
-             headers: { accept: 'application/json; version=2' }
+                       headers: { accept: 'application/json; version=2' }
       end
     end
 
@@ -79,7 +79,7 @@ class LoginsControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_emails do
       post '/login', params: { email: user.email, password: 'anything', host: 'localhost' },
-           headers: { accept: 'application/json; version=2' }
+                     headers: { accept: 'application/json; version=2' }
     end
 
     assert_response :unauthorized
@@ -92,15 +92,15 @@ class LoginsControllerTest < ActionDispatch::IntegrationTest
     user.save!
 
     post '/login', params: { email: 'nobody@test', password: 'password123' },
-         headers: { accept: 'application/json; version=2' }
+                   headers: { accept: 'application/json; version=2' }
     assert_response :unauthorized
 
     post '/login', params: { email: user.email, password: 'wrong' },
-         headers: { accept: 'application/json; version=2' }
+                   headers: { accept: 'application/json; version=2' }
     assert_response :unauthorized
 
     post '/login', params: { email: 'nobody@test' },
-         headers: { accept: 'application/json; version=2' }
+                   headers: { accept: 'application/json; version=2' }
     assert_response :accepted
   end
 end

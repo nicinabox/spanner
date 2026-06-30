@@ -6,22 +6,22 @@ class RackAttackTest < ActionDispatch::IntegrationTest
   test 'POST /login is throttled after 10 requests per minute' do
     10.times do
       post '/login', params: { email: 'test@test', password: 'wrong' },
-           headers: { accept: 'application/json; version=2' }
+                     headers: { accept: 'application/json; version=2' }
     end
 
     post '/login', params: { email: 'test@test', password: 'wrong' },
-         headers: { accept: 'application/json; version=2' }
+                   headers: { accept: 'application/json; version=2' }
     assert_response :too_many_requests
   end
 
   test 'POST /password/reset is throttled after 5 requests per minute' do
     5.times do
       post '/password/reset', params: { email: 'test@test' },
-           headers: { accept: 'application/json; version=2' }
+                              headers: { accept: 'application/json; version=2' }
     end
 
     post '/password/reset', params: { email: 'test@test' },
-         headers: { accept: 'application/json; version=2' }
+                            headers: { accept: 'application/json; version=2' }
     assert_response :too_many_requests
   end
 
@@ -37,11 +37,11 @@ class RackAttackTest < ActionDispatch::IntegrationTest
   test 'POST /sessions is throttled after 10 requests per minute' do
     10.times do
       post '/sessions', params: { email: 'test@test' },
-           headers: { accept: 'application/json; version=2' }
+                        headers: { accept: 'application/json; version=2' }
     end
 
     post '/sessions', params: { email: 'test@test' },
-         headers: { accept: 'application/json; version=2' }
+                      headers: { accept: 'application/json; version=2' }
     assert_response :too_many_requests
   end
 
@@ -56,7 +56,7 @@ class RackAttackTest < ActionDispatch::IntegrationTest
     # Exhaust the login throttle
     11.times do
       post '/login', params: { email: 'test@test', password: 'wrong' },
-           headers: { accept: 'application/json; version=2' }
+                     headers: { accept: 'application/json; version=2' }
     end
 
     # Authenticated request should still work

@@ -5,6 +5,7 @@ require 'browser'
 module V2
   class SessionsController < ApplicationController
     include SessionCreation
+
     skip_before_action :authenticate, only: %i[create login]
 
     def index

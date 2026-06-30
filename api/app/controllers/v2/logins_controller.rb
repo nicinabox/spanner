@@ -3,6 +3,7 @@
 module V2
   class LoginsController < ApplicationController
     include SessionCreation
+
     skip_before_action :authenticate, only: %i[create]
 
     def create
@@ -16,7 +17,7 @@ module V2
       stored_hash = user&.password_digest || dummy_hash
       bcrypt = BCrypt::Password.new(stored_hash)
 
-      if user && user.password_enabled? && password.present? && bcrypt.is_password?(password)
+      if user&.password_enabled? && password.present? && bcrypt.is_password?(password)
         session = create_session!(user)
         render json: session
         return

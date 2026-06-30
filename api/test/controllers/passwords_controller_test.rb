@@ -13,7 +13,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     )
 
     put '/password', params: { password: 'newpassword123' },
-        headers: http_options(session.auth_token)[:headers]
+                     headers: http_options(session.auth_token)[:headers]
 
     assert_response :success
     assert user.reload.authenticate('newpassword123')
@@ -30,7 +30,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     )
 
     put '/password', params: { password: 'newpassword456' },
-        headers: http_options(session.auth_token)[:headers]
+                     headers: http_options(session.auth_token)[:headers]
 
     assert_response :success
     assert user.reload.authenticate('newpassword456')
@@ -39,7 +39,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
 
   test 'request reset always returns 202' do
     post '/password/reset', params: { email: 'nobody@test' },
-         headers: { accept: 'application/json; version=2' }
+                            headers: { accept: 'application/json; version=2' }
     assert_response :accepted
 
     user = users(:one)
@@ -48,7 +48,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
 
     assert_emails 1 do
       post '/password/reset', params: { email: user.email },
-           headers: { accept: 'application/json; version=2' }
+                              headers: { accept: 'application/json; version=2' }
     end
     assert_response :accepted
   end
@@ -58,7 +58,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_emails do
       post '/password/reset', params: { email: user.email },
-           headers: { accept: 'application/json; version=2' }
+                              headers: { accept: 'application/json; version=2' }
     end
     assert_response :accepted
   end
@@ -72,7 +72,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     token = user.password_reset_token
 
     post "/password/reset/#{token}", params: { password: 'newpassword456' },
-         headers: { accept: 'application/json; version=2' }
+                                     headers: { accept: 'application/json; version=2' }
 
     assert_response :success
     assert_not_empty response_body['auth_token']
@@ -81,14 +81,14 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
 
   test 'reset with invalid token returns 401' do
     post '/password/reset/nonexistent-token', params: { password: 'newpassword456' },
-         headers: { accept: 'application/json; version=2' }
+                                              headers: { accept: 'application/json; version=2' }
 
     assert_response :unauthorized
   end
 
   test 'unauthenticated set password returns 401' do
     put '/password', params: { password: 'newpassword123' },
-        headers: { accept: 'application/json; version=2' }
+                     headers: { accept: 'application/json; version=2' }
     assert_response :unauthorized
   end
 
@@ -102,7 +102,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     )
 
     put '/password', params: { password: 'short' },
-        headers: http_options(session.auth_token)[:headers]
+                     headers: http_options(session.auth_token)[:headers]
 
     assert_response :unprocessable_content
   end
