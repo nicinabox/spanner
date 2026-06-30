@@ -38,13 +38,13 @@ class LoginsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'login with no password for password-enabled account returns 202 (no magic link sent)' do
+  test 'login with no password for password-enabled account sends magic link and returns 202' do
     user = users(:one)
     user.password = 'password123'
     user.save!
 
-    assert_no_emails do
-      post '/login', params: { email: user.email },
+    assert_emails 1 do
+      post '/login', params: { email: user.email, host: 'localhost' },
            headers: { accept: 'application/json; version=2' }
     end
 
@@ -74,7 +74,7 @@ class LoginsControllerTest < ActionDispatch::IntegrationTest
     assert_response :accepted
   end
 
-  test 'login with password for no-password account returns 401 (does not reveal auth method)' do
+  test 'login with password for no-password account returns 401' do
     user = users(:two) # no password set
 
     assert_no_emails do

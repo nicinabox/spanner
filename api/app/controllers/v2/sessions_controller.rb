@@ -36,11 +36,9 @@ module V2
                  .where('login_token_valid_until > ?', Time.zone.now)
                  .first
 
-      if user && !user.password_enabled?
+      if user
         session = create_session!(user)
         render json: session
-      elsif user && user.password_enabled?
-        respond_with_error 'This account uses a password. Please sign in with your password.', status: :unauthorized
       else
         respond_with_error 'Invalid or expired login link', status: 401
       end

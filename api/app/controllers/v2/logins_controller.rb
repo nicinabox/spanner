@@ -29,17 +29,14 @@ module V2
       end
 
       # No password provided — magic link flow
-      if user && !user.password_enabled?
-        # Existing account without a password → send magic link
-        send_magic_link(user)
-      elsif user.nil?
+      # Magic links work for ALL accounts, including password accounts (recovery).
+      if user.nil?
         # New user → create account and send magic link
         user = User.create!(email: email, time_zone_offset: time_zone_offset)
         PromptUserMailer.add_first_vehicle(user).deliver_later wait: 5.minutes
-        send_magic_link(user)
       end
-      # Password account with no password provided → 202, no email (ambiguous)
 
+      send_magic_link(user)
       head :accepted
     end
 
