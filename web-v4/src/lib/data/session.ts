@@ -20,8 +20,18 @@ export async function signin(token: string) {
 	return request<Session>(`/login/${token}`);
 }
 
-export const login = async (data: { email: string; password?: string; host?: string }) => {
-	return request<{ auth_token?: string }>('/login', { method: 'POST', json: data });
+export const login = async (data: {
+	email: string;
+	password?: string;
+	host?: string;
+	timeZoneOffset?: string;
+}) => {
+	const { timeZoneOffset, ...body } = data;
+	return request<{ auth_token?: string }>('/login', {
+		method: 'POST',
+		json: body,
+		headers: timeZoneOffset ? { 'Time-Zone-Offset': timeZoneOffset } : undefined,
+	});
 };
 
 export const requestReset = async (data: { email: string }) => {

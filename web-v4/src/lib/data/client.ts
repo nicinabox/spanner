@@ -46,7 +46,7 @@ export function createAPIRequest(initialConfig: FetcherConfig) {
 	};
 
 	return async function fetcher<T>(endpoint: string, options: RequestOpts = {}): Promise<T> {
-		const { authToken, params, timeZoneOffset, ...init } = options;
+		const { authToken, params, ...init } = options;
 
 		const url = new URL(
 			config.baseURI + endpoint,
@@ -62,12 +62,6 @@ export function createAPIRequest(initialConfig: FetcherConfig) {
 		}
 
 		const headers = new Headers({ ...config.headers, ...options.headers });
-
-		if (timeZoneOffset) {
-			headers.set('Time-Zone-Offset', timeZoneOffset);
-		} else if (browser) {
-			headers.set('Time-Zone-Offset', getTimeZoneOffset());
-		}
 
 		const authHeaderValue = config.authHeaderValue(authToken);
 		if (authHeaderValue) {

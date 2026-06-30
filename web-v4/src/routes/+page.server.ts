@@ -30,12 +30,14 @@ export const actions = {
 		}
 
 		const host = WEB_URL || url.origin;
+		const timeZoneOffset = formData.get('timeZoneOffset') as string | null;
 
 		try {
 			const result = await session.login({
 				email: parsed.data.email,
 				password: parsed.data.password || undefined,
 				host,
+				timeZoneOffset: timeZoneOffset || undefined,
 			});
 
 			if (result && typeof result === 'object' && 'authToken' in result) {

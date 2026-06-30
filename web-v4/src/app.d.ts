@@ -8,7 +8,6 @@ declare global {
 		interface Locals {
 			authToken: string | undefined;
 			session: Session | null | undefined;
-			timeZoneOffset: string | undefined;
 		}
 		// interface PageData {}
 		// interface PageState {}

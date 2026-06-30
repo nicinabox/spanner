@@ -9,7 +9,6 @@ export interface FetcherConfig {
 
 export interface RequestContext {
 	authToken?: string;
-	timeZoneOffset?: string;
 	json?: Record<string, unknown>;
 	params?: Record<string, string | number | boolean | undefined | null>;
 }

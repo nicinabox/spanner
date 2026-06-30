@@ -29,8 +29,6 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 
 	const prefsCookie = event.cookies.get('prefs');
 	const prefs = Object.fromEntries(new URLSearchParams(prefsCookie ?? ''));
-
-	event.locals.timeZoneOffset = prefs.tz;
 	const theme = prefs.theme;
 
 	return resolve(event, {
