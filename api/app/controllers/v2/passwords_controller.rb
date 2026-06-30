@@ -30,7 +30,7 @@ module V2
 
     # POST /password/reset/:token — redeem reset token
     def reset
-      user = User.find_by(password_reset_token: params[:token])
+      user = User.find_by_password_reset_token(params[:token]) # rubocop:disable Rails/DynamicFindBy
 
       if user
         if params[:password].to_s.length < 8
