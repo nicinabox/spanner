@@ -13,7 +13,7 @@
 
 <main class="max-w-md w-full mx-auto px-4">
 	<div class="flex min-h-screen flex-col items-center justify-center">
-		<Card size="lg">
+		<Card size="lg" class="w-full">
 			{#if form?.errors && form.errors.some((e) => e.title?.includes('Invalid or expired'))}
 				<h1>Link expired</h1>
 				<p class="mt-2 text-ink-500">
@@ -23,7 +23,7 @@
 					<Button href="/reset-password" block>Request new link</Button>
 				</div>
 			{:else}
-				<h1>Set new password</h1>
+				<h1>Change password</h1>
 				<form method="post" action="?/reset" use:enhance class="mt-4">
 					<fieldset class="fieldset">
 						<Field name="password" label="New password" errors={form?.errors} required>
