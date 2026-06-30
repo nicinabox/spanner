@@ -2,7 +2,7 @@
 	import { Button, Dialog } from '$lib';
 	import { Download, Plus, Share } from 'lucide-svelte';
 	import { isIOS } from '$lib/utils/install';
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 	import { triggerInstallPrompt } from '$lib/utils/install.svelte';
 
 	interface Props {

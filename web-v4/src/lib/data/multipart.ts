@@ -1,4 +1,4 @@
-import { API_URL } from '$env/static/private';
+import { API_URL } from '$app/env/private';
 import type { RequestOpts } from './client';
 import { HTTPError } from './client';
 

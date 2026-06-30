@@ -33,6 +33,7 @@ export default defineConfig(({ mode }) => {
 						filename.split(/[/\\]/).includes('node_modules') ? undefined : true,
 				},
 				experimental: {
+					explicitEnvironmentVariables: true,
 					instrumentation: {
 						server: true,
 					},

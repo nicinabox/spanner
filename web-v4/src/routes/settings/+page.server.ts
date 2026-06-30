@@ -1,4 +1,4 @@
-import { env } from '$env/dynamic/private';
+import { WEB_URL } from '$app/env/private';
 import { requestEmailChange, deleteAccount } from '$lib/data/settings';
 import { setPassword } from '$lib/data/session';
 import { getCurrentUser } from '$lib/data/user';
@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const [user] = await safeAsync(getCurrentUser(locals));
 	return {
 		email: locals.session?.email,
-		passwordEnabled: user?.passwordEnabled ?? false
+		passwordEnabled: user?.passwordEnabled ?? false,
 	};
 };
 
@@ -24,7 +24,7 @@ export const actions = {
 			return fail(422, { errors: [{ id: 'email', title: "Email can't be blank" }] });
 		}
 
-		const host = env.WEB_URL || url.origin;
+		const host = WEB_URL || url.origin;
 
 		try {
 			await requestEmailChange(email.trim(), host, locals);
@@ -41,13 +41,13 @@ export const actions = {
 		const password = data.password as string;
 		if (!password || password.length < 8) {
 			return fail(422, {
-				errors: [{ id: 'password', title: 'Password must be at least 8 characters' }]
+				errors: [{ id: 'password', title: 'Password must be at least 8 characters' }],
 			});
 		}
 
 		if (password !== data.confirm_password) {
 			return fail(422, {
-				errors: [{ id: 'confirm_password', title: 'Passwords do not match' }]
+				errors: [{ id: 'confirm_password', title: 'Passwords do not match' }],
 			});
 		}
 

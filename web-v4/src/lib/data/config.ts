@@ -1,4 +1,4 @@
-import { API_URL } from '$env/static/private';
+import { API_URL } from '$app/env/private';
 
 export const apiConfig = {
 	baseUrl: API_URL,

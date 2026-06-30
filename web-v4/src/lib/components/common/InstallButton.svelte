@@ -4,7 +4,7 @@
 	import { Download } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 	import { initInstallPrompt, triggerInstallPrompt } from '$lib/utils/install.svelte';
 
 	let open = $state(false);

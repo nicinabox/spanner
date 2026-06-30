@@ -1,4 +1,4 @@
-import { env } from '$env/dynamic/private';
+import { PUBLIC_EMAIL_ENABLED, WEB_URL } from '$app/env/private';
 import * as session from '$lib/data/session';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	return {
-		emailEnabled: env.PUBLIC_EMAIL_ENABLED !== 'false'
+		emailEnabled: PUBLIC_EMAIL_ENABLED !== 'false',
 	};
 };
 
@@ -23,13 +23,13 @@ export const actions = {
 	login: async ({ request, cookies, url }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
-		const host = env.WEB_URL || url.origin;
+		const host = WEB_URL || url.origin;
 
 		try {
 			const result = await session.login({
 				email: data.email as string,
 				password: (data.password as string) || undefined,
-				host
+				host,
 			});
 
 			if (result && typeof result === 'object' && 'authToken' in result) {
@@ -41,7 +41,7 @@ export const actions = {
 		} catch (error) {
 			if (typeof error === 'object' && error !== null && 'location' in error) throw error;
 			return fail(401, {
-				errors: [{ id: 'form', title: 'Invalid email or password' }]
+				errors: [{ id: 'form', title: 'Invalid email or password' }],
 			});
 		}
 	},
@@ -49,19 +49,19 @@ export const actions = {
 	magicLink: async ({ request, url }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
-		const host = env.WEB_URL || url.origin;
+		const host = WEB_URL || url.origin;
 
 		try {
 			await session.login({
 				email: data.email as string,
-				host
+				host,
 			});
 
 			return { status: 'pending' };
 		} catch (error) {
 			if (typeof error === 'object' && error !== null && 'location' in error) throw error;
 			return fail(422, {
-				errors: [{ id: 'form', title: 'Could not send magic link. Please try again.' }]
+				errors: [{ id: 'form', title: 'Could not send magic link. Please try again.' }],
 			});
 		}
 	},

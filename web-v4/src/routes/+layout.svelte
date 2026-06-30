@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.css';
-	import { version } from '$app/environment';
+	import { version } from '$app/env';
 	import Badge from '$lib/components/common/Badge.svelte';
 
 	let { children } = $props();

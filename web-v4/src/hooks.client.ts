@@ -1,4 +1,4 @@
-import { PUBLIC_SENTRY_DSN } from '$env/static/public';
+import { PUBLIC_SENTRY_DSN } from '$app/env/public';
 import { handleErrorWithSentry } from '@sentry/sveltekit';
 import * as Sentry from '@sentry/sveltekit';
 

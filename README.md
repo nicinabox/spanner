@@ -113,38 +113,43 @@ openssl rand -base64 32
 CLIENT_SECRET=your_session_secret
 ```
 
-| Variable            | Required | Purpose                                                                  |
-| ------------------- | -------- | ------------------------------------------------------------------------ |
-| `CLIENT_SECRET`     | yes      | iron-session cookie encryption. Generate with `openssl rand -base64 32`. |
-| `API_URL`           | yes      | API backend URL, e.g. `http://localhost:3001`.                           |
-| `PUBLIC_SENTRY_DSN` | no       | Sentry DSN for error tracking.                                           |
+| Variable               | Required | Purpose                                                                  |
+| ---------------------- | -------- | ------------------------------------------------------------------------ |
+| `CLIENT_SECRET`        | yes      | iron-session cookie encryption. Generate with `openssl rand -base64 32`. |
+| `API_URL`              | yes      | API backend URL, e.g. `http://localhost:3001`.                           |
+| `WEB_URL`              | no       | Public frontend URL for email links. Falls back to request origin.       |
+| `USE_SECURE_COOKIE`    | no       | Set to `false` for plain-HTTP local testing (default: `true`).           |
+| `PUBLIC_EMAIL_ENABLED` | no       | Set to `true` if the API has email configured (default: `true`).         |
+| `PUBLIC_SENTRY_DSN`    | no       | Sentry DSN for error tracking.                                           |
+
+Variables are declared in [`web-v4/src/env.ts`](web-v4/src/env.ts) using SvelteKit's experimental explicit environment variables.
 
 #### API Application
 
-| Variable                   | Required | Purpose                                                     |
-| -------------------------- | -------- | ----------------------------------------------------------- |
-| `DATABASE_URL`             | yes      | Postgres connection.                                        |
-| `SECRET_KEY_BASE`          | yes      | Rails signing. Generate with `rails secret`.                |
-| `WEB_URL`                  | yes      | Frontend URL for email links, e.g. `http://localhost:5173`. |
-| `FROM_EMAIL`               | no       | Mailer from address (default: `noreply@localhost`).         |
-| `POSTMARK_API_KEY`         | no       | Postmark for outbound email.                                |
-| `SMTP_HOST`                | no       | SMTP fallback for outbound email.                           |
-| `SMTP_PORT`                | no       | SMTP port (default: 587).                                   |
-| `SMTP_USERNAME`            | no       | SMTP username.                                              |
-| `SMTP_PASSWORD`            | no       | SMTP password.                                              |
-| `ALLOWED_HOSTS`            | no       | Comma-separated hosts for `config.hosts` filtering. Optional — Rails allows all hosts by default.                   |
-| `ACTIVE_STORAGE_SERVICE`   | no       | Storage backend: `amazon` (S3, default) or `local`.         |
-| `S3_BUCKET_NAME`           | no       | S3 bucket for attachments.                                  |
-| `S3_REGION`                | no       | S3 region (default: `us-east-1`).                           |
-| `S3_ACCESS_KEY_ID`         | no       | S3 access key.                                              |
-| `S3_SECRET_ACCESS_KEY`     | no       | S3 secret key.                                              |
-| `S3_ENDPOINT`              | no       | S3-compatible endpoint (non-AWS providers).                 |
-| `S3_FORCE_PATH_STYLE`      | no       | Set `true` for non-AWS providers.                           |
-| `SENTRY_DSN`               | no       | Sentry DSN for error tracking.                              |
-| `NOTIFICATION_WEBHOOK_URL` | no       | Webhook URL for notifications.                              |
-| `RAILS_SERVE_STATIC_FILES` | no       | Serve static files from Rails.                              |
-| `RAILS_LOG_TO_STDOUT`      | no       | Stream logs to stdout.                                      |
-| `DEMO_USER`                | no       | Email treated as demo account.                              |
+| Variable                   | Required | Purpose                                                                                           |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`             | yes      | Postgres connection.                                                                              |
+| `SECRET_KEY_BASE`          | yes      | Rails signing. Generate with `rails secret`.                                                      |
+| `WEB_URL`                  | yes      | Frontend URL for email links, e.g. `http://localhost:5173`.                                       |
+| `FROM_EMAIL`               | no       | Mailer from address (default: `noreply@localhost`).                                               |
+| `POSTMARK_API_KEY`         | no       | Postmark for outbound email.                                                                      |
+| `SMTP_HOST`                | no       | SMTP fallback for outbound email.                                                                 |
+| `SMTP_PORT`                | no       | SMTP port (default: 587).                                                                         |
+| `SMTP_USERNAME`            | no       | SMTP username.                                                                                    |
+| `SMTP_PASSWORD`            | no       | SMTP password.                                                                                    |
+| `ALLOWED_HOSTS`            | no       | Comma-separated hosts for `config.hosts` filtering. Optional — Rails allows all hosts by default. |
+| `ACTIVE_STORAGE_SERVICE`   | no       | Storage backend: `amazon` (S3, default) or `local`.                                               |
+| `S3_BUCKET_NAME`           | no       | S3 bucket for attachments.                                                                        |
+| `S3_REGION`                | no       | S3 region (default: `us-east-1`).                                                                 |
+| `S3_ACCESS_KEY_ID`         | no       | S3 access key.                                                                                    |
+| `S3_SECRET_ACCESS_KEY`     | no       | S3 secret key.                                                                                    |
+| `S3_ENDPOINT`              | no       | S3-compatible endpoint (non-AWS providers).                                                       |
+| `S3_FORCE_PATH_STYLE`      | no       | Set `true` for non-AWS providers.                                                                 |
+| `SENTRY_DSN`               | no       | Sentry DSN for error tracking.                                                                    |
+| `NOTIFICATION_WEBHOOK_URL` | no       | Webhook URL for notifications.                                                                    |
+| `RAILS_SERVE_STATIC_FILES` | no       | Serve static files from Rails.                                                                    |
+| `RAILS_LOG_TO_STDOUT`      | no       | Stream logs to stdout.                                                                            |
+| `DEMO_USER`                | no       | Email treated as demo account.                                                                    |
 
 ## Testing
 

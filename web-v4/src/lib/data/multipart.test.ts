@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-vi.mock('$env/static/private', () => ({
+vi.mock('$app/env/private', () => ({
 	API_URL: 'http://api.test',
 }));
 
