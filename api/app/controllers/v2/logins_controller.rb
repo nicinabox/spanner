@@ -12,12 +12,7 @@ module V2
 
       user = User.unscoped.find_by(email: email)
 
-      # Always consume bcrypt time to prevent timing-based enumeration.
-      dummy_hash = BCrypt::Password.create(SecureRandom.hex)
-      stored_hash = user&.password_digest || dummy_hash
-      bcrypt = BCrypt::Password.new(stored_hash)
-
-      if user&.password_enabled? && password.present? && bcrypt.is_password?(password)
+      if password_authenticated?(user, password)
         session = create_session!(user)
         render json: session
         return
@@ -42,6 +37,16 @@ module V2
     end
 
     private
+
+    def password_authenticated?(user, password)
+      return false unless user&.password_enabled? && password.present?
+
+      # Always consume bcrypt time to prevent timing-based enumeration.
+      dummy_hash = BCrypt::Password.create(SecureRandom.hex)
+      stored_hash = user.password_digest || dummy_hash
+      bcrypt = BCrypt::Password.new(stored_hash)
+      bcrypt.is_password?(password)
+    end
 
     def send_magic_link(user)
       login_token = SecureRandom.urlsafe_base64
