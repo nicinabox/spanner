@@ -5,7 +5,7 @@
 	import { pageTitle } from '$lib/utils/site';
 	import AppIcon from '$lib/components/common/AppIcon.svelte';
 
-	let { form }: PageProps = $props();
+	let { data, form }: PageProps = $props();
 </script>
 
 <svelte:head>
@@ -20,7 +20,7 @@
 		<div class="flex flex-3 mb-6 flex-col items-center">
 			<Card size="lg">
 				<h1>{form?.status === 'pending' ? 'Check your email' : 'Sign in'}</h1>
-				<SigninForm {form} />
+				<SigninForm {form} emailEnabled={data.emailEnabled} />
 			</Card>
 		</div>
 	</div>
