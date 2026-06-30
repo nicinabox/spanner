@@ -1,4 +1,5 @@
-import { createAPIRequest, type RequestOpts } from './client';
+import { request } from './server';
+import type { RequestOpts } from './types';
 
 export interface Session {
 	id: number;
@@ -10,8 +11,6 @@ export interface Session {
 	userAgent: string;
 	authToken: string;
 }
-
-const request = createAPIRequest();
 
 export const create = async (data: { email: string; host?: string }) => {
 	return request(`/sessions`, { method: 'POST', json: data });

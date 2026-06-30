@@ -1,5 +1,5 @@
 import { API_URL } from '$app/env/private';
-import type { RequestOpts } from './client';
+import type { RequestOpts } from './types';
 import { HTTPError } from './client';
 
 const ACCEPT_HEADER = 'application/vnd.api+json; version=2';

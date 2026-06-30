@@ -4,6 +4,7 @@
 	import type { ButtonSize } from '$lib/components/common/Button.svelte';
 	import { Sun, Moon, Monitor } from 'lucide-svelte';
 	import { onMount } from 'svelte';
+	import { getCookieData, setCookieData } from '$lib/utils/cookies';
 
 	type Theme = 'light' | 'dark' | 'auto';
 
@@ -12,11 +13,8 @@
 	let theme = $state<Theme>('auto');
 
 	onMount(() => {
-		const stored = document.cookie.replace(
-			/(?:(?:^|.*;\s*)theme\s*\=\s*([^;]*).*$)|^.*$/,
-			'$1',
-		) as Theme;
-		if (stored) theme = stored;
+		const prefs = getCookieData('prefs');
+		if (prefs?.theme) theme = prefs.theme as Theme;
 		apply(theme);
 	});
 
@@ -32,7 +30,8 @@
 		const next: Record<Theme, Theme> = { light: 'dark', dark: 'auto', auto: 'light' };
 		theme = next[theme];
 		apply(theme);
-		document.cookie = `theme=${theme};path=/;max-age=31536000`;
+		const prefs = getCookieData('prefs') ?? {};
+		setCookieData('prefs', { ...prefs, theme });
 	}
 
 	let tooltipContent = $derived(

@@ -2,8 +2,20 @@
 	import '../app.css';
 	import { version } from '$app/env';
 	import Badge from '$lib/components/common/Badge.svelte';
+	import { getCookieData } from '$lib/utils/cookies';
+	import { onMount } from 'svelte';
 
 	let { children } = $props();
+
+	onMount(() => {
+		const prefs = getCookieData('prefs');
+		const theme = prefs?.theme;
+		if (theme === 'light' || theme === 'dark') {
+			document.documentElement.dataset.theme = theme;
+		} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			document.documentElement.dataset.theme = 'dark';
+		}
+	});
 </script>
 
 <svelte:head>

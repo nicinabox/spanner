@@ -1,4 +1,5 @@
-import { createAPIRequest, type RequestOpts } from './client';
+import { request } from './server';
+import type { RequestOpts } from './types';
 
 export interface Classification {
 	id: number;
@@ -11,8 +12,6 @@ export interface Classification {
 	createdAt: string;
 	updatedAt: string;
 }
-
-const request = createAPIRequest();
 
 export const getAllClassifications = (opts: RequestOpts) => {
 	return request<Classification[]>('/classifications', opts);

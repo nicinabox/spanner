@@ -1,9 +1,5 @@
-import { apiConfig, createAPIRequest, type RequestOpts } from './client';
-
-const request = createAPIRequest();
-
-// Public client — no auth headers for unsubscribe
-const publicRequest = createAPIRequest({ ...apiConfig, authHeaderValue: () => undefined });
+import { request } from './server';
+import type { RequestOpts } from './types';
 
 export const requestEmailChange = (email: string, host: string, opts: RequestOpts) => {
 	return request(`/user/email_change`, {
@@ -31,7 +27,7 @@ export type UnsubscribeContext = {
 
 export const getUnsubscribeContext = (token: string, vehicleId?: number) => {
 	const path = vehicleId ? `/account/${token}?vehicle_id=${vehicleId}` : `/account/${token}`;
-	return publicRequest<UnsubscribeContext>(path);
+	return request<UnsubscribeContext>(path);
 };
 
 export type VehiclePreferencesUpdate = {
@@ -44,14 +40,14 @@ export const saveVehiclePreferences = (
 	vehicleId: number,
 	preferences: VehiclePreferencesUpdate,
 ) => {
-	return publicRequest<{ preferences: VehiclePreferencesUpdate }>(`/account/${token}/preferences`, {
+	return request<{ preferences: VehiclePreferencesUpdate }>(`/account/${token}/preferences`, {
 		method: 'POST',
 		json: { vehicleId, ...preferences },
 	});
 };
 
 export const unsubscribeAction = (token: string, action: 'unsubscribe' | 'reactivate') => {
-	return publicRequest<{ unsubscribedAt: string | null }>(`/account/${token}`, {
+	return request<{ unsubscribedAt: string | null }>(`/account/${token}`, {
 		method: 'POST',
 		json: { actionType: action },
 	});

@@ -1,4 +1,4 @@
-import { apiConfig } from '$lib/data/config';
+import { apiConfig } from '$lib/data/server';
 import { getAuthToken } from '$lib/utils/session';
 import type { RequestHandler } from './$types';
 
@@ -23,7 +23,7 @@ export const DELETE: RequestHandler = async ({ params, request, cookies }) => {
 };
 
 async function proxy(path: string, request: Request, token: string | undefined) {
-	const url = new URL(path, apiConfig.baseUrl);
+	const url = new URL(path, apiConfig.baseURI);
 	url.search = new URL(request.url).search;
 	const headers = new Headers();
 

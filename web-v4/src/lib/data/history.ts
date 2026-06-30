@@ -1,4 +1,5 @@
-import { createAPIRequest, type RequestOpts } from './client';
+import { request } from './server';
+import type { RequestOpts } from './types';
 import type { Attachment } from './attachments';
 
 export type HistoryEntryType = 'mileage adjustment';
@@ -15,8 +16,6 @@ export interface HistoryEntry {
 	recordType: HistoryEntryType | null;
 	attachments: Attachment[];
 }
-
-const request = createAPIRequest();
 
 export const getVehicleHistory = (vehicleId: number | string, opts: RequestOpts) => {
 	return request<HistoryEntry[]>(`/vehicles/${vehicleId}/records`, opts);

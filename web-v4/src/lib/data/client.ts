@@ -1,34 +1,12 @@
 import camelcaseKeys from 'camelcase-keys';
 import snakeCaseKeys from 'snakecase-keys';
-import { apiConfig } from './config';
+import type { FetcherConfig, RequestOpts } from './types';
+import { browser } from '$app/env';
 
-export { apiConfig };
-
-export type Transport = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
-
-export interface FetcherConfig {
-	baseUrl?: string;
-	authHeaderValue?: (token: string | undefined) => string | undefined;
-	headers?: Record<string, string>;
-	throwOnHTTPErrors?: boolean;
-}
-
-export interface RequestContext {
-	authToken?: string;
-	json?: Record<string, unknown>;
-	params?: Record<string, string | number | boolean | undefined | null>;
-}
-
-export type RequestOpts = RequestInit & RequestContext;
-
-export type NonUpdatableFields = 'id' | 'createdAt' | 'updatedAt';
-
-export type CreatableFields<
-	T,
-	R extends keyof Omit<T, NonUpdatableFields> = keyof Omit<T, NonUpdatableFields>,
-> = Pick<T, R>;
-
-export type UpdatableFields<T> = Partial<Omit<T, NonUpdatableFields>>;
+export const apiHeaders = {
+	'Content-Type': 'application/json',
+	Accept: 'application/vnd.api+json; version=2',
+};
 
 const tokenAuthHeader = (token: string | undefined) => (token ? `Token ${token}` : undefined);
 
@@ -60,16 +38,20 @@ const deserialize = <T>(data: unknown) => {
 	}
 };
 
-export function createAPIRequest(initialConfig: FetcherConfig = apiConfig) {
+export function createAPIRequest(initialConfig: FetcherConfig) {
 	const config = {
 		authHeaderValue: tokenAuthHeader,
+		baseURI: '',
 		...initialConfig,
 	};
 
 	return async function fetcher<T>(endpoint: string, options: RequestOpts = {}): Promise<T> {
-		const { authToken, params, ...init } = options;
+		const { authToken, params, timeZoneOffset, ...init } = options;
 
-		const url = new URL(endpoint, config.baseUrl);
+		const url = new URL(
+			config.baseURI + endpoint,
+			browser ? window.location.origin : config.baseURI,
+		);
 
 		if (params) {
 			for (const [key, value] of Object.entries(params)) {
@@ -81,7 +63,11 @@ export function createAPIRequest(initialConfig: FetcherConfig = apiConfig) {
 
 		const headers = new Headers({ ...config.headers, ...options.headers });
 
-		headers.set('Time-Zone-Offset', getTimeZoneOffset());
+		if (timeZoneOffset) {
+			headers.set('Time-Zone-Offset', timeZoneOffset);
+		} else if (browser) {
+			headers.set('Time-Zone-Offset', getTimeZoneOffset());
+		}
 
 		const authHeaderValue = config.authHeaderValue(authToken);
 		if (authHeaderValue) {
@@ -107,3 +93,9 @@ export function createAPIRequest(initialConfig: FetcherConfig = apiConfig) {
 		return data as T;
 	};
 }
+
+export const proxyRequest = createAPIRequest({
+	baseURI: '/api',
+	headers: apiHeaders,
+	throwOnHTTPErrors: true,
+});

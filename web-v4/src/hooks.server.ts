@@ -27,7 +27,11 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	event.locals.session = session;
 	event.locals.authToken = session?.authToken;
 
-	const theme = event.cookies.get('theme');
+	const prefsCookie = event.cookies.get('prefs');
+	const prefs = Object.fromEntries(new URLSearchParams(prefsCookie ?? ''));
+
+	event.locals.timeZoneOffset = prefs.tz;
+	const theme = prefs.theme;
 
 	return resolve(event, {
 		transformPageChunk: ({ html }) => {

@@ -8,6 +8,7 @@
 	import NativeSelect from '$lib/components/common/NativeSelect.svelte';
 	import { formatDateISO, intlFormatDate, parseDateUTC } from '$lib/utils/date';
 	import { formatMileage, mileageLabel, MileageLabel } from '$lib/utils/vehicle';
+	import { proxyRequest } from '$lib/data/client';
 	import type { Reminder, ReminderType } from '$lib/data/reminders';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
@@ -42,17 +43,18 @@
 		const estimate = async () => {
 			if (mileageNum > 0) {
 				try {
-					const params = new URLSearchParams({
-						'reminder[mileage]': mileageNum.toString(),
-						'reminder[date]': date,
-						'reminder[reminder_type]': reminderType,
-					});
-					const resp = await fetch(`/api/vehicles/${vehicle.id}/reminders/estimate_date?${params}`);
-					if (resp.ok) {
-						const data = await resp.json();
-						if (data.reminder_date) {
-							estimatedDate = parseDateUTC(data.reminder_date);
-						}
+					const data = await proxyRequest<{ reminderDate: string }>(
+						`/vehicles/${vehicle.id}/reminders/estimate_date`,
+						{
+							params: {
+								'reminder[mileage]': mileageNum,
+								'reminder[date]': date,
+								'reminder[reminder_type]': reminderType,
+							},
+						},
+					);
+					if (data.reminderDate) {
+						estimatedDate = parseDateUTC(data.reminderDate);
 					}
 				} catch {
 					estimatedDate = null;

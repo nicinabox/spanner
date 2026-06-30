@@ -1,4 +1,5 @@
-import { createAPIRequest, type RequestOpts, type UpdatableFields } from './client';
+import { request } from './server';
+import type { RequestOpts, UpdatableFields } from './types';
 import type { Sortable } from './vehicles';
 
 export interface User {
@@ -12,8 +13,6 @@ export interface User {
 		vehiclesSortOrder: Sortable;
 	};
 }
-
-const request = createAPIRequest();
 
 export const getCurrentUser = (opts: RequestOpts) => {
 	return request<User>(`/user`, opts);
