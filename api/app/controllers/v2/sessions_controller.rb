@@ -4,6 +4,8 @@ require 'browser'
 
 module V2
   class SessionsController < ApplicationController
+    include SessionCreation
+
     skip_before_action :authenticate, only: %i[create login]
 
     def index
@@ -36,8 +38,8 @@ module V2
                  .first
 
       if user
-        create_session(user)
-        render json: user.sessions.last
+        session = create_session!(user)
+        render json: session
       else
         respond_with_error 'Invalid or expired login link', status: 401
       end
@@ -52,27 +54,6 @@ module V2
     end
 
     private
-
-    def create_session(user)
-      browser = Browser.new(request.user_agent)
-      name = request.user_agent =~ /Spanner/ ? 'Spanner iOS' : browser.name
-
-      user.update!(
-        login_token: nil,
-        login_token_valid_until: 1.year.ago
-      )
-
-      session = user.sessions.build(
-        ip: remote_ip,
-        description: name || browser.name,
-        user_agent: request.user_agent,
-        last_seen: Time.zone.now,
-        auth_token: SecureRandom.urlsafe_base64(24),
-        auth_token_valid_until: 2.months.from_now
-      )
-      session.save
-      session.user.update!(time_zone_offset: time_zone_offset)
-    end
 
     def issue_login_token(user, host)
       login_token = SecureRandom.urlsafe_base64

@@ -13,24 +13,59 @@ export const load: PageServerLoad = async ({ locals }) => {
 	if (user) {
 		return redirect(307, '/vehicles');
 	}
+
+	return {
+		emailEnabled: env.PUBLIC_EMAIL_ENABLED !== 'false'
+	};
 };
 
 export const actions = {
-	create: async ({ request, url }) => {
+	login: async ({ request, cookies, url }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
-
-		// Pass the frontend host for email links
 		const host = env.WEB_URL || url.origin;
 
 		try {
-			await session.create({ email: data.email as string, host });
+			const result = await session.login({
+				email: data.email as string,
+				password: (data.password as string) || undefined,
+				host
+			});
+
+			if (result && typeof result === 'object' && 'authToken' in result) {
+				await setSession(cookies, result as session.Session);
+				redirect(303, '/vehicles');
+			}
+
 			return { status: 'pending' };
 		} catch (error) {
-			console.error('Session create error:', error);
-			return fail(422, getHTTPErrors(error));
+			if (typeof error === 'object' && error !== null && 'location' in error) throw error;
+			return fail(401, {
+				errors: [{ id: 'form', title: 'Invalid email or password' }]
+			});
 		}
 	},
+
+	magicLink: async ({ request, url }) => {
+		const formData = await request.formData();
+		const data = Object.fromEntries(formData);
+		const host = env.WEB_URL || url.origin;
+
+		try {
+			await session.login({
+				email: data.email as string,
+				host
+			});
+
+			return { status: 'pending' };
+		} catch (error) {
+			if (typeof error === 'object' && error !== null && 'location' in error) throw error;
+			return fail(422, {
+				errors: [{ id: 'form', title: 'Could not send magic link. Please try again.' }]
+			});
+		}
+	},
+
 	signin: async ({ cookies, request }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);

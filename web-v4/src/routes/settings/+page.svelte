@@ -7,7 +7,7 @@
 
 	let { data, form }: PageProps = $props();
 
-	let success = $derived(form?.success);
+	let emailSuccess = $derived(form?.emailSuccess);
 	let newEmail = $derived(form?.email ?? '');
 </script>
 
@@ -33,13 +33,13 @@
 				</p>
 			</div>
 
-			{#if success}
-				<div class="bg-positive/10 text-positive rounded-md p-4">
+			{#if emailSuccess}
+				<div class="bg-positive/10 text-positive rounded-md p-4 mb-4">
 					Confirmation emails sent to <strong>{newEmail}</strong> and <strong>{data.email}</strong>.
 					Click the link in either email to confirm the change.
 				</div>
-			{:else}
-				<form method="post" action="?/changeEmail" use:enhance>
+			{/if}
+			<form method="post" action="?/changeEmail" use:enhance>
 					<fieldset class="fieldset">
 						<Field
 							name="email"
@@ -56,7 +56,31 @@
 						<Button type="submit">Update email</Button>
 					</div>
 				</form>
+		</Card>
+
+		<Card class="mt-6" variant="outline" bleed heading={data.passwordEnabled ? 'Change password' : 'Set a password'}>
+			{#if form?.passwordSuccess}
+				<div class="bg-positive/10 text-positive rounded-md p-4 mb-4">
+					{#if data.passwordEnabled}
+						Your password has been updated.
+					{:else}
+						Your password has been set. You can now sign in with email + password or continue using magic links.
+					{/if}
+				</div>
 			{/if}
+			<form method="post" action="?/changePassword" use:enhance>
+					<fieldset class="fieldset">
+						<Field name="password" label={data.passwordEnabled ? 'New password' : 'Password'} errors={form?.errors} required>
+							<Input name="password" type="password" autocomplete="new-password" required />
+						</Field>
+						<Field name="confirm_password" label="Confirm password" errors={form?.errors} required>
+							<Input name="confirm_password" type="password" autocomplete="new-password" required />
+						</Field>
+					</fieldset>
+					<div class="mt-2">
+						<Button type="submit">{data.passwordEnabled ? 'Update password' : 'Set password'}</Button>
+					</div>
+				</form>
 		</Card>
 
 		<Card class="mt-6" variant="outline" bleed heading="Delete Account">

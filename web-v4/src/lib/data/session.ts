@@ -1,4 +1,4 @@
-import { createAPIRequest } from './client';
+import { createAPIRequest, type RequestOpts } from './client';
 
 export interface Session {
 	id: number;
@@ -20,3 +20,19 @@ export const create = async (data: { email: string; host?: string }) => {
 export async function signin(token: string) {
 	return request<Session>(`/login/${token}`);
 }
+
+export const login = async (data: { email: string; password?: string; host?: string }) => {
+	return request<{ auth_token?: string }>('/login', { method: 'POST', json: data });
+};
+
+export const requestReset = async (data: { email: string }) => {
+	return request('/password/reset', { method: 'POST', json: data });
+};
+
+export const resetPassword = async (token: string, data: { password: string }) => {
+	return request<Session>(`/password/reset/${token}`, { method: 'POST', json: data });
+};
+
+export const setPassword = async (data: { password: string; currentPassword?: string }, opts: RequestOpts) => {
+	return request('/password', { ...opts, method: 'PUT', json: data });
+};

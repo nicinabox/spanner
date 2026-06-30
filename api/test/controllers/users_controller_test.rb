@@ -238,5 +238,20 @@ module V2
            params: { send_reminder_emails: false, send_prompt_for_records: false }
       assert_response :unprocessable_entity
     end
+
+    test 'user response includes password_enabled' do
+      get user_url, headers: @headers
+      assert_response :success
+      assert_not_nil response_body['password_enabled']
+    end
+
+    test 'user response includes password_enabled true when password set' do
+      @user.password = 'password123'
+      @user.save!
+
+      get user_url, headers: @headers
+      assert_response :success
+      assert response_body['password_enabled']
+    end
   end
 end

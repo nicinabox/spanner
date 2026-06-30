@@ -29,6 +29,9 @@ module SpannerApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # Rack::Attack for rate limiting auth endpoints
+    config.middleware.use Rack::Attack
+
     config.autoload_paths << Rails.root.join('lib')
     config.autoload_paths << Rails.root.join('app/services/channels')
 

@@ -1,6 +1,7 @@
 import type { Cookies } from '@sveltejs/kit';
 import { sealData, unsealData, type SessionOptions } from 'iron-session';
 import { CLIENT_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { Session } from '$lib/data/session';
 
 export const sessionOptions: SessionOptions = {
@@ -8,7 +9,7 @@ export const sessionOptions: SessionOptions = {
 	cookieName: 'session',
 	ttl: 7_776_000, // 90 days
 	cookieOptions: {
-		secure: false,
+		secure: env.USE_SECURE_COOKIE !== 'false',
 		httpOnly: true,
 		sameSite: 'lax',
 		maxAge: 7_776_000 - 60, // expire cookie 60s before seal

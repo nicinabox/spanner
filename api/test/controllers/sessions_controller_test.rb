@@ -20,4 +20,16 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     get login_url(login_token: login_token), headers: http_options[:headers]
     assert_not_empty response_body['auth_token']
   end
+
+  test 'magic link works for password-enabled accounts' do
+    user = User.create!(
+      email: 'pwduser@test',
+      password: 'password123',
+      login_token: SecureRandom.urlsafe_base64,
+      login_token_valid_until: 15.minutes.from_now
+    )
+
+    get login_url(login_token: user.reload.login_token), headers: http_options[:headers]
+    assert_not_empty response_body['auth_token']
+  end
 end
