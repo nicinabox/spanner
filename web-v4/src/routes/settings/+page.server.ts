@@ -1,11 +1,17 @@
 import { env } from '$env/dynamic/private';
 import { requestEmailChange, deleteAccount } from '$lib/data/settings';
+import { getCurrentUser } from '$lib/data/user';
 import { getHTTPErrors } from '$lib/utils/actions';
+import { safeAsync } from '$lib/utils/async';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	return { email: locals.session?.email };
+	const [user] = await safeAsync(getCurrentUser(locals));
+	return {
+		email: locals.session?.email,
+		passwordEnabled: user?.passwordEnabled ?? false
+	};
 };
 
 export const actions = {

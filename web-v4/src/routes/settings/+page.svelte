@@ -59,6 +59,20 @@
 			{/if}
 		</Card>
 
+		<Card class="mt-6" variant="outline" bleed heading="Password">
+			<div class="flex items-center justify-between gap-6">
+				<div>
+					<span class="font-medium">{data.passwordEnabled ? 'Password set' : 'No password set'}</span>
+					<p class="text-sm text-ink-500">
+						{data.passwordEnabled
+							? 'Change your password.'
+							: 'Set a password to sign in without a magic link.'}
+					</p>
+				</div>
+				<Button href="/settings/password" variant="outline">Manage</Button>
+			</div>
+		</Card>
+
 		<Card class="mt-6" variant="outline" bleed heading="Delete Account">
 			<fieldset>
 				<div class="flex items-center justify-between gap-6">
