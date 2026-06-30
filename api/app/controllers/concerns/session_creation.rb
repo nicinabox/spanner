@@ -23,7 +23,7 @@ module SessionCreation
       auth_token_valid_until: 2.months.from_now
     )
     session.save
-    session.user.update!(time_zone_offset: time_zone_offset)
+    session.user.update!(time_zone_offset: time_zone_offset) if time_zone_offset
     session
   end
 end

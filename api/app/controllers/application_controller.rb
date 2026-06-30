@@ -50,7 +50,7 @@ class ApplicationController < ActionController::API
           auth_token_valid_until: 2.months.from_now
         )
 
-        session.user.update(time_zone_offset: time_zone_offset)
+        session.user.update(time_zone_offset: time_zone_offset) if time_zone_offset
 
         @current_session = session
         @current_user = session.user
@@ -63,7 +63,7 @@ class ApplicationController < ActionController::API
   end
 
   def time_zone_offset
-    request.headers['HTTP_TIME_ZONE_OFFSET'] || '0'
+    request.headers['HTTP_TIME_ZONE_OFFSET']
   end
 
   def set_active_storage_url_options
