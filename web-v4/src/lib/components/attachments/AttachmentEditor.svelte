@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Paperclip, Trash2, RotateCcw } from 'lucide-svelte';
 	import Button from '$lib/components/common/Button.svelte';
-	import FileInput from '$lib/components/forms/FileInput.svelte';
+	import FileInput from '$lib/components/common/FileInput.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import type { Attachment } from '$lib/data/attachments';
 	import { ATTACHMENT_SIZE_LIMIT } from '$lib/data/attachments';

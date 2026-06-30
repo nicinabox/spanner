@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Card, Switch } from '$lib';
-	import FileInput from '$lib/components/forms/FileInput.svelte';
+	import FileInput from '$lib/components/common/FileInput.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import { page } from '$app/stores';
 	import { Download, TriangleAlert } from 'lucide-svelte';
