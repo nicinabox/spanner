@@ -7,6 +7,7 @@ export interface User {
 	createdAt: string;
 	updatedAt: string;
 	timeZoneOffset: string | null;
+	passwordEnabled: boolean;
 	preferences: {
 		vehiclesSortOrder: Sortable;
 	};
