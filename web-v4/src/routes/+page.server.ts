@@ -39,7 +39,7 @@ export const actions = {
 		if (!token || token.trim() === '') {
 			return fail(422, {
 				status: 'pending',
-				errors: [{ id: 'token', title: "Token can't be blank" }]
+				errors: [{ id: 'token', title: "Token can't be blank" }],
 			});
 		}
 
@@ -51,5 +51,5 @@ export const actions = {
 		}
 
 		redirect(303, '/vehicles');
-	}
+	},
 } satisfies Actions;

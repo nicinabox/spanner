@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button } from '$lib';
+	import { hydratable } from 'svelte';
 	import { type ActionData } from '../../../routes/$types';
 	import Field from '../common/Field.svelte';
 	import Input from '../common/Input.svelte';
@@ -23,7 +24,10 @@
 		'frodo@bagendshire',
 	];
 
-	const placeholder = placeholderEmails[Math.floor(Math.random() * placeholderEmails.length)];
+	let placeholder = hydratable(
+		'placeholder',
+		() => placeholderEmails[Math.floor(Math.random() * placeholderEmails.length)],
+	);
 
 	let { form }: Props = $props();
 </script>
