@@ -27,18 +27,17 @@
 
 		{#if showSuccess}
 			<div class="bg-positive/10 text-positive rounded-md p-4 mb-6">
-				Your password has been set. You'll use it to sign in from now on.
+				{#if hasPassword}
+					Your password has been updated.
+				{:else}
+					Your password has been set. You can now sign in with email + password or continue using magic links.
+				{/if}
 			</div>
 		{/if}
 
 		<Card variant="outline" bleed heading={hasPassword ? 'Change password' : 'Set a password'}>
 			<form method="post" action="?/set" use:enhance class="mt-2">
 				<fieldset class="fieldset">
-					{#if hasPassword}
-						<Field name="current_password" label="Current password" errors={form?.errors} required>
-							<Input name="current_password" type="password" autocomplete="current-password" required />
-						</Field>
-					{/if}
 					<Field name="password" label={hasPassword ? 'New password' : 'Password'} errors={form?.errors} required>
 						<Input name="password" type="password" autocomplete="new-password" required />
 					</Field>

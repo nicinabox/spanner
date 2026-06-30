@@ -19,7 +19,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     assert user.reload.authenticate('newpassword123')
   end
 
-  test 'change password requires current_password' do
+  test 'change password does not require current_password' do
     user = users(:one)
     user.password = 'oldpassword123'
     user.save!
@@ -29,16 +29,12 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
       last_seen: Time.zone.now
     )
 
-    # Without current_password → fail
     put '/password', params: { password: 'newpassword456' },
         headers: http_options(session.auth_token)[:headers]
-    assert_response :unauthorized
 
-    # With correct current_password → succeed
-    put '/password', params: { password: 'newpassword456', current_password: 'oldpassword123' },
-        headers: http_options(session.auth_token)[:headers]
     assert_response :success
     assert user.reload.authenticate('newpassword456')
+    assert_not user.authenticate('oldpassword123')
   end
 
   test 'request reset always returns 202' do

@@ -4,7 +4,7 @@
 	import { pageTitle } from '$lib/utils/site';
 	import type { PageProps } from './$types';
 
-	let { form }: PageProps = $props();
+	let { data, form }: PageProps = $props();
 </script>
 
 <svelte:head>
@@ -30,7 +30,13 @@
 				<form method="post" action="?/request" use:enhance>
 					<fieldset class="fieldset">
 						<Field name="email" label="Email" errors={form?.errors} required>
-							<Input name="email" type="email" autocomplete="email" required />
+							<Input
+								name="email"
+								type="email"
+								autocomplete="email"
+								value={data.prefilledEmail}
+								required
+							/>
 						</Field>
 					</fieldset>
 					<div class="mt-4 flex flex-col gap-3">
@@ -42,3 +48,4 @@
 		</Card>
 	</div>
 </main>
+

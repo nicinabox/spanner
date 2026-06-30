@@ -20,7 +20,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	// Password login
 	login: async ({ request, cookies, url }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
@@ -33,23 +32,20 @@ export const actions = {
 				host
 			});
 
-			// Success: API returns session JSON with auth_token
 			if (result && typeof result === 'object' && 'authToken' in result) {
 				await setSession(cookies, result as session.Session);
 				redirect(303, '/vehicles');
 			}
 
-			// 202: magic link sent (no-password account or auto-created)
 			return { status: 'pending' };
 		} catch (error) {
-			// 401 from login endpoint — show error, don't redirect to /
+			if (typeof error === 'object' && error !== null && 'location' in error) throw error;
 			return fail(401, {
 				errors: [{ id: 'form', title: 'Invalid email or password' }]
 			});
 		}
 	},
 
-	// Magic link only (no password)
 	magicLink: async ({ request, url }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries(formData);
@@ -61,7 +57,6 @@ export const actions = {
 				host
 			});
 
-			// 202: magic link sent (or auto-created)
 			return { status: 'pending' };
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));

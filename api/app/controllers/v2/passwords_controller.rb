@@ -6,20 +6,8 @@ module V2
     skip_before_action :authenticate, only: %i[create_reset reset]
 
     # PUT /password — set or change password
+    # Session token is the auth proof — no current password required.
     def update
-      unless current_user.password_enabled? || params[:password].present?
-        respond_with_error 'Password is required', status: :unprocessable_content
-        return
-      end
-
-      if current_user.password_enabled?
-        # Changing existing password — require current_password
-        unless current_user.authenticate(params[:current_password].to_s)
-          respond_with_error 'Current password is incorrect', status: :unauthorized
-          return
-        end
-      end
-
       if params[:password].to_s.length < 8
         respond_with_error 'Password is too short (minimum is 8 characters)', status: :unprocessable_content
         return

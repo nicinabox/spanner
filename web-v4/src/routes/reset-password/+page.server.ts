@@ -1,7 +1,13 @@
 import { requestReset } from '$lib/data/session';
 import { getHTTPErrors } from '$lib/utils/actions';
 import { fail } from '@sveltejs/kit';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ url }) => {
+	return {
+		prefilledEmail: url.searchParams.get('email') ?? ''
+	};
+};
 
 export const actions = {
 	request: async ({ request }) => {
