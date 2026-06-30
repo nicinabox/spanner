@@ -176,6 +176,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
     t.boolean "prompt_for_records", default: true
     t.string "color"
     t.hstore "preferences"
+    t.string "notification_token"
+    t.datetime "snoozed_until"
+    t.datetime "prompt_snoozed_until"
+    t.index ["notification_token"], name: "index_vehicles_on_notification_token", unique: true
     t.index ["preferences"], name: "index_vehicles_on_preferences", using: :gin
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end

@@ -242,7 +242,6 @@ module V2
     test 'user response includes password_enabled' do
       get user_url, headers: @headers
       assert_response :success
-      puts "RESPONSE BODY: #{@response.body.inspect}"
       assert_not_nil response_body['password_enabled']
     end
 

@@ -1,5 +1,6 @@
 import { resetPassword } from '$lib/data/session';
 import { setSession } from '$lib/utils/session';
+import { HTTPError } from '$lib/data/client';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -33,6 +34,9 @@ export const actions = {
 			const session = await resetPassword(params.token, { password });
 			await setSession(cookies, session);
 		} catch (error) {
+			if (error instanceof HTTPError && error.status === 422) {
+				return fail(422, error.data);
+			}
 			return fail(401, {
 				errors: [{ id: 'form', title: 'Invalid or expired reset link' }]
 			});

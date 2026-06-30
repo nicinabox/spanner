@@ -39,12 +39,14 @@ module V2
     private
 
     def password_authenticated?(user, password)
+      # Always consume bcrypt time to prevent timing-based enumeration,
+      # even when no password is provided.
+      dummy_hash = BCrypt::Password.create(SecureRandom.hex)
+      stored_hash = user&.password_digest || dummy_hash
+      bcrypt = BCrypt::Password.new(stored_hash)
+
       return false unless user&.password_enabled? && password.present?
 
-      # Always consume bcrypt time to prevent timing-based enumeration.
-      dummy_hash = BCrypt::Password.create(SecureRandom.hex)
-      stored_hash = user.password_digest || dummy_hash
-      bcrypt = BCrypt::Password.new(stored_hash)
       bcrypt.is_password?(password)
     end
 

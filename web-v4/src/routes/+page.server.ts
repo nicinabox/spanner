@@ -59,7 +59,10 @@ export const actions = {
 
 			return { status: 'pending' };
 		} catch (error) {
-			return fail(422, getHTTPErrors(error));
+			if (typeof error === 'object' && error !== null && 'location' in error) throw error;
+			return fail(422, {
+				errors: [{ id: 'form', title: 'Could not send magic link. Please try again.' }]
+			});
 		}
 	},
 
