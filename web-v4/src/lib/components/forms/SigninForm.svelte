@@ -6,11 +6,14 @@
 	import Field from '../common/Field.svelte';
 	import Input from '../common/Input.svelte';
 	import Alert from '../common/Alert.svelte';
+	import type { FormError } from '$lib/utils/form';
 
 	interface Props {
 		form: ActionData;
 		emailEnabled: boolean;
 	}
+
+	type FormErrors = { errors?: FormError[] };
 
 	const placeholderEmails = [
 		'lando@cloudcity',
@@ -36,11 +39,11 @@
 	let mode = $state<'default' | 'password'>('default');
 	let email = $state('');
 	let emailError = $state('');
-	let formErrors = $state<ActionData['errors']>([]);
+	let formErrors = $state<FormError[]>([]);
 
 	// Sync with server form errors, resetting on mode change
 	$effect(() => {
-		formErrors = form?.errors ?? [];
+		formErrors = (form as FormErrors)?.errors ?? [];
 	});
 </script>
 
@@ -77,7 +80,7 @@
 				label="Email"
 				errors={emailError
 					? [{ id: 'email', title: emailError }]
-					: formErrors.filter((e) => e.id === 'email')}
+					: formErrors.filter((e: FormError) => e.id === 'email')}
 				name="email"
 				required
 			>
@@ -124,7 +127,7 @@
 				label="Email"
 				errors={emailError
 					? [{ id: 'email', title: emailError }]
-					: formErrors.filter((e) => e.id === 'email')}
+					: formErrors.filter((e: FormError) => e.id === 'email')}
 				hint="New here? We'll create your account automatically."
 				name="email"
 				required
