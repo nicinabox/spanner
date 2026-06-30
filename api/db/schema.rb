@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_28_162141) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -147,14 +147,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_28_162141) do
     t.string "time_zone_offset"
     t.json "preferences"
     t.datetime "last_reminder_sent_at"
+    t.boolean "admin", default: false, null: false
     t.string "unconfirmed_email"
     t.string "email_confirmation_token"
     t.datetime "email_confirmation_token_valid_until"
-    t.boolean "admin", default: false, null: false
     t.datetime "email_bounced_at"
     t.datetime "deleted_at"
     t.datetime "unsubscribed_at"
     t.string "account_token"
+    t.string "password_reset_token"
+    t.datetime "password_reset_token_valid_until"
+    t.string "password_digest"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["email_confirmation_token"], name: "index_users_on_email_confirmation_token"
   end
@@ -173,10 +176,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_28_162141) do
     t.boolean "prompt_for_records", default: true
     t.string "color"
     t.hstore "preferences"
-    t.string "notification_token"
-    t.datetime "snoozed_until"
-    t.datetime "prompt_snoozed_until"
-    t.index ["notification_token"], name: "index_vehicles_on_notification_token", unique: true
     t.index ["preferences"], name: "index_vehicles_on_preferences", using: :gin
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end
