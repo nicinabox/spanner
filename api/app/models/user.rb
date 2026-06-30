@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_secure_password validations: false
+
   REMINDER_CUTOFF_DAYS = 365
 
   # How long to wait before sending another reminder once a user enters
@@ -171,5 +173,21 @@ class User < ApplicationRecord
   # Kept for backward compatibility; prefer last_seen_at.
   def last_seen
     sessions.order(:last_seen).last&.last_seen
+  end
+
+  def password_enabled?
+    password_digest.present?
+  end
+
+  validate :password_length_if_set
+
+  private
+
+  def password_length_if_set
+    return unless password_digest_changed?
+    return if password_digest.nil?
+    return if password && password.length >= 8
+
+    errors.add(:password, 'is too short (minimum is 8 characters)')
   end
 end
