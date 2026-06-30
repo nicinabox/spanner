@@ -7,7 +7,7 @@
 		vehicleSortOrderToHuman,
 		vehicleSortStrategy,
 		vehicleSortStrategyToHuman,
-		type VehicleSortStrategy
+		type VehicleSortStrategy,
 	} from '$lib/utils/sortable';
 
 	interface Props {
@@ -30,7 +30,7 @@
 			checked: value === sortStrategy,
 			onCheckedChange: (checked: boolean) => {
 				if (checked) onSelect?.([value as VehicleSortStrategy, sortOrder]);
-			}
+			},
 		})),
 		{ type: 'separator' as const },
 		...['asc', 'desc'].map((order, i) => ({
@@ -41,8 +41,8 @@
 			checked: order === sortOrder,
 			onCheckedChange: (checked: boolean) => {
 				if (checked) onSelect?.([sortStrategy, order as Order]);
-			}
-		}))
+			},
+		})),
 	]);
 </script>
 

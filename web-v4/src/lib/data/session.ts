@@ -33,6 +33,9 @@ export const resetPassword = async (token: string, data: { password: string }) =
 	return request<Session>(`/password/reset/${token}`, { method: 'POST', json: data });
 };
 
-export const setPassword = async (data: { password: string; currentPassword?: string }, opts: RequestOpts) => {
+export const setPassword = async (
+	data: { password: string; currentPassword?: string },
+	opts: RequestOpts,
+) => {
 	return request('/password', { ...opts, method: 'PUT', json: data });
 };

@@ -40,11 +40,16 @@
 					<Alert role="status" variant="positive">Preferences saved.</Alert>
 				{/if}
 
-				<form method="POST" action="?/update" use:enhance={() => {
-					return async ({ update }) => {
-						await update({ reset: false });
-					};
-				}} class="flex flex-col gap-6">
+				<form
+					method="POST"
+					action="?/update"
+					use:enhance={() => {
+						return async ({ update }) => {
+							await update({ reset: false });
+						};
+					}}
+					class="flex flex-col gap-6"
+				>
 					<input type="hidden" name="vehicle_id" value={data.vehicle.id} />
 
 					<fieldset class="flex flex-col gap-4">

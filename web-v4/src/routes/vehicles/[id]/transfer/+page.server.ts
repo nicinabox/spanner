@@ -16,14 +16,14 @@ export const actions = {
 
 		if (!file || file.size === 0) {
 			return fail(422, {
-				errors: [{ id: 'form', title: 'Please select a CSV file to import' }]
+				errors: [{ id: 'form', title: 'Please select a CSV file to import' }],
 			});
 		}
 
 		const validation = await validateImportFile(file, { maxSize: 10 * 1024 * 1024 });
 		if (!validation.valid) {
 			return fail(422, {
-				errors: [{ id: 'form', title: validation.reason }]
+				errors: [{ id: 'form', title: validation.reason }],
 			});
 		}
 
@@ -34,13 +34,12 @@ export const actions = {
 				errors: [
 					{
 						id: 'form',
-						title:
-							'Import failed. Check that your CSV has the correct format and try again.'
-					}
-				]
+						title: 'Import failed. Check that your CSV has the correct format and try again.',
+					},
+				],
 			});
 		}
 
 		redirect(303, `/vehicles/${params.id}`);
-	}
+	},
 } satisfies Actions;

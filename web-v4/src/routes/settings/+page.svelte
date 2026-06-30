@@ -40,47 +40,58 @@
 				</div>
 			{/if}
 			<form method="post" action="?/changeEmail" use:enhance>
-					<fieldset class="fieldset">
-						<Field
-							name="email"
-							label="New email"
-							hint="We'll send confirmation links to both your current and new address."
-							errors={form?.errors}
-							required
-						>
-							<Input name="email" type="email" autocomplete="email" required />
-						</Field>
-					</fieldset>
+				<fieldset class="fieldset">
+					<Field
+						name="email"
+						label="New email"
+						hint="We'll send confirmation links to both your current and new address."
+						errors={form?.errors}
+						required
+					>
+						<Input name="email" type="email" autocomplete="email" required />
+					</Field>
+				</fieldset>
 
-					<div class="mt-2">
-						<Button type="submit">Update email</Button>
-					</div>
-				</form>
+				<div class="mt-2">
+					<Button type="submit">Update email</Button>
+				</div>
+			</form>
 		</Card>
 
-		<Card class="mt-6" variant="outline" bleed heading={data.passwordEnabled ? 'Change password' : 'Set a password'}>
+		<Card
+			class="mt-6"
+			variant="outline"
+			bleed
+			heading={data.passwordEnabled ? 'Change password' : 'Set a password'}
+		>
 			{#if form?.passwordSuccess}
 				<div class="bg-positive/10 text-positive rounded-md p-4 mb-4">
 					{#if data.passwordEnabled}
 						Your password has been updated.
 					{:else}
-						Your password has been set. You can now sign in with email + password or continue using magic links.
+						Your password has been set. You can now sign in with email + password or continue using
+						magic links.
 					{/if}
 				</div>
 			{/if}
 			<form method="post" action="?/changePassword" use:enhance>
-					<fieldset class="fieldset">
-						<Field name="password" label={data.passwordEnabled ? 'New password' : 'Password'} errors={form?.errors} required>
-							<Input name="password" type="password" autocomplete="new-password" required />
-						</Field>
-						<Field name="confirm_password" label="Confirm password" errors={form?.errors} required>
-							<Input name="confirm_password" type="password" autocomplete="new-password" required />
-						</Field>
-					</fieldset>
-					<div class="mt-2">
-						<Button type="submit">{data.passwordEnabled ? 'Update password' : 'Set password'}</Button>
-					</div>
-				</form>
+				<fieldset class="fieldset">
+					<Field
+						name="password"
+						label={data.passwordEnabled ? 'New password' : 'Password'}
+						errors={form?.errors}
+						required
+					>
+						<Input name="password" type="password" autocomplete="new-password" required />
+					</Field>
+					<Field name="confirm_password" label="Confirm password" errors={form?.errors} required>
+						<Input name="confirm_password" type="password" autocomplete="new-password" required />
+					</Field>
+				</fieldset>
+				<div class="mt-2">
+					<Button type="submit">{data.passwordEnabled ? 'Update password' : 'Set password'}</Button>
+				</div>
+			</form>
 		</Card>
 
 		<Card class="mt-6" variant="outline" bleed heading="Delete Account">

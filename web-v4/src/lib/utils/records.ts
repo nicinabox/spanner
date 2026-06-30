@@ -2,7 +2,7 @@ import type { HistoryEntry } from '$lib/data/history';
 
 export const getNextRecordWithMileage = (
 	record: HistoryEntry,
-	history: HistoryEntry[]
+	history: HistoryEntry[],
 ): HistoryEntry | undefined => {
 	const currIdx = history.findIndex((r) => r.id === record.id);
 	let idx = currIdx + 1;
@@ -21,7 +21,7 @@ export const getNextRecordWithMileage = (
 
 export const getDeltaMileage = (
 	record: HistoryEntry | undefined,
-	olderRecord: HistoryEntry | undefined
+	olderRecord: HistoryEntry | undefined,
 ): number => {
 	if (!record || !olderRecord) return 0;
 	return Math.max((record.mileage ?? 0) - (olderRecord.mileage ?? 0), 0);

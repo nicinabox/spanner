@@ -14,28 +14,28 @@ interface MagicEntry {
 const MAGIC_BYTES: MagicEntry[] = [
 	{
 		mime: 'application/pdf',
-		required: [{ bytes: new Uint8Array([0x25, 0x50, 0x44, 0x46]), offset: 0 }] // %PDF
+		required: [{ bytes: new Uint8Array([0x25, 0x50, 0x44, 0x46]), offset: 0 }], // %PDF
 	},
 	{
 		mime: 'image/jpeg',
-		required: [{ bytes: new Uint8Array([0xff, 0xd8, 0xff]), offset: 0 }]
+		required: [{ bytes: new Uint8Array([0xff, 0xd8, 0xff]), offset: 0 }],
 	},
 	{
 		mime: 'image/png',
 		required: [
-			{ bytes: new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]), offset: 0 }
-		]
+			{ bytes: new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]), offset: 0 },
+		],
 	},
 	{
 		mime: 'image/gif',
-		required: [{ bytes: new Uint8Array([0x47, 0x49, 0x46, 0x38]), offset: 0 }] // GIF8
+		required: [{ bytes: new Uint8Array([0x47, 0x49, 0x46, 0x38]), offset: 0 }], // GIF8
 	},
 	{
 		mime: 'image/webp',
 		required: [
 			{ bytes: new Uint8Array([0x52, 0x49, 0x46, 0x46]), offset: 0 }, // RIFF
-			{ bytes: new Uint8Array([0x57, 0x45, 0x42, 0x50]), offset: 8 } // WEBP
-		]
+			{ bytes: new Uint8Array([0x57, 0x45, 0x42, 0x50]), offset: 8 }, // WEBP
+		],
 	},
 	{
 		mime: 'image/heic',
@@ -46,10 +46,10 @@ const MAGIC_BYTES: MagicEntry[] = [
 				new Uint8Array([0x68, 0x65, 0x69, 0x63]), // heic
 				new Uint8Array([0x68, 0x65, 0x69, 0x78]), // heix
 				new Uint8Array([0x6d, 0x69, 0x66, 0x31]), // mif1
-				new Uint8Array([0x68, 0x65, 0x76, 0x63]) // hevc
-			]
-		}
-	}
+				new Uint8Array([0x68, 0x65, 0x76, 0x63]), // hevc
+			],
+		},
+	},
 ];
 
 const ARCHIVE_SIGNATURES: Uint8Array[] = [
@@ -59,7 +59,7 @@ const ARCHIVE_SIGNATURES: Uint8Array[] = [
 	new Uint8Array([0x1f, 0x8b]), // GZ
 	new Uint8Array([0x42, 0x5a, 0x68]), // BZ2
 	new Uint8Array([0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c]), // 7z
-	new Uint8Array([0x52, 0x61, 0x72, 0x21, 0x1a, 0x07]) // RAR
+	new Uint8Array([0x52, 0x61, 0x72, 0x21, 0x1a, 0x07]), // RAR
 ];
 
 function bytesMatch(data: Uint8Array, signature: Uint8Array, offset = 0): boolean {
@@ -91,13 +91,11 @@ function isArchive(data: Uint8Array): boolean {
 	return ARCHIVE_SIGNATURES.some((sig) => bytesMatch(data, sig));
 }
 
-export type ValidationResult =
-	| { valid: true; mime: string }
-	| { valid: false; reason: string };
+export type ValidationResult = { valid: true; mime: string } | { valid: false; reason: string };
 
 export async function validateAttachmentFile(
 	file: File,
-	options?: { maxSize?: number }
+	options?: { maxSize?: number },
 ): Promise<ValidationResult> {
 	if (file.size === 0) {
 		return { valid: false, reason: `"${file.name}" is empty` };
@@ -106,7 +104,7 @@ export async function validateAttachmentFile(
 	if (options?.maxSize && file.size > options.maxSize) {
 		return {
 			valid: false,
-			reason: `"${file.name}" exceeds ${formatBytes(options.maxSize)} limit`
+			reason: `"${file.name}" exceeds ${formatBytes(options.maxSize)} limit`,
 		};
 	}
 
@@ -117,7 +115,7 @@ export async function validateAttachmentFile(
 	if (isArchive(data)) {
 		return {
 			valid: false,
-			reason: `"${file.name}" is an archive file (ZIP, GZ, etc.) which is not allowed`
+			reason: `"${file.name}" is an archive file (ZIP, GZ, etc.) which is not allowed`,
 		};
 	}
 
@@ -125,7 +123,7 @@ export async function validateAttachmentFile(
 	if (!detected) {
 		return {
 			valid: false,
-			reason: `"${file.name}" has an unrecognized file type. Allowed: PDF, JPEG, PNG, GIF, WebP, HEIC`
+			reason: `"${file.name}" has an unrecognized file type. Allowed: PDF, JPEG, PNG, GIF, WebP, HEIC`,
 		};
 	}
 
@@ -134,7 +132,7 @@ export async function validateAttachmentFile(
 
 export async function validateImportFile(
 	file: File,
-	options?: { maxSize?: number }
+	options?: { maxSize?: number },
 ): Promise<{ valid: true } | { valid: false; reason: string }> {
 	if (file.size === 0) {
 		return { valid: false, reason: 'Import file is empty' };
@@ -143,7 +141,7 @@ export async function validateImportFile(
 	if (options?.maxSize && file.size > options.maxSize) {
 		return {
 			valid: false,
-			reason: `Import file exceeds ${formatBytes(options.maxSize)} limit`
+			reason: `Import file exceeds ${formatBytes(options.maxSize)} limit`,
 		};
 	}
 
@@ -154,7 +152,7 @@ export async function validateImportFile(
 	if (isArchive(data)) {
 		return {
 			valid: false,
-			reason: 'Import file is an archive (ZIP, GZ, etc.) which is not allowed'
+			reason: 'Import file is an archive (ZIP, GZ, etc.) which is not allowed',
 		};
 	}
 
@@ -163,7 +161,7 @@ export async function validateImportFile(
 	if (detected) {
 		return {
 			valid: false,
-			reason: `Import file appears to be a ${detected} file, not a CSV`
+			reason: `Import file appears to be a ${detected} file, not a CSV`,
 		};
 	}
 
@@ -176,7 +174,7 @@ export async function validateImportFile(
  */
 export async function validateAttachments(
 	files: File[],
-	options?: { maxSize?: number; maxFiles?: number }
+	options?: { maxSize?: number; maxFiles?: number },
 ): Promise<{ valid: true } | { valid: false; reason: string }> {
 	const maxFiles = options?.maxFiles ?? MAX_FILES;
 	const maxSize = options?.maxSize ?? MAX_FILE_SIZE;

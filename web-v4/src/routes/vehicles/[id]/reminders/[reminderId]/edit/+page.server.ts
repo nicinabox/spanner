@@ -31,9 +31,9 @@ export const actions = {
 					notes,
 					reminderType: reminderType || null,
 					date: date || null,
-					mileage: mileage ? Number(mileage) : null
+					mileage: mileage ? Number(mileage) : null,
 				} as never,
-				locals
+				locals,
 			);
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
@@ -45,5 +45,5 @@ export const actions = {
 	delete: async ({ locals, params }) => {
 		await deleteReminder(params.id!, params.reminderId!, locals);
 		redirect(303, `/vehicles/${params.id}/reminders`);
-	}
+	},
 } satisfies Actions;

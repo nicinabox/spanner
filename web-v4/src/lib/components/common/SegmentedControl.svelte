@@ -34,7 +34,7 @@
 		readOnly,
 		orientation = 'horizontal',
 		id: idProp,
-		class: className
+		class: className,
 	}: Props = $props();
 
 	let id = $props.id();
@@ -49,7 +49,7 @@
 		required,
 		invalid,
 		readOnly,
-		orientation
+		orientation,
 	});
 
 	const api = $derived(radio.connect(service, normalizeProps));

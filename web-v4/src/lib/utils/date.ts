@@ -16,13 +16,13 @@ export const intlFormatDateUTC = (date: string, formatOptions = {}): string => {
 // 'Jan 1, 2021'
 export const intlFormatDate = (
 	date: Parameters<typeof intlFormat>[0],
-	formatOptions = {}
+	formatOptions = {},
 ): string => {
 	return intlFormat(date, {
 		month: 'short',
 		day: 'numeric',
 		year: 'numeric',
-		...formatOptions
+		...formatOptions,
 	});
 };
 

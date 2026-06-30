@@ -5,7 +5,7 @@ import { sessionOptions } from '$lib/utils/session';
 export const load: PageServerLoad = async ({ cookies }) => {
 	cookies.delete(sessionOptions.cookieName, {
 		path: '/',
-		...sessionOptions.cookieOptions
+		...sessionOptions.cookieOptions,
 	});
 
 	throw redirect(302, '/');

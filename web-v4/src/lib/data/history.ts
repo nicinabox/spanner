@@ -25,7 +25,7 @@ export const getVehicleHistory = (vehicleId: number | string, opts: RequestOpts)
 export const getHistoryEntry = (
 	vehicleId: number | string,
 	id: number | string,
-	opts: RequestOpts
+	opts: RequestOpts,
 ) => {
 	return request<HistoryEntry>(`/vehicles/${vehicleId}/records/${id}`, opts);
 };
@@ -33,12 +33,12 @@ export const getHistoryEntry = (
 export const createHistoryEntry = (
 	vehicleId: number | string,
 	data: Partial<HistoryEntry>,
-	opts: RequestOpts
+	opts: RequestOpts,
 ) => {
 	return request<HistoryEntry>(`/vehicles/${vehicleId}/records`, {
 		...opts,
 		method: 'POST',
-		json: data
+		json: data,
 	});
 };
 
@@ -46,22 +46,22 @@ export const updateHistoryEntry = (
 	vehicleId: number | string,
 	id: number | string,
 	data: Partial<HistoryEntry>,
-	opts: RequestOpts
+	opts: RequestOpts,
 ) => {
 	return request<HistoryEntry>(`/vehicles/${vehicleId}/records/${id}`, {
 		...opts,
 		method: 'PUT',
-		json: data
+		json: data,
 	});
 };
 
 export const deleteHistoryEntry = (
 	vehicleId: number | string,
 	id: number | string,
-	opts: RequestOpts
+	opts: RequestOpts,
 ) => {
 	return request<void>(`/vehicles/${vehicleId}/records/${id}`, {
 		...opts,
-		method: 'DELETE'
+		method: 'DELETE',
 	});
 };

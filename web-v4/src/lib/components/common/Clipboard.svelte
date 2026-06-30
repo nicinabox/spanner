@@ -29,7 +29,13 @@
 	let label = $derived(api.copied ? 'Copied' : 'Copy');
 </script>
 
-<InputGroup variant="filled" name="clipboard" {value} readonly onfocus={(e) => (e.target as HTMLInputElement)?.select()}>
+<InputGroup
+	variant="filled"
+	name="clipboard"
+	{value}
+	readonly
+	onfocus={(e) => (e.target as HTMLInputElement)?.select()}
+>
 	{#snippet end()}
 		<Tooltip content={label}>
 			{#snippet children(tooltipProps)}

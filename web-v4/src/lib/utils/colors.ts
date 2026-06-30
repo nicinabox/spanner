@@ -7,7 +7,7 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
 	return {
 		r: parseInt(parts[1], 16),
 		g: parseInt(parts[2], 16),
-		b: parseInt(parts[3], 16)
+		b: parseInt(parts[3], 16),
 	};
 }
 
@@ -46,7 +46,7 @@ export function getColorPalette(baseColor: string): Palette {
 		600: 0.9,
 		700: 0.75,
 		800: 0.6,
-		900: 0.49
+		900: 0.49,
 	};
 
 	[50, 100, 200, 300, 400].forEach((level) => {

@@ -39,9 +39,7 @@
 
 	let inputEl: HTMLInputElement | undefined = $state();
 
-	let label = $derived(
-		buttonLabel ?? (multiple ? 'Choose files' : 'Choose file')
-	);
+	let label = $derived(buttonLabel ?? (multiple ? 'Choose files' : 'Choose file'));
 
 	function handleChange(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -50,12 +48,7 @@
 </script>
 
 <div class={['inline-flex', className]}>
-	<Button
-		variant={buttonVariant}
-		size={buttonSize}
-		type="button"
-		onclick={() => inputEl?.click()}
-	>
+	<Button variant={buttonVariant} size={buttonSize} type="button" onclick={() => inputEl?.click()}>
 		<Paperclip size={16} />
 		{label}
 	</Button>

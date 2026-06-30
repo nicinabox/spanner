@@ -15,5 +15,6 @@
 
 <div
 	class="rounded-full border-2 shrink-0"
-	style="width: {size * 0.25}rem; height: {size * 0.25}rem; background: {background}; border-color: {palette[400]};"
+	style="width: {size * 0.25}rem; height: {size *
+		0.25}rem; background: {background}; border-color: {palette[400]};"
 ></div>

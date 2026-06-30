@@ -52,7 +52,8 @@ export const actions = {
 		const token = params.token!;
 		const formData = await request.formData();
 		const vehicleIdRaw = formData.get('vehicle_id');
-		const vehicleId = typeof vehicleIdRaw === 'string' && vehicleIdRaw !== '' ? Number(vehicleIdRaw) : null;
+		const vehicleId =
+			typeof vehicleIdRaw === 'string' && vehicleIdRaw !== '' ? Number(vehicleIdRaw) : null;
 		try {
 			await unsubscribeAction(token, 'unsubscribe');
 		} catch {
@@ -68,7 +69,8 @@ export const actions = {
 		const token = params.token!;
 		const formData = await request.formData();
 		const vehicleIdRaw = formData.get('vehicle_id');
-		const vehicleId = typeof vehicleIdRaw === 'string' && vehicleIdRaw !== '' ? Number(vehicleIdRaw) : null;
+		const vehicleId =
+			typeof vehicleIdRaw === 'string' && vehicleIdRaw !== '' ? Number(vehicleIdRaw) : null;
 		try {
 			await unsubscribeAction(token, 'reactivate');
 		} catch {

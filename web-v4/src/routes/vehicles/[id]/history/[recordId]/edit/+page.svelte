@@ -49,14 +49,19 @@
 							<Button danger onclick={() => onOpenChange(true)}>Delete</Button>
 						{/snippet}
 						{#snippet actions({ onOpenChange })}
-							<form method="POST" action="?/delete" use:enhance={() => {
+							<form
+								method="POST"
+								action="?/delete"
+								use:enhance={() => {
 									return async ({ result }) => {
 										if (result.type === 'redirect') {
 											await invalidate(() => true);
 											goto(result.location, { invalidateAll: true });
 										}
 									};
-								}} class="flex flex-row gap-2 flex-1 sm:flex-none">
+								}}
+								class="flex flex-row gap-2 flex-1 sm:flex-none"
+							>
 								<Button type="submit" danger class="flex-1 sm:flex-none">Delete</Button>
 								<Button
 									variant="outline"

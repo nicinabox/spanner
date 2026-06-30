@@ -63,12 +63,7 @@
 				</div>
 			{/if}
 
-			<form
-				method="POST"
-				action="?/import"
-				enctype="multipart/form-data"
-				class="space-y-4"
-			>
+			<form method="POST" action="?/import" enctype="multipart/form-data" class="space-y-4">
 				<label class="flex items-center gap-3 cursor-pointer">
 					<FileInput
 						name="vehicle[import_file]"
@@ -80,9 +75,7 @@
 					</span>
 				</label>
 
-				<Switch name="vehicle[fuelly]" value="true">
-					This data is from Fuelly
-				</Switch>
+				<Switch name="vehicle[fuelly]" value="true">This data is from Fuelly</Switch>
 
 				<div class="flex items-start gap-2 p-3 rounded-md bg-warning/10 text-warning text-sm">
 					<TriangleAlert size={16} class="mt-0.5 shrink-0" />

@@ -25,7 +25,7 @@ export const actions = {
 			date: 'string',
 			notes: 'string',
 			mileage: 'number',
-			cost: 'number'
+			cost: 'number',
 		});
 
 		if (!data.date) {
@@ -43,7 +43,7 @@ export const actions = {
 		const validation = await validateAttachments(files);
 		if (!validation.valid) {
 			return fail(422, {
-				errors: [{ id: 'attachments', title: validation.reason }]
+				errors: [{ id: 'attachments', title: validation.reason }],
 			});
 		}
 
@@ -52,9 +52,9 @@ export const actions = {
 				date: data.date,
 				notes: data.notes,
 				mileage: typeof data.mileage === 'number' ? data.mileage : null,
-				cost: typeof data.cost === 'number' ? data.cost : null
+				cost: typeof data.cost === 'number' ? data.cost : null,
 			},
-			{ prefix: 'record' }
+			{ prefix: 'record' },
 		);
 		for (const file of files) {
 			body.append('record[attachments][]', file);
@@ -68,7 +68,7 @@ export const actions = {
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Upload failed';
 			return fail(422, {
-				errors: [{ id: 'form', title: message }]
+				errors: [{ id: 'form', title: message }],
 			});
 		}
 
@@ -81,7 +81,7 @@ export const actions = {
 			notes: 'string',
 			reminderType: 'string',
 			date: 'string',
-			mileage: 'number'
+			mileage: 'number',
 		});
 
 		if (!data.notes) {
@@ -95,9 +95,9 @@ export const actions = {
 					notes: data.notes as string,
 					reminderType: (data.reminderType as string) || null,
 					date: (data.date as string) || null,
-					mileage: typeof data.mileage === 'number' ? data.mileage : null
+					mileage: typeof data.mileage === 'number' ? data.mileage : null,
 				} as never,
-				locals
+				locals,
 			);
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
@@ -121,11 +121,11 @@ export const actions = {
 				date: new Date().toISOString().split('T')[0],
 				notes: 'Mileage adjustment',
 				mileage: data.mileage,
-				recordType: 'mileage adjustment'
+				recordType: 'mileage adjustment',
 			} as never,
-			locals
+			locals,
 		);
 
 		redirect(303, `/vehicles/${params.id}`);
-	}
+	},
 } satisfies Actions;

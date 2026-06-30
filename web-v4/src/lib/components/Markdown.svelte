@@ -18,7 +18,7 @@
 				return `<h${level}>${text}</h${level}>`;
 			};
 			return insane(marked(src ?? '', { async: false, renderer }));
-		})()
+		})(),
 	);
 </script>
 

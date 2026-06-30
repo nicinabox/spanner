@@ -12,7 +12,7 @@ export const vehicleSortStrategy: Record<
 	name: sortByName,
 	reminders: sortByReminders,
 	mileage: sortByMileage,
-	mileage_rate: sortByMileageRate
+	mileage_rate: sortByMileageRate,
 };
 
 export const vehicleSortStrategyToHuman: Record<VehicleSortStrategy, string> = {
@@ -20,7 +20,7 @@ export const vehicleSortStrategyToHuman: Record<VehicleSortStrategy, string> = {
 	created_at: 'Created',
 	reminders: 'Reminders',
 	mileage: 'Mileage',
-	mileage_rate: 'Mileage Rate'
+	mileage_rate: 'Mileage Rate',
 };
 
 export const vehicleSortOrderToHuman: Record<VehicleSortStrategy, [string, string]> = {
@@ -28,7 +28,7 @@ export const vehicleSortOrderToHuman: Record<VehicleSortStrategy, [string, strin
 	name: ['A to Z', 'Z to A'],
 	reminders: ['Fewest', 'Most'],
 	mileage: ['Lowest', 'Highest'],
-	mileage_rate: ['Lowest', 'Highest']
+	mileage_rate: ['Lowest', 'Highest'],
 };
 
 export const orderToHuman = ([sortStrategy, order]: Sortable) => {

@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ params, cookies, locals }) => {
 
 	if (error || !session) {
 		return {
-			error: error?.message || 'Login failed'
+			error: error?.message || 'Login failed',
 		};
 	}
 

@@ -1,5 +1,5 @@
 export async function safeAsync<T, E extends Error = Error>(
-	promise: Promise<T>
+	promise: Promise<T>,
 ): Promise<[T | null, E | null]> {
 	try {
 		const data = await promise;

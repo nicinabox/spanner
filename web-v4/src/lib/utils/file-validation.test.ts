@@ -33,7 +33,7 @@ describe('validateAttachmentFile', () => {
 			'img.png',
 			[0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
 			100,
-			'image/png'
+			'image/png',
 		);
 		const result = await validateAttachmentFile(file, { maxSize: MAX_SIZE });
 		expect(result.valid).toBe(true);
@@ -49,9 +49,18 @@ describe('validateAttachmentFile', () => {
 
 	it('accepts a valid WebP (RIFF + WEBP)', async () => {
 		const header = [
-			0x52, 0x49, 0x46, 0x46, // RIFF
-			0x00, 0x00, 0x00, 0x00, // file size (placeholder)
-			0x57, 0x45, 0x42, 0x50 // WEBP
+			0x52,
+			0x49,
+			0x46,
+			0x46, // RIFF
+			0x00,
+			0x00,
+			0x00,
+			0x00, // file size (placeholder)
+			0x57,
+			0x45,
+			0x42,
+			0x50, // WEBP
 		];
 		const file = fileFromHeader('img.webp', header, 100, 'image/webp');
 		const result = await validateAttachmentFile(file, { maxSize: MAX_SIZE });
@@ -61,9 +70,18 @@ describe('validateAttachmentFile', () => {
 
 	it('rejects RIFF without WEBP brand (e.g. WAV disguised as WebP)', async () => {
 		const header = [
-			0x52, 0x49, 0x46, 0x46, // RIFF
-			0x00, 0x00, 0x00, 0x00,
-			0x57, 0x41, 0x56, 0x45 // WAVE — not WEBP
+			0x52,
+			0x49,
+			0x46,
+			0x46, // RIFF
+			0x00,
+			0x00,
+			0x00,
+			0x00,
+			0x57,
+			0x41,
+			0x56,
+			0x45, // WAVE — not WEBP
 		];
 		const file = fileFromHeader('audio.webp', header, 100, 'image/webp');
 		const result = await validateAttachmentFile(file, { maxSize: MAX_SIZE });
@@ -72,9 +90,18 @@ describe('validateAttachmentFile', () => {
 
 	it('accepts a valid HEIC (ftyp + heic brand)', async () => {
 		const header = [
-			0x00, 0x00, 0x00, 0x20, // box size
-			0x66, 0x74, 0x79, 0x70, // ftyp
-			0x68, 0x65, 0x69, 0x63 // heic
+			0x00,
+			0x00,
+			0x00,
+			0x20, // box size
+			0x66,
+			0x74,
+			0x79,
+			0x70, // ftyp
+			0x68,
+			0x65,
+			0x69,
+			0x63, // heic
 		];
 		const file = fileFromHeader('photo.heic', header, 100, 'image/heic');
 		const result = await validateAttachmentFile(file, { maxSize: MAX_SIZE });
@@ -84,9 +111,18 @@ describe('validateAttachmentFile', () => {
 
 	it('accepts HEIC with mif1 brand', async () => {
 		const header = [
-			0x00, 0x00, 0x00, 0x20,
-			0x66, 0x74, 0x79, 0x70, // ftyp
-			0x6d, 0x69, 0x66, 0x31 // mif1
+			0x00,
+			0x00,
+			0x00,
+			0x20,
+			0x66,
+			0x74,
+			0x79,
+			0x70, // ftyp
+			0x6d,
+			0x69,
+			0x66,
+			0x31, // mif1
 		];
 		const file = fileFromHeader('photo.heic', header, 100, 'image/heic');
 		const result = await validateAttachmentFile(file, { maxSize: MAX_SIZE });
@@ -95,9 +131,18 @@ describe('validateAttachmentFile', () => {
 
 	it('rejects ftyp with unknown brand', async () => {
 		const header = [
-			0x00, 0x00, 0x00, 0x20,
-			0x66, 0x74, 0x79, 0x70, // ftyp
-			0x6d, 0x70, 0x34, 0x32 // mp42 — QuickTime, not HEIC
+			0x00,
+			0x00,
+			0x00,
+			0x20,
+			0x66,
+			0x74,
+			0x79,
+			0x70, // ftyp
+			0x6d,
+			0x70,
+			0x34,
+			0x32, // mp42 — QuickTime, not HEIC
 		];
 		const file = fileFromHeader('video.heic', header, 100, 'image/heic');
 		const result = await validateAttachmentFile(file, { maxSize: MAX_SIZE });
@@ -137,7 +182,7 @@ describe('validateAttachmentFile', () => {
 			'archive.pdf',
 			[0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c],
 			100,
-			'application/pdf'
+			'application/pdf',
 		);
 		const result = await validateAttachmentFile(file, { maxSize: MAX_SIZE });
 		expect(result.valid).toBe(false);
@@ -165,7 +210,7 @@ describe('validateImportFile', () => {
 
 	it('accepts a valid CSV file', async () => {
 		const csv = new File(['date,notes,mileage\n2024-01-01,Oil change,5000\n'], 'import.csv', {
-			type: 'text/csv'
+			type: 'text/csv',
 		});
 		const result = await validateImportFile(csv, { maxSize: MAX_SIZE });
 		expect(result.valid).toBe(true);
@@ -204,7 +249,7 @@ describe('validateAttachments', () => {
 	it('accepts multiple valid files under the limit', async () => {
 		const files = [
 			fileFromHeader('a.pdf', [0x25, 0x50, 0x44, 0x46], 100),
-			fileFromHeader('b.jpg', [0xff, 0xd8, 0xff], 100)
+			fileFromHeader('b.jpg', [0xff, 0xd8, 0xff], 100),
 		];
 		const result = await validateAttachments(files);
 		expect(result.valid).toBe(true);
@@ -212,7 +257,7 @@ describe('validateAttachments', () => {
 
 	it('rejects more than 10 files', async () => {
 		const files = Array.from({ length: 11 }, (_, i) =>
-			fileFromHeader(`file${i}.pdf`, [0x25, 0x50, 0x44, 0x46], 100)
+			fileFromHeader(`file${i}.pdf`, [0x25, 0x50, 0x44, 0x46], 100),
 		);
 		const result = await validateAttachments(files);
 		expect(result.valid).toBe(false);
@@ -222,7 +267,7 @@ describe('validateAttachments', () => {
 	it('returns the first invalid file error', async () => {
 		const files = [
 			fileFromHeader('good.pdf', [0x25, 0x50, 0x44, 0x46], 100),
-			fileFromHeader('bad.exe', [0x4d, 0x5a], 100)
+			fileFromHeader('bad.exe', [0x4d, 0x5a], 100),
 		];
 		const result = await validateAttachments(files);
 		expect(result.valid).toBe(false);

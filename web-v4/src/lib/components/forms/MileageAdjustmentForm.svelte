@@ -20,7 +20,12 @@
 	let mileage = $state('');
 </script>
 
-<form method="POST" action={action ?? `/vehicles/${vehicle.id}/records`} use:enhance class="flex flex-col gap-6">
+<form
+	method="POST"
+	action={action ?? `/vehicles/${vehicle.id}/records`}
+	use:enhance
+	class="flex flex-col gap-6"
+>
 	{#if formErrors.length > 0}
 		<div role="alert" class="p-3 rounded-md bg-negative/10 text-negative text-sm">
 			{#each formErrors as e}
@@ -30,10 +35,20 @@
 	{/if}
 
 	<fieldset class="flex flex-col gap-4">
-		<Field name="mileage" label={`Enter your current ${mileageLabel(vehicle.distanceUnit)}`} {errors} required>
-			<Input name="mileage" bind:value={mileage} inputmode="numeric"  />
+		<Field
+			name="mileage"
+			label={`Enter your current ${mileageLabel(vehicle.distanceUnit)}`}
+			{errors}
+			required
+		>
+			<Input name="mileage" bind:value={mileage} inputmode="numeric" />
 			{#if vehicle.estimatedMileage}
-				<p class="text-sm text-ink-400">Your estimated {mileageLabel(vehicle.distanceUnit)} is {formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}</p>
+				<p class="text-sm text-ink-400">
+					Your estimated {mileageLabel(vehicle.distanceUnit)} is {formatMileage(
+						vehicle.estimatedMileage,
+						vehicle.distanceUnit,
+					)}
+				</p>
 			{/if}
 		</Field>
 	</fieldset>

@@ -3,7 +3,7 @@
 @import './styles/theme.css';
 
 /* Date input matches other inputs */
-input[type="date"] {
+input[type='date'] {
 	width: 100%;
 	min-width: 0;
 	appearance: none;

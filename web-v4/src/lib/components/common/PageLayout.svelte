@@ -11,7 +11,13 @@
 		children: Snippet;
 	}
 
-	let { appbarStart: start, appbarCenter: center, appbarEnd: end, appbarClass, children }: Props = $props();
+	let {
+		appbarStart: start,
+		appbarCenter: center,
+		appbarEnd: end,
+		appbarClass,
+		children,
+	}: Props = $props();
 
 	let session = $derived($page.data.session);
 </script>

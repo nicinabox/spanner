@@ -21,14 +21,14 @@ export const actions = {
 			const user = await updateUser(
 				{
 					preferences: {
-						vehiclesSortOrder: [data.strategy, data.order]
-					}
+						vehiclesSortOrder: [data.strategy, data.order],
+					},
 				},
-				locals
+				locals,
 			);
 			return { user };
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
 		}
-	}
+	},
 } satisfies Actions;

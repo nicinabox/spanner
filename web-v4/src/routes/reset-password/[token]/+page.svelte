@@ -14,7 +14,7 @@
 <main class="max-w-md w-full mx-auto px-4">
 	<div class="flex min-h-screen flex-col items-center justify-center">
 		<Card size="lg" class="w-full">
-			{#if form?.errors && form.errors.some((e: { title?: string }) => e.title?.includes('Invalid or expired'))}
+			{#if form?.errors && form.errors.some( (e: { title?: string }) => e.title?.includes('Invalid or expired'), )}
 				<h1>Link expired</h1>
 				<p class="mt-2 text-ink-500">
 					This reset link is invalid or has expired. Please request a new one.

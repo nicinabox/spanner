@@ -12,7 +12,7 @@ self.addEventListener('install', (event) => {
 			.open(CACHE)
 			.then((cache) => Promise.allSettled(ASSETS.map((url) => cache.add(url))))
 			.then(() => caches.open(CACHE))
-			.then((cache) => cache.add('/offline'))
+			.then((cache) => cache.add('/offline')),
 	);
 	self.skipWaiting();
 });
@@ -23,7 +23,7 @@ self.addEventListener('activate', (event) => {
 		caches
 			.keys()
 			.then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
-			.then(() => self.clients.claim())
+			.then(() => self.clients.claim()),
 	);
 });
 
@@ -47,6 +47,6 @@ self.addEventListener('fetch', (event) => {
 				const cached = await caches.match(request);
 				return cached || (await caches.match('/offline')) || Response.error();
 			}
-		})()
+		})(),
 	);
 });

@@ -30,9 +30,7 @@ export type UnsubscribeContext = {
 };
 
 export const getUnsubscribeContext = (token: string, vehicleId?: number) => {
-	const path = vehicleId
-		? `/account/${token}?vehicle_id=${vehicleId}`
-		: `/account/${token}`;
+	const path = vehicleId ? `/account/${token}?vehicle_id=${vehicleId}` : `/account/${token}`;
 	return publicRequest<UnsubscribeContext>(path);
 };
 
@@ -46,16 +44,13 @@ export const saveVehiclePreferences = (
 	vehicleId: number,
 	preferences: VehiclePreferencesUpdate,
 ) => {
-	return publicRequest<{ preferences: VehiclePreferencesUpdate }>(
-		`/account/${token}/preferences`,
-		{ method: 'POST', json: { vehicleId, ...preferences } },
-	);
+	return publicRequest<{ preferences: VehiclePreferencesUpdate }>(`/account/${token}/preferences`, {
+		method: 'POST',
+		json: { vehicleId, ...preferences },
+	});
 };
 
-export const unsubscribeAction = (
-	token: string,
-	action: 'unsubscribe' | 'reactivate',
-) => {
+export const unsubscribeAction = (token: string, action: 'unsubscribe' | 'reactivate') => {
 	return publicRequest<{ unsubscribedAt: string | null }>(`/account/${token}`, {
 		method: 'POST',
 		json: { actionType: action },

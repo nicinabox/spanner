@@ -15,7 +15,7 @@ export const actions = {
 			'preferences.enableCost': 'boolean',
 			'preferences.sendReminderEmails': 'boolean',
 			'preferences.sendPromptForRecords': 'boolean',
-			'preferences.showMileageAdjustmentRecords': 'boolean'
+			'preferences.showMileageAdjustmentRecords': 'boolean',
 		});
 
 		const [vehicle, error] = await safeAsync(createVehicle({ vehicle: data } as never, locals));
@@ -24,5 +24,5 @@ export const actions = {
 		if (error instanceof Error && 'status' in error) {
 			return fail(422, getHTTPErrors(error));
 		}
-	}
+	},
 } satisfies Actions;

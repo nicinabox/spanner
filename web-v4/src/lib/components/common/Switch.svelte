@@ -7,16 +7,16 @@
 			size: {
 				sm: 'w-8 h-4 p-0.5',
 				md: 'w-10 h-5 p-0.5',
-				lg: 'w-12 h-6 p-0.5'
+				lg: 'w-12 h-6 p-0.5',
 			},
 			state: {
 				checked: 'bg-positive',
-				unchecked: 'bg-ink-200'
-			}
+				unchecked: 'bg-ink-200',
+			},
 		},
 		defaultVariants: {
-			size: 'md'
-		}
+			size: 'md',
+		},
 	});
 
 	export const switchThumbVariants = tv({
@@ -25,12 +25,12 @@
 			size: {
 				sm: 'w-3 h-3 data-[state=checked]:translate-x-4',
 				md: 'w-4 h-4 data-[state=checked]:translate-x-5',
-				lg: 'w-5 h-5 data-[state=checked]:translate-x-6'
-			}
+				lg: 'w-5 h-5 data-[state=checked]:translate-x-6',
+			},
 		},
 		defaultVariants: {
-			size: 'md'
-		}
+			size: 'md',
+		},
 	});
 </script>
 
@@ -72,7 +72,7 @@
 		id: idProp,
 		size = 'md',
 		class: className,
-		children
+		children,
 	}: Props = $props();
 
 	let id = $props.id();
@@ -88,7 +88,7 @@
 		value,
 		checked: controlledChecked,
 		defaultChecked,
-		onCheckedChange
+		onCheckedChange,
 	});
 
 	const api = $derived(zagSwitch.connect(service, normalizeProps));
@@ -97,14 +97,12 @@
 		cn(
 			switchControlVariants({
 				size,
-				state: api.checked ? 'checked' : 'unchecked'
-			})
-		)
+				state: api.checked ? 'checked' : 'unchecked',
+			}),
+		),
 	);
 
-	let thumbClass = $derived(
-		cn(switchThumbVariants({ size }))
-	);
+	let thumbClass = $derived(cn(switchThumbVariants({ size })));
 </script>
 
 <label {...api.getRootProps()} class={cn('inline-flex items-center gap-2', className)}>
@@ -115,7 +113,10 @@
 	{#if children}
 		{@render children()}
 	{:else if label}
-		<span {...api.getLabelProps()} class="text-sm font-medium text-ink-900 select-none data-disabled:opacity-50">
+		<span
+			{...api.getLabelProps()}
+			class="text-sm font-medium text-ink-900 select-none data-disabled:opacity-50"
+		>
 			{label}
 		</span>
 	{/if}

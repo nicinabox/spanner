@@ -51,11 +51,11 @@ describe('decode', () => {
 
 		const result = decode(fd, {
 			name: 'string',
-			'preferences.notify': 'boolean'
+			'preferences.notify': 'boolean',
 		});
 		expect(result).toEqual({
 			name: 'test',
-			preferences: { notify: false }
+			preferences: { notify: false },
 		});
 	});
 });
