@@ -39,9 +39,9 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	});
 });
 
-export const handleError: HandleServerError = ({ error }) => {
+export const handleError: HandleServerError = ({ error, event, status, message }) => {
 	if (error instanceof HTTPError && error.status === 401) {
 		throw redirect(307, '/');
 	}
-	return Sentry.handleErrorWithSentry()({ error } as any);
+	return Sentry.handleErrorWithSentry()({ error, event, status, message });
 };
