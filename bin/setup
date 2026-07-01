@@ -3,10 +3,95 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-if ! docker compose ps --quiet --status running api &>/dev/null; then
-  echo "Spanner API container is not running."
-  echo "Start it first: docker compose up -d"
-  exit 1
+# Ensure .env exists
+[ -f .env ] || cp .env.example .env
+
+# Helper: set a value in .env (add or update)
+set_env() {
+  local key="$1"
+  local value="$2"
+  if grep -q "^${key}=" .env 2>/dev/null; then
+    if [[ "$(uname)" == "Darwin" ]]; then
+      sed -i '' "s|^${key}=.*|${key}=${value}|" .env
+    else
+      sed -i "s|^${key}=.*|${key}=${value}|" .env
+    fi
+  else
+    echo "${key}=${value}" >> .env
+  fi
+}
+
+# Helper: generate a secret if missing
+generate_if_missing() {
+  local key="$1"
+  local value
+  value=$(grep "^${key}=" .env 2>/dev/null | cut -d= -f2-)
+  if [ -z "$value" ]; then
+    set_env "$key" "$($2)"
+  fi
+}
+
+echo "=== Spanner Setup ==="
+echo ""
+
+# Generate secrets
+generate_if_missing "DB_PASSWORD"     "openssl rand -hex 32"
+generate_if_missing "SECRET_KEY_BASE" "openssl rand -hex 64"
+generate_if_missing "CLIENT_SECRET"   "openssl rand -base64 32"
+
+# Public URL
+read -r -p "Public URL for email links [http://localhost:3000]: " web_url
+web_url="${web_url:-http://localhost:3000}"
+set_env "WEB_URL" "$web_url"
+set_env "API_URL" "http://api:3001"
+
+# Admin account
+echo ""
+read -r -p "Admin email: " admin_email
+
+while true; do
+  read -r -s -p "Admin password: " admin_password
+  echo
+  read -r -s -p "Confirm password: " admin_password_confirm
+  echo
+  if [ "$admin_password" != "$admin_password_confirm" ]; then
+    echo "Passwords do not match. Try again."
+  elif [ ${#admin_password} -lt 8 ]; then
+    echo "Password must be at least 8 characters. Try again."
+  else
+    break
+  fi
+done
+
+set_env "ADMIN_EMAIL" "$admin_email"
+set_env "ADMIN_PASSWORD" "$admin_password"
+
+# Email configuration
+echo ""
+read -r -p "Configure email? (y/N): " configure_email
+if [[ "$configure_email" =~ ^[Yy] ]]; then
+  read -r -p "SMTP host: " smtp_host
+  set_env "SMTP_HOST" "$smtp_host"
+  read -r -p "SMTP port [587]: " smtp_port
+  set_env "SMTP_PORT" "${smtp_port:-587}"
+  read -r -p "SMTP username: " smtp_user
+  set_env "SMTP_USERNAME" "$smtp_user"
+  read -r -s -p "SMTP password: " smtp_pass
+  echo
+  set_env "SMTP_PASSWORD" "$smtp_pass"
+  read -r -p "From email [noreply@localhost]: " from_email
+  set_env "FROM_EMAIL" "${from_email:-noreply@localhost}"
 fi
 
-docker compose exec -it api rails setup
+# Webhook configuration
+echo ""
+read -r -p "Configure webhook? (y/N): " configure_webhook
+if [[ "$configure_webhook" =~ ^[Yy] ]]; then
+  read -r -p "Webhook URL: " webhook_url
+  set_env "NOTIFICATION_WEBHOOK_URL" "$webhook_url"
+fi
+
+echo ""
+echo "=== Setup complete ==="
+echo "Run: docker compose up -d"
+echo "Then sign in at: ${web_url}"
