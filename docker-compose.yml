@@ -22,6 +22,7 @@ services:
       db:
         condition: service_healthy
     environment:
+      RAILS_ENV: production
       DATABASE_URL: postgres://postgres:${DB_PASSWORD}@db:5432/spanner
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       WEB_URL: ${WEB_URL}
