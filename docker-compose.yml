@@ -44,6 +44,9 @@ services:
   web:
     build:
       context: ./web-v4
+      args:
+        API_URL: http://api:3001
+        CLIENT_SECRET: placeholder
     depends_on:
       - api
     environment:

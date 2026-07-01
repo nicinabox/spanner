@@ -1,6 +1,12 @@
 # web-v4/Dockerfile
 FROM node:lts-bookworm-slim AS build
 
+ARG API_URL=http://api:3001
+ARG CLIENT_SECRET=placeholder
+
+ENV API_URL=$API_URL
+ENV CLIENT_SECRET=$CLIENT_SECRET
+
 WORKDIR /app
 
 # Install dependencies
