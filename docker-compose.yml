@@ -57,6 +57,7 @@ services:
       WEB_URL: ${WEB_URL}
       USE_SECURE_COOKIE: "false"
       PUBLIC_EMAIL_ENABLED: ${PUBLIC_EMAIL_ENABLED}
+      ORIGIN: ${WEB_URL}
     ports:
       - "3000:3000"
 
