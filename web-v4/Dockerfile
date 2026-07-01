@@ -23,6 +23,8 @@ RUN npm run build
 # Production image
 FROM node:lts-bookworm-slim
 
+ENV ORIGIN=http://localhost:3000
+
 WORKDIR /app
 
 COPY --from=build /app/build ./build
