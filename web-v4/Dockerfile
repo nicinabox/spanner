@@ -1,8 +1,8 @@
 # web-v4/Dockerfile
 FROM node:lts-bookworm-slim AS build
 
-ARG API_URL=http://api:3001
-ARG CLIENT_SECRET=placeholder
+ARG API_URL
+ARG CLIENT_SECRET
 
 ENV API_URL=$API_URL
 ENV CLIENT_SECRET=$CLIENT_SECRET
