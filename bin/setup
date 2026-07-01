@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")"
+
+if ! docker compose ps --quiet --status running api &>/dev/null; then
+  echo "Spanner API container is not running."
+  echo "Start it first: docker compose up -d"
+  exit 1
+fi
+
+docker compose exec -it api rails setup
