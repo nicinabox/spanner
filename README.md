@@ -149,7 +149,6 @@ Variables are declared in [`web-v4/src/env.ts`](web-v4/src/env.ts) using SvelteK
 | `NOTIFICATION_WEBHOOK_URL` | no       | Webhook URL for notifications.                                                                    |
 | `RAILS_SERVE_STATIC_FILES` | no       | Serve static files from Rails.                                                                    |
 | `RAILS_LOG_TO_STDOUT`      | no       | Stream logs to stdout.                                                                            |
-| `DEMO_USER`                | no       | Email treated as demo account.                                                                    |
 
 ## Testing
 
