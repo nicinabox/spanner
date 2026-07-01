@@ -30,6 +30,7 @@ gem 'rufus-scheduler', '~> 3.9'
 gem 'schema2type'
 gem 'sentry-rails'
 gem 'sentry-ruby'
+gem 'tty-prompt', '~> 0.23'
 gem 'virtus'
 
 group :development, :test do
