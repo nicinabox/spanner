@@ -18,13 +18,13 @@ task setup: :environment do
 
   # Generate secrets if missing
   secrets = {
-    'DB_PASSWORD'     => -> { SecureRandom.hex(32) },
+    'DB_PASSWORD' => -> { SecureRandom.hex(32) },
     'SECRET_KEY_BASE' => -> { SecureRandom.hex(64) },
-    'CLIENT_SECRET'   => -> { SecureRandom.urlsafe_base64(32) }
+    'CLIENT_SECRET' => -> { SecureRandom.urlsafe_base64(32) }
   }
 
   secrets.each do |key, generator|
-    env_file.set_unless_present(key) { generator.call }
+    env_file.assign_unless_present(key) { generator.call }
   end
 
   # Public URL
@@ -56,9 +56,7 @@ task setup: :environment do
   end
 
   # Webhook configuration
-  if prompt.yes?('Configure webhook?')
-    env_file.set('NOTIFICATION_WEBHOOK_URL', prompt.ask('Webhook URL:'))
-  end
+  env_file.set('NOTIFICATION_WEBHOOK_URL', prompt.ask('Webhook URL:')) if prompt.yes?('Configure webhook?')
 
   # Write .env
   env_file.save(path: env_path)

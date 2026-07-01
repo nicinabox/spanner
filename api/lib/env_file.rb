@@ -5,39 +5,38 @@ class EnvFile
     new(content: File.read(path), path: path)
   end
 
-  def initialize(content: "", path: nil)
+  def initialize(content: '', path: nil)
     @path = path
     @lines = content.each_line.map(&:chomp)
     @keys = {}
     parse_lines
   end
 
-  def [](key)
-    @keys[key]
-  end
+  delegate :[], to: :@keys
 
   def set(key, value)
     key = key.to_s
     if @keys.key?(key)
       @lines.each_with_index do |line, i|
-        if line.match?(/\A#{Regexp.escape(key)}=/)
-          @lines[i] = "#{key}=#{value}"
-          @keys[key] = value
-          return
-        end
+        next unless line.match?(/\A#{Regexp.escape(key)}=/)
+
+        @lines[i] = "#{key}=#{value}"
+        @keys[key] = value
+        break
       end
     end
     @lines << "#{key}=#{value}"
     @keys[key] = value
   end
 
-  def set_unless_present(key)
+  def assign_unless_present(key)
     return if @keys.key?(key)
+
     set(key, yield)
   end
 
   def to_s
-    @lines.join("\n") + "\n"
+    "#{@lines.join("\n")}\n"
   end
 
   def save(path: nil)
@@ -51,6 +50,7 @@ class EnvFile
     @lines.each do |line|
       match = line.match(/\A([A-Z_][A-Z0-9_]*)=(.*)\z/)
       next unless match
+
       @keys[match[1]] = match[2]
     end
   end
