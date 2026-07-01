@@ -32,4 +32,10 @@ export const variables = defineEnvVars({
 		description: 'Sentry DSN for error tracking',
 		schema: v.optional(v.string(), ''),
 	},
+
+	PUBLIC_UMAMI_CONFIG: {
+		public: true,
+		description: 'Umami analytics config as URLSearchParams string (e.g. websiteId=xxx&scriptUrl=...)',
+		schema: v.optional(v.string(), ''),
+	},
 });

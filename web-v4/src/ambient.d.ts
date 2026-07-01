@@ -7,6 +7,7 @@ declare module 'lodash-es' {
 }
 
 declare module 'insane' {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	export default function insane(
 		html: string,
 		options?: {
@@ -16,5 +17,3 @@ declare module 'insane' {
 		},
 	): string;
 }
-
-declare const __HEAD_INJECTIONS__: string;

@@ -84,7 +84,7 @@ src/
 │   │   └── vehicle.ts
 │   └── index.ts
 └── routes/
-    ├── +layout.svelte   # Root layout (favicon, HEAD_INJECTIONS)
+    ├── +layout.svelte   # Root layout
     ├── +page.server.ts  # Home page server actions (sign-in flow)
     └── +page.svelte     # Home page
 ```
