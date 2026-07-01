@@ -7,6 +7,7 @@
 	import type { PageProps } from './$types';
 	import { vehiclePath } from '$lib/routes';
 	import { pageTitle } from '$lib/utils/site';
+	import { exportVehicle } from '$lib/data/vehicles.remote';
 
 	let { data, form }: PageProps = $props();
 
@@ -37,7 +38,15 @@
 		<Card bleed variant="outline">
 			<h2 class="text-lg font-semibold">Export History</h2>
 			<p>Download your vehicle's complete history as a CSV file.</p>
-			<Button href={`/api/vehicles/${vehicle.id}/export`} class="self-start">
+			<Button onclick={() => exportVehicle({ vehicleId: String(vehicle.id) }).then((csv) => {
+					const blob = new Blob([csv], { type: 'text/csv' });
+					const url = URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = `${vehicle.name}.csv`;
+					a.click();
+					URL.revokeObjectURL(url);
+				})} class="self-start">
 				<Download size={16} />
 				Export CSV
 			</Button>

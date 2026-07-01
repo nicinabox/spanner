@@ -69,13 +69,3 @@ export const deleteReminder = (
 		method: 'DELETE',
 	});
 };
-
-export const estimateReminderDate = async (
-	vehicleId: number | string,
-	params: { mileage: number; date: string; reminderType: string },
-): Promise<{ reminderDate: string }> => {
-	return request(`/vehicles/${vehicleId}/reminders/estimate_date`, {
-		method: 'GET',
-		params,
-	});
-};
