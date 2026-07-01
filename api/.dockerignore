@@ -1,0 +1,8 @@
+tmp/
+log/
+.DS_Store
+*.local
+.env
+.env.*
+storage/
+public/uploads/

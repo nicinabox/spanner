@@ -7,6 +7,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
+# Generate SvelteKit types (npm ci skips prepare script)
+RUN npm run prepare
+
 # Copy source and build
 COPY . .
 RUN npm run build
