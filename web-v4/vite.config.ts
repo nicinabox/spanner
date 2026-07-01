@@ -37,6 +37,7 @@ export default defineConfig(({ mode }) => {
 					instrumentation: {
 						server: true,
 					},
+					remoteFunctions: true,
 				},
 				adapter: adapter(),
 				version: {

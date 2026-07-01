@@ -87,9 +87,3 @@ export function createAPIRequest(initialConfig: FetcherConfig) {
 		return data as T;
 	};
 }
-
-export const proxyRequest = createAPIRequest({
-	baseURI: '/api',
-	headers: apiHeaders,
-	throwOnHTTPErrors: true,
-});
