@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { umamiEvent } from '$lib/umami';
 	import Alert from '$lib/components/common/Alert.svelte';
 	import AppIcon from '$lib/components/common/AppIcon.svelte';
 	import Button from '$lib/components/common/Button.svelte';
@@ -106,7 +107,7 @@
 					{#if data.vehicle?.id}
 						<input type="hidden" name="vehicle_id" value={data.vehicle.id} />
 					{/if}
-					<Button type="submit" danger>Unsubscribe from all</Button>
+					<Button type="submit" danger {...umamiEvent('unsubscribe')}>Unsubscribe from all</Button>
 				</form>
 			{/if}
 		</Card>

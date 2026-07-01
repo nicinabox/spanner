@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button, Confirm } from '$lib';
+	import { umamiEvent } from '$lib/umami';
 	import Card from '$lib/components/common/Card.svelte';
 	import VehicleForm from '$lib/components/forms/VehicleForm.svelte';
 	import type { PageProps } from './$types';
@@ -45,7 +46,7 @@
 						{#snippet actions({ onOpenChange })}
 							<form method="post" class="flex flex-row gap-2 flex-1 sm:flex-none">
 								<Button type="submit" formaction="?/delete" danger class="flex-1 sm:flex-none"
-									>Delete Vehicle</Button
+									{...umamiEvent('delete_vehicle')}>Delete Vehicle</Button
 								>
 								<Button
 									variant="outline"

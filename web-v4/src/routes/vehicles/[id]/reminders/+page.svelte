@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button, Card } from '$lib';
+	import { umamiEvent } from '$lib/umami';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
@@ -34,7 +35,7 @@
 		{#if reminders.length}
 			<header class="flex items-center gap-2 mb-6">
 				{#if !vehicle.retired}
-					<Button href={`/vehicles/${vehicle.id}/add?view=reminder`} class="ml-auto">
+					<Button href={`/vehicles/${vehicle.id}/add?view=reminder`} class="ml-auto" {...umamiEvent('add_reminder')}>
 						<PlusIcon size={16} />
 						New Reminder
 					</Button>
@@ -86,6 +87,7 @@
 											size="sm"
 											variant="outline"
 											onclick={() => (completingId = reminder.id)}
+											{...umamiEvent('complete_reminder')}
 										>
 											Complete
 											<ChevronRight size={16} />

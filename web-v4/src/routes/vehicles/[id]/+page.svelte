@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib';
+	import { umamiEvent } from '$lib/umami';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
@@ -162,7 +163,7 @@
 							Add Purchase
 						</Button>
 					{:else}
-						<Button href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase">
+						<Button href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase" {...umamiEvent('add_record')}>
 							<PlusIcon size={18} />
 							Add Purchase
 						</Button>
@@ -193,7 +194,7 @@
 					{/snippet}
 				</InputGroup>
 				{#if !vehicle.retired}
-					<Button href="/vehicles/{vehicle.id}/add">
+					<Button href="/vehicles/{vehicle.id}/add" {...umamiEvent('add_record')}>
 						<PlusIcon size={16} />
 						New...
 					</Button>

@@ -80,6 +80,10 @@ export function initUmami() {
 
 	injectScript(config);
 
+	window.addEventListener('appinstalled', () => {
+		window.umami?.track('pwa_install');
+	});
+
 	if (config.autoTrack) return;
 
 	const handler = handleClick;
@@ -94,4 +98,21 @@ export function trackPageView(url: string | null) {
 		...props,
 		url: url ?? props.url,
 	}));
+}
+
+export function umamiEvent(
+	event: string,
+	data: Record<string, string> = {},
+): Record<string, string> {
+	if (!config) return {};
+
+	const attrs: Record<string, string> = {
+		'data-umami-event': event,
+	};
+
+	for (const [key, value] of Object.entries(data)) {
+		attrs[`data-umami-event-${key}`] = value;
+	}
+
+	return attrs;
 }

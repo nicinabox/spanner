@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { umamiEvent } from '$lib/umami';
 	import { ArrowLeft } from 'lucide-svelte';
 	import { Button, Card, Confirm, Field, Input, PageLayout } from '$lib';
 	import type { PageProps } from './$types';
@@ -53,7 +54,7 @@
 				</fieldset>
 
 				<div class="mt-2">
-					<Button type="submit">Update email</Button>
+					<Button type="submit" {...umamiEvent('update_email')}>Update email</Button>
 				</div>
 			</form>
 		</Card>
@@ -89,7 +90,7 @@
 					</Field>
 				</fieldset>
 				<div class="mt-2">
-					<Button type="submit">{data.passwordEnabled ? 'Update password' : 'Set password'}</Button>
+					<Button type="submit" {...umamiEvent('update_password')}>{data.passwordEnabled ? 'Update password' : 'Set password'}</Button>
 				</div>
 			</form>
 		</Card>
@@ -111,7 +112,7 @@
 						{#snippet actions({ onOpenChange })}
 							<form method="post" class="flex flex-row gap-2 flex-1 sm:flex-none">
 								<Button type="submit" formaction="?/delete" danger class="flex-1 sm:flex-none"
-									>Delete Account</Button
+									{...umamiEvent('delete_account')}>Delete Account</Button
 								>
 								<Button
 									variant="outline"

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button, Card, SegmentedControl, Textarea } from '$lib';
+	import { umamiEvent } from '$lib/umami';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
@@ -54,7 +55,7 @@
 							>
 								Cancel
 							</Button>
-							<Button form="notes-form" type="submit">
+							<Button form="notes-form" type="submit" {...umamiEvent('save_notes')}>
 								Save Notes
 								{#if dirty}
 									<span class="size-1.5 rounded-full bg-ink-50/80"></span>
