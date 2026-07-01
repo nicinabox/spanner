@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Remove stale server PID from previous run
+rm -f /app/tmp/pids/server.pid
+
 # Run pending migrations
 bundle exec rails db:migrate 2>/dev/null || echo "Migration failed or already up-to-date"
 
