@@ -21,5 +21,5 @@ EXPOSE 3001
 # Entrypoint: run migrations, then start Puma
 COPY docker-entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
 CMD ["sh", "-c", "rails server -b 0.0.0.0 -p ${PORT:-3001}"]
