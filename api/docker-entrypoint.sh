@@ -9,7 +9,7 @@ if [ -n "${ADMIN_EMAIL:-}" ] && [ -n "${ADMIN_PASSWORD:-}" ]; then
   if ! bundle exec rails runner "exit(User.exists?(admin: true) ? 0 : 1)" 2>/dev/null; then
     echo "Creating admin user..."
     bundle exec rails runner "
-      User.create!(email: '${ADMIN_EMAIL}', password: '${ADMIN_PASSWORD}', admin: true)
+      User.create!(email: ENV['ADMIN_EMAIL'], password: ENV['ADMIN_PASSWORD'], admin: true)
       puts 'Admin user created.'
     "
   fi

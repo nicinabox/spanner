@@ -54,7 +54,7 @@ services:
       API_URL: http://api:3001
       WEB_URL: ${WEB_URL}
       USE_SECURE_COOKIE: "false"
-      PUBLIC_EMAIL_ENABLED: "true"
+      PUBLIC_EMAIL_ENABLED: ${PUBLIC_EMAIL_ENABLED}
     ports:
       - "3000:3000"
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 # Ensure .env exists
 [ -f .env ] || cp .env.example .env
@@ -70,6 +70,7 @@ set_env "ADMIN_PASSWORD" "$admin_password"
 echo ""
 read -r -p "Configure email? (y/N): " configure_email
 if [[ "$configure_email" =~ ^[Yy] ]]; then
+  set_env "PUBLIC_EMAIL_ENABLED" "true"
   read -r -p "SMTP host: " smtp_host
   set_env "SMTP_HOST" "$smtp_host"
   read -r -p "SMTP port [587]: " smtp_port
@@ -81,6 +82,8 @@ if [[ "$configure_email" =~ ^[Yy] ]]; then
   set_env "SMTP_PASSWORD" "$smtp_pass"
   read -r -p "From email [noreply@localhost]: " from_email
   set_env "FROM_EMAIL" "${from_email:-noreply@localhost}"
+else
+  set_env "PUBLIC_EMAIL_ENABLED" "false"
 fi
 
 # Webhook configuration
