@@ -70,6 +70,49 @@ This is a monorepo containing two main applications:
     - Frontend: http://localhost:5173
     - API: http://localhost:3001
 
+## Self-Hosted Deployment
+
+Run Spanner on your own infrastructure using Docker Compose.
+
+### Quick Start
+
+```bash
+git clone https://github.com/nicinabox/spanner.git
+cd spanner
+./bin/setup
+docker compose up -d
+```
+
+The setup script generates secrets, prompts for admin credentials, and
+optionally configures email and webhooks. On first boot, the admin user
+is created automatically.
+
+### Environment Variables
+
+All configuration lives in `.env` at the project root. The setup script
+handles most values, but you can edit `.env` directly.
+
+| Variable | Required | Default | Purpose |
+|---|---|---|---|
+| `DB_PASSWORD` | yes | auto-generated | PostgreSQL password |
+| `SECRET_KEY_BASE` | yes | auto-generated | Rails signing key |
+| `CLIENT_SECRET` | yes | auto-generated | iron-session cookie secret |
+| `WEB_URL` | yes | `http://localhost:3000` | Public URL for email links |
+| `SMTP_HOST` | no | -- | SMTP server hostname |
+| `SMTP_PORT` | no | `587` | SMTP port |
+| `SMTP_USERNAME` | no | -- | SMTP username |
+| `SMTP_PASSWORD` | no | -- | SMTP password |
+| `FROM_EMAIL` | no | `noreply@localhost` | Sender address for emails |
+| `NOTIFICATION_WEBHOOK_URL` | no | -- | Webhook URL for notifications |
+
+### Updating
+
+```bash
+docker compose pull && docker compose up -d
+```
+
+Migrations run automatically on container start.
+
 ## Development Commands
 
 ### Web Application
@@ -149,7 +192,6 @@ Variables are declared in [`web-v4/src/env.ts`](web-v4/src/env.ts) using SvelteK
 | `NOTIFICATION_WEBHOOK_URL` | no       | Webhook URL for notifications.                                                                    |
 | `RAILS_SERVE_STATIC_FILES` | no       | Serve static files from Rails.                                                                    |
 | `RAILS_LOG_TO_STDOUT`      | no       | Stream logs to stdout.                                                                            |
-| `DEMO_USER`                | no       | Email treated as demo account.                                                                    |
 
 ## Testing
 

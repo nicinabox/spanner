@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ChevronRight, PlusIcon } from 'lucide-svelte';
+	import { ChevronRight, PlusIcon, Car } from 'lucide-svelte';
 	import { umamiEvent } from '$lib/umami';
 	import VehicleLink from '$lib/components/vehicles/VehicleLink.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
@@ -48,6 +48,9 @@
 			heading="Add your first vehicle"
 			details="Track maintenance, reminders, and service history for all your vehicles."
 		>
+			{#snippet media()}
+				<Car size={48} class="text-ink-300" />
+			{/snippet}
 			{#snippet action()}
 				<Button href="/vehicles/new" size="lg" {...umamiEvent('add_vehicle')}>
 					<PlusIcon size={18} /> New Vehicle

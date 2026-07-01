@@ -33,7 +33,7 @@ export const emailSchema = v.pipe(
 	v.string("Email can't be blank"),
 	v.trim(),
 	v.minLength(1, "Email can't be blank"),
-	v.email('Enter a valid email address'),
+	v.regex(/^[^\s@]+@[^\s@]+$/, 'Enter a valid email address'),
 );
 
 export const passwordSchema = v.pipe(
