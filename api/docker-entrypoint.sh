@@ -30,5 +30,6 @@ if [ -n "${ADMIN_EMAIL:-}" ] && [ -n "${ADMIN_PASSWORD:-}" ]; then
   fi
 fi
 
-# Start the server
-exec "$@"
+# Start the server on the configured port
+PORT="${PORT:-3001}"
+exec bundle exec rails server -b 0.0.0.0 -p "$PORT"
