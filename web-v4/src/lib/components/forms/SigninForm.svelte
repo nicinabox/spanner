@@ -39,7 +39,7 @@
 
 	let { form, emailEnabled }: Props = $props();
 
-	let mode = $state<'default' | 'password'>('default');
+	let mode = $state<'default' | 'password'>(emailEnabled ? 'default' : 'password');
 	let email = $state('');
 	let password = $state('');
 	let emailError = $state('');
@@ -153,14 +153,16 @@
 				<Button variant="ghost" block href={`/reset-password?email=${encodeURIComponent(email)}`}
 					>Forgot password?</Button
 				>
-				<Button
-					variant="ghost"
-					block
-					onclick={() => {
-						mode = 'default';
-						formErrors = [];
-					}}>Back</Button
-				>
+				{#if emailEnabled}
+					<Button
+						variant="ghost"
+						block
+						onclick={() => {
+							mode = 'default';
+							formErrors = [];
+						}}>Back</Button
+					>
+				{/if}
 			{/if}
 		</div>
 	</form>
