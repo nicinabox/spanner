@@ -49,7 +49,7 @@
 			details="Track maintenance, reminders, and service history for all your vehicles."
 		>
 			{#snippet media()}
-				<Car size={64} class="text-ink-300" />
+				<Car size={48} class="text-ink-300" />
 			{/snippet}
 			{#snippet action()}
 				<Button href="/vehicles/new" size="lg" {...umamiEvent('add_vehicle')}>
