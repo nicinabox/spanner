@@ -1,0 +1,57 @@
+# docker-compose.yml
+name: spanner
+
+services:
+  db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: spanner
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:${DB_PASSWORD}@db:5432/spanner
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      WEB_URL: ${WEB_URL}
+      RAILS_SERVE_STATIC_FILES: "true"
+      RAILS_LOG_TO_STDOUT: "true"
+      ACTIVE_STORAGE_SERVICE: local
+      FROM_EMAIL: ${FROM_EMAIL}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      NOTIFICATION_WEBHOOK_URL: ${NOTIFICATION_WEBHOOK_URL}
+    volumes:
+      - ./.env:/app/.env
+    ports:
+      - "3001:3001"
+
+  web:
+    build:
+      context: ./web-v4
+    depends_on:
+      - api
+    environment:
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      API_URL: http://api:3001
+      WEB_URL: ${WEB_URL}
+      USE_SECURE_COOKIE: "false"
+      PUBLIC_EMAIL_ENABLED: "true"
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
