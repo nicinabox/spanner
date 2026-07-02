@@ -4,6 +4,7 @@ class UserPreferences
   include Virtus.model
 
   attribute :vehicles_sort_order, [String], default: %w[created_at desc]
+  attribute :webhook_url, String, default: nil
 
   def self.dump(preferences)
     preferences.to_hash

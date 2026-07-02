@@ -1,5 +1,5 @@
 import { WEB_URL } from '$app/env/private';
-import { requestEmailChange, deleteAccount } from '$lib/data/settings';
+import { requestEmailChange, deleteAccount, updateWebhookUrl } from '$lib/data/settings';
 import { setPassword } from '$lib/data/session';
 import { getCurrentUser } from '$lib/data/user';
 import { getHTTPErrors } from '$lib/utils/actions';
@@ -13,6 +13,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return {
 		email: locals.session?.email,
 		passwordEnabled: user?.passwordEnabled ?? false,
+		webhookUrl: user?.preferences?.webhookUrl ?? '',
 	};
 };
 
@@ -59,5 +60,17 @@ export const actions = {
 		}
 
 		redirect(303, '/');
+	},
+
+	updateWebhook: async ({ request, locals }) => {
+		const formData = await request.formData();
+		const webhookUrl = formData.get('webhookUrl') as string;
+
+		try {
+			await updateWebhookUrl(webhookUrl, locals);
+			return { webhookSuccess: true };
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
+		}
 	},
 } satisfies Actions;

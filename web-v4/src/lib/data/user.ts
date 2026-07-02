@@ -11,6 +11,7 @@ export interface User {
 	passwordEnabled: boolean;
 	preferences: {
 		vehiclesSortOrder: Sortable;
+		webhookUrl?: string;
 	};
 }
 

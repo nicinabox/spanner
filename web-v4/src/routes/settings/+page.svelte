@@ -10,6 +10,7 @@
 
 	let emailSuccess = $derived(form?.emailSuccess);
 	let newEmail = $derived(form?.email ?? '');
+	let webhookSuccess = $derived(form?.webhookSuccess);
 </script>
 
 <svelte:head>
@@ -91,6 +92,30 @@
 				</fieldset>
 				<div class="mt-2">
 					<Button type="submit" {...umamiEvent('update_password')}>{data.passwordEnabled ? 'Update password' : 'Set password'}</Button>
+				</div>
+			</form>
+		</Card>
+
+		<Card class="mt-6" variant="outline" bleed heading="Webhook URL">
+			{#if webhookSuccess}
+				<div class="bg-positive/10 text-positive rounded-md p-4 mb-4">
+					Webhook URL updated.
+				</div>
+			{/if}
+			<form method="post" action="?/updateWebhook" use:enhance>
+				<fieldset class="fieldset">
+					<Field
+						name="webhookUrl"
+						label="Webhook URL"
+						hint="Receive notifications via webhook (e.g. ntfy.sh). Leave blank to use the instance default."
+						errors={form?.errors}
+					>
+						<Input name="webhookUrl" type="url" value={data.webhookUrl} autocomplete="off" />
+					</Field>
+				</fieldset>
+
+				<div class="mt-2">
+					<Button type="submit">Save webhook URL</Button>
 				</div>
 			</form>
 		</Card>

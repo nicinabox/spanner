@@ -1,4 +1,5 @@
 import { request } from './server';
+import { updateUser } from './user';
 import type { RequestOpts } from './types';
 
 export const requestEmailChange = (email: string, host: string, opts: RequestOpts) => {
@@ -9,7 +10,9 @@ export const requestEmailChange = (email: string, host: string, opts: RequestOpt
 	});
 };
 
-export const deleteAccount = (opts: RequestOpts) => {
+export const updateWebhookUrl = (webhookUrl: string, opts: RequestOpts) => {
+	return updateUser({ preferences: { webhookUrl } }, opts);
+};
 	return request(`/user`, { ...opts, method: 'DELETE' });
 };
 

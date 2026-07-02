@@ -10,7 +10,10 @@ class WebhookChannel
   end
 
   def self.deliver(event, user:, reminders: nil, schedules: nil)
-    uri = URI(ENV.fetch('NOTIFICATION_WEBHOOK_URL', nil))
+    webhook_url = user.preferences.webhook_url.presence || ENV.fetch('NOTIFICATION_WEBHOOK_URL', nil)
+    return unless webhook_url
+
+    uri = URI(webhook_url)
 
     payload = base_payload(event, user)
 

@@ -118,7 +118,8 @@ module V2
         .require(:user)
         .permit(:time_zone_offset,
                 preferences: [
-                  { vehicles_sort_order: [] }
+                  { vehicles_sort_order: [] },
+                  :webhook_url
                 ])
     end
   end
