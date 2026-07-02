@@ -105,8 +105,8 @@
 			{...api.getContentProps()}
 			hidden={undefined}
 			class={[
-				'z-50 list-none min-w-(--reference-width,15ch) p-1.5 bg-surface-raised border border-ink-200 rounded-md shadow-md',
-				'origin-(--transform-origin,top) transition-[opacity,scale,translate] duration-[250ms] ease-out-expo',
+				'z-50 list-none w-(--reference-width) min-w-[15ch] p-1.5 bg-surface-raised border border-ink-200 rounded-md shadow-md',
+				'origin-(--transform-origin,top) transition-[opacity,scale,translate] duration-250 ease-out-expo',
 				'data-[state=open]:opacity-100 data-[state=open]:scale-100 data-[state=open]:translate-y-0 data-[state=closed]:opacity-0 data-[state=closed]:scale-[0.97] data-[state=closed]:-translate-y-2',
 				'starting:opacity-0 starting:scale-[0.97] starting:-translate-y-2',
 			]}
