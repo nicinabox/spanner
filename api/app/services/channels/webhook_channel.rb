@@ -31,6 +31,30 @@ class WebhookChannel
     request = Net::HTTP::Post.new(uri.path.presence || '/', 'Content-Type' => 'application/json')
     request.body = payload.to_json
 
+    # ntfy-friendly formatting for readable notifications
+    if webhook_url.include?('ntfy.sh')
+      priority = event.to_s.start_with?('schedule') ? '4' : '3'
+      tags = 'wrench'
+
+      if schedules
+        names = schedules.map { |s| s.vehicle.name }.uniq
+        title = "Schedules due for #{names.to_sentence}"
+        message = schedules.map { |s| "#{s.vehicle.name}: #{s.classification.name}" }.join("\n")
+      else
+        names = Array(reminders).map { |r| r.vehicle.name }.uniq
+        title = "Reminders for #{names.to_sentence}"
+        message = Array(reminders).group_by(&:vehicle).map do |vehicle, veh_reminders|
+          "#{vehicle.name}\n#{veh_reminders.map { |r| "  \u2022 #{r.notes}" }.join("\n")}"
+        end.join("\n\n")
+      end
+
+      request.body = message
+      request['Title'] = 'Spanner - ' + title
+      request['Priority'] = priority
+      request['Tags'] = tags
+      request['Content-Type'] = 'text/plain'
+    end
+
     http.request(request)
   end
 
