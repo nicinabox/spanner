@@ -26,13 +26,17 @@
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 
+	// svelte-ignore state_referenced_locally
 	let notes = $state(reminder?.notes ?? '');
+	// svelte-ignore state_referenced_locally
 	let reminderType = $state<ReminderType>(reminder?.reminderType ?? '');
+	// svelte-ignore state_referenced_locally
 	let date = $state(
 		reminder?.date
 			? formatDateISO(new Date(reminder.date))
 			: formatDateISO(addMonths(new Date(), 6)),
 	);
+	// svelte-ignore state_referenced_locally
 	let mileage = $state(reminder?.mileage?.toString() ?? '');
 
 	let estimatedDate = $state<Date | null>(null);

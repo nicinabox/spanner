@@ -24,6 +24,7 @@
 
 	let { vehicle, record, errors = [], action = '' }: Props = $props();
 
+	// svelte-ignore state_referenced_locally
 	let recordId = record?.id;
 
 	// Merge page-provided errors (from SvelteKit form prop) with action errors
@@ -33,11 +34,15 @@
 	let formErrors = $derived(allErrors.filter((e) => e.id === 'form'));
 	let attachmentErrors = $derived(allErrors.filter((e) => e.id === 'attachments'));
 
+	// svelte-ignore state_referenced_locally
 	let date = $state(
 		record?.date ? formatDateISO(new Date(record.date)) : formatDateISO(new Date()),
 	);
+	// svelte-ignore state_referenced_locally
 	let mileage = $state(record?.mileage?.toString() ?? vehicle.estimatedMileage?.toString() ?? '');
+	// svelte-ignore state_referenced_locally
 	let notes = $state(record?.notes ?? '');
+	// svelte-ignore state_referenced_locally
 	let cost = $state(record?.cost ?? '');
 
 	let markedForDeletion = $state<string[]>([]);

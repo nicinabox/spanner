@@ -78,6 +78,7 @@
 	let id = $props.id();
 	let resolvedId = $derived(idProp ?? id);
 
+	// svelte-ignore state_referenced_locally
 	const service = useMachine(zagSwitch.machine, {
 		id: resolvedId,
 		name: fieldName,

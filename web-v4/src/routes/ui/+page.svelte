@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 	import { Button, Clipboard, Field, Input, InputGroup, PageLayout, Alert } from '$lib';
-	import { Mail, Search } from 'lucide-svelte';
+	import { Mail, Search, X } from 'lucide-svelte';
 </script>
 
 <PageLayout>
@@ -155,6 +155,20 @@
 					</InputGroup>
 					<InputGroup name="inline-end" placeholder="Email">
 						{#snippet end()}<Mail size={16} />{/snippet}
+					</InputGroup>
+					<InputGroup name="inline-end-sm" placeholder="Small" size="sm">
+						{#snippet end()}
+							<Button variant="solid" size="xs" icon class="-mr-2" onpointerdown={(e: PointerEvent) => e.stopPropagation()}>
+								<X size={12} />
+							</Button>
+						{/snippet}
+					</InputGroup>
+					<InputGroup name="inline-end-md" placeholder="Medium">
+						{#snippet end()}
+							<Button variant="solid" size="sm" icon class="-mr-2" onpointerdown={(e: PointerEvent) => e.stopPropagation()}>
+								<X size={14} />
+							</Button>
+						{/snippet}
 					</InputGroup>
 				</div>
 			</div>

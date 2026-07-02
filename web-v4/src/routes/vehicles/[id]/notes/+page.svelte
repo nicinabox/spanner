@@ -22,6 +22,7 @@
 	let view = $state<'edit' | 'preview' | 'saved'>('saved');
 	let editing = $derived(view !== 'saved');
 
+	// svelte-ignore state_referenced_locally
 	let notesDraft = $state(vehicle.notes);
 	let dirty = $derived(notesDraft !== vehicle.notes);
 </script>
