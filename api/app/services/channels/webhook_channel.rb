@@ -49,7 +49,7 @@ class WebhookChannel
     request['Title'] = "Spanner - #{title}"
     request['Priority'] = priority
     request['Tags'] = 'wrench'
-    request['Content-Type'] = 'text/plain'
+    request['Actions'] = "view, View Vehicles, #{Rails.application.config.x.web_url}/vehicles"
   end
   private_class_method :apply_ntfy_format
 
@@ -79,6 +79,16 @@ class WebhookChannel
     [title, message]
   end
   private_class_method :ntfy_reminders_content
+
+  def self.vehicle_link(vehicle)
+    "[#{vehicle.name}](#{vehicle_url(vehicle)})"
+  end
+  private_class_method :vehicle_link
+
+  def self.vehicle_url(vehicle)
+    "#{Rails.application.config.x.web_url}/vehicles/#{vehicle.id}"
+  end
+  private_class_method :vehicle_url
 
   def self.base_payload(event, user)
     {
