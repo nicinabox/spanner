@@ -5,9 +5,9 @@
 		base: 'px-4 py-3 rounded-md border border-current/10 bg-current/10',
 		variants: {
 			variant: {
-				negative: 'text-negative',
+				negative: 'text-red-700 dark:text-red-400',
 				positive: 'text-positive',
-				warning: 'text-amber-600',
+				warning: 'text-amber-700 dark:text-amber-400',
 				info: 'text-info',
 			},
 		},

@@ -102,6 +102,7 @@
 	--color-surface-raised: oklch(27% 0.015 232);
 	--color-overlay: oklch(8% 0.02 232);
 	--color-positive: oklch(65% 0.15 145);
+	--color-negative: oklch(58% 0.2 25);
 	--color-selection-bg: color-mix(in oklch, var(--color-brand-500) 60%, var(--color-canvas));
 }
 
@@ -132,6 +133,7 @@
 		--color-surface-raised: oklch(27% 0.015 232);
 		--color-overlay: oklch(8% 0.02 232);
 		--color-positive: oklch(65% 0.15 145);
+		--color-negative: oklch(58% 0.2 25);
 		--color-selection-bg: color-mix(in oklch, var(--color-brand-500) 60%, var(--color-canvas));
 	}
 }

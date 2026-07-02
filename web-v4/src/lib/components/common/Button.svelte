@@ -66,21 +66,21 @@
 				danger: true,
 				variant: 'solid',
 				class: [
-					'border-0 bg-negative/10 text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative',
-					'dark:bg-negative/30 dark:hover:bg-negative/40 dark:active:bg-negative/50',
+					'border-0 bg-red-400/30 text-red-800 hover:bg-red-400/40 active:bg-red-400/50',
+					'dark:bg-red-400/25 dark:text-red-300 dark:hover:bg-red-400/35 dark:active:bg-red-400/45',
 				],
 			},
 			{
 				danger: true,
 				variant: 'ghost',
 				class:
-					'text-ink-900 hover:text-negative hover:bg-negative/20 active:bg-negative/30 active:text-negative',
+					'text-ink-900 hover:text-red-600 hover:bg-red-50 active:bg-red-100 active:text-red-700 dark:hover:text-red-400 dark:active:text-red-300',
 			},
 			{
 				danger: true,
 				variant: 'outline',
 				class:
-					'border-negative/30 text-negative hover:bg-negative/10 active:bg-negative/30 active:text-negative',
+					'border-red-700/60 text-red-700 hover:bg-red-50 active:bg-red-100 dark:border-red-200/60 dark:text-red-400 dark:hover:bg-red-950',
 			},
 		],
 		defaultVariants: {

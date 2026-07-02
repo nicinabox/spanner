@@ -44,6 +44,31 @@
 				</div>
 			</div>
 
+			<div class="group">
+				<h3>Danger</h3>
+				<div class="examples">
+					<h4>Solid</h4>
+					<div class="flex-row">
+						<Button danger variant="solid">Delete</Button>
+						<Button danger variant="solid" disabled>Delete</Button>
+					</div>
+				</div>
+				<div class="examples">
+					<h4>Outline</h4>
+					<div class="flex-row">
+						<Button danger variant="outline">Delete</Button>
+						<Button danger variant="outline" disabled>Delete</Button>
+					</div>
+				</div>
+				<div class="examples">
+					<h4>Ghost</h4>
+					<div class="flex-row">
+						<Button danger variant="ghost">Delete</Button>
+						<Button danger variant="ghost" disabled>Delete</Button>
+					</div>
+				</div>
+			</div>
+
 			<div class="examples">
 				<h3>Radius</h3>
 				<div class="flex-row">
