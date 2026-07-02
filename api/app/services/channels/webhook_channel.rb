@@ -6,11 +6,11 @@ class WebhookChannel
   TIMEOUT = 5
 
   def self.available?
-    ENV['NOTIFICATION_WEBHOOK_URL'].present?
+    true
   end
 
   def self.deliver(event, user:, reminders: nil, schedules: nil)
-    webhook_url = user.preferences.webhook_url.presence || ENV.fetch('NOTIFICATION_WEBHOOK_URL', nil)
+    webhook_url = user.preferences.webhook_url.presence
     return unless webhook_url
 
     uri = URI(webhook_url)

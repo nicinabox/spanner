@@ -84,24 +84,16 @@ class WebhookChannelTest < ActiveSupport::TestCase
     )
   end
 
-  test 'available? returns true when NOTIFICATION_WEBHOOK_URL set' do
-    with_env('NOTIFICATION_WEBHOOK_URL' => 'https://hooks.example.com') do
-      assert WebhookChannel.available?
-    end
-  end
-
-  test 'available? returns false when not set' do
-    with_env('NOTIFICATION_WEBHOOK_URL' => nil) do
-      assert_not WebhookChannel.available?
-    end
+  test 'available? returns true' do
+    assert WebhookChannel.available?
   end
 
   test 'sends reminder payload to webhook URL' do
+    @user.preferences.webhook_url = 'https://hooks.example.com'
+    @user.save!
     stub_request(:post, 'https://hooks.example.com')
 
-    with_env('NOTIFICATION_WEBHOOK_URL' => 'https://hooks.example.com') do
-      WebhookChannel.deliver(:reminder_today, user: @user, reminders: @reminders)
-    end
+    WebhookChannel.deliver(:reminder_today, user: @user, reminders: @reminders)
 
     assert_requested(:post, 'https://hooks.example.com') do |req|
       body = JSON.parse(req.body)
@@ -112,11 +104,11 @@ class WebhookChannelTest < ActiveSupport::TestCase
   end
 
   test 'sends schedule payload with schedules key' do
+    @user.preferences.webhook_url = 'https://hooks.example.com'
+    @user.save!
     stub_request(:post, 'https://hooks.example.com')
 
-    with_env('NOTIFICATION_WEBHOOK_URL' => 'https://hooks.example.com') do
-      WebhookChannel.deliver(:schedule_due_today, user: @user, schedules: [@schedule])
-    end
+    WebhookChannel.deliver(:schedule_due_today, user: @user, schedules: [@schedule])
 
     assert_requested(:post, 'https://hooks.example.com') do |req|
       body = JSON.parse(req.body)
@@ -154,13 +146,13 @@ class NotificationDispatcherTest < ActiveSupport::TestCase
   end
 
   test 'dispatches to webhook channel when available' do
+    @user.preferences.webhook_url = 'https://hooks.example.com'
+    @user.save!
     stub_request(:post, 'https://hooks.example.com')
 
     EmailChannel.stub(:available?, false) do
       WebhookChannel.stub(:available?, true) do
-        with_env('NOTIFICATION_WEBHOOK_URL' => 'https://hooks.example.com') do
-          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
-        end
+        NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
       end
     end
 
@@ -168,14 +160,14 @@ class NotificationDispatcherTest < ActiveSupport::TestCase
   end
 
   test 'dispatches to both channels when both available' do
+    @user.preferences.webhook_url = 'https://hooks.example.com'
+    @user.save!
     stub_request(:post, 'https://hooks.example.com')
 
     EmailChannel.stub(:available?, true) do
       WebhookChannel.stub(:available?, true) do
-        with_env('NOTIFICATION_WEBHOOK_URL' => 'https://hooks.example.com') do
-          assert_emails 1 do
-            NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
-          end
+        assert_emails 1 do
+          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
         end
       end
     end
@@ -194,15 +186,15 @@ class NotificationDispatcherTest < ActiveSupport::TestCase
   end
 
   test 'continues to next channel if one raises' do
+    @user.preferences.webhook_url = 'https://hooks.example.com'
+    @user.save!
     stub_request(:post, 'https://hooks.example.com')
 
     EmailChannel.stub(:available?, true) do
       WebhookChannel.stub(:available?, true) do
-        with_env('NOTIFICATION_WEBHOOK_URL' => 'https://hooks.example.com') do
-          # Stub deliver to raise, then verify webhook still fires
-          EmailChannel.stub(:deliver, ->(*, **) { raise 'email down' }) do
-            NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
-          end
+        # Stub deliver to raise, then verify webhook still fires
+        EmailChannel.stub(:deliver, ->(*, **) { raise 'email down' }) do
+          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
         end
       end
     end
