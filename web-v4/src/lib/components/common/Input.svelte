@@ -54,6 +54,7 @@
 		required,
 		class: className,
 		ref = $bindable(),
+		oninput,
 		...rest
 	}: Props = $props();
 
@@ -69,7 +70,7 @@
 	bind:this={ref}
 	id={resolvedId}
 	name={resolvedName}
-	bind:value={value}
+	bind:value
 	required={resolvedRequired}
 	class={classes}
 	aria-describedby={ariaDescribedBy}
