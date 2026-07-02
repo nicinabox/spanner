@@ -26,7 +26,7 @@
 				xs: 'h-6 px-2 text-xs rounded-sm',
 				sm: 'h-8 px-3 text-sm',
 				md: 'h-10 px-4 text-base',
-				lg: 'h-12 px-5 text-lg',
+				lg: 'h-12 px-5 text-lg rounded-lg',
 			},
 			pill: { true: 'rounded-full' },
 			block: { true: 'flex w-full justify-center' },
