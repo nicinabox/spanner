@@ -10,7 +10,8 @@ export interface User {
 	timeZoneOffset: string | null;
 	passwordEnabled: boolean;
 	preferences: {
-		vehiclesSortOrder: Sortable;
+		vehiclesSortOrder?: Sortable;
+		webhookUrl?: string;
 	};
 }
 

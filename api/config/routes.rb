@@ -21,6 +21,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     post 'password/reset/:token', to: 'passwords#reset'
 
     post 'webhooks/postmark', to: 'postmark#webhook'
+    post 'webhooks/test', to: 'webhooks#test'
   end
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do

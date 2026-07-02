@@ -103,7 +103,6 @@ handles most values, but you can edit `.env` directly.
 | `SMTP_USERNAME` | no | -- | SMTP username |
 | `SMTP_PASSWORD` | no | -- | SMTP password |
 | `FROM_EMAIL` | no | `noreply@localhost` | Sender address for emails |
-| `NOTIFICATION_WEBHOOK_URL` | no | -- | Webhook URL for notifications |
 
 ### Updating
 
@@ -189,7 +188,6 @@ Variables are declared in [`web-v4/src/env.ts`](web-v4/src/env.ts) using SvelteK
 | `S3_ENDPOINT`              | no       | S3-compatible endpoint (non-AWS providers).                                                       |
 | `S3_FORCE_PATH_STYLE`      | no       | Set `true` for non-AWS providers.                                                                 |
 | `SENTRY_DSN`               | no       | Sentry DSN for error tracking.                                                                    |
-| `NOTIFICATION_WEBHOOK_URL` | no       | Webhook URL for notifications.                                                                    |
 | `RAILS_SERVE_STATIC_FILES` | no       | Serve static files from Rails.                                                                    |
 | `RAILS_LOG_TO_STDOUT`      | no       | Stream logs to stdout.                                                                            |
 
