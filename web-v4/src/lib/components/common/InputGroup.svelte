@@ -73,7 +73,7 @@
 		</span>
 	{/if}
 	{#if hasInline}
-		<div class={wrapperClasses}>
+		<div class={cn('wrapper', wrapperClasses)}>
 			{#if start}
 				<div
 					role="button"
@@ -137,3 +137,9 @@
 		</span>
 	{/if}
 </div>
+
+<style>
+	.wrapper :global(button) {
+		border-radius: 0.25rem;
+	}
+</style>
