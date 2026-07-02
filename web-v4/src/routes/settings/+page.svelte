@@ -107,7 +107,7 @@
 					<Field
 						name="webhookUrl"
 						label="Webhook URL"
-						hint="Receive notifications via webhook (e.g. ntfy.sh). Leave blank to use the instance default."
+						hint="Receive notifications via webhook (e.g. ntfy.sh)."
 						errors={form?.errors}
 					>
 						<Input name="webhookUrl" type="url" value={data.webhookUrl} autocomplete="off" />
