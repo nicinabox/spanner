@@ -109,6 +109,7 @@
 	div :global(textarea) {
 		background: transparent;
 		border-radius: inherit;
+		resize: none;
 	}
 
 	/*div[data-variant='plain'] :global(textarea:focus-visible) {
