@@ -131,27 +131,28 @@
 						>
 							{#snippet end()}
 								{#if webhookUrl}
-									<Button
-										type="submit"
-										variant="ghost"
-										color="neutral"
-										size="sm"
-										class="-mr-2"
-										onclick={async (e: Event) => {
-											e.preventDefault();
-											const { testWebhook } = await import('./webhook.remote.ts');
-											try {
-												await testWebhook();
-												webhookTestSuccess = true;
-												setTimeout(() => (webhookTestSuccess = false), 2000);
-											} catch {}
-										}}
-									>
-										Test
-										{#if webhookTestSuccess}
-											<Check size={16} class="text-positive" />
-										{/if}
-									</Button>
+									{#if webhookTestSuccess}
+										<Check size={16} class="text-positive" />
+									{:else}
+										<Button
+											type="submit"
+											variant="ghost"
+											color="neutral"
+											size="sm"
+											class="-mr-2"
+											onclick={async (e: Event) => {
+												e.preventDefault();
+												const { testWebhook } = await import('./webhook.remote.ts');
+												try {
+													await testWebhook();
+													webhookTestSuccess = true;
+													setTimeout(() => (webhookTestSuccess = false), 2000);
+												} catch {}
+											}}
+										>
+											Test
+										</Button>
+									{/if}
 								{/if}
 							{/snippet}
 						</InputGroup>
