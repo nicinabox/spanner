@@ -177,11 +177,11 @@
 			</form>
 		</Card>
 
-		<Card class="mt-6" variant="outline" bleed heading="Delete Account">
+		<Card class="mt-6" variant="outline" bleed heading="Danger Zone">
 			<fieldset>
 				<div class="flex items-center justify-between gap-6">
 					<div>
-						<span class="font-medium">Permanently delete your account</span>
+						<span class="font-medium">Permanently delete account</span>
 						<p class="text-sm text-ink-500">
 							Your vehicles, records, and all data will be deleted. You can sign in again within 30
 							days to restore your account.
@@ -189,19 +189,22 @@
 					</div>
 					<Confirm title="Delete account?">
 						{#snippet trigger({ onOpenChange })}
-							<Button danger onclick={() => onOpenChange(true)}>Delete</Button>
+							<Button color="danger" variant="outline" onclick={() => onOpenChange(true)}
+								>Delete Account</Button
+							>
 						{/snippet}
 						{#snippet actions({ onOpenChange })}
 							<form method="post" class="flex flex-row gap-2 flex-1 sm:flex-none">
 								<Button
 									type="submit"
 									formaction="?/delete"
-									danger
+									color="danger"
+									variant="outline"
 									class="flex-1 sm:flex-none"
 									{...umamiEvent('delete_account')}>Delete Account</Button
 								>
 								<Button
-									variant="outline"
+									variant="solid"
 									class="flex-1 sm:flex-none"
 									onclick={() => onOpenChange(false)}
 								>

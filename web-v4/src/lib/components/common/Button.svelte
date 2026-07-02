@@ -18,9 +18,7 @@
 			color: {
 				brand: '',
 				neutral: '',
-			},
-			danger: {
-				true: '',
+				danger: '',
 			},
 			size: {
 				xs: 'h-6 px-2 text-xs rounded-sm',
@@ -63,24 +61,24 @@
 			{ color: 'neutral', active: true, variant: 'outline', class: 'bg-ink-100' },
 			{ color: 'neutral', active: true, variant: 'ghost', class: 'bg-ink-200' },
 			{
-				danger: true,
+				color: 'danger',
 				variant: 'solid',
 				class: [
-					'border-0 bg-red-400/30 text-red-800 hover:bg-red-400/40 active:bg-red-400/50',
-					'dark:bg-red-400/25 dark:text-red-300 dark:hover:bg-red-400/35 dark:active:bg-red-400/45',
+					'bg-red-700 text-white border-red-700 hover:bg-red-800 active:bg-red-900',
+					'dark:bg-red-900 dark:text-red-100 dark:border-red-900 dark:hover:bg-red-800',
 				],
 			},
 			{
-				danger: true,
+				color: 'danger',
 				variant: 'ghost',
 				class:
-					'text-ink-900 hover:text-red-600 hover:bg-red-50 active:bg-red-100 active:text-red-700 dark:hover:text-red-400 dark:active:text-red-300',
+					'text-red-700 hover:bg-red-400/30 active:bg-red-400/40 active:text-red-700 dark:text-red-300 dark:hover:bg-red-400/25 dark:active:text-red-200',
 			},
 			{
-				danger: true,
+				color: 'danger',
 				variant: 'outline',
 				class:
-					'border-red-700/60 text-red-700 hover:bg-red-50 active:bg-red-100 dark:border-red-200/60 dark:text-red-400 dark:hover:bg-red-950',
+					'border-red-400/60 text-red-700 hover:bg-red-400/20 active:bg-red-400/30 dark:border-red-400/40 dark:text-red-300 dark:hover:bg-red-400/15',
 			},
 		],
 		defaultVariants: {
@@ -112,7 +110,6 @@
 		active?: boolean;
 		href?: string;
 		type?: 'button' | 'submit' | 'reset' | null;
-		danger?: boolean;
 		disabled?: boolean | null;
 		class?: ClassValue;
 		children: Snippet;
@@ -127,7 +124,6 @@
 		theme,
 		block = false,
 		icon = false,
-		danger = false,
 		active = false,
 		href,
 		type = 'button',
@@ -138,7 +134,7 @@
 	}: Props = $props();
 
 	let classes = $derived(
-		cn(buttonVariants({ variant, color, size, pill, block, active, danger, icon }), className),
+		cn(buttonVariants({ variant, color, size, pill, block, active, icon }), className),
 	);
 
 	let attrs = $derived(theme ? { 'data-theme': theme, ...rest } : rest);

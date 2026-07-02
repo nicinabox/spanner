@@ -23,7 +23,9 @@
 		{#if vehicle.preferences.enableSharing}
 			<div class="mt-4 flex flex-col gap-3">
 				<Clipboard value={shareUrl} />
-				<Button type="submit" variant="solid" danger class="self-start mt-2">Stop Sharing</Button>
+				<Button type="submit" variant="outline" color="danger" class="self-start mt-2"
+					>Stop Sharing</Button
+				>
 			</div>
 		{:else}
 			<div class="mt-4">

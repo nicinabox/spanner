@@ -26,6 +26,8 @@
 					<div class="flex-row">
 						<Button color="brand">Brand</Button>
 						<Button color="neutral">Neutral</Button>
+						<Button color="danger">Danger</Button>
+						<Button color="danger" disabled>Danger</Button>
 					</div>
 				</div>
 				<div class="examples">
@@ -33,6 +35,8 @@
 					<div class="flex-row">
 						<Button variant="outline" color="brand">Brand</Button>
 						<Button variant="outline" color="neutral">Neutral</Button>
+						<Button variant="outline" color="danger">Danger</Button>
+						<Button variant="outline" color="danger" disabled>Danger</Button>
 					</div>
 				</div>
 				<div class="examples">
@@ -40,31 +44,8 @@
 					<div class="flex-row">
 						<Button variant="ghost" color="brand">Brand</Button>
 						<Button variant="ghost" color="neutral">Neutral</Button>
-					</div>
-				</div>
-			</div>
-
-			<div class="group">
-				<h3>Danger</h3>
-				<div class="examples">
-					<h4>Solid</h4>
-					<div class="flex-row">
-						<Button danger variant="solid">Delete</Button>
-						<Button danger variant="solid" disabled>Delete</Button>
-					</div>
-				</div>
-				<div class="examples">
-					<h4>Outline</h4>
-					<div class="flex-row">
-						<Button danger variant="outline">Delete</Button>
-						<Button danger variant="outline" disabled>Delete</Button>
-					</div>
-				</div>
-				<div class="examples">
-					<h4>Ghost</h4>
-					<div class="flex-row">
-						<Button danger variant="ghost">Delete</Button>
-						<Button danger variant="ghost" disabled>Delete</Button>
+						<Button variant="ghost" color="danger">Danger</Button>
+						<Button variant="ghost" color="danger" disabled>Danger</Button>
 					</div>
 				</div>
 			</div>
@@ -158,14 +139,26 @@
 					</InputGroup>
 					<InputGroup name="inline-end-sm" placeholder="Small" size="sm">
 						{#snippet end()}
-							<Button variant="solid" size="xs" icon class="-mr-2" onpointerdown={(e: PointerEvent) => e.stopPropagation()}>
+							<Button
+								variant="solid"
+								size="xs"
+								icon
+								class="-mr-2"
+								onpointerdown={(e: PointerEvent) => e.stopPropagation()}
+							>
 								<X size={12} />
 							</Button>
 						{/snippet}
 					</InputGroup>
 					<InputGroup name="inline-end-md" placeholder="Medium">
 						{#snippet end()}
-							<Button variant="solid" size="sm" icon class="-mr-2" onpointerdown={(e: PointerEvent) => e.stopPropagation()}>
+							<Button
+								variant="solid"
+								size="sm"
+								icon
+								class="-mr-2"
+								onpointerdown={(e: PointerEvent) => e.stopPropagation()}
+							>
 								<X size={14} />
 							</Button>
 						{/snippet}

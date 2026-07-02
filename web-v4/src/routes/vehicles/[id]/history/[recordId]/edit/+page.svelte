@@ -47,7 +47,9 @@
 					</div>
 					<Confirm title="Delete record?">
 						{#snippet trigger({ onOpenChange })}
-							<Button danger onclick={() => onOpenChange(true)}>Delete</Button>
+							<Button color="danger" variant="outline" onclick={() => onOpenChange(true)}
+								>Delete</Button
+							>
 						{/snippet}
 						{#snippet actions({ onOpenChange })}
 							<form
@@ -63,9 +65,15 @@
 								}}
 								class="flex flex-row gap-2 flex-1 sm:flex-none"
 							>
-								<Button type="submit" danger class="flex-1 sm:flex-none" {...umamiEvent('delete_record')}>Delete</Button>
 								<Button
+									type="submit"
+									color="danger"
 									variant="outline"
+									class="flex-1 sm:flex-none"
+									{...umamiEvent('delete_record')}>Delete</Button
+								>
+								<Button
+									variant="solid"
 									class="flex-1 sm:flex-none"
 									onclick={() => onOpenChange(false)}
 								>
