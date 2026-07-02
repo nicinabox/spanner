@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
+import { createRawSnippet } from 'svelte';
 import InputGroup from './InputGroup.svelte';
 
 describe('InputGroup', () => {
@@ -7,7 +8,7 @@ describe('InputGroup', () => {
 		const { container } = render(InputGroup, {
 			name: 'test',
 			placeholder: 'Search...',
-			start: () => '🔍',
+			start: createRawSnippet(() => ({ render: () => '🔍' })),
 		});
 
 		const input = container.querySelector('input');
@@ -18,7 +19,7 @@ describe('InputGroup', () => {
 	it('renders input with end slot', async () => {
 		const { container } = render(InputGroup, {
 			name: 'test',
-			end: () => '✕',
+			end: createRawSnippet(() => ({ render: () => '✕' })),
 		});
 
 		const input = container.querySelector('input');
@@ -28,8 +29,8 @@ describe('InputGroup', () => {
 	it('renders input with both start and end slots', async () => {
 		const { container } = render(InputGroup, {
 			name: 'test',
-			start: () => '🔍',
-			end: () => '✕',
+			start: createRawSnippet(() => ({ render: () => '🔍' })),
+			end: createRawSnippet(() => ({ render: () => '✕' })),
 		});
 
 		const input = container.querySelector('input');
@@ -39,7 +40,7 @@ describe('InputGroup', () => {
 	it('renders with startAddon', async () => {
 		const { container } = render(InputGroup, {
 			name: 'test',
-			startAddon: () => '$',
+			startAddon: createRawSnippet(() => ({ render: () => '$' })),
 		});
 
 		const input = container.querySelector('input');
@@ -49,7 +50,7 @@ describe('InputGroup', () => {
 	it('renders with endAddon', async () => {
 		const { container } = render(InputGroup, {
 			name: 'test',
-			endAddon: () => 'kg',
+			endAddon: createRawSnippet(() => ({ render: () => 'kg' })),
 		});
 
 		const input = container.querySelector('input');
@@ -100,7 +101,7 @@ describe('InputGroup', () => {
 	it('focuses input when clicking start element', async () => {
 		const { container } = render(InputGroup, {
 			name: 'test',
-			start: () => '🔍',
+			start: createRawSnippet(() => ({ render: () => '🔍' })),
 		});
 
 		const input = container.querySelector('input')!;
@@ -115,7 +116,7 @@ describe('InputGroup', () => {
 	it('focuses input when clicking end element', async () => {
 		const { container } = render(InputGroup, {
 			name: 'test',
-			end: () => '✕',
+			end: createRawSnippet(() => ({ render: () => '✕' })),
 		});
 
 		const input = container.querySelector('input')!;

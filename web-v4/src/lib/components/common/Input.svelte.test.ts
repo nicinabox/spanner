@@ -230,7 +230,7 @@ describe('Input', () => {
 		const { container } = render(Input, {
 			name: 'test',
 			'data-test': 'value',
-			maxlength: '10',
+			maxlength: 10,
 		});
 		const input = container.querySelector('input')!;
 		expect(input.getAttribute('data-test')).toBe('value');
