@@ -50,15 +50,8 @@
 		variant,
 		size,
 		name,
-		type = 'text',
 		value = $bindable(),
-		placeholder,
 		required,
-		disabled,
-		readonly,
-		autocomplete,
-		inputmode,
-		pattern,
 		class: className,
 		ref = $bindable(),
 		...rest
@@ -76,18 +69,10 @@
 	bind:this={ref}
 	id={resolvedId}
 	name={resolvedName}
-	{type}
-	{value}
-	{placeholder}
+	bind:value={value}
 	required={resolvedRequired}
-	{disabled}
-	{readonly}
-	{autocomplete}
-	{inputmode}
-	{pattern}
 	class={classes}
 	aria-describedby={ariaDescribedBy}
 	aria-invalid={ariaInvalid}
-	oninput={(e) => (value = (e.target as HTMLInputElement).value)}
 	{...rest}
 />
