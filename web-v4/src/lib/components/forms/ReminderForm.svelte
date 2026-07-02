@@ -115,6 +115,24 @@
 		{#if ['date', 'date_or_mileage'].includes(reminderType)}
 			<Field name="date" label="Date" {errors} required>
 				<Input type="date" name="date" bind:value={date} required />
+				<div class="flex gap-2 mt-1.5">
+					<Button
+						type="button"
+						variant="outline"
+						size="xs"
+						onclick={() => (date = formatDateISO(addMonths(parseDateUTC(date), 6)))}
+					>
+						+6 months
+					</Button>
+					<Button
+						type="button"
+						variant="outline"
+						size="xs"
+						onclick={() => (date = formatDateISO(addMonths(parseDateUTC(date), 12)))}
+					>
+						+1 year
+					</Button>
+				</div>
 			</Field>
 		{/if}
 
@@ -124,6 +142,26 @@
 					{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
 				</InputGroup>
 				{#if vehicle.estimatedMileage}
+					<div class="flex gap-2 mt-1.5">
+						<Button
+							type="button"
+							variant="outline"
+							size="xs"
+							onclick={() =>
+								(mileage = String((mileage ? Number(mileage) : vehicle.estimatedMileage!) + 5000))}
+						>
+							+5k
+						</Button>
+						<Button
+							type="button"
+							variant="outline"
+							size="xs"
+							onclick={() =>
+								(mileage = String((mileage ? Number(mileage) : vehicle.estimatedMileage!) + 10000))}
+						>
+							+10k
+						</Button>
+					</div>
 					<p class="text-sm text-ink-400">
 						Estimated {mileageLabel(vehicle.distanceUnit)}
 						{formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}
