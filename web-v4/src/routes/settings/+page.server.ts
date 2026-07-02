@@ -68,7 +68,7 @@ export const actions = {
 
 		try {
 			await updateWebhookUrl(webhookUrl, locals);
-			return { webhookSuccess: true };
+			return { webhookSuccess: true, webhookUrl };
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
 		}

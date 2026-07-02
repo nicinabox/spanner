@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { umamiEvent } from '$lib/umami';
-	import { ArrowLeft } from 'lucide-svelte';
-	import { Button, Card, Confirm, Field, Input, PageLayout, Alert } from '$lib';
+	import { ArrowLeft, Check } from 'lucide-svelte';
+	import { Button, Card, Confirm, Field, Input, PageLayout, Alert, InputGroup } from '$lib';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
 
@@ -11,6 +11,8 @@
 	let emailSuccess = $derived(form?.emailSuccess);
 	let newEmail = $derived(form?.email ?? '');
 	let webhookSuccess = $derived(form?.webhookSuccess);
+	let webhookTestSuccess = $state(false);
+	let webhookUrl = $state(data.webhookUrl);
 </script>
 
 <svelte:head>
@@ -102,7 +104,17 @@
 			{#if webhookSuccess}
 				<Alert variant="positive" class="mb-4">Webhook URL updated.</Alert>
 			{/if}
-			<form method="post" action="?/updateWebhook" use:enhance>
+			<form
+				method="post"
+				action="?/updateWebhook"
+				use:enhance={() =>
+					async ({ result, update }) => {
+						await update();
+						if (result.type === 'success') {
+							webhookUrl = (result.data as { webhookUrl: string }).webhookUrl;
+						}
+					}}
+			>
 				<fieldset class="fieldset">
 					<Field
 						name="webhookUrl"
@@ -110,7 +122,39 @@
 						hint="Receive notifications via webhook (e.g. ntfy.sh)."
 						errors={form?.errors}
 					>
-						<Input name="webhookUrl" type="url" value={data.webhookUrl} autocomplete="off" />
+						<InputGroup
+							name="webhookUrl"
+							type="url"
+							bind:value={webhookUrl}
+							oninput={() => (webhookSuccess = false)}
+							autocomplete="off"
+						>
+							{#snippet end()}
+								{#if webhookUrl}
+									<Button
+										type="submit"
+										variant="ghost"
+										color="neutral"
+										size="sm"
+										class="-mr-2"
+										onclick={async (e: Event) => {
+											e.preventDefault();
+											const { testWebhook } = await import('./webhook.remote.ts');
+											try {
+												await testWebhook();
+												webhookTestSuccess = true;
+												setTimeout(() => (webhookTestSuccess = false), 2000);
+											} catch {}
+										}}
+									>
+										Test
+										{#if webhookTestSuccess}
+											<Check size={16} class="text-positive" />
+										{/if}
+									</Button>
+								{/if}
+							{/snippet}
+						</InputGroup>
 					</Field>
 				</fieldset>
 
@@ -123,8 +167,7 @@
 							const random = Array.from({ length: 12 }, () =>
 								'abcdefghijklmnopqrstuvwxyz0123456789'.charAt(Math.floor(Math.random() * 36)),
 							).join('');
-							const input = document.querySelector('input[name="webhookUrl"]') as HTMLInputElement;
-							if (input) input.value = `https://ntfy.sh/spanner-${random}`;
+							webhookUrl = `https://ntfy.sh/spanner-${random}`;
 						}}
 					>
 						Generate URL
