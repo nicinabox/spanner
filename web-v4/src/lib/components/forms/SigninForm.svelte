@@ -39,6 +39,7 @@
 
 	let { form, emailEnabled }: Props = $props();
 
+	// svelte-ignore state_referenced_locally
 	let mode = $state<'default' | 'password'>(emailEnabled ? 'default' : 'password');
 	let email = $state('');
 	let password = $state('');

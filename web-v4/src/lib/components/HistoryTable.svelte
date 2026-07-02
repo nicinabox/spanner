@@ -25,7 +25,7 @@
 
 	let { history, vehicle, editable = true }: Props = $props();
 
-	let showAdjustments = $state(vehicle.preferences.showMileageAdjustmentRecords);
+	let showAdjustments = $derived(vehicle.preferences.showMileageAdjustmentRecords);
 
 	const historyNewestFirst = $derived(
 		history

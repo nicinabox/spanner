@@ -32,7 +32,7 @@
 	);
 
 	let user = $derived(form?.user ?? data.user);
-	let vehiclesSortOrder = $state<Sortable>(user.preferences.vehiclesSortOrder);
+	let vehiclesSortOrder = $derived<Sortable>(user.preferences.vehiclesSortOrder);
 </script>
 
 <svelte:head>
