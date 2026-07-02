@@ -14,6 +14,7 @@
 	import type { HistoryEntry } from '$lib/data/history';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
+	import { loadDraft, saveDraft, clearDraft } from '$lib/utils/draft';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -26,6 +27,10 @@
 
 	// svelte-ignore state_referenced_locally
 	let recordId = record?.id;
+
+	let draftKey = $derived(
+		recordId ? `record:${vehicle.id}:${recordId}` : `record:${vehicle.id}:new`,
+	);
 
 	// Merge page-provided errors (from SvelteKit form prop) with action errors
 	// set by the custom fetch handler below.
@@ -41,9 +46,17 @@
 	// svelte-ignore state_referenced_locally
 	let mileage = $state(record?.mileage?.toString() ?? vehicle.estimatedMileage?.toString() ?? '');
 	// svelte-ignore state_referenced_locally
-	let notes = $state(record?.notes ?? '');
+	let notes = $state(loadDraft(draftKey) ?? record?.notes ?? '');
 	// svelte-ignore state_referenced_locally
 	let cost = $state(record?.cost ?? '');
+
+	$effect(() => {
+		if (notes && notes !== (record?.notes ?? '')) {
+			saveDraft(draftKey, notes);
+		} else if (!notes) {
+			clearDraft(draftKey);
+		}
+	});
 
 	let markedForDeletion = $state<string[]>([]);
 	let selectedFiles = $state<File[]>([]);
@@ -83,6 +96,7 @@
 			.then(async (response) => {
 				const result = await response.json();
 				if (result.type === 'redirect') {
+					clearDraft(draftKey);
 					await goto(result.location, { invalidateAll: true });
 					return;
 				}

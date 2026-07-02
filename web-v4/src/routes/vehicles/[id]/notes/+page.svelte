@@ -10,6 +10,8 @@
 	import type { PageProps } from './$types';
 	import { createInlineEnhance } from '$lib/utils/form';
 	import { pageTitle } from '$lib/utils/site';
+	import Badge from '$lib/components/common/Badge.svelte';
+	import { loadDraft, saveDraft, clearDraft } from '$lib/utils/draft';
 
 	let { data, form }: PageProps = $props();
 
@@ -22,9 +24,19 @@
 	let view = $state<'edit' | 'preview' | 'saved'>('saved');
 	let editing = $derived(view !== 'saved');
 
+	let draftKey = $derived(`notes:${vehicle.id}`);
+
 	// svelte-ignore state_referenced_locally
-	let notesDraft = $state(vehicle.notes);
+	let notesDraft = $state(loadDraft(draftKey) ?? vehicle.notes);
 	let dirty = $derived(notesDraft !== vehicle.notes);
+
+	$effect(() => {
+		if (editing && notesDraft !== vehicle.notes) {
+			saveDraft(draftKey, notesDraft);
+		} else if (!editing) {
+			clearDraft(draftKey);
+		}
+	});
 </script>
 
 <svelte:head>
@@ -35,7 +47,7 @@
 	<div class="max-w-3xl mx-auto">
 		{#if vehicle.notes || editing}
 			<Card variant="outline" bleed class="gap-4">
-				<header class="flex items-center gap-2">
+				<header class="flex items-center gap-2 justify-between">
 					{#if editing}
 						<SegmentedControl
 							items={[
@@ -45,8 +57,11 @@
 							value={view}
 							onValueChange={(d) => (view = d.value as 'edit' | 'preview')}
 						/>
+						<div class="flex items-center gap-2">
+							{#if dirty}
+								<Badge>Draft</Badge>
+							{/if}
 
-						<div class="ml-auto flex gap-2">
 							<Button
 								variant="ghost"
 								onclick={() => {
@@ -58,9 +73,6 @@
 							</Button>
 							<Button form="notes-form" type="submit" {...umamiEvent('save_notes')}>
 								Save Notes
-								{#if dirty}
-									<span class="size-1.5 rounded-full bg-ink-50/80"></span>
-								{/if}
 							</Button>
 						</div>
 					{:else}
@@ -89,7 +101,7 @@
 							name="notes"
 							bind:value={notesDraft}
 							class="min-h-40 font-mono *:focus-visible:outline-none"
-							variant="plain"
+							variant="filled"
 						/>
 
 						<p class="mt-1.5 text-sm">

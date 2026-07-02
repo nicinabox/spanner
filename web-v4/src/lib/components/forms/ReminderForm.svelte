@@ -13,6 +13,7 @@
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
 	import { Alert } from '$lib';
+	import { loadDraft, saveDraft, clearDraft } from '$lib/utils/draft';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -26,8 +27,12 @@
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 
+	let draftKey = $derived(
+		reminder?.id ? `reminder:${vehicle.id}:${reminder.id}` : `reminder:${vehicle.id}:new`,
+	);
+
 	// svelte-ignore state_referenced_locally
-	let notes = $state(reminder?.notes ?? '');
+	let notes = $state(loadDraft(draftKey) ?? reminder?.notes ?? '');
 	// svelte-ignore state_referenced_locally
 	let reminderType = $state<ReminderType>(reminder?.reminderType ?? '');
 	// svelte-ignore state_referenced_locally
@@ -38,6 +43,14 @@
 	);
 	// svelte-ignore state_referenced_locally
 	let mileage = $state(reminder?.mileage?.toString() ?? '');
+
+	$effect(() => {
+		if (notes && notes !== (reminder?.notes ?? '')) {
+			saveDraft(draftKey, notes);
+		} else if (!notes) {
+			clearDraft(draftKey);
+		}
+	});
 
 	let estimatedDate = $state<Date | null>(null);
 
