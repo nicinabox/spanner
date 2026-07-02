@@ -2,4 +2,3 @@
 builder = "DOCKERFILE"
 
 [deploy]
-startCommand = "/usr/bin/docker-entrypoint.sh"
