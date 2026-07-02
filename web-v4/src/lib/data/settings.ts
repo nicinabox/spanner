@@ -13,6 +13,8 @@ export const requestEmailChange = (email: string, host: string, opts: RequestOpt
 export const updateWebhookUrl = (webhookUrl: string, opts: RequestOpts) => {
 	return updateUser({ preferences: { webhookUrl } }, opts);
 };
+
+export const deleteAccount = (opts: RequestOpts) => {
 	return request(`/user`, { ...opts, method: 'DELETE' });
 };
 
