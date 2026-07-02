@@ -114,8 +114,21 @@
 					</Field>
 				</fieldset>
 
-				<div class="mt-2">
+				<div class="mt-2 flex gap-2">
 					<Button type="submit">Save webhook URL</Button>
+					<Button
+						type="button"
+						variant="outline"
+						onclick={() => {
+							const random = Array.from({ length: 12 }, () =>
+								'abcdefghijklmnopqrstuvwxyz0123456789'.charAt(Math.floor(Math.random() * 36)),
+							).join('');
+							const input = document.querySelector('input[name="webhookUrl"]') as HTMLInputElement;
+							if (input) input.value = `https://ntfy.sh/spanner-${random}`;
+						}}
+					>
+						Generate URL
+					</Button>
 				</div>
 			</form>
 		</Card>
