@@ -32,7 +32,9 @@
 	);
 
 	let user = $derived(form?.user ?? data.user);
-	let vehiclesSortOrder = $derived<Sortable>(user.preferences.vehiclesSortOrder);
+	let vehiclesSortOrder = $derived<Sortable>(
+		user.preferences.vehiclesSortOrder ?? ['created_at', 'desc'],
+	);
 </script>
 
 <svelte:head>
