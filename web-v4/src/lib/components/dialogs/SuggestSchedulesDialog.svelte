@@ -2,7 +2,7 @@
 	import { Button } from '$lib';
 	import Dialog from '$lib/components/common/Dialog.svelte';
 	import { enhance } from '$app/forms';
-	import { request } from '$lib/data/server';
+	import { getPresets } from '$lib/data/serviceSchedules.remote';
 	import { Check, Sparkles } from 'lucide-svelte';
 
 	interface Preset {
@@ -28,7 +28,7 @@
 			loading = true;
 			selectedType = null;
 			checked = new Set();
-			request<Record<string, Preset[]>>('/service_schedules/presets', {}).then((data) => {
+			getPresets({}).then((data) => {
 				presets = data;
 				loading = false;
 			});
