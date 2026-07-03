@@ -4,8 +4,8 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const [vehicle, history] = await Promise.all([
-		getSharedVehicle(params.id),
-		getSharedVehicleHistory(params.id),
+		getSharedVehicle(params.token),
+		getSharedVehicleHistory(params.token),
 	]);
 
 	if (!vehicle) {
