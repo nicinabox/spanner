@@ -72,6 +72,10 @@ class ServiceSchedule < ApplicationRecord
     update!(attrs)
   end
 
+  def has_matching_records?
+    last_matching_record.present?
+  end
+
   def complete!(notes: nil, date: nil, mileage: nil)
     record = vehicle.records.create!(
       date: date || Time.zone.today,
