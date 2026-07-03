@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Clipboard, Field, Input, InputGroup, PageLayout, Alert } from '$lib';
+	import { Badge, Button, Clipboard, Field, Input, InputGroup, PageLayout, Alert } from '$lib';
 	import { Mail, Search, X } from 'lucide-svelte';
 </script>
 
@@ -209,6 +209,44 @@
 				<div class="examples">
 					<Alert variant="warning" dismissible>Reminder is overdue. Dismiss this notice.</Alert>
 					<Alert variant="info" dismissible>No new records this week.</Alert>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<h2>Badge</h2>
+
+			<div class="group">
+				<h3>Variants</h3>
+				<div class="examples flex-row!">
+					<Badge variant="neutral">Default</Badge>
+					<Badge variant="warning">Warning</Badge>
+				</div>
+			</div>
+
+			<div class="group">
+				<h3>Pill</h3>
+				<div class="examples flex-row!">
+					<Badge pill>Default</Badge>
+					<Badge variant="warning" pill>Warning</Badge>
+				</div>
+			</div>
+
+			<div class="group">
+				<h3>Dismissible</h3>
+				<div class="examples flex-row!">
+					<Badge dismissible>Default</Badge>
+					<Badge variant="warning" dismissible>Warning</Badge>
+					<Badge variant="warning" pill dismissible>3</Badge>
+				</div>
+			</div>
+
+			<div class="group">
+				<h3>With count</h3>
+				<div class="examples flex-row!">
+					<Badge variant="warning" pill>3</Badge>
+					<Badge pill>12</Badge>
+					<Badge variant="warning">42</Badge>
 				</div>
 			</div>
 		</section>
