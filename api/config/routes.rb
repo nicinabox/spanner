@@ -43,9 +43,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   end
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do
-    resources :classifications, only: :index
+    resources :classifications, only: %i[index update destroy]
 
     resources :vehicles do
+      resources :classifications, only: %i[index create]
       resources :service_schedules do
         post :complete, on: :member
       end
