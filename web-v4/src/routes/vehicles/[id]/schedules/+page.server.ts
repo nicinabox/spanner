@@ -6,8 +6,11 @@ import {
 	createServiceSchedule,
 } from '$lib/data/serviceSchedules';
 import { getClassifications, createClassification } from '$lib/data/classifications';
+import { request as api } from '$lib/data/server';
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+
+type Preset = { name: string; distance_interval: number | null; month_interval: number | null };
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
@@ -50,21 +53,16 @@ export const actions: Actions = {
 		const data = await request.formData();
 		const presetNames: string[] = JSON.parse((data.get('preset_names') as string) || '[]');
 
-		const res = await fetch(`${locals.webUrl}/api/service_schedules/presets`, {
-			headers: { authorization: `Token ${locals.authToken}` },
-		});
-		const allPresets: Record<
-			string,
-			{ name: string; distance_interval: number | null; month_interval: number | null }[]
-		> = await res.json();
+		const allPresets = (await api('/service_schedules/presets', {
+			authToken: locals.authToken,
+		})) as Record<string, Preset[]>;
 
-		const toCreate: {
-			name: string;
-			distance_interval: number | null;
-			month_interval: number | null;
-		}[] = [];
-		for (const group of Object.values(allPresets)) {
-			for (const preset of group) {
+		const toCreate: Preset[] = [];
+		const groups = Object.values(allPresets);
+		for (let i = 0; i < groups.length; i++) {
+			const group = groups[i];
+			for (let j = 0; j < group.length; j++) {
+				const preset = group[j];
 				if (presetNames.includes(preset.name)) {
 					toCreate.push(preset);
 				}
