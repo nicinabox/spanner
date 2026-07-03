@@ -117,16 +117,16 @@ class HeuristicClassifier < NoteClassifier
     normalized = text.to_s.downcase
     return [] if normalized.blank?
 
-    vehicle_tags = vehicle_tags_for(vehicle)
-    overridden_names = vehicle_tags.map(&:name).map(&:downcase)
+    vehicle_classifications = vehicle_classifications_for(vehicle)
+    overridden_names = vehicle_classifications.map(&:name).map(&:downcase)
 
     match_system_keywords(normalized, overridden_names) +
-      match_vehicle_tags(normalized, vehicle_tags)
+      match_vehicle_classifications(normalized, vehicle_classifications)
   end
 
   private
 
-  def vehicle_tags_for(vehicle)
+  def vehicle_classifications_for(vehicle)
     return Classification.none unless vehicle
 
     vehicle.classifications.where.not(keywords: [])
@@ -144,12 +144,12 @@ class HeuristicClassifier < NoteClassifier
     end
   end
 
-  def match_vehicle_tags(normalized, vehicle_tags)
-    vehicle_tags.each_with_object([]) do |tag, results|
-      next if tag.keywords.blank?
-      next unless classify_keywords(normalized, tag.keywords)
+  def match_vehicle_classifications(normalized, vehicle_classifications)
+    vehicle_classifications.each_with_object([]) do |classification, results|
+      next if classification.keywords.blank?
+      next unless classify_keywords(normalized, classification.keywords)
 
-      results << classification_result(tag)
+      results << classification_result(classification)
     end
   end
 

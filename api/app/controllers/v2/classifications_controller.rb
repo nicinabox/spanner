@@ -36,14 +36,14 @@ module V2
       end
 
       if classification.service_schedules.any?
-        render json: { error: 'Tag used by schedules' }, status: :unprocessable_entity
+        render json: { error: 'Classification used by schedules' }, status: :unprocessable_entity
         return
       end
 
       classification.destroy!
       head :no_content
     rescue ActiveRecord::DeleteRestrictionError
-      render json: { error: 'Tag used by schedules' }, status: :unprocessable_entity
+      render json: { error: 'Classification used by schedules' }, status: :unprocessable_entity
     end
 
     private
