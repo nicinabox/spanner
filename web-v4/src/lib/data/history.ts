@@ -1,6 +1,7 @@
 import { request } from './server';
 import type { RequestOpts } from './types';
 import type { Attachment } from './attachments';
+import type { Classification } from './classifications';
 
 export type HistoryEntryType = 'mileage adjustment';
 
@@ -15,6 +16,7 @@ export interface HistoryEntry {
 	updatedAt: string;
 	recordType: HistoryEntryType | null;
 	attachments: Attachment[];
+	classifications: Classification[];
 }
 
 export const getVehicleHistory = (vehicleId: number | string, opts: RequestOpts) => {

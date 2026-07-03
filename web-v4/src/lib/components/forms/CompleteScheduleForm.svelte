@@ -31,10 +31,10 @@
 			<Input type="number" name="mileage" bind:value={mileage} />
 		</Field>
 		<Field label="Notes" name="notes">
-			<Textarea name="notes" bind:value={notes} rows={2} />
+			<Textarea name="notes" bind:value={notes} />
 		</Field>
-		<div class="flex justify-end">
-			<Button type="submit" size="sm">Complete</Button>
+		<div class="flex">
+			<Button type="submit">Complete</Button>
 		</div>
 	</div>
 </form>

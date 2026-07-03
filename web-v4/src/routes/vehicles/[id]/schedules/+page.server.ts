@@ -4,13 +4,17 @@ import {
 	completeServiceSchedule,
 	deleteServiceSchedule,
 	createServiceSchedule,
+	getPresets,
 } from '$lib/data/serviceSchedules';
 import { getClassifications, createClassification } from '$lib/data/classifications';
-import { request as api } from '$lib/data/server';
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
-type Preset = { name: string; distance_interval: number | null; month_interval: number | null };
+type SchedulePreset = {
+	name: string;
+	distanceInterval: number | null;
+	monthInterval: number | null;
+};
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
@@ -53,11 +57,9 @@ export const actions: Actions = {
 		const data = await request.formData();
 		const presetNames: string[] = JSON.parse((data.get('preset_names') as string) || '[]');
 
-		const allPresets = (await api('/service_schedules/presets', {
-			authToken: locals.authToken,
-		})) as Record<string, Preset[]>;
+		const allPresets = await getPresets({ authToken: locals.authToken });
 
-		const toCreate: Preset[] = [];
+		const toCreate: SchedulePreset[] = [];
 		const groups = Object.values(allPresets);
 		for (let i = 0; i < groups.length; i++) {
 			const group = groups[i];
@@ -70,6 +72,9 @@ export const actions: Actions = {
 		}
 
 		const existing = await getClassifications(params.id!, locals);
+		const existingSchedules = await getServiceSchedules(params.id!, locals);
+		const existingClassificationIds = new Set(existingSchedules.map((s) => s.classificationId));
+		const opts = { authToken: locals.authToken, webUrl: locals.webUrl };
 
 		for (const preset of toCreate) {
 			let classificationId = existing.find(
@@ -80,21 +85,25 @@ export const actions: Actions = {
 				const classification = await createClassification(
 					params.id!,
 					{ classification: { name: preset.name } },
-					locals,
+					opts,
 				);
 				classificationId = classification.id;
+			}
+
+			if (existingClassificationIds.has(classificationId)) {
+				continue;
 			}
 
 			await createServiceSchedule(
 				params.id!,
 				{
-					service_schedule: {
-						classification_id: classificationId,
-						distance_interval: preset.distance_interval,
-						month_interval: preset.month_interval,
+					serviceSchedule: {
+						classificationId: classificationId,
+						distanceInterval: preset.distanceInterval,
+						monthInterval: preset.monthInterval,
 					},
 				},
-				locals,
+				opts,
 			);
 		}
 

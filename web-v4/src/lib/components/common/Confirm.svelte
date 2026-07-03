@@ -5,7 +5,6 @@
 	interface Props {
 		children: Snippet;
 		title?: string;
-		description?: string;
 		trigger?: Snippet<[{ open: boolean; onOpenChange: (open: boolean) => void }]>;
 		actions?: Snippet<[{ open: boolean; onOpenChange: (open: boolean) => void }]>;
 		modal?: boolean;
@@ -17,7 +16,6 @@
 	let {
 		children,
 		title,
-		description,
 		trigger,
 		actions,
 		modal = true,
@@ -39,15 +37,7 @@
 	{@render trigger({ open, onOpenChange })}
 {/if}
 
-<Dialog
-	bind:open
-	{title}
-	{description}
-	{modal}
-	{closeOnEscape}
-	{closeOnInteractOutside}
-	id={resolvedId}
->
+<Dialog bind:open {title} {modal} {closeOnEscape} {closeOnInteractOutside} id={resolvedId}>
 	{@render children()}
 
 	{#if actions}

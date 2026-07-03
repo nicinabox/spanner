@@ -1,28 +1,43 @@
 import { request } from './server';
-import type { RequestOpts } from './types';
+import type { CreatableFields, RequestOpts } from './types';
 
 export interface ServiceSchedule {
 	id: number;
-	vehicle_id: number;
-	classification_id: number;
-	distance_interval: number | null;
-	month_interval: number | null;
+	vehicleId: number;
+	classificationId: number;
+	distanceInterval: number | null;
+	monthInterval: number | null;
 	notes: string | null;
 	enabled: boolean;
-	last_completed_record_id: number | null;
-	next_due_date: string | null;
-	next_due_mileage: number | null;
-	created_at: string;
-	updated_at: string;
+	lastCompletedRecordId: number | null;
+	nextDueDate: string | null;
+	nextDueMileage: number | null;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface SchedulePreset {
+	name: string;
+	distanceInterval: number | null;
+	monthInterval: number | null;
 }
 
 export const getServiceSchedules = (vehicleId: number | string, opts: RequestOpts) => {
 	return request<ServiceSchedule[]>(`/vehicles/${vehicleId}/service_schedules`, opts);
 };
 
+export interface CreateServiceScheduleData {
+	serviceSchedule: {
+		classificationId: number;
+		distanceInterval: number | null;
+		monthInterval: number | null;
+		notes?: string | null;
+	};
+}
+
 export const createServiceSchedule = (
 	vehicleId: number | string,
-	data: Record<string, unknown>,
+	data: CreatableFields<CreateServiceScheduleData>,
 	opts: RequestOpts,
 ) => {
 	return request<ServiceSchedule>(`/vehicles/${vehicleId}/service_schedules`, {
@@ -67,4 +82,8 @@ export const completeServiceSchedule = (
 		method: 'POST',
 		json: data,
 	});
+};
+
+export const getPresets = (opts: RequestOpts) => {
+	return request<Record<string, SchedulePreset[]>>('/service_schedules/presets', opts);
 };

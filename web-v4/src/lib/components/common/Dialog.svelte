@@ -8,7 +8,6 @@
 	interface Props {
 		children: Snippet;
 		title?: string;
-		description?: string;
 		open?: boolean;
 		onOpenChange?: (open: boolean) => void;
 		modal?: boolean;
@@ -20,7 +19,6 @@
 	let {
 		children,
 		title,
-		description,
 		open = $bindable(false),
 		onOpenChange,
 		modal = true,
@@ -65,7 +63,7 @@
 	>
 		<div
 			{...api.getContentProps()}
-			class="relative w-full max-w-lg rounded-xl bg-surface-raised shadow-lg border border-ink-200"
+			class="relative flex flex-col w-full max-w-lg max-h-[90svh] rounded-xl bg-surface-raised shadow-lg border border-ink-200"
 			in:scale={{ duration: 200, start: 0.95 }}
 			out:scale={{ duration: 150, start: 0.95 }}
 		>
@@ -80,10 +78,7 @@
 					</button>
 				</div>
 			{/if}
-			{#if description}
-				<p {...api.getDescriptionProps()} class="px-8 pt-2 text-sm text-ink-500">{description}</p>
-			{/if}
-			<div class="p-8 pt-0">
+			<div class="p-8 pt-0 overflow-auto flex-1" {...api.getDescriptionProps()}>
 				{@render children()}
 			</div>
 		</div>

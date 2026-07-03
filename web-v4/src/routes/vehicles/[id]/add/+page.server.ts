@@ -1,9 +1,9 @@
 import { getVehicle } from '$lib/data/vehicles';
-import { getClassifications, createClassification } from '$lib/data/classifications';
-import { createServiceSchedule } from '$lib/data/serviceSchedules';
 import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
+import { getClassifications, createClassification } from '$lib/data/classifications';
+import { createServiceSchedule } from '$lib/data/serviceSchedules';
 import { decode } from '$lib/utils/form';
 import { getHTTPErrors } from '$lib/utils/actions';
 import { validateAttachments } from '$lib/utils/file-validation';
@@ -43,7 +43,6 @@ export const actions = {
 
 		const files = formData.getAll('record[attachments][]') as File[];
 
-		// Validate file count, types, and sizes server-side
 		const validation = await validateAttachments(files);
 		if (!validation.valid) {
 			return fail(422, {
@@ -133,15 +132,33 @@ export const actions = {
 	},
 
 	schedule: async ({ request, locals, params }) => {
-		const data = await request.formData();
+		const formData = await request.formData();
+		const data = decode(formData, {
+			classificationId: 'number',
+			newName: 'string',
+			newKeywords: 'string',
+			distanceInterval: 'number',
+			monthInterval: 'number',
+			notes: 'string',
+		});
 
-		let classificationId = Number(data.get('classification_id'));
-		const newName = data.get('new_name') as string | null;
+		let classificationId = data.classificationId;
+		const newName = data.newName;
+
+		if (!classificationId && !newName) {
+			return fail(400, { errors: [{ id: 'classificationId', title: 'Select or create a service' }] });
+		}
+
+		if (!data.distanceInterval && !data.monthInterval) {
+			return fail(400, {
+				errors: [{ id: 'form', title: 'Set a distance or month interval' }],
+			});
+		}
 
 		if (newName) {
-			const keywords = (data.get('new_keywords') as string || '')
+			const keywords = (data.newKeywords || '')
 				.split(',')
-				.map((k) => k.trim())
+				.map((k: string) => k.trim())
 				.filter(Boolean);
 			const classification = await createClassification(
 				params.id!,
@@ -154,13 +171,11 @@ export const actions = {
 		await createServiceSchedule(
 			params.id!,
 			{
-				service_schedule: {
-					classification_id: classificationId,
-					distance_interval: data.get('distance_interval')
-						? Number(data.get('distance_interval'))
-						: null,
-					month_interval: data.get('month_interval') ? Number(data.get('month_interval')) : null,
-					notes: data.get('notes') || null,
+				serviceSchedule: {
+					classificationId: classificationId,
+					distanceInterval: data.distanceInterval || null,
+					monthInterval: data.monthInterval || null,
+					notes: data.notes || null,
 				},
 			},
 			locals,

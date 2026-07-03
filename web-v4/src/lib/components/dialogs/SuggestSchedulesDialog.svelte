@@ -14,9 +14,10 @@
 	interface Props {
 		open: boolean;
 		onOpenChange: (open: boolean) => void;
+		existingClassificationNames?: Set<string>;
 	}
 
-	let { open, onOpenChange }: Props = $props();
+	let { open, onOpenChange, existingClassificationNames = new Set() }: Props = $props();
 
 	let presets: Record<string, Preset[]> | null = $state(null);
 	let loading = $state(true);
@@ -36,7 +37,7 @@
 	});
 
 	const currentPresets: Preset[] = $derived(
-		selectedType && presets ? presets[selectedType] ?? [] : [],
+		selectedType && presets ? (presets[selectedType] ?? []) : [],
 	);
 
 	const togglePreset = (index: number) => {
@@ -52,9 +53,11 @@
 	const selectedNames: string[] = $derived(
 		[...checked].map((i) => currentPresets[i]?.name).filter(Boolean) as string[],
 	);
+
+	const isExisting = (name: string) => existingClassificationNames.has(name.toLowerCase());
 </script>
 
-<Dialog {open} {onOpenChange} title="Suggest Schedules" description="Pick a vehicle type to see suggested schedules">
+<Dialog {open} {onOpenChange} title="Suggest Schedules">
 	<form method="POST" action="?/suggest" use:enhance>
 		{#if loading}
 			<p class="text-ink-400 text-center py-8">Loading presets...</p>
@@ -76,28 +79,34 @@
 			<p class="text-ink-500 mb-4 capitalize">Suggested schedules for {selectedType}:</p>
 			<ul class="space-y-2 mb-4">
 				{#each currentPresets as preset, i}
+					{@const existing = isExisting(preset.name)}
+					{@const isChecked = checked.has(i) || existing}
 					<li>
 						<button
 							type="button"
+							disabled={existing}
 							class="w-full flex items-center gap-3 p-3 rounded-lg border text-left"
-							class:border-ink-500={checked.has(i)}
-							class:border-ink-200={!checked.has(i)}
+							class:border-ink-500={isChecked}
+							class:border-ink-200={!isChecked}
+							class:opacity-40={existing}
 							onclick={() => togglePreset(i)}
 						>
 							<div
 								class="w-5 h-5 rounded border-2 flex items-center justify-center shrink-0"
-								class:border-ink-500={checked.has(i)}
-								class:border-ink-300={!checked.has(i)}
-								class:bg-ink-500={checked.has(i)}
+								class:border-ink-500={isChecked}
+								class:border-ink-300={!isChecked}
+								class:bg-ink-500={isChecked}
 							>
-								{#if checked.has(i)}
+								{#if isChecked}
 									<Check size={14} class="text-white" />
 								{/if}
 							</div>
 							<div>
 								<p class="font-medium">{preset.name}</p>
 								<p class="text-sm text-ink-400">
-									{preset.distance_interval ? `every ${preset.distance_interval.toLocaleString()} mi` : ''}
+									{preset.distance_interval
+										? `every ${preset.distance_interval.toLocaleString()} mi`
+										: ''}
 									{preset.distance_interval && preset.month_interval ? ' or ' : ''}
 									{preset.month_interval ? `every ${preset.month_interval} mo` : ''}
 								</p>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Card } from '$lib';
+	import { Button, Card, Confirm } from '$lib';
 	import { umamiEvent } from '$lib/umami';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
@@ -28,25 +28,36 @@
 		return classifications.find((c) => c.id === classificationId)?.name ?? 'Unknown';
 	};
 
+	const existingClassificationNames = $derived(
+		new Set(
+			schedules
+				.map((s) => {
+					const c = classifications.find((cl) => cl.id === s.classificationId);
+					return c?.name.toLowerCase();
+				})
+				.filter(Boolean) as string[],
+		),
+	);
+
 	const intervalSummary = (schedule: ServiceSchedule) => {
 		const parts: string[] = [];
-		if (schedule.distance_interval) {
-			parts.push(`every ${formatMileage(schedule.distance_interval, vehicle.distanceUnit)}`);
+		if (schedule.distanceInterval) {
+			parts.push(`every ${formatMileage(schedule.distanceInterval, vehicle.distanceUnit)}`);
 		}
-		if (schedule.month_interval) {
-			parts.push(`every ${schedule.month_interval} mo`);
+		if (schedule.monthInterval) {
+			parts.push(`every ${schedule.monthInterval} mo`);
 		}
 		return parts.join(' or ');
 	};
 
 	const dueSummary = (schedule: ServiceSchedule) => {
 		const parts: string[] = [];
-		if (schedule.next_due_date) {
-			parts.push(intlFormatDateUTC(schedule.next_due_date));
+		if (schedule.nextDueDate) {
+			parts.push(intlFormatDateUTC(schedule.nextDueDate));
 		}
-		if (schedule.next_due_mileage) {
+		if (schedule.nextDueMileage) {
 			if (parts.length) parts.push('or');
-			parts.push(formatMileage(schedule.next_due_mileage, vehicle.distanceUnit));
+			parts.push(formatMileage(schedule.nextDueMileage, vehicle.distanceUnit));
 		}
 		return parts.length ? `Due ${parts.join(' ')}` : '';
 	};
@@ -56,11 +67,19 @@
 	{#if schedules.length}
 		<header class="flex items-center gap-2 mb-6">
 			{#if !vehicle.retired}
-				<Button href={`/vehicles/${vehicle.id}/add?view=schedule`} class="ml-auto" {...umamiEvent('add_schedule')}>
+				<Button
+					href={`/vehicles/${vehicle.id}/add?view=schedule`}
+					class="ml-auto"
+					{...umamiEvent('add_schedule')}
+				>
 					<PlusIcon size={16} />
 					Add Schedule
 				</Button>
-				<Button variant="ghost" onclick={() => (suggestOpen = true)} {...umamiEvent('suggest_schedules')}>
+				<Button
+					variant="ghost"
+					onclick={() => (suggestOpen = true)}
+					{...umamiEvent('suggest_schedules')}
+				>
 					<Sparkles size={16} />
 					Suggest
 				</Button>
@@ -73,19 +92,35 @@
 					<Card variant="outline" size="sm" class="gap-3">
 						<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 							<div class="space-y-0">
-								<p class="font-medium text-lg">{classificationName(schedule.classification_id)}</p>
+								<p class="font-medium text-lg">{classificationName(schedule.classificationId)}</p>
 								<p class="text-base text-ink-500">{intervalSummary(schedule)}</p>
 								{#if dueSummary(schedule)}
 									<p class="text-sm text-ink-400">{dueSummary(schedule)}</p>
 								{/if}
 							</div>
 							<div class="flex items-center gap-2">
-								<form method="POST" action="?/delete">
-									<input type="hidden" name="id" value={schedule.id} />
-									<Button size="sm" variant="ghost" type="submit">Delete</Button>
-								</form>
+								<Confirm title="Delete schedule?">
+									{#snippet trigger({ onOpenChange })}
+										<Button
+											color="danger"
+											variant="ghost"
+											size="sm"
+											onclick={() => onOpenChange(true)}>Delete</Button
+										>
+									{/snippet}
+									{#snippet actions({ onOpenChange })}
+										<form method="POST" action="?/delete" class="flex flex-row gap-2">
+											<input type="hidden" name="id" value={schedule.id} />
+											<Button type="submit" color="danger" variant="outline">Delete</Button>
+											<Button variant="solid" onclick={() => onOpenChange(false)}>Cancel</Button>
+										</form>
+									{/snippet}
+									<p>This will permanently delete this schedule.</p>
+								</Confirm>
 								{#if completingId === schedule.id}
-									<Button size="sm" variant="outline" onclick={() => (completingId = null)}>Cancel</Button>
+									<Button size="sm" variant="outline" onclick={() => (completingId = null)}
+										>Cancel</Button
+									>
 								{:else}
 									<Button
 										size="sm"
@@ -104,7 +139,7 @@
 								<CompleteScheduleForm
 									{vehicle}
 									scheduleId={schedule.id}
-									classificationName={classificationName(schedule.classification_id)}
+									classificationName={classificationName(schedule.classificationId)}
 								/>
 							</div>
 						{/if}
@@ -141,4 +176,8 @@
 	{/if}
 </div>
 
-<SuggestSchedulesDialog open={suggestOpen} onOpenChange={(v) => (suggestOpen = v)} />
+<SuggestSchedulesDialog
+	open={suggestOpen}
+	onOpenChange={(v) => (suggestOpen = v)}
+	{existingClassificationNames}
+/>

@@ -33,19 +33,19 @@
 <form method="POST" action="?/schedule" use:enhance>
 	<div class="space-y-3">
 		{#if showNewClassification}
-			<Field label="New Classification Name" name="new_name">
-				<Input type="text" name="new_name" bind:value={newClassificationName} placeholder="e.g. Hull Cleaning" />
+			<Field label="New Classification Name" name="newName">
+				<Input type="text" name="newName" bind:value={newClassificationName} placeholder="e.g. Hull Cleaning" />
 			</Field>
-			<Field label="Keywords (optional)" name="new_keywords">
-				<Input type="text" name="new_keywords" bind:value={newClassificationKeywords} placeholder="hull cleaning, clean hull" />
+			<Field label="Keywords (optional)" name="newKeywords">
+				<Input type="text" name="newKeywords" bind:value={newClassificationKeywords} placeholder="hull cleaning, clean hull" />
 			</Field>
 			<Button size="sm" variant="ghost" onclick={() => (showNewClassification = false)}>
 				Pick existing instead
 			</Button>
 		{:else}
-			<Field label="Service" name="classification_id">
+			<Field label="Service" name="classificationId">
 				<NativeSelect
-					name="classification_id"
+					name="classificationId"
 					options={[{ value: '', label: 'Select a service...' }, ...options]}
 					bind:value={selectedClassificationId}
 				/>
@@ -55,11 +55,11 @@
 			</Button>
 		{/if}
 
-		<Field label={MileageLabel(vehicle.distanceUnit)} name="distance_interval">
-			<Input type="number" name="distance_interval" bind:value={distanceInterval} placeholder="Optional" />
+		<Field label={MileageLabel(vehicle.distanceUnit)} name="distanceInterval">
+			<Input type="number" name="distanceInterval" bind:value={distanceInterval} placeholder="Optional" />
 		</Field>
-		<Field label="Months" name="month_interval">
-			<Input type="number" name="month_interval" bind:value={monthInterval} placeholder="Optional" />
+		<Field label="Months" name="monthInterval">
+			<Input type="number" name="monthInterval" bind:value={monthInterval} placeholder="Optional" />
 		</Field>
 		<Field label="Notes" name="notes">
 			<Textarea name="notes" bind:value={notes} rows={2} placeholder="Optional" />
