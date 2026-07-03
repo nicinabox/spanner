@@ -23,8 +23,8 @@ class ClassificationsControllerTest < ActionDispatch::IntegrationTest
         headers: http_options(@session.auth_token)[:headers]
     assert_response :success
     body = response_body
-    assert body.any? { |c| c['key'] == 'oil_change' }
-    assert body.any? { |c| c['name'] == 'Hull Clean' }
+    assert(body.any? { |c| c['key'] == 'oil_change' })
+    assert(body.any? { |c| c['name'] == 'Hull Clean' })
   end
 
   test 'create user classification on vehicle' do

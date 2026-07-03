@@ -34,7 +34,8 @@ class RecordClassificationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'remove tag from record' do
-    @record.record_classifications.create!(classification: @tag, classifier: 'manual', confidence: 1.0, auto_tagged: false)
+    @record.record_classifications.create!(classification: @tag, classifier: 'manual', confidence: 1.0,
+                                           auto_tagged: false)
     delete vehicle_record_record_classification_url(@vehicle, @record, @tag),
            headers: http_options(@session.auth_token)[:headers]
     assert_response :success

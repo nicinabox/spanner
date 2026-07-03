@@ -109,46 +109,53 @@ class HeuristicClassifier < NoteClassifier
     ]
   }.freeze
 
-  def self.classify(text, **options)
-    new.classify(text, **options)
+  def self.classify(text, **)
+    new.classify(text, **)
   end
 
   def classify(text, vehicle: nil)
     normalized = text.to_s.downcase
     return [] if normalized.blank?
 
-    results = []
-
-    vehicle_tags = if vehicle
-                     vehicle.classifications.where.not(keywords: [])
-                   else
-                     Classification.none
-                   end
-
+    vehicle_tags = vehicle_tags_for(vehicle)
     overridden_names = vehicle_tags.map(&:name).map(&:downcase)
 
-    KEYWORDS.each do |key, tokens|
+    match_system_keywords(normalized, overridden_names) +
+      match_vehicle_tags(normalized, vehicle_tags)
+  end
+
+  private
+
+  def vehicle_tags_for(vehicle)
+    return Classification.none unless vehicle
+
+    vehicle.classifications.where.not(keywords: [])
+  end
+
+  def match_system_keywords(normalized, overridden_names)
+    KEYWORDS.each_with_object([]) do |(key, tokens), results|
       classification = Classification.find_by(key: key)
       next unless classification
       next if overridden_names.include?(classification.name.downcase)
 
-      if classify_keywords(normalized, tokens)
-        results << { classification: classification, classifier: 'heuristic', confidence: 1.0 }
-      end
+      next unless classify_keywords(normalized, tokens)
+
+      results << classification_result(classification)
     end
-
-    vehicle_tags.each do |tag|
-      next if tag.keywords.blank?
-
-      if classify_keywords(normalized, tag.keywords)
-        results << { classification: tag, classifier: 'heuristic', confidence: 1.0 }
-      end
-    end
-
-    results
   end
 
-  private
+  def match_vehicle_tags(normalized, vehicle_tags)
+    vehicle_tags.each_with_object([]) do |tag, results|
+      next if tag.keywords.blank?
+      next unless classify_keywords(normalized, tag.keywords)
+
+      results << classification_result(tag)
+    end
+  end
+
+  def classification_result(classification)
+    { classification: classification, classifier: 'heuristic', confidence: 1.0 }
+  end
 
   def classify_keywords(text, tokens)
     tokens.any? { |token| phrase_match?(text, token) }

@@ -4,11 +4,11 @@ module V2
   class ClassificationsController < ApplicationController
     def index
       classifications = if params[:vehicle_id]
-        vehicle = vehicles.find(params[:vehicle_id])
-        Classification.for_vehicle(vehicle).order(:name)
-      else
-        Classification.system.order(:name)
-      end
+                          vehicle = vehicles.find(params[:vehicle_id])
+                          Classification.for_vehicle(vehicle).order(:name)
+                        else
+                          Classification.system.order(:name)
+                        end
       render json: classifications
     end
 

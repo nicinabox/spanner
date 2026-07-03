@@ -5,23 +5,23 @@ class ServiceSchedule < ApplicationRecord
     car: [
       { name: 'Oil Change', distance_interval: 5000, month_interval: 6 },
       { name: 'Tire Rotation', distance_interval: 7500 },
-      { name: 'Air Filter', distance_interval: 30000 },
+      { name: 'Air Filter', distance_interval: 30_000 },
       { name: 'Brake Fluid', month_interval: 24 },
-      { name: 'Cabin Air Filter', distance_interval: 30000 },
-      { name: 'Coolant', distance_interval: 60000, month_interval: 60 },
-      { name: 'Spark Plugs', distance_interval: 100000 },
-      { name: 'Transmission Fluid', distance_interval: 60000 },
-      { name: 'Drive Belt', distance_interval: 100000 },
-      { name: 'Battery', month_interval: 60 },
+      { name: 'Cabin Air Filter', distance_interval: 30_000 },
+      { name: 'Coolant', distance_interval: 60_000, month_interval: 60 },
+      { name: 'Spark Plugs', distance_interval: 100_000 },
+      { name: 'Transmission Fluid', distance_interval: 60_000 },
+      { name: 'Drive Belt', distance_interval: 100_000 },
+      { name: 'Battery', month_interval: 60 }
     ],
     motorcycle: [
       { name: 'Oil Change', distance_interval: 3000, month_interval: 12 },
       { name: 'Chain Adjustment', distance_interval: 500 },
-      { name: 'Chain Replacement', distance_interval: 20000 },
+      { name: 'Chain Replacement', distance_interval: 20_000 },
       { name: 'Brake Fluid', month_interval: 24 },
-      { name: 'Spark Plugs', distance_interval: 15000 },
-      { name: 'Air Filter', distance_interval: 12000 },
-      { name: 'Tire Replacement', distance_interval: 10000 },
+      { name: 'Spark Plugs', distance_interval: 15_000 },
+      { name: 'Air Filter', distance_interval: 12_000 },
+      { name: 'Tire Replacement', distance_interval: 10_000 }
     ],
     boat: [
       { name: 'Oil Change', month_interval: 12 },
@@ -32,7 +32,7 @@ class ServiceSchedule < ApplicationRecord
       { name: 'Battery', month_interval: 48 },
       { name: 'Antifreeze / Cooling System', month_interval: 24 },
       { name: 'Bilge Pump Check', month_interval: 12 },
-      { name: 'Safety Gear Check', month_interval: 12 },
+      { name: 'Safety Gear Check', month_interval: 12 }
     ],
     rv: [
       { name: 'Oil Change', distance_interval: 5000, month_interval: 12 },
@@ -41,9 +41,9 @@ class ServiceSchedule < ApplicationRecord
       { name: 'Roof Inspection', month_interval: 6 },
       { name: 'Battery', month_interval: 60 },
       { name: 'Tire Inspection', month_interval: 12 },
-      { name: 'Transmission Fluid', distance_interval: 30000 },
-      { name: 'Air Filter', distance_interval: 15000 },
-    ],
+      { name: 'Transmission Fluid', distance_interval: 30_000 },
+      { name: 'Air Filter', distance_interval: 15_000 }
+    ]
   }.freeze
 
   belongs_to :vehicle

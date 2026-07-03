@@ -59,7 +59,7 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     )
     results = HeuristicClassifier.classify('lube service done', vehicle:)
     assert_includes results.map { |r| r[:classification].id }, user_tag.id
-    refute_includes results.map { |r| r[:classification].id }, oil_change.id
+    assert_not_includes results.map { |r| r[:classification].id }, oil_change.id
   end
 
   test 'classify without vehicle uses system keywords only' do
