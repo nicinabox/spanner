@@ -4,12 +4,13 @@
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import { formatMileage } from '$lib/utils/vehicle';
-	import { Wrench, PlusIcon, ChevronRight, X } from 'lucide-svelte';
+	import { Wrench, PlusIcon, ChevronRight, X, Sparkles } from 'lucide-svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Classification } from '$lib/data/classifications';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import CompleteScheduleForm from '$lib/components/forms/CompleteScheduleForm.svelte';
 	import ServiceScheduleForm from '$lib/components/forms/ServiceScheduleForm.svelte';
+	import SuggestSchedulesDialog from '$lib/components/dialogs/SuggestSchedulesDialog.svelte';
 
 	let {
 		schedules,
@@ -23,6 +24,7 @@
 
 	let completingId = $state<number | null>(null);
 	let creating = $state(false);
+	let suggestOpen = $state(false);
 
 	const classificationName = (classificationId: number) => {
 		return classifications.find((c) => c.id === classificationId)?.name ?? 'Unknown';
@@ -59,6 +61,10 @@
 				<Button class="ml-auto" onclick={() => (creating = true)} {...umamiEvent('add_schedule')}>
 					<PlusIcon size={16} />
 					Add Schedule
+				</Button>
+				<Button variant="ghost" onclick={() => (suggestOpen = true)} {...umamiEvent('suggest_schedules')}>
+					<Sparkles size={16} />
+					Suggest
 				</Button>
 			{/if}
 		</header>
@@ -139,8 +145,16 @@
 						<PlusIcon size={18} />
 						Add Schedule
 					</Button>
+					<Button variant="ghost" onclick={() => (suggestOpen = true)}>
+						<Sparkles size={18} />
+						Suggest
+					</Button>
 				{/if}
 			{/snippet}
 		</EmptyState>
 	{/if}
 </div>
+
+{#if suggestOpen}
+	<SuggestSchedulesDialog onClose={() => (suggestOpen = false)} />
+{/if}

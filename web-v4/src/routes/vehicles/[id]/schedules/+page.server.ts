@@ -1,5 +1,10 @@
 import { getVehicle } from '$lib/data/vehicles';
-import { getServiceSchedules, completeServiceSchedule, deleteServiceSchedule, createServiceSchedule } from '$lib/data/serviceSchedules';
+import {
+	getServiceSchedules,
+	completeServiceSchedule,
+	deleteServiceSchedule,
+	createServiceSchedule,
+} from '$lib/data/serviceSchedules';
 import { getClassifications, createClassification } from '$lib/data/classifications';
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
@@ -63,7 +68,9 @@ export const actions: Actions = {
 		const body: Record<string, unknown> = {
 			service_schedule: {
 				classification_id: classificationId,
-				distance_interval: data.get('distance_interval') ? Number(data.get('distance_interval')) : null,
+				distance_interval: data.get('distance_interval')
+					? Number(data.get('distance_interval'))
+					: null,
 				month_interval: data.get('month_interval') ? Number(data.get('month_interval')) : null,
 				notes: data.get('notes') || null,
 			},
@@ -75,5 +82,62 @@ export const actions: Actions = {
 		} catch {
 			return fail(422, { error: 'Failed to create schedule' });
 		}
+	},
+
+	suggest: async ({ locals, params, request }) => {
+		const data = await request.formData();
+		const presetNames: string[] = JSON.parse((data.get('preset_names') as string) || '[]');
+
+		const res = await fetch(`${locals.webUrl}/api/service_schedules/presets`, {
+			headers: { authorization: `Token ${locals.authToken}` },
+		});
+		const allPresets: Record<
+			string,
+			{ name: string; distance_interval: number | null; month_interval: number | null }[]
+		> = await res.json();
+
+		const toCreate: {
+			name: string;
+			distance_interval: number | null;
+			month_interval: number | null;
+		}[] = [];
+		for (const group of Object.values(allPresets)) {
+			for (const preset of group) {
+				if (presetNames.includes(preset.name)) {
+					toCreate.push(preset);
+				}
+			}
+		}
+
+		const existing = await getClassifications(params.id!, locals);
+
+		for (const preset of toCreate) {
+			let classificationId = existing.find(
+				(c) => c.name.toLowerCase() === preset.name.toLowerCase(),
+			)?.id;
+
+			if (!classificationId) {
+				const classification = await createClassification(
+					params.id!,
+					{ classification: { name: preset.name } },
+					locals,
+				);
+				classificationId = classification.id;
+			}
+
+			await createServiceSchedule(
+				params.id!,
+				{
+					service_schedule: {
+						classification_id: classificationId,
+						distance_interval: preset.distance_interval,
+						month_interval: preset.month_interval,
+					},
+				},
+				locals,
+			);
+		}
+
+		return { success: true };
 	},
 };
