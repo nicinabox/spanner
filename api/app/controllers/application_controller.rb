@@ -36,7 +36,6 @@ class ApplicationController < ActionController::API
   def web_base_url
     request.headers['X-Web-URL'].presence || Rails.application.config.x.web_url
   end
-  helper_method :web_base_url
 
   def authenticate
     authenticate_token || render_unauthorized
