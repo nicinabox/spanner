@@ -23,7 +23,7 @@ module V2
       email = params[:email].to_s.strip.downcase
       user = User.unscoped.find_by(email: email)
 
-      PasswordMailer.reset_link(user).deliver_later if user&.password_enabled?
+      PasswordMailer.reset_link(user, web_url: web_base_url).deliver_later if user&.password_enabled?
 
       head :accepted
     end

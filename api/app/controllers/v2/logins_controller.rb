@@ -60,7 +60,7 @@ module V2
       if params[:platform] == 'mobile'
         LoginMailer.login_token(user).deliver_later
       else
-        LoginMailer.login_link(user).deliver_later
+        LoginMailer.login_link(user, web_url: web_base_url).deliver_later
       end
     end
   end

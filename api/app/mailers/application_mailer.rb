@@ -3,10 +3,18 @@
 class ApplicationMailer < ActionMailer::Base
   include ActionView::Helpers::DateHelper
 
+  attr_reader :web_url
+
   default from: ENV.fetch('FROM_EMAIL', 'noreply@localhost')
   layout 'mailer'
 
   helper_method :logo_data_uri, :web_preferences_url
+
+  def default_url_options
+    base = web_url || Rails.application.config.x.web_url
+    uri = URI.parse(base)
+    { host: uri.host, port: uri.port, protocol: uri.scheme }
+  end
 
   def logo_data_uri
     return @logo_data_uri if defined?(@logo_data_uri)
