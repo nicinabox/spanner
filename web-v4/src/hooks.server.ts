@@ -25,6 +25,7 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	}
 
 	event.locals.session = session;
+	event.locals.webUrl = event.url.origin;
 	event.locals.authToken = session?.authToken;
 
 	const prefsCookie = event.cookies.get('prefs');
