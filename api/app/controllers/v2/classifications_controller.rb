@@ -31,19 +31,19 @@ module V2
       classification = Classification.find(params[:id])
 
       unless classification.vehicle_id.in?(vehicles.pluck(:id))
-        render json: { error: 'Cannot delete this classification' }, status: :unprocessable_entity
+        render json: { error: 'Cannot delete this classification' }, status: :unprocessable_content
         return
       end
 
       if classification.service_schedules.any?
-        render json: { error: 'Classification used by schedules' }, status: :unprocessable_entity
+        render json: { error: 'Classification used by schedules' }, status: :unprocessable_content
         return
       end
 
       classification.destroy!
       head :no_content
     rescue ActiveRecord::DeleteRestrictionError
-      render json: { error: 'Classification used by schedules' }, status: :unprocessable_entity
+      render json: { error: 'Classification used by schedules' }, status: :unprocessable_content
     end
 
     private
