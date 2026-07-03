@@ -17,6 +17,4 @@ class ApplicationMailer < ActionMailer::Base
 
     @logo_data_uri = "data:image/png;base64,#{encoded}"
   end
-
-
 end
