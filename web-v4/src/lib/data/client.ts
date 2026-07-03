@@ -46,7 +46,7 @@ export function createAPIRequest(initialConfig: FetcherConfig) {
 	};
 
 	return async function fetcher<T>(endpoint: string, options: RequestOpts = {}): Promise<T> {
-		const { authToken, params, ...init } = options;
+		const { authToken, webUrl, params, ...init } = options;
 
 		const url = new URL(
 			config.baseURI + endpoint,
@@ -66,6 +66,10 @@ export function createAPIRequest(initialConfig: FetcherConfig) {
 		const authHeaderValue = config.authHeaderValue(authToken);
 		if (authHeaderValue) {
 			headers.set('Authorization', authHeaderValue);
+		}
+
+		if (webUrl) {
+			headers.set('X-Web-URL', webUrl);
 		}
 
 		if (options.json) {

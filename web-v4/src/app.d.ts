@@ -8,6 +8,7 @@ declare global {
 		interface Locals {
 			authToken: string | undefined;
 			session: Session | null | undefined;
+			webUrl: string;
 		}
 		// interface PageData {}
 		// interface PageState {}

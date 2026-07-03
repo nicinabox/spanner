@@ -6,7 +6,7 @@
   Click the button below to confirm the new email address.
 </p>
 <p>
-  <%= link_to 'Confirm new email', confirm_email_url(@user.email_confirmation_token, @url_options), class: 'button' %>
+  <%= link_to 'Confirm new email', confirm_email_url(@user.email_confirmation_token), class: 'button' %>
 </p>
 
 <p>

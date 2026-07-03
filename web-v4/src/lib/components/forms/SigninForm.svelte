@@ -160,6 +160,7 @@
 						block
 						onclick={() => {
 							mode = 'default';
+							password = '';
 							formErrors = [];
 						}}>Back</Button
 					>

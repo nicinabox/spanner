@@ -47,7 +47,8 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
 
   config.action_mailer.default_url_options = {
-    host: 'http://localhost:3000'
+    host: 'localhost:3000',
+    protocol: 'http'
   }
 
   # Raises error for missing translations

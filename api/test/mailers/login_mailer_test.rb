@@ -8,7 +8,7 @@ class LoginMailerTest < ActionMailer::TestCase
   end
 
   test 'login_link' do
-    mail = LoginMailer.login_link(@user, host: 'http://localhost')
+    mail = LoginMailer.login_link(@user)
 
     assert_match 'Sign in to Spanner', mail.subject
     assert_equal ['user1@test'], mail.to

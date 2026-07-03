@@ -12,34 +12,37 @@ export interface Session {
 	authToken: string;
 }
 
-export const create = async (data: { email: string; host?: string }) => {
-	return request(`/sessions`, { method: 'POST', json: data });
+export const create = async (data: { email: string }, opts?: RequestOpts) => {
+	return request(`/sessions`, { ...opts, method: 'POST', json: data });
 };
 
 export async function signin(token: string) {
 	return request<Session>(`/login/${token}`);
 }
 
-export const login = async (data: {
-	email: string;
-	password?: string;
-	host?: string;
-	timeZoneOffset?: string;
-}) => {
+export const login = async (
+	data: {
+		email: string;
+		password?: string;
+		timeZoneOffset?: string;
+	},
+	opts?: RequestOpts
+) => {
 	const { timeZoneOffset, ...body } = data;
 	return request<{ auth_token?: string }>('/login', {
+		...opts,
 		method: 'POST',
 		json: body,
 		headers: timeZoneOffset ? { 'Time-Zone-Offset': timeZoneOffset } : undefined,
 	});
 };
 
-export const requestReset = async (data: { email: string }) => {
-	return request('/password/reset', { method: 'POST', json: data });
+export const requestReset = async (data: { email: string }, opts?: RequestOpts) => {
+	return request('/password/reset', { ...opts, method: 'POST', json: data });
 };
 
-export const resetPassword = async (token: string, data: { password: string }) => {
-	return request<Session>(`/password/reset/${token}`, { method: 'POST', json: data });
+export const resetPassword = async (token: string, data: { password: string }, opts?: RequestOpts) => {
+	return request<Session>(`/password/reset/${token}`, { ...opts, method: 'POST', json: data });
 };
 
 export const setPassword = async (

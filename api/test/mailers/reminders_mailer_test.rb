@@ -38,8 +38,9 @@ class RemindersMailerTest < ActionMailer::TestCase
     reminder = Reminder.new(notes: 'Oil change', vehicle: vehicle, date: Time.zone.today)
 
     mail = RemindersMailer.reminder_today(user, [reminder])
-    expected_url = ApplicationMailer.new.frontend_preferences_url(user.account_token)
-    expected_vehicle_url = ApplicationMailer.new.frontend_preferences_url(user.account_token, vehicle_id: vehicle.id)
+    expected_url = Rails.application.routes.url_helpers.web_preferences_url(token: user.account_token)
+    expected_vehicle_url = Rails.application.routes.url_helpers.web_preferences_url(token: user.account_token,
+                                                                                    vehicle_id: vehicle.id)
 
     assert_match 'Manage email preferences', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s

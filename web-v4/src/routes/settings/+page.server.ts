@@ -1,4 +1,3 @@
-import { WEB_URL } from '$app/env/private';
 import { requestEmailChange, deleteAccount, updateWebhookUrl } from '$lib/data/settings';
 import { setPassword } from '$lib/data/session';
 import { getCurrentUser } from '$lib/data/user';
@@ -18,7 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	changeEmail: async ({ request, locals, url }) => {
+	changeEmail: async ({ request, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, changeEmailSchema);
 
@@ -26,10 +25,8 @@ export const actions = {
 			return fail(422, { errors: parsed.errors });
 		}
 
-		const host = WEB_URL || url.origin;
-
 		try {
-			await requestEmailChange(parsed.data.email, host, locals);
+			await requestEmailChange(parsed.data.email, locals);
 			return { emailSuccess: true, email: parsed.data.email };
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));

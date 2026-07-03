@@ -15,6 +15,6 @@
   </ul>
   <p>
     <%= link_to 'View', vehicle_url(vehicle), class: 'button button-small' %>
-    <%= link_to "Manage notifications", frontend_preferences_url(@user.account_token, vehicle_id: vehicle.id), class: 'button button-small button-outline' %>
+    <%= link_to "Manage notifications", web_preferences_url(token: @user.account_token, vehicle_id: vehicle.id), class: 'button button-small button-outline' %>
   </p>
 <% end %>

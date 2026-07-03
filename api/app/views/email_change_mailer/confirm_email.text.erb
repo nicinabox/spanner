@@ -3,7 +3,7 @@ You requested to change the email on your Spanner account from
 
 Confirm the new email address by visiting the link below:
 
-<%= confirm_email_url(@user.email_confirmation_token, @url_options) %>
+<%= confirm_email_url(@user.email_confirmation_token) %>
 
 This link expires <%= @expires_at %> and can only be used once.
 

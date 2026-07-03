@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class LoginMailer < ApplicationMailer
-  def login_link(user, **url_options)
+  def login_link(user, web_url: nil)
+    @web_url = web_url
     @user = user
-    @url_options = url_options
     mail to: @user.email, subject: subject
   end
 

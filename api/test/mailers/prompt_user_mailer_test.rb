@@ -11,7 +11,7 @@ class PromptUserMailerTest < ActionMailer::TestCase
 
   test 'add_first_vehicle includes preferences link' do
     mail = PromptUserMailer.add_first_vehicle(@user)
-    expected_url = ApplicationMailer.new.frontend_preferences_url(@user.account_token)
+    expected_url = Rails.application.routes.url_helpers.web_preferences_url(token: @user.account_token)
 
     assert_match 'Manage email preferences', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s
@@ -25,7 +25,7 @@ class PromptUserMailerTest < ActionMailer::TestCase
 
   test 'add_record includes preferences link' do
     mail = PromptUserMailer.add_record(@user, @vehicle)
-    expected_url = ApplicationMailer.new.frontend_preferences_url(@user.account_token)
+    expected_url = Rails.application.routes.url_helpers.web_preferences_url(token: @user.account_token)
 
     assert_match 'Manage email preferences', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s
@@ -33,7 +33,7 @@ class PromptUserMailerTest < ActionMailer::TestCase
 
   test 'add_first_record includes preferences link' do
     mail = PromptUserMailer.add_first_record(@user, @vehicle)
-    expected_url = ApplicationMailer.new.frontend_preferences_url(@user.account_token)
+    expected_url = Rails.application.routes.url_helpers.web_preferences_url(token: @user.account_token)
 
     assert_match 'Manage email preferences', mail.html_part.body.to_s
     assert_match expected_url, mail.html_part.body.to_s

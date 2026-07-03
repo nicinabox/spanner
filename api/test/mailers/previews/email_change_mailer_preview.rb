@@ -9,7 +9,7 @@ class EmailChangeMailerPreview < ActionMailer::Preview
       email_confirmation_token: SecureRandom.urlsafe_base64,
       email_confirmation_token_valid_until: 15.minutes.from_now
     )
-    EmailChangeMailer.confirm_email(user, host: 'localhost:3000', protocol: 'http')
+    EmailChangeMailer.confirm_email(user)
   end
 
   def notify_old_email

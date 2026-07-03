@@ -14,7 +14,6 @@ module V2
 
     def create
       email = params[:email].strip.downcase
-      host = params[:host]
       user = User.unscoped.find_by(email: email)
 
       user.restore! if user&.deleted?
@@ -25,7 +24,7 @@ module V2
       end
 
       if user
-        issue_login_token(user, host)
+        issue_login_token(user)
         head :no_content
       else
         respond_with_errors(user)
@@ -55,7 +54,7 @@ module V2
 
     private
 
-    def issue_login_token(user, host)
+    def issue_login_token(user)
       login_token = SecureRandom.urlsafe_base64
       user.update!(
         login_token: login_token,
@@ -66,7 +65,7 @@ module V2
       if params[:platform] == 'mobile'
         LoginMailer.login_token(user).deliver_later
       else
-        LoginMailer.login_link(user, host: host).deliver_later
+        LoginMailer.login_link(user, web_url: web_base_url).deliver_later
       end
     end
   end
