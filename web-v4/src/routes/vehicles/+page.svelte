@@ -48,7 +48,7 @@
 	{#if data.vehicles.length === 0}
 		<EmptyState
 			heading="Add your first vehicle"
-			details="Track maintenance, reminders, and service history for all your vehicles."
+			details="Track maintenance, reminders, and service history."
 		>
 			{#snippet media()}
 				<Car size={48} class="text-ink-300" />
