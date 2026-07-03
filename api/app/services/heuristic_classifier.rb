@@ -121,7 +121,6 @@ class HeuristicClassifier < NoteClassifier
 
     vehicle_tags = if vehicle
                      vehicle.classifications.where.not(keywords: [])
-                       .where.not(keywords: nil)
                    else
                      Classification.none
                    end

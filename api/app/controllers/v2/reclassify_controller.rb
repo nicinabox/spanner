@@ -2,7 +2,7 @@
 
 module V2
   class ReclassifyController < ApplicationController
-    def create
+    def reclassify
       vehicle = vehicles.find(params[:id])
       updated = 0
 

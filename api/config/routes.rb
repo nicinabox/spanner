@@ -59,8 +59,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
       resources :records do
         delete 'attachments/:signed_id', to: 'records#destroy_attachment', as: :attachment
-        resources :tags, controller: 'record_tags', only: %i[create destroy]
+        resources :record_tags, only: %i[create destroy]
       end
+
+      post :reclassify, on: :member, controller: 'reclassify'
 
       post :import
       get :export
@@ -68,7 +70,6 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
     resources :reminders, only: :index
 
-    post 'vehicles/:id/reclassify', to: 'reclassify#create'
     get 'service_schedules/presets', to: 'service_schedule_presets#index'
 
     get 'user', to: 'users#index'

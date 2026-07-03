@@ -16,7 +16,7 @@ class ReclassifyControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'reclassify runs classifier on all records' do
-    post "/vehicles/#{@vehicle.id}/reclassify",
+    post reclassify_vehicle_url(@vehicle),
          headers: http_options(@session.auth_token)[:headers]
     assert_response :success
     assert @record.reload.classifications.include?(@tag)
@@ -27,7 +27,7 @@ class ReclassifyControllerTest < ActionDispatch::IntegrationTest
       classification: @tag, classifier: 'manual', confidence: 1.0, auto_tagged: false
     )
 
-    post "/vehicles/#{@vehicle.id}/reclassify",
+    post reclassify_vehicle_url(@vehicle),
          headers: http_options(@session.auth_token)[:headers]
     assert_response :success
 

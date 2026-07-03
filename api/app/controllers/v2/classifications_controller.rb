@@ -23,14 +23,14 @@ module V2
 
     def update
       classification = current_user_classifications.find(params[:id])
-      classification.update!(classification_update_params)
+      classification.update!(classification_params)
       render json: classification
     end
 
     def destroy
       classification = Classification.find(params[:id])
 
-      unless can_destroy?(classification)
+      unless classification.vehicle_id.in?(vehicles.pluck(:id))
         render json: { error: 'Cannot delete this classification' }, status: :unprocessable_entity
         return
       end
@@ -48,18 +48,8 @@ module V2
 
     private
 
-    def can_destroy?(classification)
-      return false if classification.system?
-
-      vehicles.where(id: classification.vehicle_id).exists?
-    end
-
     def current_user_classifications
-      Classification.where(id: accessible_classification_ids)
-    end
-
-    def accessible_classification_ids
-      current_user.classifications.where(vehicle_id: vehicles.pluck(:id)).pluck(:id)
+      current_user.classifications.where(vehicle_id: vehicles.pluck(:id))
     end
 
     def vehicles
@@ -67,10 +57,6 @@ module V2
     end
 
     def classification_params
-      params.require(:classification).permit(:name, keywords: [])
-    end
-
-    def classification_update_params
       params.require(:classification).permit(:name, keywords: [])
     end
   end

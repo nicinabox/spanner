@@ -25,9 +25,7 @@ module V2
     private
 
     def set_record
-      @record = current_user.vehicles.joins(:records)
-                            .find_by!(records: { id: params[:record_id] })
-                            .records.find(params[:record_id])
+      @record = current_user.records.find(params[:record_id])
     end
   end
 end
