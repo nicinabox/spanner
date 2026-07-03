@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_03_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -48,11 +48,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
     t.string "name", null: false
     t.text "description"
     t.boolean "system", default: true, null: false
-    t.integer "default_mileage_interval"
-    t.integer "default_month_interval"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "vehicle_id"
+    t.bigint "user_id"
+    t.text "keywords", default: [], array: true
     t.index ["key"], name: "index_classifications_on_key", unique: true
+    t.index ["user_id"], name: "index_classifications_on_user_id"
+    t.index ["vehicle_id", "name"], name: "index_classifications_on_vehicle_id_and_name", unique: true, where: "(vehicle_id IS NOT NULL)"
+    t.index ["vehicle_id"], name: "index_classifications_on_vehicle_id"
   end
 
   create_table "queue_classic_jobs", force: :cascade do |t|
@@ -76,6 +80,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
     t.float "confidence", default: 1.0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "auto_tagged", default: true, null: false
     t.index ["classification_id"], name: "index_record_classifications_on_classification_id"
     t.index ["record_id", "classification_id"], name: "idx_on_record_id_classification_id_cae9a35d49", unique: true
     t.index ["record_id"], name: "index_record_classifications_on_record_id"
@@ -110,7 +115,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
   create_table "service_schedules", force: :cascade do |t|
     t.bigint "vehicle_id", null: false
     t.bigint "classification_id", null: false
-    t.integer "mileage_interval"
+    t.integer "distance_interval"
     t.integer "month_interval"
     t.text "notes"
     t.boolean "enabled", default: true, null: false
@@ -138,6 +143,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "share_links", force: :cascade do |t|
+    t.bigint "vehicle_id", null: false
+    t.string "token", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_share_links_on_token", unique: true
+    t.index ["vehicle_id"], name: "index_share_links_on_vehicle_id"
+  end
+
   create_table "users", id: :serial, force: :cascade do |t|
     t.string "email"
     t.datetime "created_at", precision: nil, null: false
@@ -162,6 +176,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
     t.index ["email_confirmation_token"], name: "index_users_on_email_confirmation_token"
   end
 
+  create_table "vehicle_shares", force: :cascade do |t|
+    t.bigint "vehicle_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "invited_by_id", null: false
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invited_by_id"], name: "index_vehicle_shares_on_invited_by_id"
+    t.index ["user_id"], name: "index_vehicle_shares_on_user_id"
+    t.index ["vehicle_id", "user_id"], name: "index_vehicle_shares_on_vehicle_id_and_user_id", unique: true
+    t.index ["vehicle_id"], name: "index_vehicle_shares_on_vehicle_id"
+  end
+
   create_table "vehicles", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.string "name"
@@ -176,20 +203,22 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
     t.boolean "prompt_for_records", default: true
     t.string "color"
     t.hstore "preferences"
-    t.string "notification_token"
-    t.datetime "snoozed_until"
-    t.datetime "prompt_snoozed_until"
-    t.index ["notification_token"], name: "index_vehicles_on_notification_token", unique: true
     t.index ["preferences"], name: "index_vehicles_on_preferences", using: :gin
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "classifications", "users"
+  add_foreign_key "classifications", "vehicles"
   add_foreign_key "record_classifications", "classifications"
   add_foreign_key "record_classifications", "records"
   add_foreign_key "reminders", "service_schedules"
   add_foreign_key "service_schedules", "classifications"
   add_foreign_key "service_schedules", "records", column: "last_completed_record_id"
   add_foreign_key "service_schedules", "vehicles"
+  add_foreign_key "share_links", "vehicles"
+  add_foreign_key "vehicle_shares", "users"
+  add_foreign_key "vehicle_shares", "users", column: "invited_by_id"
+  add_foreign_key "vehicle_shares", "vehicles"
 end

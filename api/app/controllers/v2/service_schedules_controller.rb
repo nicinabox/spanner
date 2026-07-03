@@ -56,7 +56,7 @@ module V2
 
     def schedule_params
       params.expect(
-        service_schedule: %i[classification_id mileage_interval month_interval notes enabled]
+        service_schedule: %i[classification_id distance_interval month_interval notes enabled]
       )
     end
   end

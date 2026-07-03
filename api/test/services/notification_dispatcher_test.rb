@@ -11,7 +11,7 @@ class EmailChannelTest < ActiveSupport::TestCase
     @schedule = ServiceSchedule.new(
       vehicle: @user.vehicles.first,
       classification: Classification.find_by!(key: 'oil_change'),
-      mileage_interval: 5000,
+      distance_interval: 5000,
       next_due_mileage: 55_000,
       next_due_date: 3.months.from_now.to_date
     )
@@ -78,7 +78,7 @@ class WebhookChannelTest < ActiveSupport::TestCase
     @schedule = ServiceSchedule.new(
       vehicle: @user.vehicles.first,
       classification: Classification.find_by!(key: 'oil_change'),
-      mileage_interval: 5000,
+      distance_interval: 5000,
       next_due_mileage: 55_000,
       next_due_date: 3.months.from_now.to_date
     )

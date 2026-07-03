@@ -19,7 +19,7 @@ class ServiceSchedule < ApplicationRecord
     last_record = last_matching_record
 
     attrs = {}
-    attrs[:next_due_mileage] = next_mileage(last_record) if mileage_interval.present?
+    attrs[:next_due_mileage] = next_mileage(last_record) if distance_interval.present?
     attrs[:next_due_date] = next_date(last_record) if month_interval.present?
 
     update!(attrs)
@@ -40,9 +40,9 @@ class ServiceSchedule < ApplicationRecord
   private
 
   def at_least_one_interval
-    return if mileage_interval.present? || month_interval.present?
+    return if distance_interval.present? || month_interval.present?
 
-    errors.add(:base, 'at least one of mileage_interval or month_interval must be present')
+    errors.add(:base, 'at least one of distance_interval or month_interval must be present')
   end
 
   def last_matching_record
@@ -55,7 +55,7 @@ class ServiceSchedule < ApplicationRecord
 
   def next_mileage(last_record)
     base = last_record&.mileage || vehicle.estimated_mileage || 0
-    base + mileage_interval
+    base + distance_interval
   end
 
   def next_date(last_record)

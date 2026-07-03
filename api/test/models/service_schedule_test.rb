@@ -9,11 +9,11 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     @classification = Classification.find_by!(key: 'oil_change')
   end
 
-  test 'valid with mileage_interval' do
+  test 'valid with distance_interval' do
     schedule = ServiceSchedule.new(
       vehicle: @vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     assert schedule.valid?
   end
@@ -31,7 +31,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.new(
       vehicle: @vehicle,
       classification: @classification,
-      mileage_interval: 5000,
+      distance_interval: 5000,
       month_interval: 12
     )
     assert schedule.valid?
@@ -43,13 +43,13 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification
     )
     assert_not schedule.valid?
-    assert(schedule.errors[:base].any? { |e| e.include?('mileage_interval') || e.include?('month_interval') })
+    assert(schedule.errors[:base].any? { |e| e.include?('distance_interval') || e.include?('month_interval') })
   end
 
   test 'requires vehicle' do
     schedule = ServiceSchedule.new(
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     assert_not schedule.valid?
   end
@@ -57,7 +57,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
   test 'requires classification' do
     schedule = ServiceSchedule.new(
       vehicle: @vehicle,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     assert_not schedule.valid?
   end
@@ -66,7 +66,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.new(
       vehicle: @vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     assert schedule.enabled
   end
@@ -82,7 +82,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     schedule.recalculate_next_due
 
@@ -96,7 +96,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     schedule.recalculate_next_due
 
@@ -133,7 +133,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
-      mileage_interval: 5000,
+      distance_interval: 5000,
       month_interval: 12
     )
     schedule.recalculate_next_due
@@ -154,7 +154,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     schedule.recalculate_next_due
 
@@ -173,7 +173,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     schedule.recalculate_next_due
     assert schedule.reload.next_due_mileage.present?
@@ -196,7 +196,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     schedule.recalculate_next_due
 
@@ -221,7 +221,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     schedule.recalculate_next_due
 
@@ -260,7 +260,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     schedule.recalculate_next_due
     assert_equal 55_000, schedule.reload.next_due_mileage
@@ -286,7 +286,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
     schedule.recalculate_next_due
     original_mileage = schedule.reload.next_due_mileage
