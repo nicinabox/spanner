@@ -20,7 +20,9 @@
 
 	let vehicle = $derived(data.vehicle);
 	let history = $derived(data.history);
-	let nextReminder = $derived(sortRemindersByDue(data.reminders, vehicle.estimatedMileage)[0]);
+	let nextReminder = $derived(
+		sortRemindersByDue(data.reminders, vehicle.estimatedMileage).filter(isReminderOverdue)[0],
+	);
 	let reminderOverdue = $derived(
 		nextReminder ? isReminderOverdue(nextReminder, vehicle.estimatedMileage) : false,
 	);
@@ -163,7 +165,10 @@
 							Add Purchase
 						</Button>
 					{:else}
-						<Button href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase" {...umamiEvent('add_record')}>
+						<Button
+							href="/vehicles/{vehicle.id}/add?view=record&notes=Purchase"
+							{...umamiEvent('add_record')}
+						>
 							<PlusIcon size={18} />
 							Add Purchase
 						</Button>
