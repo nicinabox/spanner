@@ -65,25 +65,25 @@
 	>
 		<div
 			{...api.getContentProps()}
-			class="relative w-full max-w-lg rounded-lg bg-surface-raised shadow-lg"
+			class="relative w-full max-w-lg rounded-xl bg-surface-raised shadow-lg border border-ink-200"
 			in:scale={{ duration: 200, start: 0.95 }}
 			out:scale={{ duration: 150, start: 0.95 }}
 		>
 			{#if title}
-				<div class="flex items-center justify-between px-6 py-4">
-					<h2 {...api.getTitleProps()} class="text-xl font-semibold">{title}</h2>
+				<div class="flex items-center justify-between pl-8 pr-6 py-6">
+					<h2 {...api.getTitleProps()} class="text-2xl font-semibold">{title}</h2>
 					<button
 						{...api.getCloseTriggerProps()}
-						class="flex items-center justify-center rounded-sm p-1 -mr-1 text-ink-400 hover:text-ink-600 transition-colors"
+						class="flex items-center justify-center rounded-sm p-1 text-ink-400 hover:text-ink-600 transition-colors"
 					>
 						<X size={18} />
 					</button>
 				</div>
 			{/if}
 			{#if description}
-				<p {...api.getDescriptionProps()} class="px-6 pt-2 text-sm text-ink-500">{description}</p>
+				<p {...api.getDescriptionProps()} class="px-8 pt-2 text-sm text-ink-500">{description}</p>
 			{/if}
-			<div class="p-6 pt-0">
+			<div class="p-8 pt-0">
 				{@render children()}
 			</div>
 		</div>
