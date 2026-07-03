@@ -48,6 +48,7 @@ class ServiceSchedule < ApplicationRecord
 
   belongs_to :vehicle
   belongs_to :classification
+  belongs_to :last_completed_record, class_name: 'Record', optional: true
 
   # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo
   validates :vehicle, presence: true
