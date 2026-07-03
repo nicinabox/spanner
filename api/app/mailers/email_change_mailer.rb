@@ -2,9 +2,8 @@
 
 class EmailChangeMailer < ApplicationMailer
   # Sent to the NEW (unconfirmed) email address with a confirmation link.
-  def confirm_email(user, url_options)
+  def confirm_email(user)
     @user = user
-    @url_options = url_options
     @expires_at = expires_time
     mail to: @user.unconfirmed_email,
          subject: "Confirm your new email for Spanner (expires #{@expires_at})"
