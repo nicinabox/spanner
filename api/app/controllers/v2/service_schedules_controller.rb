@@ -13,6 +13,7 @@ module V2
     def create
       schedule = schedules.build(schedule_params)
       schedule.save!
+      apply_classification_to_matching_records(schedule.classification)
       schedule.recalculate_next_due
       render json: schedule
     end
@@ -26,7 +27,9 @@ module V2
 
     def destroy
       schedule = schedules.find(params[:id])
+      classification = schedule.classification
       schedule.destroy!
+      remove_orphaned_classification(classification)
       head :no_content
     end
 
@@ -58,6 +61,33 @@ module V2
       params.expect(
         service_schedule: %i[classification_id distance_interval month_interval notes enabled]
       )
+    end
+
+    def apply_classification_to_matching_records(classification)
+      vehicle.records.find_each do |record|
+        next if record.notes.blank?
+        next if record.classifications.include?(classification)
+
+        HeuristicClassifier.classify(record.notes, vehicle: vehicle).each do |result|
+          next unless result[:classification].id == classification.id
+
+          record.record_classifications.find_or_create_by(
+            classification: classification
+          ) do |rc|
+            rc.classifier = result[:classifier]
+            rc.confidence = result[:confidence]
+            rc.auto_tagged = true
+          end
+        end
+      end
+    end
+
+    def remove_orphaned_classification(classification)
+      return if vehicle.service_schedules.where(classification: classification).any?
+
+      vehicle.records.find_each do |record|
+        record.record_classifications.where(classification: classification, auto_tagged: true).destroy_all
+      end
     end
   end
 end

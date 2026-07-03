@@ -87,4 +87,28 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
     @schedule.reload
     assert @schedule.last_completed_record_id.present?
   end
+
+  test 'create rejects duplicate classification for vehicle' do
+    post vehicle_service_schedules_url(@vehicle),
+         params: { service_schedule: {
+           classification_id: @classification.id,
+           distance_interval: 3000
+         } },
+         headers: http_options(@session.auth_token)[:headers]
+    assert_response :unprocessable_entity
+  end
+
+  test 'create tags matching records with classification' do
+    record = @vehicle.records.create!(date: 1.day.ago, notes: 'Got a tire rotation today', mileage: 50_000)
+    other_classification = Classification.find_by!(key: 'tire_rotation')
+
+    post vehicle_service_schedules_url(@vehicle),
+         params: { service_schedule: {
+           classification_id: other_classification.id,
+           distance_interval: 7500
+         } },
+         headers: http_options(@session.auth_token)[:headers]
+    assert_response :success
+    assert_includes record.reload.classifications, other_classification
+  end
 end

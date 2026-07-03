@@ -53,6 +53,7 @@ class ServiceSchedule < ApplicationRecord
   validates :vehicle, presence: true
   validates :classification, presence: true
   # rubocop:enable Rails/RedundantPresenceValidationOnBelongsTo
+  validates :classification_id, uniqueness: { scope: :vehicle_id }
   validate :at_least_one_interval
 
   def recalculate_next_due
