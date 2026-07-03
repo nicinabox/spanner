@@ -40,6 +40,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
     post 'webhooks/postmark', to: 'postmark#webhook'
     post 'webhooks/test', to: 'webhooks#test'
+
+    get 'share/vehicles/:token', to: 'share_links#show', as: :share_vehicle
+    get 'share/vehicles/:token/records', to: 'share_links#records', as: :share_vehicle_records
   end
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do
@@ -61,6 +64,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       get :export
 
       resources :shares, only: %i[index create destroy]
+
+      resources :share_links, only: %i[index create destroy]
     end
 
     resources :shares, only: [] do
