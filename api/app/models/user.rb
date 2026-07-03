@@ -52,6 +52,13 @@ class User < ApplicationRecord
   has_many :vehicles, dependent: :destroy
   has_many :reminders, through: :vehicles
   has_many :records, through: :vehicles
+  has_many :vehicle_shares, dependent: :destroy
+  has_many :shared_vehicles, through: :vehicle_shares, source: :vehicle
+
+  def accessible_vehicles
+    Vehicle.where(id: vehicles.select(:id))
+           .or(Vehicle.where(id: vehicle_shares.accepted.select(:vehicle_id)))
+  end
 
   before_save { |user| user.email = user.email.strip.downcase if user.email }
   before_save { |user| user.unconfirmed_email = user.unconfirmed_email.strip.downcase if user.unconfirmed_email }

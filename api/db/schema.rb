@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_02_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -138,6 +138,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "share_links", force: :cascade do |t|
+    t.bigint "vehicle_id", null: false
+    t.string "token", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_share_links_on_token", unique: true
+    t.index ["vehicle_id"], name: "index_share_links_on_vehicle_id"
+  end
+
   create_table "users", id: :serial, force: :cascade do |t|
     t.string "email"
     t.datetime "created_at", precision: nil, null: false
@@ -162,6 +171,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
     t.index ["email_confirmation_token"], name: "index_users_on_email_confirmation_token"
   end
 
+  create_table "vehicle_shares", force: :cascade do |t|
+    t.bigint "vehicle_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "invited_by_id", null: false
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invited_by_id"], name: "index_vehicle_shares_on_invited_by_id"
+    t.index ["user_id"], name: "index_vehicle_shares_on_user_id"
+    t.index ["vehicle_id", "user_id"], name: "index_vehicle_shares_on_vehicle_id_and_user_id", unique: true
+    t.index ["vehicle_id"], name: "index_vehicle_shares_on_vehicle_id"
+  end
+
   create_table "vehicles", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.string "name"
@@ -176,10 +198,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
     t.boolean "prompt_for_records", default: true
     t.string "color"
     t.hstore "preferences"
-    t.string "notification_token"
-    t.datetime "snoozed_until"
-    t.datetime "prompt_snoozed_until"
-    t.index ["notification_token"], name: "index_vehicles_on_notification_token", unique: true
     t.index ["preferences"], name: "index_vehicles_on_preferences", using: :gin
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end
@@ -192,4 +210,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_30_025329) do
   add_foreign_key "service_schedules", "classifications"
   add_foreign_key "service_schedules", "records", column: "last_completed_record_id"
   add_foreign_key "service_schedules", "vehicles"
+  add_foreign_key "share_links", "vehicles"
+  add_foreign_key "vehicle_shares", "users"
+  add_foreign_key "vehicle_shares", "users", column: "invited_by_id"
+  add_foreign_key "vehicle_shares", "vehicles"
 end
