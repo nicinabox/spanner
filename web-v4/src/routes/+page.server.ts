@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	login: async ({ request, cookies }) => {
+	login: async ({ request, cookies, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, loginSchema);
 
@@ -36,7 +36,7 @@ export const actions = {
 				email: parsed.data.email,
 				password: parsed.data.password || undefined,
 				timeZoneOffset: timeZoneOffset || undefined,
-			});
+			}, locals);
 
 			if (result && typeof result === 'object' && 'authToken' in result) {
 				await setSession(cookies, result as session.Session);
@@ -52,7 +52,7 @@ export const actions = {
 		}
 	},
 
-	magicLink: async ({ request }) => {
+	magicLink: async ({ request, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, loginSchema);
 
@@ -63,7 +63,7 @@ export const actions = {
 		try {
 			await session.login({
 				email: parsed.data.email,
-			});
+			}, locals);
 
 			return { status: 'pending' };
 		} catch (error) {

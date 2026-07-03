@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ url }) => {
 };
 
 export const actions = {
-	request: async ({ request }) => {
+	request: async ({ request, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, requestResetSchema);
 
@@ -20,7 +20,7 @@ export const actions = {
 		}
 
 		try {
-			await requestReset({ email: parsed.data.email });
+			await requestReset({ email: parsed.data.email }, locals);
 			return { status: 'pending' };
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
