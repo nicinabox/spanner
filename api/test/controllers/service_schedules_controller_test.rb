@@ -10,7 +10,7 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
     @schedule = ServiceSchedule.create!(
       vehicle: @vehicle,
       classification: @classification,
-      mileage_interval: 5000
+      distance_interval: 5000
     )
   end
 
@@ -25,7 +25,7 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
     get vehicle_service_schedule_url(@vehicle, @schedule), headers: http_options(@session.auth_token)[:headers]
     assert_response :success
     assert_equal @schedule.id, response_body['id']
-    assert_equal 5000, response_body['mileage_interval']
+    assert_equal 5000, response_body['distance_interval']
   end
 
   test 'create creates a schedule and recalculates next due' do
@@ -35,25 +35,25 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
       post vehicle_service_schedules_url(@vehicle),
            params: { service_schedule: {
              classification_id: @other_classification.id,
-             mileage_interval: 7500
+             distance_interval: 7500
            } },
            headers: http_options(@session.auth_token)[:headers]
     end
     assert_response :success
 
     schedule = ServiceSchedule.find(response_body['id'])
-    assert_equal 7500, schedule.mileage_interval
+    assert_equal 7500, schedule.distance_interval
     assert schedule.reload.next_due_mileage.present?
   end
 
   test 'update modifies a schedule and recalculates next due' do
     put vehicle_service_schedule_url(@vehicle, @schedule),
-        params: { service_schedule: { mileage_interval: 7500 } },
+        params: { service_schedule: { distance_interval: 7500 } },
         headers: http_options(@session.auth_token)[:headers]
     assert_response :success
 
     @schedule.reload
-    assert_equal 7500, @schedule.mileage_interval
+    assert_equal 7500, @schedule.distance_interval
   end
 
   test 'destroy removes schedule' do
@@ -86,5 +86,29 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
 
     @schedule.reload
     assert @schedule.last_completed_record_id.present?
+  end
+
+  test 'create rejects duplicate classification for vehicle' do
+    post vehicle_service_schedules_url(@vehicle),
+         params: { service_schedule: {
+           classification_id: @classification.id,
+           distance_interval: 3000
+         } },
+         headers: http_options(@session.auth_token)[:headers]
+    assert_response :unprocessable_entity
+  end
+
+  test 'create tags matching records with classification' do
+    record = @vehicle.records.create!(date: 1.day.ago, notes: 'Got a tire rotation today', mileage: 50_000)
+    other_classification = Classification.find_by!(key: 'tire_rotation')
+
+    post vehicle_service_schedules_url(@vehicle),
+         params: { service_schedule: {
+           classification_id: other_classification.id,
+           distance_interval: 7500
+         } },
+         headers: http_options(@session.auth_token)[:headers]
+    assert_response :success
+    assert_includes record.reload.classifications, other_classification
   end
 end

@@ -109,29 +109,56 @@ class HeuristicClassifier < NoteClassifier
     ]
   }.freeze
 
-  def classify(text)
+  def self.classify(text, **)
+    new.classify(text, **)
+  end
+
+  def classify(text, vehicle: nil)
     normalized = text.to_s.downcase
     return [] if normalized.blank?
 
-    KEYWORDS.each_with_object([]) do |(key, tokens), results|
-      classification = classify_keywords(normalized, key, tokens)
-      results << classification if classification
-    end
+    vehicle_classifications = vehicle_classifications_for(vehicle)
+    overridden_names = vehicle_classifications.map(&:name).map(&:downcase)
+
+    match_system_keywords(normalized, overridden_names) +
+      match_vehicle_classifications(normalized, vehicle_classifications)
   end
 
   private
 
-  def classify_keywords(text, key, tokens)
-    return unless tokens.any? { |token| phrase_match?(text, token) }
+  def vehicle_classifications_for(vehicle)
+    return Classification.none unless vehicle
 
-    classification = Classification.find_by(key: key)
-    return unless classification
+    vehicle.classifications.where.not(keywords: [])
+  end
 
-    {
-      classification: classification,
-      classifier: 'heuristic',
-      confidence: 1.0
-    }
+  def match_system_keywords(normalized, overridden_names)
+    KEYWORDS.each_with_object([]) do |(key, tokens), results|
+      classification = Classification.find_by(key: key)
+      next unless classification
+      next if overridden_names.include?(classification.name.downcase)
+
+      next unless classify_keywords(normalized, tokens)
+
+      results << classification_result(classification)
+    end
+  end
+
+  def match_vehicle_classifications(normalized, vehicle_classifications)
+    vehicle_classifications.each_with_object([]) do |classification, results|
+      next if classification.keywords.blank?
+      next unless classify_keywords(normalized, classification.keywords)
+
+      results << classification_result(classification)
+    end
+  end
+
+  def classification_result(classification)
+    { classification: classification, classifier: 'heuristic', confidence: 1.0 }
+  end
+
+  def classify_keywords(text, tokens)
+    tokens.any? { |token| phrase_match?(text, token) }
   end
 
   def phrase_match?(text, token)

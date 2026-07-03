@@ -9,6 +9,7 @@ class Vehicle < ApplicationRecord
   has_many :reminders, dependent: :destroy
   has_many :records, dependent: :destroy
   has_many :service_schedules, dependent: :destroy
+  has_many :classifications, dependent: :destroy
 
   default_scope { order(position: :asc, id: :asc) }
 

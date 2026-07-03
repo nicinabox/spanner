@@ -53,14 +53,15 @@ class Record < ApplicationRecord
   end
 
   def classify_notes
-    record_classifications.destroy_all
-    return if notes.blank?
+    record_classifications.auto_tagged.destroy_all
+    return if notes.blank? || !saved_changes?
 
-    HeuristicClassifier.classify(notes).each do |result|
+    HeuristicClassifier.classify(notes, vehicle:).each do |result|
       record_classifications.create!(
         classification: result[:classification],
         classifier: result[:classifier],
-        confidence: result[:confidence]
+        confidence: result[:confidence],
+        auto_tagged: true
       )
     end
   end

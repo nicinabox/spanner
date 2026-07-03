@@ -41,6 +41,7 @@ module ActiveSupport
           c.name = attrs[:name]
           c.description = attrs[:keywords].join(', ')
           c.system = true
+          c.keywords = attrs[:keywords]
         end
       end
     end

@@ -43,9 +43,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   end
 
   scope module: :v2, constraints: ApiConstraint.new(version: 2) do
-    resources :classifications, only: :index
+    resources :classifications, only: %i[index update destroy]
 
     resources :vehicles do
+      resources :classifications, only: %i[index create]
       resources :service_schedules do
         post :complete, on: :member
       end
@@ -58,13 +59,18 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
       resources :records do
         delete 'attachments/:signed_id', to: 'records#destroy_attachment', as: :attachment
+        resources :record_classifications, only: %i[create destroy]
       end
+
+      post :reclassify, on: :member, controller: 'reclassify'
 
       post :import
       get :export
     end
 
     resources :reminders, only: :index
+
+    get 'service_schedules/presets', to: 'service_schedule_presets#index'
 
     get 'user', to: 'users#index'
     put 'user', to: 'users#update'
