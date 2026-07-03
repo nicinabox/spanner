@@ -49,6 +49,7 @@
 				theme="dark"
 				size="sm"
 				items={[
+					{ value: 'pending-invites', label: 'Pending Invites', href: '/shares/pending', preload: false },
 					{ value: 'settings', label: 'Settings', href: '/settings', preload: false },
 					{ value: 'signout', label: 'Sign out', href: '/logout', preload: false },
 				]}
