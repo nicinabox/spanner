@@ -64,8 +64,8 @@
 		<Field label="Notes" name="notes">
 			<Textarea name="notes" bind:value={notes} rows={2} placeholder="Optional" />
 		</Field>
-		<div class="flex justify-end">
-			<Button type="submit" size="sm">Create Schedule</Button>
+		<div class="flex gap-3">
+			<Button type="submit">Create Schedule</Button>
 		</div>
 	</div>
 </form>
