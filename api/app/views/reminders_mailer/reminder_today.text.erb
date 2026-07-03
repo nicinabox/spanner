@@ -8,7 +8,7 @@ You wanted to be reminded about some things today.
     * <%= reminder.notes %>
   <% end %>
 
-  Manage notifications for <%= vehicle.name %>: <%= frontend_preferences_url(@user.account_token, vehicle_id: vehicle.id) %>
+  Manage notifications for <%= vehicle.name %>: <%= web_preferences_url(token: @user.account_token, vehicle_id: vehicle.id) %>
 
 <% end %>
 

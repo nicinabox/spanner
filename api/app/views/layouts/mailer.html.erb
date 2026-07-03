@@ -19,19 +19,17 @@
 
         <%= yield %>
 
-        <% app_url = Rails.configuration.x.web_url %>
         <div class="footer">
           <% if @user && @user.unsubscribed_at.nil? %>
             <div>
                 <small class="text-muted">
-                    <%= link_to 'Manage email preferences', frontend_preferences_url(@user.account_token), class: 'text-muted' %>
+                    <%= link_to 'Manage email preferences', web_preferences_url(token: @user.account_token), class: 'text-muted' %>
                 </small>
             </div>
           <% end %>
           <div>
             <small class="text-muted">
-                View all your vehicles at
-                <%= link_to app_url, app_url, class: 'text-muted' %>
+                <%= link_to 'View all your vehicles', web_root_url, class: 'text-muted' %>
             </small>
           </div>
           <div>
