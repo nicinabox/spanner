@@ -59,7 +59,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
       resources :records do
         delete 'attachments/:signed_id', to: 'records#destroy_attachment', as: :attachment
-        resources :record_tags, only: %i[create destroy]
+        resources :record_classifications, only: %i[create destroy]
       end
 
       post :reclassify, on: :member, controller: 'reclassify'

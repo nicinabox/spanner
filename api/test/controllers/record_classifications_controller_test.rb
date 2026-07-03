@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class RecordTagsControllerTest < ActionDispatch::IntegrationTest
+class RecordClassificationsControllerTest < ActionDispatch::IntegrationTest
   setup do
     new_session
     @vehicle = @user.vehicles.first
@@ -16,7 +16,7 @@ class RecordTagsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'add tag to record' do
-    post vehicle_record_record_tags_url(@vehicle, @record),
+    post vehicle_record_record_classifications_url(@vehicle, @record),
          params: { classification_id: @tag.id },
          headers: http_options(@session.auth_token)[:headers]
     assert_response :success
@@ -27,7 +27,7 @@ class RecordTagsControllerTest < ActionDispatch::IntegrationTest
     other = users(:two)
     other_vehicle = other.vehicles.first
     other_record = other_vehicle.records.create!(date: Time.zone.today, notes: 'Test')
-    post vehicle_record_record_tags_url(other_vehicle, other_record),
+    post vehicle_record_record_classifications_url(other_vehicle, other_record),
          params: { classification_id: @tag.id },
          headers: http_options(@session.auth_token)[:headers]
     assert_response :not_found
@@ -35,7 +35,7 @@ class RecordTagsControllerTest < ActionDispatch::IntegrationTest
 
   test 'remove tag from record' do
     @record.record_classifications.create!(classification: @tag, classifier: 'manual', confidence: 1.0, auto_tagged: false)
-    delete vehicle_record_record_tag_url(@vehicle, @record, @tag),
+    delete vehicle_record_record_classification_url(@vehicle, @record, @tag),
            headers: http_options(@session.auth_token)[:headers]
     assert_response :success
     assert_not @record.reload.classifications.include?(@tag)

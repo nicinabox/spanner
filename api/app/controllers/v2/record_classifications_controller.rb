@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module V2
-  class RecordTagsController < ApplicationController
+  class RecordClassificationsController < ApplicationController
     before_action :set_record
 
     def create
