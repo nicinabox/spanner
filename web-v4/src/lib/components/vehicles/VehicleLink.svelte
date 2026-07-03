@@ -32,7 +32,12 @@
 		{/if}
 	</div>
 	<div class="flex flex-col">
-		<span class="font-semibold text-always-light">{name}</span>
+		<div class="flex items-center gap-2">
+			<span class="font-semibold text-always-light">{name}</span>
+			{#if vehicle.isShared}
+				<span class="text-xs bg-always-light/20 text-always-light px-1.5 py-0.5 rounded">Shared</span>
+			{/if}
+		</div>
 		<span class="text-sm text-always-light/60">
 			{formatMileage(estimatedMileage, distanceUnit)}
 			&bull;
