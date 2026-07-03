@@ -1,6 +1,6 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { getServiceSchedules, completeServiceSchedule, deleteServiceSchedule, createServiceSchedule } from '$lib/data/serviceSchedules';
-import { getClassifications } from '$lib/data/classifications';
+import { getClassifications, createClassification } from '$lib/data/classifications';
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
@@ -43,9 +43,26 @@ export const actions: Actions = {
 
 	create: async ({ locals, params, request }) => {
 		const data = await request.formData();
+
+		let classificationId = Number(data.get('classification_id'));
+		const newName = data.get('new_name') as string | null;
+
+		if (newName) {
+			const keywords = (data.get('new_keywords') as string || '')
+				.split(',')
+				.map((k) => k.trim())
+				.filter(Boolean);
+			const classification = await createClassification(
+				params.id!,
+				{ classification: { name: newName, keywords } },
+				locals,
+			);
+			classificationId = classification.id;
+		}
+
 		const body: Record<string, unknown> = {
 			service_schedule: {
-				classification_id: Number(data.get('classification_id')),
+				classification_id: classificationId,
 				distance_interval: data.get('distance_interval') ? Number(data.get('distance_interval')) : null,
 				month_interval: data.get('month_interval') ? Number(data.get('month_interval')) : null,
 				notes: data.get('notes') || null,
