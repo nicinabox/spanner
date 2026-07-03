@@ -19,6 +19,7 @@ module V2
     # the new address is confirmed via #confirm_email.
     def request_email_change
       new_email = params.dig(:user, :email).to_s.strip
+      ActiveSupport::Deprecation.warn("params[:host] is deprecated and will be ignored") if params[:host].present?
       return respond_with_error('Email is required', status: :unprocessable_entity) if new_email.blank?
 
       current_user.request_email_change!(new_email)

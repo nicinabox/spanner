@@ -9,6 +9,7 @@ module V2
     def create
       email = params[:email].to_s.strip.downcase
       password = params[:password].presence
+      ActiveSupport::Deprecation.warn("params[:host] is deprecated and will be ignored") if params[:host].present?
 
       user = User.unscoped.find_by(email: email)
 
