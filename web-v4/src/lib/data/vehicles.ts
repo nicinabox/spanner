@@ -31,7 +31,7 @@ export interface Vehicle {
 	milesPerYear: number | null;
 	estimatedMileage: number;
 	squishVin: string | null;
-	reminders?: Reminder[];
+	reminders: Reminder[];
 	color: string | null;
 	preferences: VehiclePreferences;
 	isShared?: boolean;

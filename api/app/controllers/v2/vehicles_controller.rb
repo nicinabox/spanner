@@ -8,16 +8,18 @@ module V2
   class VehiclesController < ApplicationController
     skip_before_action :authenticate, only: [:share]
 
+    VEHICLE_JSON_METHODS = %i[estimated_mileage miles_per_day miles_per_year reminders squish_vin].freeze
+
     def index
       render json: vehicles.map { |v|
-        v.as_json.merge(is_shared: v.user_id != current_user.id)
+        v.as_json(methods: VEHICLE_JSON_METHODS).merge(is_shared: v.user_id != current_user.id)
       }
     end
 
     def show
       vehicle = vehicles.find(params[:id])
       is_shared = vehicle.user_id != current_user.id
-      render json: vehicle.as_json.merge(is_shared: is_shared)
+      render json: vehicle.as_json(methods: VEHICLE_JSON_METHODS).merge(is_shared: is_shared)
     end
 
     def share
