@@ -1,4 +1,6 @@
 import { getVehicle } from '$lib/data/vehicles';
+import { getClassifications, createClassification } from '$lib/data/classifications';
+import { createServiceSchedule } from '$lib/data/serviceSchedules';
 import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
@@ -15,7 +17,9 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		redirect(303, `/vehicles/${params.id}`);
 	}
 
-	return { vehicle };
+	const classifications = await getClassifications(params.id!, locals);
+
+	return { vehicle, classifications };
 };
 
 export const actions = {
@@ -114,7 +118,6 @@ export const actions = {
 			return fail(400, { errors: [{ id: 'mileage', title: 'Mileage is required' }] });
 		}
 
-		// Mileage-only adjustment doesn't expose attachment UI, so keep the JSON path.
 		await createHistoryEntry(
 			params.id!,
 			{
@@ -127,5 +130,42 @@ export const actions = {
 		);
 
 		redirect(303, `/vehicles/${params.id}`);
+	},
+
+	schedule: async ({ request, locals, params }) => {
+		const data = await request.formData();
+
+		let classificationId = Number(data.get('classification_id'));
+		const newName = data.get('new_name') as string | null;
+
+		if (newName) {
+			const keywords = (data.get('new_keywords') as string || '')
+				.split(',')
+				.map((k) => k.trim())
+				.filter(Boolean);
+			const classification = await createClassification(
+				params.id!,
+				{ classification: { name: newName, keywords } },
+				locals,
+			);
+			classificationId = classification.id;
+		}
+
+		await createServiceSchedule(
+			params.id!,
+			{
+				service_schedule: {
+					classification_id: classificationId,
+					distance_interval: data.get('distance_interval')
+						? Number(data.get('distance_interval'))
+						: null,
+					month_interval: data.get('month_interval') ? Number(data.get('month_interval')) : null,
+					notes: data.get('notes') || null,
+				},
+			},
+			locals,
+		);
+
+		redirect(303, `/vehicles/${params.id}/schedules`);
 	},
 } satisfies Actions;

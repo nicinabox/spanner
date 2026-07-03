@@ -30,7 +30,7 @@
 	);
 </script>
 
-<form method="POST" action="?/create" use:enhance>
+<form method="POST" action="?/schedule" use:enhance>
 	<div class="space-y-3">
 		{#if showNewClassification}
 			<Field label="New Classification Name" name="new_name">

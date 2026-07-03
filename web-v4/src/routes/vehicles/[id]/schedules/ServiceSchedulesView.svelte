@@ -4,12 +4,11 @@
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import { formatMileage } from '$lib/utils/vehicle';
-	import { Wrench, PlusIcon, ChevronRight, X, Sparkles } from 'lucide-svelte';
+	import { Wrench, PlusIcon, ChevronRight, Sparkles } from 'lucide-svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Classification } from '$lib/data/classifications';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import CompleteScheduleForm from '$lib/components/forms/CompleteScheduleForm.svelte';
-	import ServiceScheduleForm from '$lib/components/forms/ServiceScheduleForm.svelte';
 	import SuggestSchedulesDialog from '$lib/components/dialogs/SuggestSchedulesDialog.svelte';
 
 	let {
@@ -23,7 +22,6 @@
 	} = $props();
 
 	let completingId = $state<number | null>(null);
-	let creating = $state(false);
 	let suggestOpen = $state(false);
 
 	const classificationName = (classificationId: number) => {
@@ -55,10 +53,10 @@
 </script>
 
 <div class="max-w-2xl mx-auto">
-	{#if schedules.length || creating}
+	{#if schedules.length}
 		<header class="flex items-center gap-2 mb-6">
-			{#if !vehicle.retired && !creating}
-				<Button class="ml-auto" onclick={() => (creating = true)} {...umamiEvent('add_schedule')}>
+			{#if !vehicle.retired}
+				<Button href={`/vehicles/${vehicle.id}/add?view=schedule`} class="ml-auto" {...umamiEvent('add_schedule')}>
 					<PlusIcon size={16} />
 					Add Schedule
 				</Button>
@@ -68,18 +66,6 @@
 				</Button>
 			{/if}
 		</header>
-
-		{#if creating}
-			<Card variant="outline" size="sm" class="mb-6">
-				<div class="flex items-center justify-between mb-3">
-					<p class="font-medium">New Schedule</p>
-					<button onclick={() => (creating = false)} class="text-ink-400 hover:text-ink-700">
-						<X size={18} />
-					</button>
-				</div>
-				<ServiceScheduleForm {vehicle} {classifications} />
-			</Card>
-		{/if}
 
 		<ul class="space-y-3">
 			{#each schedules as schedule (schedule.id)}
@@ -141,7 +127,7 @@
 						Add Schedule
 					</Button>
 				{:else}
-					<Button onclick={() => (creating = true)}>
+					<Button href={`/vehicles/${vehicle.id}/add?view=schedule`}>
 						<PlusIcon size={18} />
 						Add Schedule
 					</Button>
