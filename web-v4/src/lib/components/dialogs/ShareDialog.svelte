@@ -2,6 +2,7 @@
 	import { Button, Clipboard, Dialog, Input } from '$lib';
 	import { page } from '$app/stores';
 	import type { Vehicle } from '$lib/data/vehicles';
+	import type { RequestOpts } from '$lib/data/types';
 	import { createShare, getShares, deleteShare } from '$lib/data/shares';
 	import { createShareLink, getShareLinks, deleteShareLink } from '$lib/data/share-links';
 	import { X, Link, Mail, Check, Clock } from 'lucide-svelte';
@@ -13,6 +14,9 @@
 	}
 
 	let { vehicle, open = $bindable(false), onOpenChange }: Props = $props();
+
+	let authToken = $derived($page.data.session?.authToken);
+	let opts = $derived<RequestOpts>({ authToken });
 
 	let shares = $state<Awaited<ReturnType<typeof getShares>>>([]);
 	let shareLinks = $state<Awaited<ReturnType<typeof getShareLinks>>>([]);
@@ -29,7 +33,7 @@
 
 	async function loadShares() {
 		try {
-			shares = await getShares(vehicle.id, {});
+			shares = await getShares(vehicle.id, opts);
 		} catch {
 			shares = [];
 		}
@@ -37,7 +41,7 @@
 
 	async function loadShareLinks() {
 		try {
-			shareLinks = await getShareLinks(vehicle.id, {});
+			shareLinks = await getShareLinks(vehicle.id, opts);
 		} catch {
 			shareLinks = [];
 		}
@@ -48,7 +52,7 @@
 		inviteError = '';
 		loading = true;
 		try {
-			await createShare(vehicle.id, email.trim(), {});
+			await createShare(vehicle.id, email.trim(), opts);
 			email = '';
 			await loadShares();
 		} catch (e: any) {
@@ -59,14 +63,14 @@
 	}
 
 	async function handleRevoke(shareId: number) {
-		await deleteShare(vehicle.id, shareId, {});
+		await deleteShare(vehicle.id, shareId, opts);
 		await loadShares();
 	}
 
 	async function handleCreateLink() {
 		loading = true;
 		try {
-			await createShareLink(vehicle.id, {});
+			await createShareLink(vehicle.id, opts);
 			await loadShareLinks();
 		} finally {
 			loading = false;
@@ -74,7 +78,7 @@
 	}
 
 	async function handleRevokeLink(linkId: number) {
-		await deleteShareLink(vehicle.id, linkId, {});
+		await deleteShareLink(vehicle.id, linkId, opts);
 		await loadShareLinks();
 	}
 </script>
