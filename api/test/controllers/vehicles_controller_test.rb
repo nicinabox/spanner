@@ -47,20 +47,6 @@ class VehiclesControllerTest < ActionDispatch::IntegrationTest
     assert_equal @vehicle.name, body['name']
   end
 
-  test 'share a vehicle with sharing enabled' do
-    @vehicle.update!(preferences: { enable_sharing: true })
-    get vehicle_share_url(@vehicle), headers: @headers
-    assert_response :success
-    body = JSON.parse(@response.body)
-    assert_equal @vehicle.id, body['id']
-  end
-
-  test 'share a vehicle with sharing disabled' do
-    @vehicle.update!(preferences: { enable_sharing: false })
-    get vehicle_share_url(@vehicle), headers: @headers
-    assert_response :unauthorized
-  end
-
   test 'create a vehicle' do
     assert_difference('@user.vehicles.count', 1) do
       post vehicles_url, params: { vehicle: { name: 'Toyota' } }, headers: @headers

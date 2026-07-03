@@ -53,15 +53,24 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       get 'reminders/estimate_date', to: 'reminders#estimate_date'
       resources :reminders
 
-      get :share
-      get 'records/share', to: 'records#share'
-
       resources :records do
         delete 'attachments/:signed_id', to: 'records#destroy_attachment', as: :attachment
       end
 
       post :import
       get :export
+
+      resources :shares, only: %i[index create destroy]
+    end
+
+    resources :shares, only: [] do
+      collection do
+        get :pending
+      end
+      member do
+        post :accept
+        delete :decline
+      end
     end
 
     resources :reminders, only: :index
