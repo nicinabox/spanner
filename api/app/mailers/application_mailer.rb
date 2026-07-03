@@ -25,4 +25,16 @@ class ApplicationMailer < ActionMailer::Base
 
     @logo_data_uri = "data:image/png;base64,#{encoded}"
   end
+
+  def web_preferences_url(token:, vehicle_id: nil)
+    base = @web_url || Rails.application.config.x.web_url
+    path = "/preferences/#{token}"
+    path += "?vehicle_id=#{vehicle_id}" if vehicle_id
+    "#{base}#{path}"
+  end
+
+  def web_reset_password_url(token:)
+    base = @web_url || Rails.application.config.x.web_url
+    "#{base}/reset-password/#{token}"
+  end
 end

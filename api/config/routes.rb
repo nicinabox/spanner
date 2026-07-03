@@ -6,21 +6,21 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   root 'status#index'
 
   direct :web_root do
-    '/'
+    Rails.application.config.x.web_url
   end
 
   direct :web_vehicle, vehicle: nil do |options|
-    "/vehicles/#{options[:vehicle].id}"
+    "#{Rails.application.config.x.web_url}/vehicles/#{options[:vehicle].id}"
   end
 
   direct :web_preferences, token: nil, vehicle_id: nil do |options|
     path = "/preferences/#{options[:token]}"
     path += "?vehicle_id=#{options[:vehicle_id]}" if options[:vehicle_id]
-    path
+    "#{Rails.application.config.x.web_url}#{path}"
   end
 
   direct :web_reset_password, token: nil do |options|
-    "/reset-password/#{options[:token]}"
+    "#{Rails.application.config.x.web_url}/reset-password/#{options[:token]}"
   end
 
   scope module: :v2 do
