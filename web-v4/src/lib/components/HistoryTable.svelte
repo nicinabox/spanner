@@ -16,6 +16,7 @@
 	import Button from './common/Button.svelte';
 	import { pluralize } from '$lib/utils/text';
 	import AttachmentList from './attachments/AttachmentList.svelte';
+	import Badge from './common/Badge.svelte';
 
 	interface Props {
 		history: HistoryEntry[];
@@ -148,6 +149,13 @@
 					{/if}
 					<Cell class="w-full max-sm:order-2 max-sm:py-1 flex flex-col">
 						<Markdown src={record.notes} />
+						{#if record.classifications?.length}
+							<div class="flex flex-wrap gap-1 mt-1">
+								{#each record.classifications as c}
+									<Badge variant="neutral">{c.name}</Badge>
+								{/each}
+							</div>
+						{/if}
 						{#if record.attachments.length > 0}
 							<div class="mt-2">
 								<AttachmentList attachments={record.attachments} />

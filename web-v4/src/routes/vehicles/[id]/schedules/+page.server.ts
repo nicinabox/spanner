@@ -55,28 +55,34 @@ export const actions: Actions = {
 
 	suggest: async ({ locals, params, request }) => {
 		const data = await request.formData();
-		const presetNames: string[] = JSON.parse((data.get('preset_names') as string) || '[]');
-
-		const allPresets = await getPresets({ authToken: locals.authToken });
-
-		const toCreate: SchedulePreset[] = [];
-		const groups = Object.values(allPresets);
-		for (let i = 0; i < groups.length; i++) {
-			const group = groups[i];
-			for (let j = 0; j < group.length; j++) {
-				const preset = group[j];
-				if (presetNames.includes(preset.name)) {
-					toCreate.push(preset);
-				}
-			}
+		const presetNames = JSON.parse((data.get('preset_names') as string) || '[]') as string[];
+		if (!presetNames.length) {
+			return { success: true };
 		}
 
-		const existing = await getClassifications(params.id!, locals);
-		const existingSchedules = await getServiceSchedules(params.id!, locals);
+		const allPresets = await getPresets({ authToken: locals.authToken });
+		const nameLookup = new Set(presetNames.map((n) => n.toLowerCase()));
+		const selectedPresets = Object.values(allPresets)
+			.flat()
+			.filter((preset) => nameLookup.has(preset.name.toLowerCase()));
+		const uniquePresets = Object.values(
+			selectedPresets.reduce<Record<string, SchedulePreset>>((acc, preset) => {
+				const key = preset.name.toLowerCase();
+				if (!acc[key] || preset.distanceInterval || preset.monthInterval) {
+					acc[key] = preset;
+				}
+				return acc;
+			}, {}),
+		);
+
+		const [existing, existingSchedules] = await Promise.all([
+			getClassifications(params.id!, locals),
+			getServiceSchedules(params.id!, locals),
+		]);
 		const existingClassificationIds = new Set(existingSchedules.map((s) => s.classificationId));
 		const opts = { authToken: locals.authToken, webUrl: locals.webUrl };
 
-		for (const preset of toCreate) {
+		for (const preset of uniquePresets) {
 			let classificationId = existing.find(
 				(c) => c.name.toLowerCase() === preset.name.toLowerCase(),
 			)?.id;
@@ -98,13 +104,14 @@ export const actions: Actions = {
 				params.id!,
 				{
 					serviceSchedule: {
-						classificationId: classificationId,
+						classificationId,
 						distanceInterval: preset.distanceInterval,
 						monthInterval: preset.monthInterval,
 					},
 				},
 				opts,
 			);
+			existingClassificationIds.add(classificationId);
 		}
 
 		return { success: true };

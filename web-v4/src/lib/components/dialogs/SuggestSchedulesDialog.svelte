@@ -2,6 +2,7 @@
 	import { Button } from '$lib';
 	import Dialog from '$lib/components/common/Dialog.svelte';
 	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import { getPresets } from '$lib/data/serviceSchedules.remote';
 	import { Check, Sparkles } from 'lucide-svelte';
 
@@ -51,14 +52,22 @@
 	};
 
 	const selectedNames: string[] = $derived(
-		[...checked].map((i) => currentPresets[i]?.name).filter(Boolean) as string[],
+		[...new Set([...checked].map((i) => currentPresets[i]?.name).filter(Boolean))] as string[],
 	);
 
 	const isExisting = (name: string) => existingClassificationNames.has(name.toLowerCase());
+	const submit: SubmitFunction = () => {
+		return async ({ result, update }: { result: { type: string }; update: (opts?: { reset?: boolean; invalidateAll?: boolean }) => Promise<void> }) => {
+			if (result.type === 'success' || result.type === 'redirect') {
+				onOpenChange(false);
+			}
+			await update();
+		};
+	};
 </script>
 
 <Dialog {open} {onOpenChange} title="Suggest Schedules">
-	<form method="POST" action="?/suggest" use:enhance>
+	<form method="POST" action="?/suggest" use:enhance={submit}>
 		{#if loading}
 			<p class="text-ink-400 text-center py-8">Loading presets...</p>
 		{:else if !selectedType}
