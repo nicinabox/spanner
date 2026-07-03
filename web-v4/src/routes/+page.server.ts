@@ -1,4 +1,4 @@
-import { PUBLIC_EMAIL_ENABLED, WEB_URL } from '$app/env/private';
+import { PUBLIC_EMAIL_ENABLED } from '$app/env/private';
 import * as session from '$lib/data/session';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	login: async ({ request, cookies, url }) => {
+	login: async ({ request, cookies }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, loginSchema);
 
@@ -29,14 +29,12 @@ export const actions = {
 			return fail(401, { errors: parsed.errors });
 		}
 
-		const host = WEB_URL || url.origin;
 		const timeZoneOffset = formData.get('timeZoneOffset') as string | null;
 
 		try {
 			const result = await session.login({
 				email: parsed.data.email,
 				password: parsed.data.password || undefined,
-				host,
 				timeZoneOffset: timeZoneOffset || undefined,
 			});
 
@@ -54,7 +52,7 @@ export const actions = {
 		}
 	},
 
-	magicLink: async ({ request, url }) => {
+	magicLink: async ({ request }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, loginSchema);
 
@@ -62,12 +60,9 @@ export const actions = {
 			return fail(422, { errors: parsed.errors });
 		}
 
-		const host = WEB_URL || url.origin;
-
 		try {
 			await session.login({
 				email: parsed.data.email,
-				host,
 			});
 
 			return { status: 'pending' };

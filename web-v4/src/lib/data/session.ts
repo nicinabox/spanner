@@ -12,7 +12,7 @@ export interface Session {
 	authToken: string;
 }
 
-export const create = async (data: { email: string; host?: string }) => {
+export const create = async (data: { email: string }) => {
 	return request(`/sessions`, { method: 'POST', json: data });
 };
 
@@ -23,7 +23,6 @@ export async function signin(token: string) {
 export const login = async (data: {
 	email: string;
 	password?: string;
-	host?: string;
 	timeZoneOffset?: string;
 }) => {
 	const { timeZoneOffset, ...body } = data;

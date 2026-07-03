@@ -2,11 +2,11 @@ import { request } from './server';
 import { updateUser } from './user';
 import type { RequestOpts } from './types';
 
-export const requestEmailChange = (email: string, host: string, opts: RequestOpts) => {
+export const requestEmailChange = (email: string, opts: RequestOpts) => {
 	return request(`/user/email_change`, {
 		...opts,
 		method: 'POST',
-		json: { user: { email }, host },
+		json: { user: { email } },
 	});
 };
 
