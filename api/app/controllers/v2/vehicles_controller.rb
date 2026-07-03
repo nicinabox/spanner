@@ -9,11 +9,15 @@ module V2
     skip_before_action :authenticate, only: [:share]
 
     def index
-      render json: vehicles.order(:position)
+      render json: vehicles.map { |v|
+        v.as_json.merge(is_shared: v.user_id != current_user.id)
+      }
     end
 
     def show
-      render json: vehicles.find(params[:id])
+      vehicle = vehicles.find(params[:id])
+      is_shared = vehicle.user_id != current_user.id
+      render json: vehicle.as_json.merge(is_shared: is_shared)
     end
 
     def share
@@ -25,7 +29,7 @@ module V2
     end
 
     def create
-      vehicle = vehicles.build(vehicle_params)
+      vehicle = current_user.vehicles.build(vehicle_params)
       vehicle.save!
 
       GoodJob.set(wait: 24.hours).perform_later(vehicle, 'prompt_for_first_record!')
@@ -34,18 +38,19 @@ module V2
     end
 
     def update
-      vehicle = vehicles.find(params[:id])
+      vehicle = current_user.vehicles.find(params[:id])
       vehicle.update!(vehicle_params)
       render json: vehicle
     end
 
     def destroy
-      vehicles.destroy(params[:id])
+      vehicle = current_user.vehicles.find(params[:id])
+      vehicle.destroy!
       head :no_content
     end
 
     def import
-      vehicle = vehicles.find(params[:vehicle_id])
+      vehicle = current_user.vehicles.find(params[:vehicle_id])
       contents = params[:vehicle][:import_file].read
 
       if params[:vehicle][:fuelly] == 'true'
@@ -58,7 +63,7 @@ module V2
     end
 
     def export
-      vehicle = vehicles.find(params[:vehicle_id])
+      vehicle = current_user.vehicles.find(params[:vehicle_id])
       tempfile = Tempfile.new('tmp')
       Exporter.records(vehicle, tempfile)
 
@@ -69,7 +74,7 @@ module V2
     private
 
     def vehicles
-      current_user.vehicles
+      current_user.accessible_vehicles
     end
 
     def vehicle_params
@@ -78,7 +83,6 @@ module V2
           vehicle: [:name, :vin, :notes, :position, :enable_cost, :distance_unit,
                     :retired, :import_file, :fuelly, :color,
                     { preferences: %i[
-                      enable_sharing
                       enable_cost
                       send_reminder_emails
                       send_prompt_for_records

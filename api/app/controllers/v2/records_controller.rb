@@ -69,7 +69,7 @@ module V2
     end
 
     def vehicles
-      current_user.vehicles
+      current_user.accessible_vehicles
     end
 
     def record_params
