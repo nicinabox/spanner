@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, Clipboard, Dialog, Input } from '$lib';
 	import { page } from '$app/stores';
+	import { browser } from '$app/env';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { createShare, getShares, deleteShare } from '$lib/data/shares.remote';
 	import { createShareLink, getShareLinks, deleteShareLink } from '$lib/data/share-links.remote';
@@ -21,7 +22,7 @@
 	let loading = $state(false);
 
 	$effect(() => {
-		if (open) {
+		if (open && browser) {
 			loadShares();
 			loadShareLinks();
 		}
