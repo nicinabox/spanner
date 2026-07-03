@@ -68,6 +68,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
     resources :reminders, only: :index
 
+    post 'vehicles/:id/reclassify', to: 'reclassify#create'
+
     get 'user', to: 'users#index'
     put 'user', to: 'users#update'
     delete 'user', to: 'users#destroy'
