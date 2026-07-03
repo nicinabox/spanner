@@ -21,10 +21,19 @@
 	let inviteError = $state('');
 	let loading = $state(false);
 
+	let loaded = false;
+
 	$effect(() => {
-		if (open && browser) {
+		if (open && browser && !loaded) {
+			loaded = true;
 			loadShares();
 			loadShareLinks();
+		}
+	});
+
+	$effect(() => {
+		if (!open) {
+			loaded = false;
 		}
 	});
 
