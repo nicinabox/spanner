@@ -155,6 +155,4 @@
 	{/if}
 </div>
 
-{#if suggestOpen}
-	<SuggestSchedulesDialog onClose={() => (suggestOpen = false)} />
-{/if}
+<SuggestSchedulesDialog open={suggestOpen} onOpenChange={(v) => (suggestOpen = v)} />

@@ -4,6 +4,7 @@
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import Textarea from '$lib/components/common/Textarea.svelte';
+	import NativeSelect from '$lib/components/common/NativeSelect.svelte';
 	import { MileageLabel } from '$lib/utils/vehicle';
 	import type { Classification } from '$lib/data/classifications';
 	import type { Vehicle } from '$lib/data/vehicles';
@@ -15,7 +16,7 @@
 
 	let { vehicle, classifications }: Props = $props();
 
-	let selectedClassificationId = $state<number | null>(null);
+	let selectedClassificationId = $state<string>('');
 	let distanceInterval = $state('');
 	let monthInterval = $state('');
 	let notes = $state('');
@@ -24,8 +25,8 @@
 	let newClassificationName = $state('');
 	let newClassificationKeywords = $state('');
 
-	const availableClassifications = $derived(
-		classifications.filter((c) => !c.system || c.vehicle_id !== null),
+	const options = $derived(
+		classifications.map((c) => ({ value: String(c.id), label: c.name })),
 	);
 </script>
 
@@ -43,16 +44,11 @@
 			</Button>
 		{:else}
 			<Field label="Service" name="classification_id">
-				<select
+				<NativeSelect
 					name="classification_id"
-					class="w-full rounded-md border border-ink-300 bg-white px-3 py-2 text-sm"
+					options={[{ value: '', label: 'Select a service...' }, ...options]}
 					bind:value={selectedClassificationId}
-				>
-					<option value={null}>Select a service...</option>
-					{#each classifications as c (c.id)}
-						<option value={c.id}>{c.name}</option>
-					{/each}
-				</select>
+				/>
 			</Field>
 			<Button size="sm" variant="ghost" onclick={() => (showNewClassification = true)}>
 				Create new service
