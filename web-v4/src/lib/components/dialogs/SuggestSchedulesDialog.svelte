@@ -51,13 +51,19 @@
 		checked = next;
 	};
 
-	const selectedNames: string[] = $derived(
-		[...new Set([...checked].map((i) => currentPresets[i]?.name).filter(Boolean))] as string[],
-	);
+	const selectedNames: string[] = $derived([
+		...new Set([...checked].map((i) => currentPresets[i]?.name).filter(Boolean)),
+	] as string[]);
 
 	const isExisting = (name: string) => existingClassificationNames.has(name.toLowerCase());
 	const submit: SubmitFunction = () => {
-		return async ({ result, update }: { result: { type: string }; update: (opts?: { reset?: boolean; invalidateAll?: boolean }) => Promise<void> }) => {
+		return async ({
+			result,
+			update,
+		}: {
+			result: { type: string };
+			update: (opts?: { reset?: boolean; invalidateAll?: boolean }) => Promise<void>;
+		}) => {
 			if (result.type === 'success' || result.type === 'redirect') {
 				onOpenChange(false);
 			}
@@ -66,7 +72,7 @@
 	};
 </script>
 
-<Dialog {open} {onOpenChange} title="Suggest Schedules">
+<Dialog {open} {onOpenChange} title="Preset Service Tasks">
 	<form method="POST" action="?/suggest" use:enhance={submit}>
 		{#if loading}
 			<p class="text-ink-400 text-center py-8">Loading presets...</p>
@@ -79,13 +85,13 @@
 						onclick={() => (selectedType = type)}
 					>
 						<p class="font-medium capitalize">{type}</p>
-						<p class="text-sm text-ink-400">{presets?.[type]?.length ?? 0} schedules</p>
+						<p class="text-sm text-ink-400">{presets?.[type]?.length ?? 0} service tasks</p>
 					</button>
 				{/each}
 			</div>
 		{:else}
 			<input type="hidden" name="preset_names" value={JSON.stringify(selectedNames)} />
-			<p class="text-ink-500 mb-4 capitalize">Suggested schedules for {selectedType}:</p>
+			<p class="text-ink-500 mb-4 capitalize">Suggested service tasks for {selectedType}:</p>
 			<ul class="space-y-2 mb-4">
 				{#each currentPresets as preset, i}
 					{@const existing = isExisting(preset.name)}
@@ -128,7 +134,7 @@
 				<Button type="button" variant="ghost" onclick={() => (selectedType = null)}>Back</Button>
 				<Button type="submit" disabled={checked.size === 0}>
 					<Sparkles size={16} />
-					Create {checked.size} schedule{checked.size !== 1 ? 's' : ''}
+					Create {checked.size} service task{checked.size !== 1 ? 's' : ''}
 				</Button>
 			</div>
 		{/if}

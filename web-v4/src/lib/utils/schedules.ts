@@ -1,0 +1,33 @@
+import type { ServiceSchedule } from '$lib/data/serviceSchedules';
+import { parseDateUTC } from './date';
+
+export const isScheduleOverdue = (schedule: ServiceSchedule, estimatedMileage?: number) => {
+	if (schedule.nextDueDate) {
+		const date = parseDateUTC(schedule.nextDueDate);
+		if (new Date() > date) return true;
+	}
+	if (schedule.nextDueMileage && estimatedMileage != null && estimatedMileage >= schedule.nextDueMileage) {
+		return true;
+	}
+	return false;
+};
+
+export const sortSchedulesByDue = (schedules: ServiceSchedule[], estimatedMileage?: number) => {
+	return [...schedules].sort((a, b) => {
+		const aOverdue = isScheduleOverdue(a, estimatedMileage);
+		const bOverdue = isScheduleOverdue(b, estimatedMileage);
+
+		if (aOverdue && !bOverdue) return -1;
+		if (!aOverdue && bOverdue) return 1;
+
+		const aDate = a.nextDueDate ? new Date(a.nextDueDate).getTime() : Infinity;
+		const bDate = b.nextDueDate ? new Date(b.nextDueDate).getTime() : Infinity;
+
+		if (aDate !== bDate) return aDate - bDate;
+
+		const aMileage = a.nextDueMileage ?? Infinity;
+		const bMileage = b.nextDueMileage ?? Infinity;
+
+		return aMileage - bMileage;
+	});
+};

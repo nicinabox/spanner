@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>{pageTitle('Schedules', vehicle.name)}</title>
+	<title>{pageTitle('Service Tasks', vehicle.name)}</title>
 </svelte:head>
 
 <VehiclePageLayout {vehicle} activeTab="schedules">

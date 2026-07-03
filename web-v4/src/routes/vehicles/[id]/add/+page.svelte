@@ -22,7 +22,7 @@
 		{
 			record: 'New Record',
 			reminder: 'New Reminder',
-			schedule: 'New Schedule',
+			schedule: 'New Service Task',
 			'mileage-adjustment': 'Adjust Mileage',
 		}[view] ?? 'New Record',
 	);
@@ -42,7 +42,7 @@
 		},
 		{
 			value: 'schedule',
-			label: 'New Schedule',
+			label: 'New Service Task',
 			href: `/vehicles/${vehicle.id}/add?view=schedule`,
 			icon: Wrench,
 		},

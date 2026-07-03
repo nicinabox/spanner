@@ -67,7 +67,6 @@
 				icon: Bell,
 			},
 			{ value: 'notes', label: 'Notes', href: `/vehicles/${vehicle.id}/notes`, icon: FileText },
-			{ value: 'schedules', label: 'Schedules', href: `/vehicles/${vehicle.id}/schedules`, icon: Wrench },
 		]) as Tab[],
 	);
 
@@ -105,6 +104,7 @@
 				size="sm"
 				items={[
 					{ value: 'edit', label: 'Edit', href: vehiclePath(vehicle.id, 'edit') },
+					{ value: 'schedules', label: 'Service Tasks', href: `/vehicles/${vehicle.id}/schedules` },
 					{ value: 'retire', label: 'Retire', closeOnSelect: false },
 					{ value: '', separator: true },
 					{ value: 'share', label: 'Share...', closeOnSelect: false },

@@ -3,6 +3,7 @@
 	import { umamiEvent } from '$lib/umami';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
+	import { isScheduleOverdue, sortSchedulesByDue } from '$lib/utils/schedules';
 	import { formatMileage } from '$lib/utils/vehicle';
 	import { Wrench, PlusIcon, ChevronRight, Sparkles } from 'lucide-svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
@@ -23,6 +24,8 @@
 
 	let completingId = $state<number | null>(null);
 	let suggestOpen = $state(false);
+
+	const sortedSchedules = $derived(sortSchedulesByDue(schedules, vehicle.estimatedMileage));
 
 	const classificationName = (classificationId: number) => {
 		return classifications.find((c) => c.id === classificationId)?.name ?? 'Unknown';
@@ -65,34 +68,35 @@
 
 <div class="max-w-2xl mx-auto">
 	{#if schedules.length}
-		<header class="flex items-center gap-2 mb-6">
+		<header class="flex items-center justify-end gap-2 mb-6">
 			{#if !vehicle.retired}
-				<Button
-					href={`/vehicles/${vehicle.id}/add?view=schedule`}
-					class="ml-auto"
-					{...umamiEvent('add_schedule')}
-				>
-					<PlusIcon size={16} />
-					Add Schedule
-				</Button>
 				<Button
 					variant="ghost"
 					onclick={() => (suggestOpen = true)}
 					{...umamiEvent('suggest_schedules')}
 				>
 					<Sparkles size={16} />
-					Suggest
+					Presets
+				</Button>
+				<Button href={`/vehicles/${vehicle.id}/add?view=schedule`} {...umamiEvent('add_schedule')}>
+					<PlusIcon size={16} />
+					Add Service Task
 				</Button>
 			{/if}
 		</header>
 
 		<ul class="space-y-3">
-			{#each schedules as schedule (schedule.id)}
+			{#each sortedSchedules as schedule (schedule.id)}
 				<li>
 					<Card variant="outline" size="sm" class="gap-3">
 						<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 							<div class="space-y-0">
-								<p class="font-medium text-lg">{classificationName(schedule.classificationId)}</p>
+								<p class="font-medium text-lg flex items-center gap-3">
+									{#if isScheduleOverdue(schedule, vehicle.estimatedMileage)}
+										<span class="w-2 h-2 rounded-full bg-warning shrink-0"></span>
+									{/if}
+									{classificationName(schedule.classificationId)}
+								</p>
 								<p class="text-base text-ink-500">{intervalSummary(schedule)}</p>
 								{#if dueSummary(schedule)}
 									<p class="text-sm text-ink-400">{dueSummary(schedule)}</p>
@@ -159,12 +163,12 @@
 				{#if vehicle.retired}
 					<Button disabled>
 						<PlusIcon size={18} />
-						Add Schedule
+						Add Service Task
 					</Button>
 				{:else}
 					<Button href={`/vehicles/${vehicle.id}/add?view=schedule`}>
 						<PlusIcon size={18} />
-						Add Schedule
+						Add Service Task
 					</Button>
 					<Button variant="ghost" onclick={() => (suggestOpen = true)}>
 						<Sparkles size={18} />

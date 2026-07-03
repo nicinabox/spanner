@@ -65,7 +65,7 @@
 			<Textarea name="notes" bind:value={notes} rows={2} placeholder="Optional" />
 		</Field>
 		<div class="flex gap-3">
-			<Button type="submit">Create Schedule</Button>
+			<Button type="submit">Create Service Task</Button>
 		</div>
 	</div>
 </form>
