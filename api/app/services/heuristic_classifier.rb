@@ -109,29 +109,50 @@ class HeuristicClassifier < NoteClassifier
     ]
   }.freeze
 
-  def classify(text)
+  def self.classify(text, **options)
+    new.classify(text, **options)
+  end
+
+  def classify(text, vehicle: nil)
     normalized = text.to_s.downcase
     return [] if normalized.blank?
 
-    KEYWORDS.each_with_object([]) do |(key, tokens), results|
-      classification = classify_keywords(normalized, key, tokens)
-      results << classification if classification
+    results = []
+
+    vehicle_tags = if vehicle
+                     vehicle.classifications.where.not(keywords: [])
+                       .where.not(keywords: nil)
+                   else
+                     Classification.none
+                   end
+
+    overridden_names = vehicle_tags.map(&:name).map(&:downcase)
+
+    KEYWORDS.each do |key, tokens|
+      classification = Classification.find_by(key: key)
+      next unless classification
+      next if overridden_names.include?(classification.name.downcase)
+
+      if classify_keywords(normalized, tokens)
+        results << { classification: classification, classifier: 'heuristic', confidence: 1.0 }
+      end
     end
+
+    vehicle_tags.each do |tag|
+      next if tag.keywords.blank?
+
+      if classify_keywords(normalized, tag.keywords)
+        results << { classification: tag, classifier: 'heuristic', confidence: 1.0 }
+      end
+    end
+
+    results
   end
 
   private
 
-  def classify_keywords(text, key, tokens)
-    return unless tokens.any? { |token| phrase_match?(text, token) }
-
-    classification = Classification.find_by(key: key)
-    return unless classification
-
-    {
-      classification: classification,
-      classifier: 'heuristic',
-      confidence: 1.0
-    }
+  def classify_keywords(text, tokens)
+    tokens.any? { |token| phrase_match?(text, token) }
   end
 
   def phrase_match?(text, token)

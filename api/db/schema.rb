@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_03_000003) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_03_055329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -44,7 +44,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_03_000003) do
   end
 
   create_table "classifications", force: :cascade do |t|
-    t.string "key", null: false
+    t.string "key"
     t.string "name", null: false
     t.text "description"
     t.boolean "system", default: true, null: false

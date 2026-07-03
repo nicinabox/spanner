@@ -36,6 +36,37 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     assert_equal 1.0, result[:confidence]
   end
 
+  test 'classify with vehicle-scoped keywords' do
+    vehicle = vehicles(:one)
+    tag = Classification.create!(
+      name: 'Hull Cleaning',
+      vehicle: vehicle,
+      keywords: ['hull cleaning', 'clean hull', 'zincs'],
+      system: false
+    )
+    results = HeuristicClassifier.classify('Cleaned the hull and replaced zincs', vehicle:)
+    assert_includes results.map { |r| r[:classification].id }, tag.id
+  end
+
+  test 'vehicle-scoped tag overrides system tag with same name' do
+    vehicle = vehicles(:one)
+    oil_change = Classification.find_by!(key: 'oil_change')
+    user_tag = Classification.create!(
+      name: 'Oil Change',
+      vehicle: vehicle,
+      keywords: ['lube service'],
+      system: false
+    )
+    results = HeuristicClassifier.classify('lube service done', vehicle:)
+    assert_includes results.map { |r| r[:classification].id }, user_tag.id
+    refute_includes results.map { |r| r[:classification].id }, oil_change.id
+  end
+
+  test 'classify without vehicle uses system keywords only' do
+    results = HeuristicClassifier.classify('oil change')
+    assert_includes results.map { |r| r[:classification].key }, 'oil_change'
+  end
+
   private
 
   def result_names(results)

@@ -52,6 +52,7 @@ class User < ApplicationRecord
   has_many :vehicles, dependent: :destroy
   has_many :reminders, through: :vehicles
   has_many :records, through: :vehicles
+  has_many :classifications, dependent: :nullify
 
   before_save { |user| user.email = user.email.strip.downcase if user.email }
   before_save { |user| user.unconfirmed_email = user.unconfirmed_email.strip.downcase if user.unconfirmed_email }
