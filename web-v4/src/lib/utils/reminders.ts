@@ -6,7 +6,7 @@ import { sortNewestDateFirst } from './records';
 
 export const getOverdueRemindersCount = (vehicle: Vehicle) => {
 	if (vehicle.retired) return undefined;
-	return vehicle.reminders.filter(isReminderOverdue).length;
+	return (vehicle.reminders ?? []).filter(isReminderOverdue).length;
 };
 
 export const isReminderOverdue = (reminder: Reminder, estimatedMileage?: number) => {
