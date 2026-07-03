@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Button, Clipboard, Dialog } from '$lib';
+	import { Button, Clipboard, Dialog, Input } from '$lib';
 	import { page } from '$app/stores';
-	import { enhance } from '$app/forms';
 	import type { Vehicle } from '$lib/data/vehicles';
-	import { enhanceInline } from '$lib/utils/form';
+	import { createShare, getShares, deleteShare } from '$lib/data/shares';
+	import { createShareLink, getShareLinks, deleteShareLink } from '$lib/data/share-links';
+	import { X, Link, Mail, Check, Clock } from 'lucide-svelte';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -13,24 +14,156 @@
 
 	let { vehicle, open = $bindable(false), onOpenChange }: Props = $props();
 
-	let shareUrl = $derived(`${$page.url.origin}/share/vehicles/${vehicle.id}`);
+	let shares = $state<Awaited<ReturnType<typeof getShares>>>([]);
+	let shareLinks = $state<Awaited<ReturnType<typeof getShareLinks>>>([]);
+	let email = $state('');
+	let inviteError = $state('');
+	let loading = $state(false);
+
+	$effect(() => {
+		if (open) {
+			loadShares();
+			loadShareLinks();
+		}
+	});
+
+	async function loadShares() {
+		try {
+			shares = await getShares(vehicle.id, {});
+		} catch {
+			shares = [];
+		}
+	}
+
+	async function loadShareLinks() {
+		try {
+			shareLinks = await getShareLinks(vehicle.id, {});
+		} catch {
+			shareLinks = [];
+		}
+	}
+
+	async function handleInvite() {
+		if (!email.trim()) return;
+		inviteError = '';
+		loading = true;
+		try {
+			await createShare(vehicle.id, email.trim(), {});
+			email = '';
+			await loadShares();
+		} catch (e: any) {
+			inviteError = e.message || 'Failed to send invite';
+		} finally {
+			loading = false;
+		}
+	}
+
+	async function handleRevoke(shareId: number) {
+		await deleteShare(vehicle.id, shareId, {});
+		await loadShares();
+	}
+
+	async function handleCreateLink() {
+		loading = true;
+		try {
+			await createShareLink(vehicle.id, {});
+			await loadShareLinks();
+		} finally {
+			loading = false;
+		}
+	}
+
+	async function handleRevokeLink(linkId: number) {
+		await deleteShareLink(vehicle.id, linkId, {});
+		await loadShareLinks();
+	}
 </script>
 
-<Dialog bind:open title="Share">
-	<p>Sharing will enable anyone with the link to view.</p>
+<Dialog bind:open title="Share Vehicle">
+	<div class="space-y-6">
+		<!-- Invite People -->
+		<section>
+			<h3 class="text-sm font-semibold flex items-center gap-2 mb-3">
+				<Mail size={16} />
+				Invite People
+			</h3>
 
-	<form method="POST" action={`/vehicles/${vehicle.id}?/toggleShare`} use:enhance={enhanceInline}>
-		{#if vehicle.preferences.enableSharing}
-			<div class="mt-4 flex flex-col gap-3">
-				<Clipboard value={shareUrl} />
-				<Button type="submit" variant="outline" color="danger" class="self-start mt-2"
-					>Stop Sharing</Button
-				>
-			</div>
-		{:else}
-			<div class="mt-4">
-				<Button type="submit" variant="solid">Enable Sharing</Button>
-			</div>
-		{/if}
-	</form>
+			<form
+				class="flex gap-2"
+				onsubmit={(e) => {
+					e.preventDefault();
+					handleInvite();
+				}}
+			>
+				<Input
+					type="email"
+					placeholder="Email address..."
+					bind:value={email}
+					class="flex-1"
+					required
+				/>
+				<Button type="submit" disabled={loading || !email.trim()}>Invite</Button>
+			</form>
+
+			{#if inviteError}
+				<p class="text-sm text-negative mt-1">{inviteError}</p>
+			{/if}
+
+			{#if shares.length > 0}
+				<ul class="mt-3 space-y-1">
+					{#each shares as share}
+						<li class="flex items-center justify-between text-sm py-1">
+							<span class="flex items-center gap-2">
+								{share.user?.email ?? 'Unknown'}
+								{#if share.accepted_at}
+									<Check size={14} class="text-positive" />
+								{:else}
+									<Clock size={14} class="text-ink-400" />
+									<span class="text-ink-400">Pending</span>
+								{/if}
+							</span>
+							<button
+								onclick={() => handleRevoke(share.id)}
+								class="text-negative hover:underline text-sm"
+							>
+								<X size={14} />
+							</button>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</section>
+
+		<hr class="border-ink-200" />
+
+		<!-- Public Links -->
+		<section>
+			<h3 class="text-sm font-semibold flex items-center gap-2 mb-3">
+				<Link size={16} />
+				Public Links
+			</h3>
+
+			<Button onclick={handleCreateLink} variant="outline" size="sm" disabled={loading}>
+				Create Link
+			</Button>
+
+			{#if shareLinks.length > 0}
+				<ul class="mt-3 space-y-2">
+					{#each shareLinks as link}
+						<li class="flex items-center gap-2">
+							<Clipboard
+								value={`${$page.url.origin}/share/vehicles/${link.token}`}
+							/>
+							<button
+								onclick={() => handleRevokeLink(link.id)}
+								class="text-negative hover:underline text-sm shrink-0"
+							>
+								<X size={14} />
+							</button>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</section>
+	</div>
 </Dialog>

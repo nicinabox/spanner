@@ -34,6 +34,7 @@ export interface Vehicle {
 	reminders: Reminder[];
 	color: string | null;
 	preferences: VehiclePreferences;
+	isShared?: boolean;
 }
 
 export const getAllVehicles = async (opts: RequestOpts) => {
