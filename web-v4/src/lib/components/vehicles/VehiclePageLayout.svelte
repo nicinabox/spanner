@@ -67,6 +67,7 @@
 				icon: Bell,
 			},
 			{ value: 'notes', label: 'Notes', href: `/vehicles/${vehicle.id}/notes`, icon: FileText },
+			{ value: 'schedules', label: 'Schedules', href: `/vehicles/${vehicle.id}/schedules`, icon: Wrench },
 		]) as Tab[],
 	);
 
