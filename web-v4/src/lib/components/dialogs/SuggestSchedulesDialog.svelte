@@ -3,32 +3,25 @@
 	import Dialog from '$lib/components/common/Dialog.svelte';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { getPresets } from '$lib/data/serviceSchedules.remote';
-	import { Check, Sparkles } from 'lucide-svelte';
-
-	interface Preset {
-		name: string;
-		distance_interval: number | null;
-		month_interval: number | null;
-	}
+	import { getPresets, type Preset } from '$lib/data/serviceSchedules.remote';
+	import { Check, Plus, RefreshCw } from 'lucide-svelte';
 
 	interface Props {
 		open: boolean;
 		onOpenChange: (open: boolean) => void;
 		existingClassificationNames?: Set<string>;
+		initialType?: string | null;
 	}
 
-	let { open, onOpenChange, existingClassificationNames = new Set() }: Props = $props();
+	let { open, onOpenChange, existingClassificationNames = new Set(), initialType = null }: Props = $props();
 
 	let presets: Record<string, Preset[]> | null = $state(null);
 	let loading = $state(true);
-	let selectedType = $state<string | null>(null);
 	let checked = $state<Set<number>>(new Set());
 
 	$effect(() => {
 		if (open) {
 			loading = true;
-			selectedType = null;
 			checked = new Set();
 			getPresets({}).then((data) => {
 				presets = data;
@@ -38,7 +31,7 @@
 	});
 
 	const currentPresets: Preset[] = $derived(
-		selectedType && presets ? (presets[selectedType] ?? []) : [],
+		initialType && presets ? (presets[initialType] ?? []) : [],
 	);
 
 	const togglePreset = (index: number) => {
@@ -70,29 +63,18 @@
 			await update();
 		};
 	};
+	const title = $derived(initialType ? `${initialType.charAt(0).toUpperCase() + initialType.slice(1)} Tasks` : 'Common Service Tasks');
+	const formId = 'suggest-form';
 </script>
 
-<Dialog {open} {onOpenChange} title="Preset Service Tasks">
-	<form method="POST" action="?/suggest" use:enhance={submit}>
+<Dialog {open} {onOpenChange} title={title}>
+	<form id={formId} method="POST" action="?/suggest" use:enhance={submit}>
 		{#if loading}
 			<p class="text-ink-400 text-center py-8">Loading presets...</p>
-		{:else if !selectedType}
-			<div class="grid grid-cols-2 gap-3">
-				{#each Object.keys(presets ?? {}) as type}
-					<button
-						type="button"
-						class="p-4 rounded-lg border border-ink-300 hover:border-ink-500 text-left"
-						onclick={() => (selectedType = type)}
-					>
-						<p class="font-medium capitalize">{type}</p>
-						<p class="text-sm text-ink-400">{presets?.[type]?.length ?? 0} service tasks</p>
-					</button>
-				{/each}
-			</div>
 		{:else}
 			<input type="hidden" name="preset_names" value={JSON.stringify(selectedNames)} />
-			<p class="text-ink-500 mb-4 capitalize">Suggested service tasks for {selectedType}:</p>
-			<ul class="space-y-2 mb-4">
+			<p class="mb-4">Common tasks for {initialType}s. You can edit them any time.</p>
+			<ul class="space-y-2">
 				{#each currentPresets as preset, i}
 					{@const existing = isExisting(preset.name)}
 					{@const isChecked = checked.has(i) || existing}
@@ -118,25 +100,27 @@
 							</div>
 							<div>
 								<p class="font-medium">{preset.name}</p>
-								<p class="text-sm text-ink-400">
-									{preset.distance_interval
-										? `every ${preset.distance_interval.toLocaleString()} mi`
+								<p class="text-sm text-ink-400 flex items-center gap-1">
+									<RefreshCw size={14} class="text-ink-400 shrink-0" />
+									{preset.distanceInterval
+										? `${preset.distanceInterval.toLocaleString()} mi`
 										: ''}
-									{preset.distance_interval && preset.month_interval ? ' or ' : ''}
-									{preset.month_interval ? `every ${preset.month_interval} mo` : ''}
+									{preset.distanceInterval && preset.monthInterval ? ' or ' : ''}
+									{preset.monthInterval ? `${preset.monthInterval} mo` : ''}
 								</p>
 							</div>
 						</button>
 					</li>
 				{/each}
 			</ul>
-			<div class="flex justify-end gap-2">
-				<Button type="button" variant="ghost" onclick={() => (selectedType = null)}>Back</Button>
-				<Button type="submit" disabled={checked.size === 0}>
-					<Sparkles size={16} />
-					Create {checked.size} service task{checked.size !== 1 ? 's' : ''}
-				</Button>
-			</div>
 		{/if}
 	</form>
+
+	{#snippet actions()}
+		<Button type="button" variant="ghost" form={formId} onclick={() => onOpenChange(false)}>Cancel</Button>
+		<Button type="submit" form={formId} disabled={checked.size === 0}>
+			<Plus size={16} />
+			Add {checked.size} service task{checked.size !== 1 ? 's' : ''}
+		</Button>
+	{/snippet}
 </Dialog>

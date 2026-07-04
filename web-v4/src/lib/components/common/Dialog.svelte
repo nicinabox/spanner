@@ -7,6 +7,7 @@
 
 	interface Props {
 		children: Snippet;
+		actions?: Snippet;
 		title?: string;
 		open?: boolean;
 		onOpenChange?: (open: boolean) => void;
@@ -18,6 +19,7 @@
 
 	let {
 		children,
+		actions,
 		title,
 		open = $bindable(false),
 		onOpenChange,
@@ -81,6 +83,11 @@
 			<div class="p-8 pt-0 overflow-auto flex-1" {...api.getDescriptionProps()}>
 				{@render children()}
 			</div>
+			{#if actions}
+				<div class="flex items-center justify-end gap-2 px-8 py-4 border-t border-ink-200">
+					{@render actions()}
+				</div>
+			{/if}
 		</div>
 	</div>
 {/if}
