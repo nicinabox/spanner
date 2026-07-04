@@ -7,19 +7,22 @@
 	import NativeSelect from '$lib/components/common/NativeSelect.svelte';
 	import { MileageLabel } from '$lib/utils/vehicle';
 	import type { Classification } from '$lib/data/classifications';
+	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Vehicle } from '$lib/data/vehicles';
 
 	interface Props {
 		vehicle: Vehicle;
 		classifications: Classification[];
+		schedule?: ServiceSchedule;
+		action?: string;
 	}
 
-	let { vehicle, classifications }: Props = $props();
+	let { vehicle, classifications, schedule, action = '?/schedule' }: Props = $props();
 
-	let selectedClassificationId = $state<string>('');
-	let distanceInterval = $state('');
-	let monthInterval = $state('');
-	let notes = $state('');
+	let selectedClassificationId = $state<string>(schedule ? String(schedule.classificationId) : '');
+	let distanceInterval = $state(schedule?.distanceInterval?.toString() ?? '');
+	let monthInterval = $state(schedule?.monthInterval?.toString() ?? '');
+	let notes = $state(schedule?.notes ?? '');
 
 	let showNewClassification = $state(false);
 	let newClassificationName = $state('');
@@ -30,7 +33,7 @@
 	);
 </script>
 
-<form method="POST" action="?/schedule" use:enhance>
+<form method="POST" action={action} use:enhance>
 	<div class="space-y-3">
 		{#if showNewClassification}
 			<Field label="New Classification Name" name="newName">
@@ -65,7 +68,7 @@
 			<Textarea name="notes" bind:value={notes} rows={2} placeholder="Optional" />
 		</Field>
 		<div class="flex gap-3">
-			<Button type="submit">Create Service Task</Button>
+			<Button type="submit">{schedule ? 'Update Service Task' : 'Create Service Task'}</Button>
 		</div>
 	</div>
 </form>
