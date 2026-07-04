@@ -78,10 +78,7 @@
 </script>
 
 {#each years as year (year)}
-	<div
-		id={`year-${year}`}
-		class="history-table group mb-6 overflow-clip rounded-sm bg-surface-raised shadow-sm"
-	>
+	<div id={`year-${year}`} class="history-table group mb-6 rounded-sm bg-surface-raised shadow-sm">
 		<div class="sticky-sentinel"></div>
 		<header
 			class="sticky top-0 z-10 items-center flex rounded-t-[inherit] bg-inherit px-4 py-2 group-data-[state=top]:rounded-t-none group-data-[state=top]:shadow-sm"
@@ -114,8 +111,10 @@
 				</div>
 			{/if}
 		</header>
-		<FlexTable class="border-t-2 border-ink-200">
-			<Row class="text-xs font-medium tracking-wide text-ink-400 uppercase max-sm:hidden">
+		<FlexTable class="border-t border-ink-200">
+			<Row
+				class="text-xs font-medium tracking-wide text-ink-400 uppercase max-sm:hidden only:hidden"
+			>
 				<Cell>Date</Cell>
 				<Cell>Distance</Cell>
 				{#if vehicle.preferences.enableCost}
