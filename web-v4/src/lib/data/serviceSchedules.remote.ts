@@ -8,6 +8,7 @@ export interface Preset {
 	name: string;
 	distanceInterval: number | null;
 	monthInterval: number | null;
+	keywords: string[];
 }
 
 export const getPresets = query(v.object({}), async () => {
