@@ -2,7 +2,7 @@ import { getVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
-import { getClassifications, createClassification } from '$lib/data/classifications';
+import { getClassifications, createClassification, updateClassification } from '$lib/data/classifications';
 import { createServiceSchedule } from '$lib/data/serviceSchedules';
 import { decode } from '$lib/utils/form';
 import { getHTTPErrors } from '$lib/utils/actions';
@@ -137,6 +137,8 @@ export const actions = {
 			classificationId: 'number',
 			newName: 'string',
 			newKeywords: 'string',
+			keywords: 'string',
+			keywordsChanged: 'string',
 			distanceInterval: 'number',
 			monthInterval: 'number',
 			notes: 'string',
@@ -166,6 +168,12 @@ export const actions = {
 				locals,
 			);
 			classificationId = classification.id;
+		} else if (data.keywords && data.keywordsChanged === 'true') {
+			const keywords = data.keywords
+				.split(',')
+				.map((k: string) => k.trim())
+				.filter(Boolean);
+			await updateClassification(classificationId, { keywords }, locals);
 		}
 
 		await createServiceSchedule(

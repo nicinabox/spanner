@@ -32,10 +32,10 @@
 			<h1 class="text-xl">Danger Zone</h1>
 
 			<fieldset>
-				<label class="flex items-center justify-between gap-6">
+				<div class="flex items-center justify-between gap-6">
 					<div>
 						<span class="font-medium">Permanently delete</span>
-						<p class="text-sm text-ink-500">This service task will be permanently deleted.</p>
+						<p class="text-sm text-ink-500">Removes the schedule and its history.</p>
 					</div>
 					<Confirm title="Delete service task?">
 						{#snippet trigger({ onOpenChange })}
@@ -63,7 +63,7 @@
 						{/snippet}
 						<p>This service task will be permanently deleted.</p>
 					</Confirm>
-				</label>
+				</div>
 			</fieldset>
 		</Card>
 	</div>

@@ -1,6 +1,6 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { getServiceSchedule, updateServiceSchedule, deleteServiceSchedule } from '$lib/data/serviceSchedules';
-import { getClassifications } from '$lib/data/classifications';
+import { getClassifications, updateClassification } from '$lib/data/classifications';
 import { getHTTPErrors } from '$lib/utils/actions';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
@@ -21,9 +21,15 @@ export const actions = {
 		const classificationId = formData.get('classificationId')?.toString();
 		const distanceInterval = formData.get('distanceInterval')?.toString();
 		const monthInterval = formData.get('monthInterval')?.toString();
-		const notes = formData.get('notes')?.toString();
+		const keywords = formData.get('keywords')?.toString();
+		const keywordsChanged = formData.get('keywordsChanged')?.toString();
 
 		try {
+			if (keywords && keywordsChanged === 'true' && classificationId) {
+				const kw = keywords.split(',').map((k: string) => k.trim()).filter(Boolean);
+				await updateClassification(Number(classificationId), { keywords: kw }, locals);
+			}
+
 			await updateServiceSchedule(
 				params.id!,
 				params.scheduleId!,
@@ -31,7 +37,6 @@ export const actions = {
 					classificationId: classificationId ? Number(classificationId) : undefined,
 					distanceInterval: distanceInterval ? Number(distanceInterval) : null,
 					monthInterval: monthInterval ? Number(monthInterval) : null,
-					notes: notes || null,
 				},
 				locals,
 			);
