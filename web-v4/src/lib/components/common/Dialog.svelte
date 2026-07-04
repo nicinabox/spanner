@@ -71,7 +71,7 @@
 		>
 			{#if title}
 				<div class="flex items-center justify-between pl-8 pr-6 py-6">
-					<h2 {...api.getTitleProps()} class="text-2xl font-semibold">{title}</h2>
+					<h2 {...api.getTitleProps()} class="text-xl font-semibold">{title}</h2>
 					<button
 						{...api.getCloseTriggerProps()}
 						class="flex items-center justify-center rounded-sm p-1 text-ink-400 hover:text-ink-600 transition-colors"
