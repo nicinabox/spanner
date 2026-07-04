@@ -84,7 +84,7 @@
 		{size}
 		{disabled}
 		icon
-		class="rounded-l-none"
+		class={['rounded-l-none', variant === 'outline' && 'border-l-0 -ml-px']}
 	>
 		<ChevronDown size={16} />
 	</Button>
