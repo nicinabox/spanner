@@ -99,7 +99,7 @@ class Vehicle < ApplicationRecord
     @periods ||= begin
       selected = records
                  .unscope(:order)
-                 .where('mileage > 0')
+                 .where.not(mileage: nil)
                  .limit(WEIGHT_COEFFICIENT)
                  .order(date: :desc)
                  .pluck(:date, :mileage)
@@ -162,15 +162,15 @@ class Vehicle < ApplicationRecord
   end
 
   def can_estimate_mpd?
-    records.any? && first_record_with_mileage != last_record_with_mileage
+    records.size >= 2 && first_record_with_mileage != last_record_with_mileage
   end
 
   def first_record_with_mileage
-    @first_record_with_mileage ||= records.where('mileage > 0').first
+    @first_record_with_mileage ||= records.where.not(mileage: nil).first
   end
 
   def last_record_with_mileage
-    @last_record_with_mileage ||= records.where('mileage > 0').last
+    @last_record_with_mileage ||= records.where('mileage > ?', 0).last
   end
 
   private
