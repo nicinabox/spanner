@@ -11,5 +11,6 @@ export { default as Input } from './components/common/Input.svelte';
 export { default as InputGroup } from './components/common/InputGroup.svelte';
 export { default as PageLayout } from './components/common/PageLayout.svelte';
 export { default as SegmentedControl } from './components/common/SegmentedControl.svelte';
+export { default as SplitButton } from './components/common/SplitButton.svelte';
 export { default as Switch } from './components/common/Switch.svelte';
 export { default as Textarea } from './components/common/Textarea.svelte';

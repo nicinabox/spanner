@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Badge, Button, Clipboard, Field, Input, InputGroup, PageLayout, Alert } from '$lib';
+	import { Badge, Button, Clipboard, Field, Input, InputGroup, PageLayout, Alert, SplitButton } from '$lib';
 	import { Mail, Search, X } from 'lucide-svelte';
 </script>
 
@@ -67,6 +67,142 @@
 					<Button variant="solid" size="sm">Next</Button>
 					<Button variant="solid" size="md">Next</Button>
 					<Button variant="solid" size="lg">Next</Button>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<h2>SplitButton</h2>
+
+			<div class="group">
+				<h3>Variants</h3>
+				<div class="examples flex-row!">
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+							{ value: '', separator: true },
+							{ value: 'delete', label: 'Delete' },
+						]}
+						onAction={() => {}}
+						onSelect={(e: { value: string }) => console.log(e.value)}
+						variant="solid"
+					>
+						Primary
+					</SplitButton>
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						variant="outline"
+					>
+						Primary
+					</SplitButton>
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						variant="ghost"
+					>
+						Primary
+					</SplitButton>
+				</div>
+			</div>
+
+			<div class="group">
+				<h3>Colors</h3>
+				<div class="examples flex-row!">
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						color="brand"
+					>
+						Brand
+					</SplitButton>
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						color="neutral"
+					>
+						Neutral
+					</SplitButton>
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						color="danger"
+					>
+						Danger
+					</SplitButton>
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						color="danger"
+						disabled
+					>
+						Disabled
+					</SplitButton>
+				</div>
+			</div>
+
+			<div class="group">
+				<h3>Sizes</h3>
+				<div class="examples flex-row!">
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						size="xs"
+					>
+						XS
+					</SplitButton>
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						size="sm"
+					>
+						SM
+					</SplitButton>
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						size="md"
+					>
+						MD
+					</SplitButton>
+					<SplitButton
+						items={[
+							{ value: 'edit', label: 'Edit' },
+							{ value: 'duplicate', label: 'Duplicate' },
+						]}
+						onAction={() => {}}
+						size="lg"
+					>
+						LG
+					</SplitButton>
 				</div>
 			</div>
 		</section>
