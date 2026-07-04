@@ -10,7 +10,7 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
 
   test 'classifies multiple services in one note' do
     results = HeuristicClassifier.classify('Transmission service and oil change')
-    assert_equal ['Oil Change', 'Transmission'], result_names(results)
+    assert_equal ['Oil Change', 'Transmission Fluid'], result_names(results)
   end
 
   test 'returns empty array for unrecognized notes' do

@@ -1,113 +1,10 @@
 # frozen_string_literal: true
 
 class HeuristicClassifier < NoteClassifier
-  KEYWORDS = {
-    oil_change: [
-      'oil change',
-      'change oil',
-      'changed oil',
-      'oil changed',
-      'engine oil',
-      'motor oil',
-      'oil filter',
-      'oil and filter',
-      'filter and oil'
-    ],
-    tire_rotation: [
-      'tire rotation',
-      'rotate tires',
-      'rotated tires',
-      'rotate tyres',
-      'rotated tyres',
-      'tire rotated'
-    ],
-    air_filter: [
-      'air filter',
-      'engine air filter',
-      'replace air filter',
-      'replaced air filter'
-    ],
-    battery: [
-      'new battery',
-      'replace battery',
-      'replaced battery',
-      'battery replacement',
-      'battery died',
-      'battery dead'
-    ],
-    brake_fluid: [
-      'brake fluid',
-      'DOT3',
-      'DOT4',
-      'DOT5',
-      'dot 3',
-      'dot 4',
-      'dot 5',
-      'brake flush',
-      'flushed brake'
-    ],
-    brakes: [
-      'brake pads',
-      'brake rotors',
-      'rotors and pads',
-      'rotors turned',
-      'brake job',
-      'brake service',
-      'replace brakes',
-      'replaced brakes'
-    ],
-    cabin_air_filter: [
-      'cabin air filter',
-      'cabin filter',
-      'replace cabin filter',
-      'replaced cabin filter'
-    ],
-    clutch: [
-      'clutch fluid',
-      'clutch replacement',
-      'new clutch',
-      'replace clutch',
-      'replaced clutch'
-    ],
-    coolant: [
-      'coolant',
-      'antifreeze',
-      'radiator fluid',
-      'coolant flush',
-      'flushed coolant'
-    ],
-    drive_belt: [
-      'serpentine belt',
-      'accessory belt',
-      'timing belt',
-      'drive belt',
-      'replace belt',
-      'replaced belt',
-      'new belt'
-    ],
-    power_steering: [
-      'power steering',
-      'power steering fluid',
-      'power steering oil'
-    ],
-    spark_plugs: [
-      'spark plugs',
-      'spark plug',
-      'plug wires',
-      'ngk',
-      'replace spark plugs',
-      'replaced spark plugs'
-    ],
-    transmission: [
-      'transmission fluid',
-      'transmission oil',
-      'gearbox oil',
-      'transmission service',
-      'trans fluid',
-      'trans service',
-      'transmission flush'
-    ]
-  }.freeze
+  PRESET_KEYWORDS = YAML.safe_load_file(
+    Rails.root.join('config/presets.yml'),
+    permitted_classes: [Symbol]
+  ).deep_symbolize_keys
 
   def self.classify(text, **)
     new.classify(text, **)
@@ -117,11 +14,13 @@ class HeuristicClassifier < NoteClassifier
     normalized = text.to_s.downcase
     return [] if normalized.blank?
 
+    stemmed = normalized.split.map(&:stem).join(' ')
+
     vehicle_classifications = vehicle_classifications_for(vehicle)
     overridden_names = vehicle_classifications.map(&:name).map(&:downcase)
 
-    match_system_keywords(normalized, overridden_names) +
-      match_vehicle_classifications(normalized, vehicle_classifications)
+    match_preset_keywords(stemmed, overridden_names) +
+      match_vehicle_classifications(normalized, stemmed, vehicle_classifications)
   end
 
   private
@@ -132,22 +31,33 @@ class HeuristicClassifier < NoteClassifier
     vehicle.classifications.where.not(keywords: [])
   end
 
-  def match_system_keywords(normalized, overridden_names)
-    KEYWORDS.each_with_object([]) do |(key, tokens), results|
-      classification = Classification.find_by(key: key)
-      next unless classification
-      next if overridden_names.include?(classification.name.downcase)
+  def match_preset_keywords(stemmed, overridden_names)
+    results = []
 
-      next unless classify_keywords(normalized, tokens)
+    PRESET_KEYWORDS.each_value do |presets|
+      presets.each do |preset|
+        name = preset[:name]
+        next if overridden_names.include?(name.downcase)
 
-      results << classification_result(classification)
+        classification = Classification.find_or_create_by!(name:) do |c|
+          c.system = true
+          c.key = name.downcase.gsub(/[^a-z0-9]+/, '_').gsub(/_+/, '_').gsub(/_$/, '')
+        end
+
+        keywords = classification.keywords.presence || preset[:keywords]
+        next unless classify_keywords(stemmed, keywords)
+
+        results << classification_result(classification) unless results.any? { |r| r[:classification].id == classification.id }
+      end
     end
+
+    results
   end
 
-  def match_vehicle_classifications(normalized, vehicle_classifications)
+  def match_vehicle_classifications(normalized, stemmed, vehicle_classifications)
     vehicle_classifications.each_with_object([]) do |classification, results|
       next if classification.keywords.blank?
-      next unless classify_keywords(normalized, classification.keywords)
+      next unless classify_keywords(stemmed, classification.keywords)
 
       results << classification_result(classification)
     end
@@ -157,21 +67,18 @@ class HeuristicClassifier < NoteClassifier
     { classification: classification, classifier: 'heuristic', confidence: 1.0 }
   end
 
-  def classify_keywords(text, tokens)
-    tokens.any? { |token| phrase_match?(text, token) }
+  def classify_keywords(stemmed, tokens)
+    tokens.any? { |token| phrase_match?(stemmed, token) }
   end
 
-  def phrase_match?(text, token)
+  def phrase_match?(stemmed, token)
     words = token.split
     return false if words.empty?
 
-    return word_match?(text, words.first) if words.one?
+    stemmed_words = words.map(&:stem)
 
-    pattern = words.map { |word| Regexp.escape(word) }.join('[\s,;.]+')
-    text.match?(/\b#{pattern}\b/i)
-  end
+    return stemmed.match?(/\b#{Regexp.escape(stemmed_words.first)}\b/i) if words.one?
 
-  def word_match?(text, word)
-    text.match?(/\b#{Regexp.escape(word)}\b/i)
+    stemmed_words.all? { |w| stemmed.match?(/\b#{Regexp.escape(w)}\b/i) }
   end
 end
