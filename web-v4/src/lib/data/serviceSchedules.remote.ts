@@ -4,10 +4,10 @@ import { getAuthToken } from '$lib/utils/session';
 import { request } from './server';
 import * as v from 'valibot';
 
-interface Preset {
+export interface Preset {
 	name: string;
-	distance_interval: number | null;
-	month_interval: number | null;
+	distanceInterval: number | null;
+	monthInterval: number | null;
 }
 
 export const getPresets = query(v.object({}), async () => {
