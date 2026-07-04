@@ -6,8 +6,9 @@ import {
 	createServiceSchedule,
 	getPresets,
 } from '$lib/data/serviceSchedules';
+import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
 import { getClassifications, createClassification } from '$lib/data/classifications';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
 type SchedulePreset = {
@@ -18,12 +19,13 @@ type SchedulePreset = {
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
-	const [schedules, classifications] = await Promise.all([
+	const [schedules, classifications, reminders] = await Promise.all([
 		getServiceSchedules(params.id!, locals),
 		getClassifications(params.id!, locals),
+		getVehicleReminders(params.id!, locals),
 	]);
 
-	return { vehicle, schedules, classifications };
+	return { vehicle, schedules, classifications, reminders };
 };
 
 export const actions: Actions = {
@@ -51,6 +53,12 @@ export const actions: Actions = {
 		} catch {
 			return fail(422, { error: 'Failed to delete schedule' });
 		}
+	},
+
+	delete_reminder: async ({ locals, params, request }) => {
+		const id = Number((await request.formData()).get('id'));
+		await deleteReminder(params.id!, id, locals);
+		return { success: true };
 	},
 
 	suggest: async ({ locals, params, request }) => {

@@ -9,13 +9,14 @@
 </script>
 
 <svelte:head>
-	<title>{pageTitle('Service Tasks', vehicle.name)}</title>
+	<title>{pageTitle('Reminders', vehicle.name)}</title>
 </svelte:head>
 
 <VehiclePageLayout {vehicle} activeTab="schedules">
 	<ServiceSchedulesView
 		schedules={data.schedules}
 		classifications={data.classifications}
+		reminders={data.reminders}
 		{vehicle}
 	/>
 </VehiclePageLayout>

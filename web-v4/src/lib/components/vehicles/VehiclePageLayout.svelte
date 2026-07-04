@@ -6,6 +6,7 @@
 	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { getOverdueRemindersCount } from '$lib/utils/reminders';
+	import { getOverdueSchedulesCount } from '$lib/utils/schedules';
 	import { enhance } from '$app/forms';
 	import { ArrowLeft, Bell, BookOpenText, Check, FileText, Wrench } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
@@ -53,18 +54,24 @@
 		badge?: { count: number; icon: any };
 	};
 
+	const overdueCount = $derived.by(() => {
+		const reminders = getOverdueRemindersCount(vehicle);
+		const schedules = getOverdueSchedulesCount(vehicle);
+		if (reminders === undefined && schedules === undefined) return undefined;
+		return (reminders ?? 0) + (schedules ?? 0);
+	});
+
 	const tabs = $derived(
 		(customTabs ?? [
 			{ value: 'history', label: 'History', href: `/vehicles/${vehicle.id}`, icon: BookOpenText },
 			{
-				value: 'reminders',
+				value: 'schedules',
 				label: 'Reminders',
-				href: `/vehicles/${vehicle.id}/reminders`,
-				badge: {
-					count: getOverdueRemindersCount(vehicle),
-					icon: Wrench,
-				},
+				href: `/vehicles/${vehicle.id}/schedules`,
 				icon: Bell,
+				badge: {
+					count: overdueCount,
+				},
 			},
 			{ value: 'notes', label: 'Notes', href: `/vehicles/${vehicle.id}/notes`, icon: FileText },
 		]) as Tab[],
@@ -104,7 +111,6 @@
 				size="sm"
 				items={[
 					{ value: 'edit', label: 'Edit', href: vehiclePath(vehicle.id, 'edit') },
-					{ value: 'schedules', label: 'Service Tasks', href: `/vehicles/${vehicle.id}/schedules` },
 					{ value: 'retire', label: 'Retire', closeOnSelect: false },
 					{ value: '', separator: true },
 					{ value: 'share', label: 'Share...', closeOnSelect: false },
