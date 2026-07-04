@@ -6,10 +6,10 @@ export interface Classification {
 	key: string | null;
 	name: string;
 	system: boolean;
-	vehicle_id: number | null;
+	vehicleId: number | null;
 	keywords: string[];
-	created_at: string;
-	updated_at: string;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export const getClassifications = (vehicleId: number | string, opts: RequestOpts) => {
