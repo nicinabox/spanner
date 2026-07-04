@@ -22,6 +22,10 @@ export interface SchedulePreset {
 	monthInterval: number | null;
 }
 
+export const getServiceSchedule = (vehicleId: number | string, id: number | string, opts: RequestOpts) => {
+	return request<ServiceSchedule>(`/vehicles/${vehicleId}/service_schedules/${id}`, opts);
+};
+
 export const getServiceSchedules = (vehicleId: number | string, opts: RequestOpts) => {
 	return request<ServiceSchedule[]>(`/vehicles/${vehicleId}/service_schedules`, opts);
 };

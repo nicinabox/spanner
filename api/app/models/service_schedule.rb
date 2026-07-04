@@ -67,7 +67,18 @@ class ServiceSchedule < ApplicationRecord
 
     attrs = {}
     attrs[:next_due_mileage] = next_mileage(last_record) if distance_interval.present?
-    attrs[:next_due_date] = next_date(last_record) if month_interval.present?
+
+    if month_interval.present?
+      attrs[:next_due_date] = next_date(last_record)
+    elsif distance_interval.present? && attrs[:next_due_mileage]
+      mpd = vehicle.miles_per_day
+      if mpd&.positive?
+        current_mileage = last_record&.mileage || vehicle.estimated_mileage || 0
+        remaining_miles = attrs[:next_due_mileage] - current_mileage
+        days = (remaining_miles / mpd.to_f).ceil
+        attrs[:next_due_date] = Time.zone.today + days.days
+      end
+    end
 
     update!(attrs)
   end

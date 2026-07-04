@@ -1,6 +1,7 @@
 import { request } from './server';
 import { type CreatableFields, type RequestOpts, type UpdatableFields } from './types';
 import type { Reminder } from './reminders';
+import type { ServiceSchedule } from './serviceSchedules';
 
 export type DistanceUnit = 'mi' | 'km' | 'hr' | 'nmi';
 
@@ -32,6 +33,7 @@ export interface Vehicle {
 	estimatedMileage: number;
 	squishVin: string | null;
 	reminders: Reminder[];
+	serviceSchedules: ServiceSchedule[];
 	color: string | null;
 	preferences: VehiclePreferences;
 }
