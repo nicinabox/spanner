@@ -317,7 +317,12 @@
 				<h3>Standalone</h3>
 				<div class="examples">
 					<Input name="search" type="search" placeholder="Search..." />
+				</div>
+			</div>
 
+			<div class="group">
+				<h3>Combobox</h3>
+				<div class="examples">
 					<Combobox
 						name="keywords"
 						placeholder="Select or add keywords"
@@ -337,6 +342,14 @@
 								label: 'oil filter',
 							},
 						]}
+					/>
+
+					<Combobox
+						name="keywords"
+						placeholder="Select or add keywords"
+						value={[]}
+						multiple
+						options={[]}
 					/>
 				</div>
 			</div>

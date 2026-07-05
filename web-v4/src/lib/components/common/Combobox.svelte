@@ -22,7 +22,7 @@
 
 	const id = $props.id();
 
-	const { multiple, name, placeholder, value, options: optionsProp }: Props = $props();
+	let { multiple, name, placeholder, value = $bindable(), options: optionsProp }: Props = $props();
 
 	let options = $state.raw(optionsProp);
 	let allOptions = $state(optionsProp);
@@ -40,13 +40,18 @@
 		openOnKeyPress: true,
 		defaultHighlightedValue: options[0]?.value,
 		allowCustomValue: true,
-		value,
 		name,
 		get collection() {
 			return collection;
 		},
 		onOpenChange() {
 			options = allOptions;
+		},
+		get value() {
+			return value;
+		},
+		onValueChange({ value: v }) {
+			value = v;
 		},
 		onInputValueChange({ inputValue }) {
 			const filtered = allOptions.filter((item) =>
