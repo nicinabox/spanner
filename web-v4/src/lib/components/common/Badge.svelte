@@ -10,12 +10,17 @@
 			},
 			pill: {
 				true: 'rounded-full',
+				false: '',
 			},
 			size: {
-				sm: 'text-xs px-1.5 rounded-[4px]',
-				md: 'text-sm px-2 h-6 min-w-6 rounded-sm',
+				sm: 'text-xs px-1.5 ',
+				md: 'text-sm px-2 h-6 min-w-6 ',
 			},
 		},
+		compoundVariants: [
+			{ pill: false, size: 'sm', class: 'rounded-[4px]' },
+			{ pill: false, size: 'md', class: 'rounded-sm' },
+		],
 		defaultVariants: {
 			size: 'sm',
 			variant: 'neutral',
