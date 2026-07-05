@@ -79,6 +79,12 @@ class HeuristicClassifier < NoteClassifier
 
     return stemmed.match?(/\b#{Regexp.escape(stemmed_words.first)}\b/i) if words.one?
 
-    stemmed_words.all? { |w| stemmed.match?(/\b#{Regexp.escape(w)}\b/i) }
+    pattern = stemmed_words.map { |w| Regexp.escape(w) }.join('[\\s,;.]+')
+    return true if stemmed.match?(/\b#{pattern}\b/i)
+
+    # Check reversed word order (e.g. "change oil" vs "oil change")
+    reversed = stemmed_words.reverse
+    rev_pattern = reversed.map { |w| Regexp.escape(w) }.join('[\\s,;.]+')
+    stemmed.match?(/\b#{rev_pattern}\b/i)
   end
 end
