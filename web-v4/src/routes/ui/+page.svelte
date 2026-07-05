@@ -321,6 +321,7 @@
 					<Combobox
 						name="keywords"
 						placeholder="Select or add keywords"
+						value={['oil change']}
 						multiple
 						options={[
 							{

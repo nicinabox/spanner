@@ -12,6 +12,7 @@
 		placeholder?: string;
 		name?: string;
 		options: Option[];
+		value?: string[];
 	}
 
 	interface Option {
@@ -21,7 +22,7 @@
 
 	const id = $props.id();
 
-	const { multiple, name, placeholder, options: optionsProp }: Props = $props();
+	const { multiple, name, placeholder, value, options: optionsProp }: Props = $props();
 
 	let options = $state.raw(optionsProp);
 	let allOptions = $state(optionsProp);
@@ -39,6 +40,7 @@
 		openOnKeyPress: true,
 		defaultHighlightedValue: options[0]?.value,
 		allowCustomValue: true,
+		value,
 		name,
 		get collection() {
 			return collection;
