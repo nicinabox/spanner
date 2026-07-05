@@ -68,7 +68,9 @@
 
 <div class={cn('flex min-w-0', className)}>
 	{#if startAddon}
-		<span class="inline-flex items-center rounded-l-md border border-r-0 border-ink-200 bg-ink-50 px-5 text-sm text-ink-500">
+		<span
+			class="inline-flex items-center rounded-l-md border border-r-0 border-ink-200 bg-ink-50 px-5 text-sm text-ink-500"
+		>
 			{@render startAddon()}
 		</span>
 	{/if}
@@ -78,8 +80,11 @@
 				<div
 					role="button"
 					tabindex="-1"
-					onpointerdown={(e) => { e.preventDefault(); focusInput(); }}
-					class="flex items-center pl-3 pr-2 text-ink-500 shrink-0"
+					onpointerdown={(e) => {
+						e.preventDefault();
+						focusInput();
+					}}
+					class="flex items-center pl-3 pr-2 text-ink-500 shrink-0 only:hidden"
 				>
 					{@render start()}
 				</div>
@@ -105,7 +110,10 @@
 				<div
 					role="button"
 					tabindex="-1"
-					onpointerdown={(e) => { e.preventDefault(); focusInput(); }}
+					onpointerdown={(e) => {
+						e.preventDefault();
+						focusInput();
+					}}
 					class="flex items-center pr-3 pl-2 text-ink-500 shrink-0"
 				>
 					{@render end()}
@@ -127,12 +135,19 @@
 			{autocomplete}
 			{inputmode}
 			{pattern}
-			class={cn('flex-1', startAddon && 'rounded-l-none', endAddon && 'rounded-r-none', (startAddon || endAddon) && 'focus-visible:z-10')}
+			class={cn(
+				'flex-1',
+				startAddon && 'rounded-l-none',
+				endAddon && 'rounded-r-none',
+				(startAddon || endAddon) && 'focus-visible:z-10',
+			)}
 			{...rest}
 		/>
 	{/if}
 	{#if endAddon}
-		<span class="inline-flex items-center rounded-r-md border border-l-0 border-ink-200 bg-ink-50 px-5 text-sm text-ink-500">
+		<span
+			class="inline-flex items-center rounded-r-md border border-l-0 border-ink-200 bg-ink-50 px-5 text-sm text-ink-500"
+		>
 			{@render endAddon()}
 		</span>
 	{/if}

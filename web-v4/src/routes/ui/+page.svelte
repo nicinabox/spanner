@@ -1,5 +1,16 @@
 <script lang="ts">
-	import { Badge, Button, Clipboard, Field, Input, InputGroup, PageLayout, Alert, SplitButton } from '$lib';
+	import {
+		Badge,
+		Button,
+		Clipboard,
+		Field,
+		Input,
+		InputGroup,
+		PageLayout,
+		Alert,
+		SplitButton,
+		Combobox,
+	} from '$lib';
 	import { Mail, Search, X } from 'lucide-svelte';
 </script>
 
@@ -306,6 +317,26 @@
 				<h3>Standalone</h3>
 				<div class="examples">
 					<Input name="search" type="search" placeholder="Search..." />
+
+					<Combobox
+						name="keywords"
+						placeholder="Select or add keywords"
+						multiple
+						options={[
+							{
+								value: 'oil change',
+								label: 'oil change',
+							},
+							{
+								value: 'dot4',
+								label: 'dot4',
+							},
+							{
+								value: 'oil filter',
+								label: 'oil filter',
+							},
+						]}
+					/>
 				</div>
 			</div>
 		</section>
