@@ -64,6 +64,8 @@
 	const api = $derived(combobox.connect(service, normalizeProps));
 
 	const onkeydown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+		if (e.key === 'Enter') e.preventDefault();
+
 		if (e.key === 'Enter' && !api.highlightedItem) {
 			const newValue = api.inputValue.trim();
 			if (newValue) {
