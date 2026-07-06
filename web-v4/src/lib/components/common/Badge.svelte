@@ -6,7 +6,7 @@
 		variants: {
 			variant: {
 				warning: 'bg-warning text-black/60 dark:text-black/70',
-				neutral: 'bg-ink-900/10 text-ink-500 dark:bg-ink-300 dark:text-ink-700',
+				neutral: 'bg-ink-900/10 text-ink-600 dark:bg-ink-300 dark:text-ink-700',
 			},
 			pill: {
 				true: 'rounded-full',
