@@ -94,7 +94,7 @@
 		</div>
 	{/if}
 
-	<fieldset class="flex flex-col gap-4">
+	<fieldset>
 		<Field name="notes" label="Note" {errors} required>
 			<Input name="notes" bind:value={notes} required />
 		</Field>

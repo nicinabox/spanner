@@ -69,7 +69,7 @@
 			<div class="text-xs text-ink-500 font-medium tracking-wider divider">OR</div>
 		</div>
 
-		<fieldset class="fieldset min-w-0">
+		<fieldset class="min-w-0">
 			<Field name="token" label="Enter your token" errors={form.errors}>
 				<Input name="token" autocomplete="off" required />
 			</Field>
@@ -89,7 +89,7 @@
 			</Alert>
 		{/if}
 
-		<fieldset class="fieldset min-w-0">
+		<fieldset class="min-w-0">
 			<Field
 				label="Email"
 				errors={emailError
@@ -114,7 +114,7 @@
 			</Field>
 		</fieldset>
 
-		<fieldset class="fieldset min-w-0" class:sr-only={mode === 'default'}>
+		<fieldset class="min-w-0" class:sr-only={mode === 'default'}>
 			<Field label="Password" name="password" required>
 				<Input
 					name="password"

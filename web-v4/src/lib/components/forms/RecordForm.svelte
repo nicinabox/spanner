@@ -21,9 +21,10 @@
 		record?: HistoryEntry;
 		errors?: FormError[];
 		action?: string;
+		id?: number;
 	}
 
-	let { vehicle, record, errors = [], action = '' }: Props = $props();
+	let { vehicle, record, errors = [], action = '', id }: Props = $props();
 
 	// svelte-ignore state_referenced_locally
 	let recordId = record?.id;
@@ -132,7 +133,7 @@
 		</div>
 	{/if}
 
-	<fieldset class="flex flex-col gap-4">
+	<fieldset>
 		<Field name="date" label="Date" errors={allErrors} required>
 			<Input type="date" name="date" bind:value={date} required />
 		</Field>
@@ -153,18 +154,20 @@
 				</InputGroup>
 			</Field>
 		{/if}
+		<Field name="attachments" label="Attachments" errors={attachmentErrors}>
+			<AttachmentEditor
+				existing={record?.attachments ?? []}
+				{markedForDeletion}
+				bind:selectedFiles
+				onMarkDelete={handleMarkDelete}
+				onRestore={handleRestore}
+			/>
+		</Field>
 	</fieldset>
 
-	<Field name="attachments" label="Attachments" errors={attachmentErrors}>
-		<AttachmentEditor
-			existing={record?.attachments ?? []}
-			{markedForDeletion}
-			bind:selectedFiles
-			onMarkDelete={handleMarkDelete}
-			onRestore={handleRestore}
-		/>
-	</Field>
-
+	{#if id}
+		<input type="hidden" name="id" value={id} />
+	{/if}
 	<input type="hidden" name="attachments_to_delete" value={markedForDeletion.join(',')} />
 
 	<div class="flex gap-3">

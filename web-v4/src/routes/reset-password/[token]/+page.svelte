@@ -25,7 +25,7 @@
 			{:else}
 				<h1>Change password</h1>
 				<form method="post" action="?/reset" use:enhance class="mt-4">
-					<fieldset class="fieldset">
+					<fieldset>
 						<Field name="password" label="New password" errors={form?.errors} required>
 							<Input name="password" type="password" autocomplete="new-password" required />
 						</Field>
