@@ -41,7 +41,7 @@
 
 	// svelte-ignore state_referenced_locally
 	let date = $state(
-		record?.date ? formatDateISO(new Date(record.date)) : formatDateISO(new Date()),
+		record?.date ? record.date.slice(0, 10) : formatDateISO(new Date()),
 	);
 	// svelte-ignore state_referenced_locally
 	let mileage = $state(record?.mileage?.toString() ?? vehicle.estimatedMileage?.toString() ?? '');

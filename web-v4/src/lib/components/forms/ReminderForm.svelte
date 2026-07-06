@@ -38,7 +38,7 @@
 	// svelte-ignore state_referenced_locally
 	let date = $state(
 		reminder?.date
-			? formatDateISO(new Date(reminder.date))
+			? reminder.date.slice(0, 10)
 			: formatDateISO(addMonths(new Date(), 6)),
 	);
 	// svelte-ignore state_referenced_locally
