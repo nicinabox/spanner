@@ -30,7 +30,7 @@
 	let recordId = record?.id;
 
 	let draftKey = $derived(
-		recordId ? `record:${vehicle.id}:${recordId}` : `record:${vehicle.id}:new`,
+		['record', String(vehicle.id), recordId ?? id ?? 'new'].join(':'),
 	);
 
 	// Merge page-provided errors (from SvelteKit form prop) with action errors
