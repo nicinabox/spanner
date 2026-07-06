@@ -2,7 +2,7 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const textareaVariants = tv({
-		base: 'w-full rounded-md border border-ink-200 bg-canvas text-ink-900 transition duration-150 ease-in-out shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)] placeholder:text-ink-400 disabled:opacity-50 disabled:cursor-not-allowed not-focus-within:aria-invalid:border-negative focus-within:bg-ink-50 focus-within:border-focus-ring focus-within:outline-2 focus-within:outline-focus-ring focus-within:outline-offset-0 resize-none',
+		base: 'w-full rounded-md border border-ink-200 bg-canvas text-ink-900 transition duration-150 ease-in-out shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)] disabled:opacity-50 disabled:cursor-not-allowed not-focus-within:aria-invalid:border-negative focus-within:bg-ink-50 focus-within:border-focus-ring focus-within:outline-2 focus-within:outline-focus-ring focus-within:outline-offset-0 resize-none',
 		variants: {
 			variant: {
 				outline: '',
@@ -81,6 +81,7 @@
 		{readonly}
 		aria-describedby={ariaDescribedBy}
 		aria-invalid={ariaInvalid}
+		class="placeholder:text-ink-400"
 		oninput={(e) => (value = (e.target as HTMLTextAreaElement).value)}
 		{...rest}></textarea>
 </div>
