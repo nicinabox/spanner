@@ -19,8 +19,13 @@ class HeuristicClassifier < NoteClassifier
     vehicle_classifications = vehicle_classifications_for(vehicle)
     overridden_names = vehicle_classifications.map(&:name).map(&:downcase)
 
-    match_preset_keywords(stemmed, overridden_names) +
-      match_vehicle_classifications(normalized, stemmed, vehicle_classifications)
+    results = match_preset_keywords(normalized, stemmed, overridden_names) +
+              match_vehicle_classifications(normalized, stemmed, vehicle_classifications)
+
+    # Deduplicate by classification id, keep highest confidence
+    results.group_by { |r| r[:classification].id }.values.map do |group|
+      group.max_by { |r| r[:confidence] }
+    end
   end
 
   private
@@ -31,7 +36,7 @@ class HeuristicClassifier < NoteClassifier
     vehicle.classifications.where.not(keywords: [])
   end
 
-  def match_preset_keywords(stemmed, overridden_names)
+  def match_preset_keywords(normalized, stemmed, overridden_names)
     results = []
 
     PRESET_KEYWORDS.each_value do |presets|
@@ -47,7 +52,8 @@ class HeuristicClassifier < NoteClassifier
         keywords = classification.keywords.presence || preset[:keywords]
         next unless classify_keywords(stemmed, keywords)
 
-        results << classification_result(classification) unless results.any? { |r| r[:classification].id == classification.id }
+        confidence = calculate_confidence(normalized, name, preset[:context] || [], keywords)
+        results << { classification:, classifier: 'heuristic', confidence: }
       end
     end
 
@@ -59,12 +65,19 @@ class HeuristicClassifier < NoteClassifier
       next if classification.keywords.blank?
       next unless classify_keywords(stemmed, classification.keywords)
 
-      results << classification_result(classification)
+      confidence = calculate_confidence(normalized, classification.name, [], classification.keywords)
+      results << { classification:, classifier: 'heuristic', confidence: }
     end
   end
 
-  def classification_result(classification)
-    { classification: classification, classifier: 'heuristic', confidence: 1.0 }
+  def calculate_confidence(normalized, name, context_words, keywords)
+    matched = keywords.count { |kw| phrase_match?(normalized.split.map(&:stem).join(' '), kw) }
+    ratio = matched.to_f / keywords.size
+
+    confidence = 0.3 + (ratio * 0.3)
+    confidence += 0.3 if context_words.any? { |w| normalized.include?(w) }
+    confidence += 0.1 if normalized.match?(/#{Regexp.escape(name.downcase)}/)
+    [confidence, 1.0].min.round(2)
   end
 
   def classify_keywords(stemmed, tokens)

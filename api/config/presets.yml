@@ -7,6 +7,9 @@ car:
       - engine oil
       - motor oil
       - oil filter
+    context:
+      - engine
+      - motor
   - name: Tire Rotation
     distance_interval: 7500
     keywords:
@@ -54,6 +57,9 @@ car:
       - gearbox oil
       - transmission service
       - transmission flush
+    context:
+      - transmission
+      - gearbox
   - name: Drive Belt
     distance_interval: 100000
     keywords:
@@ -81,6 +87,9 @@ motorcycle:
       - engine oil
       - motor oil
       - oil filter
+    context:
+      - engine
+      - motor
   - name: Chain Adjustment
     distance_interval: 500
     keywords:
@@ -131,6 +140,9 @@ boat:
       - engine oil
       - motor oil
       - oil filter
+    context:
+      - engine
+      - motor
   - name: Hull Cleaning
     month_interval: 12
     keywords:
@@ -196,6 +208,9 @@ rv:
       - engine oil
       - motor oil
       - oil filter
+    context:
+      - engine
+      - motor
   - name: Generator Service
     month_interval: 12
     keywords:
@@ -239,6 +254,9 @@ rv:
       - gearbox oil
       - transmission service
       - transmission flush
+    context:
+      - transmission
+      - gearbox
   - name: Air Filter
     distance_interval: 15000
     keywords:
