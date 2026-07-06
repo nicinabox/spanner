@@ -18,8 +18,8 @@
 
 <VehiclePageLayout
 	{vehicle}
-	activeTab="schedules"
-	backAction={{ href: `/vehicles/${vehicle.id}/schedules`, label: 'Back' }}
+	activeTab="tasks"
+	backAction={{ href: `/vehicles/${vehicle.id}/tasks`, label: 'Back' }}
 >
 	<div class="max-w-2xl mx-auto">
 		<Card variant="outline" bleed>

@@ -35,7 +35,7 @@
 		<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 			<div class="space-y-0">
 				<a
-					href={`/vehicles/${vehicle.id}/schedules/${schedule.id}/edit`}
+					href={`/vehicles/${vehicle.id}/tasks/${schedule.id}/edit`}
 					class="font-medium text-lg flex items-center gap-3 text-ink-900 underline"
 				>
 					{#if isScheduleOverdue(schedule, vehicle.estimatedMileage)}

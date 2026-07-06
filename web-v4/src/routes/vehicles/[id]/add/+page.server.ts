@@ -179,6 +179,6 @@ export const actions = {
 			locals,
 		);
 
-		redirect(303, `/vehicles/${params.id}/schedules`);
+		redirect(303, `/vehicles/${params.id}/tasks`);
 	},
 } satisfies Actions;

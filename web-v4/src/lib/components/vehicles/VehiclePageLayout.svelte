@@ -8,7 +8,7 @@
 	import { getOverdueRemindersCount } from '$lib/utils/reminders';
 	import { getOverdueSchedulesCount } from '$lib/utils/schedules';
 	import { enhance } from '$app/forms';
-	import { ArrowLeft, Bell, BookOpenText, Check, FileText, Wrench } from 'lucide-svelte';
+	import { ArrowLeft, BookOpenText, Check, FileText, Wrench } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 	import { tick } from 'svelte';
@@ -65,10 +65,10 @@
 		(customTabs ?? [
 			{ value: 'history', label: 'History', href: `/vehicles/${vehicle.id}`, icon: BookOpenText },
 			{
-				value: 'schedules',
-				label: 'Reminders',
-				href: `/vehicles/${vehicle.id}/schedules`,
-				icon: Bell,
+				value: 'tasks',
+				label: 'Tasks',
+				href: `/vehicles/${vehicle.id}/tasks`,
+				icon: Wrench,
 				badge: {
 					count: overdueCount,
 				},

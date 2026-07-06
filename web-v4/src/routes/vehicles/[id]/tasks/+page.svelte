@@ -12,7 +12,7 @@
 	<title>{pageTitle('Reminders', vehicle.name)}</title>
 </svelte:head>
 
-<VehiclePageLayout {vehicle} activeTab="schedules">
+<VehiclePageLayout {vehicle} activeTab="tasks">
 	<TasksView
 		schedules={data.schedules}
 		classifications={data.classifications}

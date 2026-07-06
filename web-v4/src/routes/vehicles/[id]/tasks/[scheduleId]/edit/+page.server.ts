@@ -40,11 +40,11 @@ export const actions = {
 			return fail(422, getHTTPErrors(error));
 		}
 
-		redirect(303, `/vehicles/${params.id}/schedules`);
+		redirect(303, `/vehicles/${params.id}/tasks`);
 	},
 
 	delete: async ({ locals, params }) => {
 		await deleteServiceSchedule(params.id!, params.scheduleId!, locals);
-		redirect(303, `/vehicles/${params.id}/schedules`);
+		redirect(303, `/vehicles/${params.id}/tasks`);
 	},
 } satisfies Actions;
