@@ -73,7 +73,7 @@ class ServiceSchedule < ApplicationRecord
   end
 
   def next_mileage(last_record)
-    base = last_record&.mileage || vehicle.estimated_mileage || 0
+    base = last_record&.mileage || 0
     base + distance_interval
   end
 
