@@ -24,7 +24,7 @@
 	{/if}
 	<h2 class="text-2xl font-semibold text-pretty">{heading}</h2>
 	<p class="text-base text-ink-500 mt-2 text-pretty">{details}</p>
-	<div class="mt-6">
+	<div class="mt-6 flex gap-2">
 		{@render action?.()}
 	</div>
 </Card>
