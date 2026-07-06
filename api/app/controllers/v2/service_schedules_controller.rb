@@ -35,11 +35,19 @@ module V2
 
     def complete
       schedule = schedules.find(params[:id])
-      schedule.complete!(
-        notes: params[:notes],
-        date: params[:date],
-        mileage: params[:mileage]
-      )
+
+      if params[:record_id]
+        record = schedule.vehicle.records.find(params[:record_id])
+        schedule.update!(last_completed_record_id: record.id)
+        schedule.recalculate_next_due
+      else
+        schedule.complete!(
+          notes: params[:notes],
+          date: params[:date],
+          mileage: params[:mileage]
+        )
+      end
+
       render json: schedule
     end
 

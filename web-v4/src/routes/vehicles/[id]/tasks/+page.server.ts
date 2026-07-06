@@ -8,6 +8,7 @@ import {
 } from '$lib/data/serviceSchedules';
 import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
 import { getClassifications, createClassification } from '$lib/data/classifications';
+import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
@@ -30,17 +31,29 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
 export const actions: Actions = {
 	complete: async ({ locals, params, request }) => {
-		const data = await request.formData();
-		const id = Number(data.get('id'));
-		const notes = data.get('notes') as string | null;
-		const date = data.get('date') as string | null;
-		const mileage = data.get('mileage') ? Number(data.get('mileage')) : undefined;
+		const formData = await request.formData();
+		const id = formData.get('id')?.toString() ?? '';
+		const date = formData.get('date')?.toString();
+		const notes = formData.get('notes')?.toString();
+		const mileage = formData.get('mileage')?.toString();
+		const cost = formData.get('cost')?.toString();
+		const files = formData.getAll('record[attachments][]') as File[];
+
+		const body = toMultipartFormData(
+			{ date, notes, mileage: mileage || null, cost: cost || null },
+			{ prefix: 'record' },
+		);
+		for (const file of files) {
+			body.append('record[attachments][]', file);
+		}
 
 		try {
-			await completeServiceSchedule(params.id!, id, { notes, date, mileage }, locals);
+			const record = await uploadRecord(params.id!, undefined, body, locals);
+			await completeServiceSchedule(params.id!, id, { record_id: (record as any).id }, locals);
 			redirect(303, `/vehicles/${params.id}/tasks`);
-		} catch {
-			return fail(422, { error: 'Failed to complete schedule' });
+		} catch (err) {
+			const message = err instanceof Error ? err.message : 'Failed to complete schedule';
+			return fail(422, { errors: [{ id: 'form', title: message }] });
 		}
 	},
 
