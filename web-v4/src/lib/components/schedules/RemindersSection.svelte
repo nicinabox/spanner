@@ -55,7 +55,7 @@
 </div>
 
 {#if reminders.length}
-	<ul class="space-y-3 mb-12">
+	<ul class="space-y-3">
 		{#each sorted as reminder (reminder.id)}
 			<ReminderCard
 				{reminder}
