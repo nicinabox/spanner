@@ -5,6 +5,16 @@ require 'test_helper'
 class RecordTest < ActiveSupport::TestCase
   test 'classify_notes on save' do
     vehicle = Vehicle.first || Vehicle.create!(name: 'Test Vehicle', user: User.first)
+
+    # Ensure Oil Change has a service schedule so auto-tagging works
+    oil_class = Classification.find_by(key: 'oil_change')
+    if oil_class && !vehicle.service_schedules.exists?(classification_id: oil_class.id)
+      vehicle.service_schedules.create!(
+        classification: oil_class,
+        distance_interval: 5000
+      )
+    end
+
     oil_changes = [
       'Changed oil with Mobil 1 5w-30 and new MANN filter',
       'Oil change with Castrol 5w30 and changed oil filter using bosch unit',

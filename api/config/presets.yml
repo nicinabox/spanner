@@ -77,6 +77,15 @@ car:
       - battery replacement
       - battery died
       - battery dead
+  - name: Wiper Blades
+    month_interval: 12
+    keywords:
+      - wiper blades
+      - replace wipers
+      - new wipers
+      - windshield wipers
+      - wiper replacement
+      - wipers
 
 motorcycle:
   - name: Oil Change

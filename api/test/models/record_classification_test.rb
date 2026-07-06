@@ -8,6 +8,18 @@ class RecordClassificationTest < ActiveSupport::TestCase
     @classification = Classification.find_or_create_by!(key: 'test_record_class') do |c|
       c.name = 'Test Classification'
     end
+
+    # Create service schedules for classifications used in tests
+    %w[oil_change tire_rotation battery].each do |key|
+      c = Classification.find_by(key: key)
+      next unless c
+      next if @vehicle.service_schedules.exists?(classification_id: c.id)
+
+      @vehicle.service_schedules.create!(
+        classification: c,
+        distance_interval: 5000
+      )
+    end
   end
 
   test 'creating a record classifies notes' do

@@ -106,6 +106,31 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     assert_equal ids.uniq, ids
   end
 
+  test 'transmission oil change does not get oil change tag' do
+    results = HeuristicClassifier.classify('transmission oil change')
+    oil = results.find { |r| r[:classification].key == 'oil_change' }
+    assert_not_nil oil, 'Oil Change should still match but with low confidence'
+    assert oil[:confidence] < 0.25, "expected <0.25, got #{oil[:confidence]}"
+  end
+
+  test 'oil change alone gets tagged' do
+    results = HeuristicClassifier.classify('oil change')
+    oil = results.find { |r| r[:classification].key == 'oil_change' }
+    assert_not_nil oil
+    assert oil[:confidence] >= 0.25, "expected >=0.25, got #{oil[:confidence]}"
+  end
+
+  test 'classifies wiper blades' do
+    results = HeuristicClassifier.classify('wipers')
+    assert_includes result_names(results), 'Wiper Blades'
+
+    results = HeuristicClassifier.classify('replace wipers')
+    assert_includes result_names(results), 'Wiper Blades'
+
+    results = HeuristicClassifier.classify('new windshield wipers')
+    assert_includes result_names(results), 'Wiper Blades'
+  end
+
   private
 
   def result_names(results)

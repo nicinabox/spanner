@@ -14,12 +14,14 @@ class HeuristicClassifier < NoteClassifier
     normalized = text.to_s.downcase
     return [] if normalized.blank?
 
-    stemmed = normalized.split.map(&:stem).join(' ')
+    stemmed = normalized.gsub(/[^a-z0-9\s]/, '').split.map(&:stem).join(' ')
 
     vehicle_classifications = vehicle_classifications_for(vehicle)
     overridden_names = vehicle_classifications.map(&:name).map(&:downcase)
 
-    results = match_preset_keywords(normalized, stemmed, overridden_names) +
+    all_context_words = PRESET_KEYWORDS.values.flatten.flat_map { |p| p[:context] || [] }.uniq
+
+    results = match_preset_keywords(normalized, stemmed, overridden_names, all_context_words) +
               match_vehicle_classifications(normalized, stemmed, vehicle_classifications)
 
     # Deduplicate by classification id, keep highest confidence
@@ -36,7 +38,7 @@ class HeuristicClassifier < NoteClassifier
     vehicle.classifications.where.not(keywords: [])
   end
 
-  def match_preset_keywords(normalized, stemmed, overridden_names)
+  def match_preset_keywords(normalized, stemmed, overridden_names, all_context_words)
     results = []
 
     PRESET_KEYWORDS.each_value do |presets|
@@ -52,7 +54,9 @@ class HeuristicClassifier < NoteClassifier
         keywords = classification.keywords.presence || preset[:keywords]
         next unless classify_keywords(stemmed, keywords)
 
-        confidence = calculate_confidence(normalized, name, preset[:context] || [], keywords)
+        context = preset[:context] || []
+        conflicting = all_context_words - context
+        confidence = calculate_confidence(normalized, name, context, keywords, conflicting, stemmed)
         results << { classification:, classifier: 'heuristic', confidence: }
       end
     end
@@ -65,26 +69,31 @@ class HeuristicClassifier < NoteClassifier
       next if classification.keywords.blank?
       next unless classify_keywords(stemmed, classification.keywords)
 
-      confidence = calculate_confidence(normalized, classification.name, [], classification.keywords)
+      confidence = calculate_confidence(normalized, classification.name, [], classification.keywords, [], stemmed)
       results << { classification:, classifier: 'heuristic', confidence: }
     end
   end
 
-  def calculate_confidence(normalized, name, context_words, keywords)
-    matched = keywords.count { |kw| phrase_match?(normalized.split.map(&:stem).join(' '), kw) }
+  def calculate_confidence(normalized, name, context_words, keywords, conflicting_context = [], stemmed = nil)
+    stemmed ||= normalized.gsub(/[^a-z0-9\s]/, '').split.map(&:stem).join(' ')
+    matched = keywords.count { |kw| phrase_match?(stemmed, kw) }
     ratio = matched.to_f / keywords.size
 
-    confidence = 0.3 + (ratio * 0.3)
+    confidence = 0.4 + (ratio * 0.3)
 
     if context_words.any?
       if context_words.any? { |w| normalized.include?(w) }
         confidence += 0.4
       else
-        confidence -= 0.1
+        confidence -= 0.2
       end
     end
 
-    confidence += 0.1 if normalized.match?(/#{Regexp.escape(name.downcase)}/)
+    if conflicting_context.any? { |w| normalized.include?(w) }
+      confidence -= 0.2
+    end
+
+    confidence += 0.1 if normalized.match?(/\b#{Regexp.escape(name.downcase)}\b/)
     [[confidence, 0.0].max, 1.0].min.round(2)
   end
 
