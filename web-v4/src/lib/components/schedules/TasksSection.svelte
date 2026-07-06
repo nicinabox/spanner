@@ -117,8 +117,9 @@
 	<EmptyState
 		size="md"
 		heading="No tasks yet"
+		variant="filled"
 		details="Set tasks for recurring maintenance schedules"
-		class="max-w-none"
+		class="max-w-none bg-ink-50 text-ink-700"
 	/>
 {/if}
 

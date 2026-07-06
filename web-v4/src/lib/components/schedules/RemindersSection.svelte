@@ -72,6 +72,7 @@
 		size="md"
 		heading="No reminders yet"
 		details="Set reminders for upcoming maintenance, registration renewals, or inspections"
-		class="max-w-none"
+		variant="filled"
+		class="max-w-none bg-ink-50 text-ink-700"
 	/>
 {/if}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import Card, { type CardSize } from './common/Card.svelte';
+	import Card, { type CardSize, type CardVariant } from './common/Card.svelte';
 	import { cn } from '$lib/utils/cn';
 
 	interface Props {
@@ -10,13 +10,22 @@
 		media?: Snippet;
 		class?: string;
 		size?: CardSize;
+		variant?: CardVariant;
 	}
 
-	let { heading, details, action, media, size = 'lg', class: className = '' }: Props = $props();
+	let {
+		heading,
+		details,
+		action,
+		media,
+		variant = 'outline',
+		size = 'lg',
+		class: className = '',
+	}: Props = $props();
 </script>
 
 <Card
-	variant="outline"
+	{variant}
 	{size}
 	class={cn('mx-auto flex max-w-lg flex-col gap-0 items-center text-center', className)}
 >
