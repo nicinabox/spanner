@@ -1,18 +1,15 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { getServiceSchedule, updateServiceSchedule, deleteServiceSchedule } from '$lib/data/serviceSchedules';
-import { getClassifications, updateClassification } from '$lib/data/classifications';
+import { updateClassification } from '$lib/data/classifications';
 import { getHTTPErrors } from '$lib/utils/actions';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
-	const [schedule, classifications] = await Promise.all([
-		getServiceSchedule(params.id!, params.scheduleId!, locals),
-		getClassifications(params.id!, locals),
-	]);
+	const schedule = await getServiceSchedule(params.id!, params.scheduleId!, locals);
 
-	return { vehicle, schedule, classifications };
+	return { vehicle, schedule };
 };
 
 export const actions = {
@@ -22,10 +19,9 @@ export const actions = {
 		const distanceInterval = formData.get('distanceInterval')?.toString();
 		const monthInterval = formData.get('monthInterval')?.toString();
 		const keywords = formData.get('keywords')?.toString();
-		const keywordsChanged = formData.get('keywordsChanged')?.toString();
 
 		try {
-			if (keywords && keywordsChanged === 'true' && classificationId) {
+			if (classificationId && keywords !== undefined) {
 				const kw = keywords.split(',').map((k: string) => k.trim()).filter(Boolean);
 				await updateClassification(Number(classificationId), { keywords: kw }, locals);
 			}

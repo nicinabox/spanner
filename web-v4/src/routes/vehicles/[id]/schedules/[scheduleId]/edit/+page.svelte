@@ -10,7 +10,6 @@
 
 	let vehicle = $derived(data.vehicle);
 	let schedule = $derived(data.schedule);
-	let classifications = $derived(data.classifications);
 </script>
 
 <svelte:head>
@@ -25,7 +24,7 @@
 	<div class="max-w-2xl mx-auto">
 		<Card variant="outline" bleed>
 			<h1 class="text-xl font-semibold">Edit Service Task</h1>
-			<ServiceScheduleForm {vehicle} {classifications} {schedule} action="?/update" />
+			<ServiceScheduleForm {vehicle} {schedule} action="?/update" />
 		</Card>
 
 		<Card class="mt-6" variant="outline" bleed>

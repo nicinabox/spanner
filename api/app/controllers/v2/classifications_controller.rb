@@ -23,7 +23,19 @@ module V2
 
     def update
       classification = current_user_classifications.find(params[:id])
-      classification.update!(classification_params)
+
+      if classification_params[:keywords]
+        preset = matching_preset_keywords(classification.name)
+        if preset && classification_params[:keywords].sort == preset.sort
+          # Keywords match preset defaults — clear DB so serializer fallback picks up future preset updates
+          classification.update!(keywords: [])
+        else
+          classification.update!(classification_params)
+        end
+      else
+        classification.update!(classification_params)
+      end
+
       render json: classification
     end
 
@@ -58,6 +70,15 @@ module V2
 
     def classification_params
       params.require(:classification).permit(:name, keywords: [])
+    end
+
+    def matching_preset_keywords(name)
+      ServiceSchedule::PRESETS.each_value do |items|
+        items.each do |item|
+          return item[:keywords] if item[:name].casecmp?(name)
+        end
+      end
+      nil
     end
   end
 end

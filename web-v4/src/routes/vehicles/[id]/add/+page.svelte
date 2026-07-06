@@ -74,7 +74,7 @@
 			{:else if view === 'reminder'}
 				<ReminderForm {vehicle} action="?/reminder" errors={form?.errors} />
 			{:else if view === 'schedule'}
-				<ServiceScheduleForm {vehicle} classifications={data.classifications ?? []} />
+				<ServiceScheduleForm {vehicle} />
 			{:else if view === 'mileage-adjustment'}
 				<p>
 					Correct your {mileageLabel(vehicle.distanceUnit)} estimate when you haven't had recent service

@@ -107,7 +107,9 @@
 						</Button>
 					{/if}
 				</div>
-				<p class="text-base text-ink-400 mt-1">One-off notifications for maintenance and deadlines</p>
+				<p class="text-base text-ink-400 mt-1">
+					One-off notifications for maintenance and deadlines
+				</p>
 			</div>
 			<ul class="space-y-3 mb-8">
 				{#each sortedReminders as reminder (reminder.id)}
@@ -132,8 +134,10 @@
 										Edit
 									</Button>
 									{#if completingReminderId === reminder.id}
-										<Button size="sm" variant="outline" onclick={() => (completingReminderId = null)}
-											>Cancel</Button
+										<Button
+											size="sm"
+											variant="outline"
+											onclick={() => (completingReminderId = null)}>Cancel</Button
 										>
 									{:else}
 										<Button
@@ -212,7 +216,7 @@
 										{classificationName(schedule.classificationId)}
 									</p>
 									{#if dueSummary(schedule)}
-										<p class="text-base font-medium text-ink-900 flex items-center gap-2">
+										<p class="text-base text-ink-900 flex items-center gap-2">
 											<Calendar size={18} class="text-ink-500 shrink-0" />
 											{dueSummary(schedule)}
 										</p>
@@ -294,7 +298,9 @@
 				</div>
 				<p class="text-base text-ink-400 mt-1">Recurring tasks that auto-advance on completion</p>
 			</div>
-			<p class="text-ink-400 text-center py-8">No service tasks yet. Add one to track recurring maintenance.</p>
+			<p class="text-ink-400 text-center py-8">
+				No service tasks yet. Add one to track recurring maintenance.
+			</p>
 		{/if}
 	{:else}
 		<EmptyState
