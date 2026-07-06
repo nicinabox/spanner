@@ -1,10 +1,12 @@
 import { request } from './server';
+import type { Classification } from './classifications';
 import type { CreatableFields, RequestOpts } from './types';
 
 export interface ServiceSchedule {
 	id: number;
 	vehicleId: number;
 	classificationId: number;
+	classification?: Classification;
 	distanceInterval: number | null;
 	monthInterval: number | null;
 	notes: string | null;

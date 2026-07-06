@@ -7,7 +7,7 @@ module V2
     end
 
     def show
-      render json: schedules.find(params[:id])
+      render json: schedules.find(params[:id]), include: :classification
     end
 
     def create
