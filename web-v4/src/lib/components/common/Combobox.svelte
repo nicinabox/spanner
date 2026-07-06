@@ -22,9 +22,17 @@
 
 	const id = $props.id();
 
-	let { multiple, name, placeholder, value = $bindable(), options: optionsProp }: Props = $props();
+	let {
+		multiple,
+		name,
+		placeholder,
+		value = $bindable(),
+		options: optionsProp = [],
+	}: Props = $props();
 
-	let options = $state.raw(optionsProp);
+	// svelte-ignore state_referenced_locally
+	let options = $state(optionsProp);
+	// svelte-ignore state_referenced_locally
 	let allOptions = $state(optionsProp);
 
 	const collection = $derived(
@@ -33,11 +41,13 @@
 		}),
 	);
 
+	// svelte-ignore state_referenced_locally
 	const service = useMachine(combobox.machine, {
 		id,
 		multiple,
 		selectionBehavior: multiple ? 'clear' : undefined,
 		openOnKeyPress: true,
+		openOnClick: true,
 		defaultHighlightedValue: options[0]?.value,
 		allowCustomValue: true,
 		name,
@@ -85,6 +95,16 @@
 			}
 		}
 	};
+
+	const inputProps = $derived.by(() => {
+		const { size, color, ...rest } = api.getInputProps();
+		return rest as Record<string, unknown>;
+	});
+
+	const triggerProps = $derived.by(() => {
+		const { color, ...rest } = api.getTriggerProps();
+		return rest;
+	});
 </script>
 
 {#snippet start()}
@@ -107,7 +127,7 @@
 	<div {...api.getControlProps()}>
 		<InputGroup
 			{placeholder}
-			{...api.getInputProps()}
+			{...inputProps}
 			onkeydown={(e) => {
 				api.getInputProps().onkeydown?.(e);
 				onkeydown(e);
@@ -115,7 +135,7 @@
 			start={api.selectedItems.length ? start : undefined}
 		>
 			{#snippet end()}
-				<Button {...api.getTriggerProps()} icon class="-mr-2" size="sm" variant="ghost">
+				<Button {...triggerProps} icon class="-mr-2" size="sm" variant="ghost">
 					<ChevronDown size={18} />
 				</Button>
 			{/snippet}
@@ -123,18 +143,19 @@
 	</div>
 </div>
 
-<div use:portal {...api.getPositionerProps()}>
-	{#if options.length > 0}
-		<ul
-			{...api.getContentProps()}
-			hidden={undefined}
-			class={[
-				'z-50 list-none min-w-[max(var(--reference-width),15ch)] p-1.5 bg-surface-raised border border-ink-200 rounded-md shadow-md',
-				'origin-(--transform-origin,top) transition-[opacity,scale,translate] duration-250 ease-out-expo',
-				'data-[state=open]:opacity-100 data-[state=open]:scale-100 data-[state=open]:translate-y-0 data-[state=closed]:opacity-0 data-[state=closed]:scale-[0.97] data-[state=closed]:-translate-y-2',
-				'starting:opacity-0 starting:scale-[0.97] starting:-translate-y-2',
-			]}
-		>
+<div use:portal {...api.getPositionerProps()} inert={!api.open}>
+	<ul
+		{...api.getContentProps()}
+		hidden={undefined}
+		class={[
+			'z-50 list-none min-w-[max(var(--reference-width),15ch)] p-1.5 bg-surface-raised border border-ink-200 rounded-md shadow-md',
+			'origin-(--transform-origin,top) transition-[opacity,scale,translate] duration-250 ease-out-expo',
+			'data-[state=open]:opacity-100 data-[state=open]:scale-100 data-[state=open]:translate-y-0 data-[state=closed]:opacity-0 data-[state=closed]:scale-[0.97] data-[state=closed]:-translate-y-2',
+			'starting:opacity-0 starting:scale-[0.97] starting:-translate-y-2',
+			!options.length && 'hidden',
+		]}
+	>
+		{#if options.length > 0}
 			{#each options as item}
 				<li
 					{...api.getItemProps({ item })}
@@ -149,6 +170,6 @@
 					<span {...api.getItemTextProps({ item })}>{item.label}</span>
 				</li>
 			{/each}
-		</ul>
-	{/if}
+		{/if}
+	</ul>
 </div>
