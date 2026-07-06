@@ -7,6 +7,7 @@
 	import { Wrench, PlusIcon } from 'lucide-svelte';
 	import TaskCard from './TaskCard.svelte';
 	import SuggestTasksDialog from '$lib/components/dialogs/SuggestTasksDialog.svelte';
+	import EmptyState from '$lib/components/EmptyState.svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Classification } from '$lib/data/classifications';
 	import type { Vehicle } from '$lib/data/vehicles';
@@ -66,7 +67,7 @@
 
 <div class="mb-3">
 	<div class="flex items-center justify-between">
-		<h2 class="text-lg font-semibold flex items-center gap-2">
+		<h2 class="text-xl font-semibold flex items-center gap-2">
 			<Wrench size={18} />
 			Recurring Tasks
 		</h2>
@@ -113,9 +114,12 @@
 		{/each}
 	</ul>
 {:else}
-	<p class="text-ink-400 text-center py-8">
-		No tasks yet. Add one to track recurring maintenance.
-	</p>
+	<EmptyState
+		size="md"
+		heading="No tasks yet"
+		details="Set tasks for recurring maintenance schedules"
+		class="max-w-none"
+	/>
 {/if}
 
 <SuggestTasksDialog

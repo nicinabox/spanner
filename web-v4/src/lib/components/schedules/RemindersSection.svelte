@@ -6,6 +6,7 @@
 	import { formatMileage } from '$lib/utils/vehicle';
 	import { Bell } from 'lucide-svelte';
 	import ReminderCard from './ReminderCard.svelte';
+	import EmptyState from '$lib/components/EmptyState.svelte';
 	import type { Reminder } from '$lib/data/reminders';
 	import type { Vehicle } from '$lib/data/vehicles';
 
@@ -35,7 +36,7 @@
 
 <div class="mb-3">
 	<div class="flex items-center justify-between">
-		<h2 class="text-lg font-semibold flex items-center gap-2">
+		<h2 class="text-xl font-semibold flex items-center gap-2">
 			<Bell size={18} />
 			Reminders
 		</h2>
@@ -52,15 +53,25 @@
 	</div>
 	<p class="text-base text-ink-400 mt-1">One-off todos for maintenance and deadlines</p>
 </div>
-<ul class="space-y-3 mb-12">
-	{#each sorted as reminder (reminder.id)}
-		<ReminderCard
-			{reminder}
-			{vehicle}
-			dueSummary={dueSummary(reminder)}
-			completing={completingId === reminder.id}
-			oncomplete={() => (completingId = reminder.id)}
-			oncancel={() => (completingId = null)}
-		/>
-	{/each}
-</ul>
+
+{#if reminders.length}
+	<ul class="space-y-3 mb-12">
+		{#each sorted as reminder (reminder.id)}
+			<ReminderCard
+				{reminder}
+				{vehicle}
+				dueSummary={dueSummary(reminder)}
+				completing={completingId === reminder.id}
+				oncomplete={() => (completingId = reminder.id)}
+				oncancel={() => (completingId = null)}
+			/>
+		{/each}
+	</ul>
+{:else}
+	<EmptyState
+		size="md"
+		heading="No reminders yet"
+		details="Set reminders for upcoming maintenance, registration renewals, or inspections"
+		class="max-w-none"
+	/>
+{/if}
