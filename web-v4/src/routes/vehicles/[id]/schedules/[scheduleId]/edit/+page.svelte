@@ -2,7 +2,7 @@
 	import { Button, Card, Confirm } from '$lib';
 	import { umamiEvent } from '$lib/umami';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
-	import ServiceScheduleForm from '$lib/components/forms/ServiceScheduleForm.svelte';
+	import TaskForm from '$lib/components/forms/TaskForm.svelte';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
 
@@ -13,7 +13,7 @@
 </script>
 
 <svelte:head>
-	<title>{pageTitle('Edit Service Task', data.vehicle.name)}</title>
+	<title>{pageTitle('Edit Task', data.vehicle.name)}</title>
 </svelte:head>
 
 <VehiclePageLayout
@@ -23,8 +23,8 @@
 >
 	<div class="max-w-2xl mx-auto">
 		<Card variant="outline" bleed>
-			<h1 class="text-xl font-semibold">Edit Service Task</h1>
-			<ServiceScheduleForm {vehicle} {schedule} action="?/update" />
+			<h1 class="text-xl font-semibold">Edit Task</h1>
+			<TaskForm {vehicle} {schedule} action="?/update" />
 		</Card>
 
 		<Card class="mt-6" variant="outline" bleed>
@@ -36,7 +36,7 @@
 						<span class="font-medium">Permanently delete</span>
 						<p class="text-sm text-ink-500">Removes the schedule and its history.</p>
 					</div>
-					<Confirm title="Delete service task?">
+					<Confirm title="Delete task?">
 						{#snippet trigger({ onOpenChange })}
 							<Button color="danger" variant="outline" onclick={() => onOpenChange(true)}
 								>Delete</Button
@@ -60,7 +60,7 @@
 								</Button>
 							</form>
 						{/snippet}
-						<p>This service task will be permanently deleted.</p>
+						<p>This task will be permanently deleted.</p>
 					</Confirm>
 				</div>
 			</fieldset>

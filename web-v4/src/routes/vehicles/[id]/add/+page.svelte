@@ -4,7 +4,7 @@
 	import MileageAdjustmentForm from '$lib/components/forms/MileageAdjustmentForm.svelte';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import ReminderForm from '$lib/components/forms/ReminderForm.svelte';
-	import ServiceScheduleForm from '$lib/components/forms/ServiceScheduleForm.svelte';
+	import TaskForm from '$lib/components/forms/TaskForm.svelte';
 	import { page } from '$app/stores';
 	import { Bell, Gauge, PlusIcon, Wrench } from 'lucide-svelte';
 	import type { PageProps } from './$types';
@@ -22,7 +22,7 @@
 		{
 			record: 'New Record',
 			reminder: 'New Reminder',
-			schedule: 'New Service Task',
+			schedule: 'New Task',
 			'mileage-adjustment': 'Adjust Mileage',
 		}[view] ?? 'New Record',
 	);
@@ -42,7 +42,7 @@
 		},
 		{
 			value: 'schedule',
-			label: 'New Service Task',
+			label: 'New Task',
 			href: `/vehicles/${vehicle.id}/add?view=schedule`,
 			icon: Wrench,
 		},
@@ -74,7 +74,7 @@
 			{:else if view === 'reminder'}
 				<ReminderForm {vehicle} action="?/reminder" errors={form?.errors} />
 			{:else if view === 'schedule'}
-				<ServiceScheduleForm {vehicle} />
+				<TaskForm {vehicle} />
 			{:else if view === 'mileage-adjustment'}
 				<p>
 					Correct your {mileageLabel(vehicle.distanceUnit)} estimate when you haven't had recent service

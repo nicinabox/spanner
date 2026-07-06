@@ -38,7 +38,7 @@ export const actions: Actions = {
 
 		try {
 			await completeServiceSchedule(params.id!, id, { notes, date, mileage }, locals);
-			return { success: true };
+			redirect(303, `/vehicles/${params.id}/schedules`);
 		} catch {
 			return fail(422, { error: 'Failed to complete schedule' });
 		}

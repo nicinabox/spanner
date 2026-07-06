@@ -63,7 +63,7 @@
 			await update();
 		};
 	};
-	const title = $derived(initialType ? `${initialType.charAt(0).toUpperCase() + initialType.slice(1)} Tasks` : 'Common Service Tasks');
+	const title = $derived(initialType ? `${initialType.charAt(0).toUpperCase() + initialType.slice(1)} Tasks` : 'Common Tasks');
 	const formId = 'suggest-form';
 </script>
 
@@ -120,7 +120,7 @@
 		<Button type="button" variant="ghost" form={formId} onclick={() => onOpenChange(false)}>Cancel</Button>
 		<Button type="submit" form={formId} disabled={checked.size === 0}>
 			<Plus size={16} />
-			Add {checked.size} service task{checked.size !== 1 ? 's' : ''}
+			Add {checked.size} task{checked.size !== 1 ? 's' : ''}
 		</Button>
 	{/snippet}
 </Dialog>

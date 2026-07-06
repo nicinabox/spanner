@@ -2,7 +2,7 @@
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
-	import ServiceSchedulesView from './ServiceSchedulesView.svelte';
+	import TasksView from './TasksView.svelte';
 
 	let { data }: PageProps = $props();
 	let vehicle = $derived(data.vehicle);
@@ -13,7 +13,7 @@
 </svelte:head>
 
 <VehiclePageLayout {vehicle} activeTab="schedules">
-	<ServiceSchedulesView
+	<TasksView
 		schedules={data.schedules}
 		classifications={data.classifications}
 		reminders={data.reminders}

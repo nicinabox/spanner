@@ -34,7 +34,7 @@
 		</div>
 	{/if}
 
-	<fieldset class="flex flex-col gap-4">
+	<fieldset>
 		<Field
 			name="mileage"
 			label={`Enter your current ${mileageLabel(vehicle.distanceUnit)}`}

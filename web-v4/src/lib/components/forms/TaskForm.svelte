@@ -15,19 +15,13 @@
 		action?: string;
 	}
 
-	let {
-		vehicle,
-		schedule,
-		action = '?/schedule',
-	}: Props = $props();
+	let { vehicle, schedule, action = '?/schedule' }: Props = $props();
 
 	let distanceInterval = $state(schedule?.distanceInterval?.toString() ?? '');
 	let monthInterval = $state(schedule?.monthInterval?.toString() ?? '');
 
 	let newClassificationName = $state(schedule?.classification?.name ?? '');
-	let keywords = $state(
-		schedule?.classification?.keywords?.join(', ') ?? '',
-	);
+	let keywords = $state(schedule?.classification?.keywords?.join(', ') ?? '');
 </script>
 
 <form method="POST" {action} use:enhance autocomplete="off">
@@ -38,15 +32,16 @@
 				type="text"
 				name="newName"
 				bind:value={newClassificationName}
-				placeholder="e.g. Hull Cleaning"
+				placeholder="e.g. Oil Change"
+				autocomplete="off"
 			/>
 		</Field>
-		<Field label="Keywords" name="keywords" hint="Words that trigger auto-classification.">
-			<Textarea
-				name="keywords"
-				bind:value={keywords}
-				placeholder="oil change, change oil"
-			/>
+		<Field
+			label="Keywords"
+			name="keywords"
+			hint="Words that trigger auto-classification when updating History"
+		>
+			<Textarea name="keywords" bind:value={keywords} placeholder="e.g., oil change, change oil" />
 		</Field>
 
 		<Field label={MileageLabel(vehicle.distanceUnit)} name="distanceInterval">
@@ -63,7 +58,7 @@
 			<Input type="number" name="monthInterval" bind:value={monthInterval} placeholder="Optional" />
 		</Field>
 		<div class="flex gap-3">
-			<Button type="submit">{schedule ? 'Update Service Task' : 'Create Service Task'}</Button>
+			<Button type="submit">{schedule ? 'Update Task' : 'Create Task'}</Button>
 		</div>
 	</div>
 </form>
