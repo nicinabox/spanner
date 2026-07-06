@@ -34,8 +34,8 @@
 	};
 
 	let {
-		variant = 'negative',
-		role = 'alert',
+		role = 'status',
+		variant = role === 'alert' ? 'negative' : 'info',
 		class: className,
 		dismissible = false,
 		children,

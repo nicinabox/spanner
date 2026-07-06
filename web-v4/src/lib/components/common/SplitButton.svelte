@@ -29,6 +29,8 @@
 		id?: string;
 	}
 
+	const uniqId = $props.id();
+
 	let {
 		children,
 		items,
@@ -39,7 +41,7 @@
 		size = 'md',
 		disabled,
 		class: className,
-		id = 'split-btn',
+		id = uniqId,
 	}: Props = $props();
 
 	// svelte-ignore state_referenced_locally

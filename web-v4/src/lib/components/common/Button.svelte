@@ -112,7 +112,7 @@
 		type?: 'button' | 'submit' | 'reset' | null;
 		disabled?: boolean | null;
 		class?: ClassValue;
-		children: Snippet;
+		children?: Snippet;
 		[key: string]: unknown;
 	};
 
