@@ -124,7 +124,7 @@
 				}}
 			>
 				{#snippet trigger()}
-					<VehicleColorIndicator color={vehicle.color} size={6} /> {vehicle.name}
+					<VehicleColorIndicator class="-ml-1.5" color={vehicle.color} size={6} /> {vehicle.name}
 				{/snippet}
 				{#snippet itemEnd(item)}
 					{#if item.value === 'retire' && vehicle.retired}
