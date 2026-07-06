@@ -61,7 +61,7 @@ module V2
     private
 
     def current_user_classifications
-      current_user.classifications.where(vehicle_id: vehicles.pluck(:id))
+      Classification.where(user_id: [nil, current_user.id], vehicle_id: [nil, *vehicles.pluck(:id)])
     end
 
     def vehicles
