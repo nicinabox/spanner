@@ -58,6 +58,8 @@ class Record < ApplicationRecord
     return if notes.blank? || !saved_changes?
 
     HeuristicClassifier.classify(notes, vehicle:).each do |result|
+      next if result[:confidence] < 0.3
+
       record_classifications.create!(
         classification: result[:classification],
         classifier: result[:classifier],
