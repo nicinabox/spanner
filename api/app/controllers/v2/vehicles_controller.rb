@@ -28,7 +28,11 @@ module V2
       vehicle = vehicles.build(vehicle_params)
       vehicle.save!
 
-      GoodJob.set(wait: 24.hours).perform_later(vehicle, 'prompt_for_first_record!')
+      begin
+        PromptForFirstRecordJob.set(wait: 24.hours).perform_later(vehicle.id)
+      rescue NotImplementedError
+        Rails.logger.warn { "[VehiclesController#create] Skipping scheduled job: #{ActiveJob::Base.queue_adapter_name} does not support enqueue_at" }
+      end
 
       render json: vehicle
     end
