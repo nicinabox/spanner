@@ -37,7 +37,7 @@
 			<header class="flex items-center gap-2 mb-6">
 				{#if !vehicle.retired}
 					<Button
-						href={`/vehicles/${vehicle.id}/add?view=reminder`}
+						href={`/vehicles/${vehicle.id}/add?view=tasks&type=reminder`}
 						class="ml-auto"
 						{...umamiEvent('add_reminder')}
 					>
@@ -74,7 +74,7 @@
 							New Reminder
 						</Button>
 					{:else}
-						<Button href={`/vehicles/${vehicle.id}/add?view=reminder`}>
+						<Button href={`/vehicles/${vehicle.id}/add?view=tasks&type=reminder`}>
 							<PlusIcon size={18} />
 							New Reminder
 						</Button>

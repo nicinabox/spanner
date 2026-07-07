@@ -7,7 +7,7 @@
 	import TaskForm from '$lib/components/forms/TaskForm.svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { PlusIcon, Gauge, ListTodo } from 'lucide-svelte';
+	import { PlusIcon, Gauge, Wrench } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
 	import { mileageLabel } from '$lib/utils/vehicle';
@@ -17,7 +17,7 @@
 	let vehicle = $derived(data.vehicle);
 
 	let view = $derived(($page.url.searchParams.get('view') as string | null) ?? 'record');
-	let type = $derived(($page.url.searchParams.get('type') as string | null) ?? 'reminder');
+	let type = $derived(($page.url.searchParams.get('type') as string | null) ?? 'task');
 	let notesParam = $derived($page.url.searchParams.get('notes') ?? '');
 
 	let title = $derived(
@@ -37,9 +37,9 @@
 		},
 		{
 			value: 'tasks',
-			label: 'New Tasks',
-			href: `/vehicles/${vehicle.id}/add?view=tasks`,
-			icon: ListTodo,
+			label: 'New Task',
+			href: `/vehicles/${vehicle.id}/add?view=tasks&type=task`,
+			icon: Wrench,
 		},
 		{
 			value: 'mileage-adjustment',
@@ -49,10 +49,10 @@
 		},
 	]);
 
-	let taskTypeItems = $derived([
+	let taskTypeItems = [
 		{ value: 'reminder', label: 'Reminder' },
 		{ value: 'task', label: 'Task' },
-	]);
+	];
 </script>
 
 <svelte:head>
@@ -72,7 +72,7 @@
 				{#if view === 'tasks'}
 					<SegmentedControl
 						items={taskTypeItems}
-						value={type}
+						defaultValue={type}
 						onValueChange={(details) => {
 							if (details.value) {
 								goto(`/vehicles/${vehicle.id}/add?view=tasks&type=${details.value}`, {

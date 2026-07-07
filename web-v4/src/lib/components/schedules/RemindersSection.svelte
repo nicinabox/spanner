@@ -28,7 +28,7 @@
 		{#if !vehicle.retired}
 			<Button
 				size="sm"
-				href={`/vehicles/${vehicle.id}/add?view=reminder`}
+				href={`/vehicles/${vehicle.id}/add?view=tasks&type=reminder`}
 				{...umamiEvent('add_reminder')}
 			>
 				<Bell size={14} />

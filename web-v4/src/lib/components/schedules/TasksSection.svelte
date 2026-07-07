@@ -76,7 +76,7 @@
 					size="sm"
 					items={splitItems}
 					onAction={() => {
-						window.location.href = `/vehicles/${vehicle.id}/add?view=schedule`;
+						window.location.href = `/vehicles/${vehicle.id}/add?view=tasks&type=task`;
 					}}
 					onSelect={(e) => {
 						suggestType = e.value;

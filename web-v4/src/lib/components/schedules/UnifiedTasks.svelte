@@ -63,7 +63,7 @@
 					<Button
 						variant="outline"
 						size="sm"
-						href={`/vehicles/${vehicle.id}/add?view=reminder`}
+						href={`/vehicles/${vehicle.id}/add?view=tasks&type=reminder`}
 						{...umamiEvent('add_reminder')}
 					>
 						<Bell size={14} />
@@ -73,7 +73,7 @@
 						size="sm"
 						items={splitItems}
 						onAction={() => {
-							window.location.href = `/vehicles/${vehicle.id}/add?view=schedule`;
+							window.location.href = `/vehicles/${vehicle.id}/add?view=tasks&type=task`;
 						}}
 						onSelect={(e) => {
 							suggestType = e.value;
@@ -123,7 +123,7 @@
 			<div class="flex items-center gap-2">
 				<Button
 					variant="outline"
-					href={`/vehicles/${vehicle.id}/add?view=reminder`}
+					href={`/vehicles/${vehicle.id}/add?view=tasks&type=reminder`}
 					{...umamiEvent('add_reminder_empty')}
 				>
 					<Bell size={14} />
@@ -132,7 +132,7 @@
 				<SplitButton
 					items={splitItems}
 					onAction={() => {
-						window.location.href = `/vehicles/${vehicle.id}/add?view=schedule`;
+						window.location.href = `/vehicles/${vehicle.id}/add?view=tasks&type=task`;
 					}}
 					onSelect={(e) => {
 						suggestType = e.value;
