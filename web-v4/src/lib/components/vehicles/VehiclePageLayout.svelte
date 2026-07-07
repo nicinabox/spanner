@@ -160,6 +160,7 @@
 					pill
 					size="sm"
 					aria-current={active ? 'page' : undefined}
+					class="aria-current-page:text-white"
 				>
 					<tab.icon size={14} />
 					{tab.label}
