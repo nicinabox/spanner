@@ -15,6 +15,11 @@
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
 	import { loadDraft, saveDraft, clearDraft } from '$lib/utils/draft';
+	import type { Classification } from '$lib/data/classifications';
+	import { classifyNotes } from '$lib/data/classify.remote';
+	import Badge from '$lib/components/common/Badge.svelte';
+	import Menu from '$lib/components/common/Menu.svelte';
+	import { RefreshCw } from 'lucide-svelte';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -22,16 +27,15 @@
 		errors?: FormError[];
 		action?: string;
 		id?: number;
+		classifications?: Classification[];
 	}
 
-	let { vehicle, record, errors = [], action = '', id }: Props = $props();
+	let { vehicle, record, errors = [], action = '', id, classifications = [] }: Props = $props();
 
 	// svelte-ignore state_referenced_locally
 	let recordId = record?.id;
 
-	let draftKey = $derived(
-		['record', String(vehicle.id), recordId ?? id ?? 'new'].join(':'),
-	);
+	let draftKey = $derived(['record', String(vehicle.id), recordId ?? id ?? 'new'].join(':'));
 
 	// Merge page-provided errors (from SvelteKit form prop) with action errors
 	// set by the custom fetch handler below.
@@ -62,6 +66,49 @@
 	let markedForDeletion = $state<string[]>([]);
 	let selectedFiles = $state<File[]>([]);
 	let submitting = $state(false);
+
+	let classifying = $state(false);
+
+	async function handleClassify() {
+		if (!notes.trim()) return;
+		classifying = true;
+		try {
+			const results = await classifyNotes({ notes });
+			for (const r of results) {
+				if (r.confidence >= 0.25) {
+					const c = allClassifications.find((cl) => cl.id === r.classification.id);
+					if (c && !selectedClassificationIds.includes(c.id)) {
+						selectedClassificationIds = [...selectedClassificationIds, c.id];
+					}
+				}
+			}
+		} catch {
+			// silently ignore
+		} finally {
+			classifying = false;
+		}
+	}
+
+	let allClassifications = $state<Classification[]>(classifications);
+	let selectedClassificationIds = $state<number[]>(record?.classifications?.map((c) => c.id) ?? []);
+
+	let availableClassifications = $derived(
+		allClassifications.filter((c) => !selectedClassificationIds.some((id) => id === c.id)),
+	);
+
+	let selectedClassifications = $derived(
+		allClassifications.filter((c) => selectedClassificationIds.includes(c.id)),
+	);
+
+	function addClassification(c: Classification) {
+		if (!selectedClassificationIds.includes(c.id)) {
+			selectedClassificationIds = [...selectedClassificationIds, c.id];
+		}
+	}
+
+	function removeClassification(c: Classification) {
+		selectedClassificationIds = selectedClassificationIds.filter((id) => id !== c.id);
+	}
 
 	function handleMarkDelete(id: string) {
 		if (!markedForDeletion.includes(id)) {
@@ -141,6 +188,44 @@
 			<Textarea name="notes" bind:value={notes} required class="min-h-30" />
 		</Field>
 
+		{#if record?.id}
+			<Field name="classifications" label="Classifications">
+				<div class="flex flex-wrap gap-2 items-center">
+					{#each selectedClassifications as c (c.id)}
+						<Badge size="md" dismissible ondismiss={() => removeClassification(c)}>
+							{c.name}
+						</Badge>
+					{/each}
+					{#if availableClassifications.length > 0}
+						<Menu
+							trigger="Add"
+							variant="outline"
+							size="xs"
+							items={availableClassifications.map((c) => ({
+								value: String(c.id),
+								label: c.name,
+							}))}
+							onSelect={({ value }) => {
+								const c = allClassifications.find((cl) => cl.id === Number(value));
+								if (c) addClassification(c);
+							}}
+						/>
+					{/if}
+					<Button
+						type="button"
+						variant="ghost"
+						size="xs"
+						onclick={handleClassify}
+						disabled={classifying || !notes.trim()}
+						title="Suggest from notes"
+						icon
+					>
+						<RefreshCw size={14} class={classifying ? 'animate-spin' : ''} />
+					</Button>
+				</div>
+			</Field>
+		{/if}
+
 		<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} errors={allErrors}>
 			<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
 				{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
@@ -169,6 +254,12 @@
 		<input type="hidden" name="id" value={id} />
 	{/if}
 	<input type="hidden" name="attachments_to_delete" value={markedForDeletion.join(',')} />
+	{#each selectedClassificationIds as cid}
+		<input type="hidden" name="record[classification_ids][]" value={cid} />
+	{/each}
+	{#if selectedClassificationIds.length === 0}
+		<input type="hidden" name="record[classification_ids][]" value="" />
+	{/if}
 
 	<div class="flex gap-3">
 		<Button type="submit" disabled={submitting}>

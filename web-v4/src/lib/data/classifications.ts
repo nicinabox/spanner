@@ -46,3 +46,31 @@ export const deleteClassification = (id: number | string, opts: RequestOpts) => 
 		method: 'DELETE',
 	});
 };
+
+export const addRecordClassification = (
+	vehicleId: number | string,
+	recordId: number | string,
+	classificationId: number,
+	opts: RequestOpts,
+) => {
+	return request<void>(`/vehicles/${vehicleId}/records/${recordId}/record_classifications`, {
+		...opts,
+		method: 'POST',
+		json: { classificationId },
+	});
+};
+
+export const removeRecordClassification = (
+	vehicleId: number | string,
+	recordId: number | string,
+	classificationId: number,
+	opts: RequestOpts,
+) => {
+	return request<void>(
+		`/vehicles/${vehicleId}/records/${recordId}/record_classifications/${classificationId}`,
+		{
+			...opts,
+			method: 'DELETE',
+		},
+	);
+};
