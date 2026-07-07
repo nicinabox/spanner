@@ -1,113 +1,113 @@
 ---
 name: Car
 distance_unit:
-- mi
-- km
+  - mi
+  - km
 items:
-- name: Oil Change
-  keywords:
-  - oil change
-  - engine oil
-  - motor oil
-  - oil filter
-  context:
-  - engine
-  - motor
-  intervals:
-    mi: 5000
-    mo: 6
-    km: 8000
-- name: Tire Rotation
-  keywords:
-  - tire rotation
-  - rotate tire
-  - rotate tyre
-  intervals:
-    mi: 7500
-    km: 12100
-- name: Air Filter
-  keywords:
-  - air filter
-  - engine air filter
-  intervals:
-    mi: 30000
-    km: 48300
-- name: Brake Fluid
-  keywords:
-  - brake fluid
-  - DOT3
-  - DOT4
-  - DOT5
-  - brake flush
-  intervals:
-    mo: 24
-- name: Cabin Air Filter
-  keywords:
-  - cabin air filter
-  - cabin filter
-  intervals:
-    mi: 30000
-    mo: 30
-    km: 48300
-- name: Coolant
-  keywords:
-  - coolant
-  - antifreeze
-  - radiator fluid
-  - coolant flush
-  intervals:
-    mi: 60000
-    mo: 60
-    km: 96500
-- name: Spark Plugs
-  keywords:
-  - spark plug
-  - plug wire
-  - ngk
-  - replace spark plug
-  intervals:
-    mi: 100000
-    km: 160900
-- name: Transmission Fluid
-  keywords:
-  - transmission fluid
-  - transmission oil
-  - gearbox oil
-  - transmission service
-  - transmission flush
-  context:
-  - transmission
-  - gearbox
-  intervals:
-    mi: 60000
-    km: 96500
-- name: Drive Belt
-  keywords:
-  - serpentine belt
-  - accessory belt
-  - timing belt
-  - drive belt
-  - replace belt
-  - new belt
-  intervals:
-    mi: 100000
-    km: 160900
-- name: Battery
-  keywords:
-  - new battery
-  - replace battery
-  - battery replacement
-  - battery died
-  - battery dead
-  intervals:
-    mo: 60
-- name: Wiper Blades
-  keywords:
-  - wiper blades
-  - replace wipers
-  - new wipers
-  - windshield wipers
-  - wiper replacement
-  - wipers
-  intervals:
-    mo: 12
+  - name: Oil Change
+    keywords:
+      - oil change
+      - engine oil
+      - motor oil
+      - oil filter
+    context:
+      - engine
+      - motor
+    intervals:
+      mi: 5000
+      mo: 6
+      km: 8000
+  - name: Tire Rotation
+    keywords:
+      - tire rotation
+      - rotate tire
+      - rotate tyre
+    intervals:
+      mi: 7500
+      km: 12100
+  - name: Air Filter
+    keywords:
+      - air filter
+      - engine air filter
+    intervals:
+      mi: 30000
+      km: 48300
+  - name: Brake Fluid
+    keywords:
+      - brake fluid
+      - DOT3
+      - DOT4
+      - DOT5
+      - brake flush
+    intervals:
+      mo: 24
+  - name: Cabin Air Filter
+    keywords:
+      - cabin air filter
+      - cabin filter
+    intervals:
+      mi: 30000
+      mo: 30
+      km: 48300
+  - name: Coolant
+    keywords:
+      - coolant
+      - antifreeze
+      - radiator fluid
+      - coolant flush
+    intervals:
+      mi: 60000
+      mo: 60
+      km: 96500
+  - name: Spark Plugs
+    keywords:
+      - spark plug
+      - plug wire
+      - ngk
+      - replace spark plug
+    intervals:
+      mi: 100000
+      km: 160900
+  - name: Transmission Fluid
+    keywords:
+      - transmission fluid
+      - transmission oil
+      - gearbox oil
+      - transmission service
+      - transmission flush
+    context:
+      - transmission
+      - gearbox
+    intervals:
+      mi: 60000
+      km: 96500
+  - name: Drive Belt
+    keywords:
+      - serpentine belt
+      - accessory belt
+      - timing belt
+      - drive belt
+      - replace belt
+      - new belt
+    intervals:
+      mi: 100000
+      km: 160900
+  - name: Battery
+    keywords:
+      - new battery
+      - replace battery
+      - battery replacement
+      - battery died
+      - battery dead
+    intervals:
+      mo: 60
+  - name: Wiper Blades
+    keywords:
+      - wiper blades
+      - replace wipers
+      - new wipers
+      - windshield wipers
+      - wiper replacement
+      - wipers
+    intervals:
+      mo: 12

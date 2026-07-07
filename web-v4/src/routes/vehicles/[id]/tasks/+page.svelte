@@ -14,8 +14,12 @@
 </svelte:head>
 
 <VehiclePageLayout {vehicle} activeTab="tasks">
-	<div class="max-w-2xl mx-auto my-6 space-y-20">
-		<RemindersSection reminders={data.reminders} {vehicle} />
-		<TasksSection schedules={data.schedules} classifications={data.classifications} {vehicle} />
+	<div class="max-w-2xl mx-auto my-6 flex flex-col gap-20">
+		<div>
+			<RemindersSection reminders={data.reminders} {vehicle} />
+		</div>
+		<div>
+			<TasksSection schedules={data.schedules} classifications={data.classifications} {vehicle} />
+		</div>
 	</div>
 </VehiclePageLayout>

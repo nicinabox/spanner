@@ -1,9 +1,33 @@
 # frozen_string_literal: true
 
 class ServiceSchedule < ApplicationRecord
+  def self.validate_preset_group!(type, data)
+    raise ArgumentError, "Preset '#{type}' missing 'name'" unless data[:name].present?
+    raise ArgumentError, "Preset '#{type}' missing 'distance_unit'" unless data[:distance_unit].present?
+    raise ArgumentError, "Preset '#{type}' 'distance_unit' must be an array" unless data[:distance_unit].is_a?(Array)
+    raise ArgumentError, "Preset '#{type}' missing 'items'" unless data[:items].is_a?(Array)
+  end
+
+  def self.validate_preset_item!(type, item)
+    raise ArgumentError, "Preset '#{type}' item missing 'name'" unless item[:name].present?
+    raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' missing 'keywords'" unless item[:keywords].is_a?(Array)
+    raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' missing 'intervals'" unless item[:intervals].is_a?(Hash)
+    raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' 'intervals' must not be empty" if item[:intervals].empty?
+
+    item[:intervals].each_key do |key|
+      valid = %w[mi km nmi mo hr].include?(key.to_s)
+      raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' invalid interval key '#{key}'" unless valid
+    end
+  end
+
   PRESETS = Dir[Rails.root.join('config/presets/*.yml')].sort.each_with_object({}) do |path, hash|
     type = File.basename(path, '.yml')
-    hash[type] = YAML.safe_load_file(path, permitted_classes: [Symbol]).deep_symbolize_keys
+    data = YAML.safe_load_file(path, permitted_classes: [Symbol]).deep_symbolize_keys
+
+    validate_preset_group!(type, data)
+    data[:items].each { |item| validate_preset_item!(type, item) }
+
+    hash[type] = data
   end.freeze
 
   belongs_to :vehicle

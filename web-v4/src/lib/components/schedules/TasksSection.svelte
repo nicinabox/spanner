@@ -28,11 +28,13 @@
 	let presetGroups = $state<Record<string, PresetGroup> | null>(null);
 
 	$effect(() => {
-		getPresets({ distanceUnit: vehicle.distanceUnit }).then((data) => {
-			presetGroups = data;
-		}).catch(() => {
-			presetGroups = {};
-		});
+		getPresets({ distanceUnit: vehicle.distanceUnit })
+			.then((data) => {
+				presetGroups = data;
+			})
+			.catch(() => {
+				presetGroups = {};
+			});
 	});
 
 	let splitItems = $derived(
