@@ -99,6 +99,7 @@
 								<div class="border-t border-ink-200 pt-4">
 									<RecordForm
 										{vehicle}
+										classifications={data.classifications}
 										record={{ notes: reminder.notes, mileage: vehicle.estimatedMileage } as any}
 										action={`/vehicles/${vehicle.id}/add?/record&reminder_id=${reminder.id}`}
 									/>

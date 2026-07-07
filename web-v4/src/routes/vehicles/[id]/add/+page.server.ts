@@ -2,7 +2,7 @@ import { getVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
-import { createClassification } from '$lib/data/classifications';
+import { getClassifications, createClassification } from '$lib/data/classifications';
 import { createServiceSchedule } from '$lib/data/serviceSchedules';
 import { decode } from '$lib/utils/form';
 import { getHTTPErrors } from '$lib/utils/actions';
@@ -17,12 +17,18 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		redirect(303, `/vehicles/${params.id}`);
 	}
 
-	return { vehicle };
+	const classifications = await getClassifications(params.id!, locals);
+
+	return { vehicle, classifications };
 };
 
 export const actions = {
 	record: async ({ request, locals, params, url }) => {
 		const formData = await request.formData();
+
+		// Read classification_ids before decode to avoid FormData iterator issues
+		const classificationIds = formData.getAll('record[classification_ids][]');
+
 		const data = decode(formData, {
 			date: 'string',
 			notes: 'string',
@@ -59,6 +65,9 @@ export const actions = {
 		);
 		for (const file of files) {
 			body.append('record[attachments][]', file);
+		}
+		for (const id of classificationIds) {
+			body.append('record[classification_ids][]', id);
 		}
 
 		try {
