@@ -57,7 +57,7 @@ export const getIntervalSummary = (
 	if (schedule.distanceInterval) {
 		parts.push(formatMileage(schedule.distanceInterval, distanceUnit));
 	}
-	return parts.join(' or ');
+	return `Every ${parts.join(' or ')}`;
 };
 
 // --- new unified sort ---
@@ -89,14 +89,8 @@ export function sortUnifiedByDue(
 		if (aOverdue && !bOverdue) return -1;
 		if (!aOverdue && bOverdue) return 1;
 
-		const aDate =
-			a.kind === 'reminder'
-				? (a.data.reminderDate ?? a.data.date)
-				: a.data.nextDueDate;
-		const bDate =
-			b.kind === 'reminder'
-				? (b.data.reminderDate ?? b.data.date)
-				: b.data.nextDueDate;
+		const aDate = a.kind === 'reminder' ? (a.data.reminderDate ?? a.data.date) : a.data.nextDueDate;
+		const bDate = b.kind === 'reminder' ? (b.data.reminderDate ?? b.data.date) : b.data.nextDueDate;
 
 		if (!aDate && !bDate) return 0;
 		if (!aDate) return 1;

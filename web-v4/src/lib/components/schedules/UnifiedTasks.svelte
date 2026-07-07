@@ -54,44 +54,39 @@
 	const hasItems = $derived(reminders.length > 0 || schedules.length > 0);
 </script>
 
-<div class="mb-3">
-	<div class="flex items-center justify-between">
-		<h2 class="text-xl font-semibold flex items-center gap-2">
-			Tasks &amp; Reminders
-		</h2>
-		<div class="flex items-center gap-2">
-			{#if !vehicle.retired}
-				<Button
-					size="sm"
-					href={`/vehicles/${vehicle.id}/add?view=reminder`}
-					{...umamiEvent('add_reminder')}
-				>
-					<Bell size={14} />
-					New Reminder
-				</Button>
-				<SplitButton
-					size="sm"
-					items={splitItems}
-					onAction={() => {
-						window.location.href = `/vehicles/${vehicle.id}/add?view=schedule`;
-					}}
-					onSelect={(e) => {
-						suggestType = e.value;
-						suggestOpen = true;
-					}}
-				>
-					<PlusIcon size={14} />
-					New Task
-				</SplitButton>
-			{/if}
+{#if hasItems}
+	<div class="mb-3">
+		<div class="flex items-center justify-between">
+			<h2 class="text-xl font-semibold flex items-center gap-2">Tasks &amp; Reminders</h2>
+			<div class="flex items-center gap-2">
+				{#if !vehicle.retired}
+					<Button
+						variant="outline"
+						size="sm"
+						href={`/vehicles/${vehicle.id}/add?view=reminder`}
+						{...umamiEvent('add_reminder')}
+					>
+						<Bell size={14} />
+						New Reminder
+					</Button>
+					<SplitButton
+						size="sm"
+						items={splitItems}
+						onAction={() => {
+							window.location.href = `/vehicles/${vehicle.id}/add?view=schedule`;
+						}}
+						onSelect={(e) => {
+							suggestType = e.value;
+							suggestOpen = true;
+						}}
+					>
+						<PlusIcon size={14} />
+						New Task
+					</SplitButton>
+				{/if}
+			</div>
 		</div>
 	</div>
-	{#if hasItems}
-		<p class="text-base text-ink-400 mt-1">One-off reminders and recurring tasks sorted by due date</p>
-	{/if}
-</div>
-
-{#if hasItems}
 	<ul class="space-y-3">
 		{#each sorted as item (item.kind === 'reminder' ? `reminder-${item.data.id}` : `schedule-${item.data.id}`)}
 			<li>
@@ -118,33 +113,36 @@
 	</ul>
 {:else}
 	<EmptyState
-		size="md"
 		heading="No tasks or reminders yet"
 		details="Track one-off reminders and recurring maintenance tasks for this vehicle"
-		variant="filled"
-		class="max-w-none bg-ink-50 text-ink-700"
 	>
+		{#snippet media()}
+			<Wrench size={48} class="text-ink-300" />
+		{/snippet}
 		{#snippet action()}
 			<div class="flex items-center gap-2">
 				<Button
-					size="sm"
+					variant="outline"
 					href={`/vehicles/${vehicle.id}/add?view=reminder`}
 					{...umamiEvent('add_reminder_empty')}
 				>
 					<Bell size={14} />
 					New Reminder
 				</Button>
-				<Button
-					size="sm"
-					onclick={() => {
-						suggestType = null;
+				<SplitButton
+					items={splitItems}
+					onAction={() => {
+						window.location.href = `/vehicles/${vehicle.id}/add?view=schedule`;
+					}}
+					onSelect={(e) => {
+						suggestType = e.value;
 						suggestOpen = true;
 					}}
 					{...umamiEvent('add_task_empty')}
 				>
-					<Wrench size={14} />
+					<PlusIcon size={14} />
 					New Task
-				</Button>
+				</SplitButton>
 			</div>
 		{/snippet}
 	</EmptyState>

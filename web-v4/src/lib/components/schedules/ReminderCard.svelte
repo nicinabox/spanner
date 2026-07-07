@@ -2,7 +2,7 @@
 	import { Button, Card } from '$lib';
 	import { umamiEvent } from '$lib/umami';
 	import { isReminderOverdue } from '$lib/utils/reminders';
-	import { ChevronRight } from 'lucide-svelte';
+	import { Calendar, ChevronRight, RefreshCwOffIcon } from 'lucide-svelte';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import type { Reminder } from '$lib/data/reminders';
 	import type { Vehicle } from '$lib/data/vehicles';
@@ -50,9 +50,14 @@
 				{/if}
 				{reminder.notes}
 			</a>
-			{#if dueSummary}
-				<p class="text-base text-ink-500">{dueSummary}</p>
-			{/if}
+			<p class="text-base text-ink-900 flex items-center gap-2">
+				<Calendar size={18} class="text-ink-500 shrink-0" />
+				{dueSummary}
+			</p>
+			<p class="text-base text-ink-500 flex items-center gap-2">
+				<RefreshCwOffIcon size={18} class="text-ink-500 shrink-0" />
+				Not recurring
+			</p>
 		</div>
 		<div class="flex items-center gap-2">
 			{#if completing}

@@ -13,7 +13,7 @@
 </svelte:head>
 
 <VehiclePageLayout {vehicle} activeTab="tasks">
-	<div class="max-w-2xl mx-auto my-6">
+	<div class="max-w-2xl mx-auto">
 		<UnifiedTasks
 			reminders={data.reminders}
 			schedules={data.schedules}
