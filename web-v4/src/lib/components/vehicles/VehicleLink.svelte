@@ -4,7 +4,7 @@
 	import VehicleColorIndicator from './VehicleColorIndicator.svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { getOverdueRemindersCount } from '$lib/utils/reminders';
-import { getOverdueSchedulesCount } from '$lib/utils/tasks';
+	import { getOverdueSchedulesCount } from '$lib/utils/tasks';
 	import { formatMileage } from '$lib/utils/vehicle';
 	import { getColorPalette } from '$lib/utils/colors';
 
