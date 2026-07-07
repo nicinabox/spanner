@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button, SplitButton } from '$lib';
 	import { umamiEvent } from '$lib/umami';
-	import { sortSchedulesByDue } from '$lib/utils/schedules';
+	import { sortSchedulesByDue } from '$lib/utils/tasks';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import { formatMileage } from '$lib/utils/vehicle';
 	import { Wrench, PlusIcon } from 'lucide-svelte';

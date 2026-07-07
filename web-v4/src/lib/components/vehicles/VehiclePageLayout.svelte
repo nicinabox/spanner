@@ -6,7 +6,7 @@
 	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { getOverdueRemindersCount } from '$lib/utils/reminders';
-	import { getOverdueSchedulesCount } from '$lib/utils/schedules';
+	import { getOverdueSchedulesCount } from '$lib/utils/tasks';
 	import { enhance } from '$app/forms';
 	import { ArrowLeft, BookOpenText, Check, FileText, Wrench } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';

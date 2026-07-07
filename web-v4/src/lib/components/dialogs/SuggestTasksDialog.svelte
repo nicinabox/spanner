@@ -5,7 +5,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { getPresets, type PresetItem } from '$lib/data/serviceSchedules.remote';
 	import { Check, Plus, RefreshCw } from 'lucide-svelte';
-	import { getIntervalSummary } from '$lib/utils/schedules';
+	import { getIntervalSummary } from '$lib/utils/tasks';
 	import type { DistanceUnit } from '$lib/data/vehicles';
 
 	interface Props {
