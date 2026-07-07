@@ -20,7 +20,7 @@
 	let { reminder, vehicle, completing, oncomplete, oncancel }: Props = $props();
 
 	export const getDueSummary = (reminder: Reminder): string => {
-		if (!reminder.reminderType) return '';
+		if (!reminder.reminderType) return 'Some day';
 		const parts: string[] = [];
 
 		if (reminder.reminderDate || reminder.date) {
