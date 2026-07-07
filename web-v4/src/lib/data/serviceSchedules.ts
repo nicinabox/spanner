@@ -1,6 +1,7 @@
 import { request } from './server';
 import type { Classification } from './classifications';
 import type { CreatableFields, RequestOpts } from './types';
+import type { PresetGroup } from './serviceSchedules.remote';
 
 export interface ServiceSchedule {
 	id: number;
@@ -18,14 +19,11 @@ export interface ServiceSchedule {
 	updatedAt: string;
 }
 
-export interface SchedulePreset {
-	name: string;
-	distanceInterval: number | null;
-	monthInterval: number | null;
-	keywords: string[];
-}
-
-export const getServiceSchedule = (vehicleId: number | string, id: number | string, opts: RequestOpts) => {
+export const getServiceSchedule = (
+	vehicleId: number | string,
+	id: number | string,
+	opts: RequestOpts,
+) => {
 	return request<ServiceSchedule>(`/vehicles/${vehicleId}/service_schedules/${id}`, opts);
 };
 
@@ -92,5 +90,5 @@ export const completeServiceSchedule = (
 };
 
 export const getPresets = (opts: RequestOpts) => {
-	return request<Record<string, SchedulePreset[]>>('/service_schedules/presets', opts);
+	return request<Record<string, PresetGroup>>('/service_schedules/presets', opts);
 };

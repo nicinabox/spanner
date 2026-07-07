@@ -1,56 +1,71 @@
 ---
 name: Motorcycle
-distance_unit: mi
+distance_unit:
+- mi
+- km
 items:
-  - name: Oil Change
-    distance_interval: 3000
-    month_interval: 12
-    keywords:
-      - oil change
-      - engine oil
-      - motor oil
-      - oil filter
-    context:
-      - engine
-      - motor
-  - name: Chain Adjustment
-    distance_interval: 500
-    keywords:
-      - chain adjustment
-      - adjust chain
-      - tighten chain
-      - chain tension
-  - name: Chain Replacement
-    distance_interval: 20000
-    keywords:
-      - chain replacement
-      - replace chain
-      - new chain
-      - chain and sprocket
-  - name: Brake Fluid
-    month_interval: 24
-    keywords:
-      - brake fluid
-      - DOT3
-      - DOT4
-      - DOT5
-      - brake flush
-  - name: Spark Plugs
-    distance_interval: 15000
-    keywords:
-      - spark plug
-      - plug wire
-      - ngk
-      - replace spark plug
-  - name: Air Filter
-    distance_interval: 12000
-    keywords:
-      - air filter
-      - engine air filter
-  - name: Tire Replacement
-    distance_interval: 10000
-    keywords:
-      - tire replacement
-      - replace tire
-      - new tire
-      - new tires
+- name: Oil Change
+  keywords:
+  - oil change
+  - engine oil
+  - motor oil
+  - oil filter
+  context:
+  - engine
+  - motor
+  intervals:
+    mi: 3000
+    mo: 12
+    km: 4800
+- name: Chain Adjustment
+  keywords:
+  - chain adjustment
+  - adjust chain
+  - tighten chain
+  - chain tension
+  intervals:
+    mi: 500
+    km: 800
+- name: Chain Replacement
+  keywords:
+  - chain replacement
+  - replace chain
+  - new chain
+  - chain and sprocket
+  intervals:
+    mi: 20000
+    km: 32200
+- name: Brake Fluid
+  keywords:
+  - brake fluid
+  - DOT3
+  - DOT4
+  - DOT5
+  - brake flush
+  intervals:
+    mo: 24
+- name: Spark Plugs
+  keywords:
+  - spark plug
+  - plug wire
+  - ngk
+  - replace spark plug
+  intervals:
+    mi: 15000
+    km: 24100
+- name: Air Filter
+  keywords:
+  - air filter
+  - engine air filter
+  intervals:
+    mi: 12000
+    km: 19300
+- name: Tire Replacement
+  keywords:
+  - tire replacement
+  - replace tire
+  - new tire
+  - new tires
+  intervals:
+    mi: 10000
+    km: 16100

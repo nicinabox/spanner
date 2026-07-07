@@ -6,7 +6,10 @@ module V2
       presets = ServiceSchedule::PRESETS
 
       if params[:distance_unit].present?
-        presets = presets.select { |_, group| group[:distance_unit] == params[:distance_unit] }
+        presets = presets.select do |_, group|
+          units = Array(group[:distance_unit])
+          units.include?(params[:distance_unit])
+        end
       end
 
       render json: presets

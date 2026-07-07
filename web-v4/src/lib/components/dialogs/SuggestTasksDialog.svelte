@@ -47,9 +47,9 @@
 		checked = next;
 	};
 
-	const selectedNames: string[] = $derived([
-		...new Set([...checked].map((i) => currentPresets[i]?.name).filter(Boolean)),
-	] as string[]);
+	const selectedPresets: PresetItem[] = $derived(
+		[...checked].map((i) => currentPresets[i]).filter(Boolean) as PresetItem[],
+	);
 
 	const isExisting = (name: string) => existingClassificationNames.has(name.toLowerCase());
 	const submit: SubmitFunction = () => {
@@ -75,7 +75,7 @@
 		{#if loading}
 			<p class="text-ink-400 text-center py-8">Loading presets...</p>
 		{:else}
-			<input type="hidden" name="preset_names" value={JSON.stringify(selectedNames)} />
+			<input type="hidden" name="preset_data" value={JSON.stringify(selectedPresets.map((p) => ({ name: p.name, intervals: p.intervals })))} />
 			<p class="mb-4">Common tasks for {initialType}s. You can edit them any time.</p>
 			<ul class="space-y-2">
 				{#each currentPresets as preset, i}
@@ -106,11 +106,11 @@
 								<p class="font-medium truncate">{preset.name}</p>
 								<p class="text-sm text-ink-500 flex items-center gap-1">
 									<RefreshCw size={14} class="text-ink-400 shrink-0" />
-									{preset.distanceInterval
-										? `${preset.distanceInterval.toLocaleString()} mi`
+									{preset.intervals[distanceUnit ?? 'mi']
+										? `${preset.intervals[distanceUnit ?? 'mi']!.toLocaleString()} ${distanceUnit ?? 'mi'}`
 										: ''}
-									{preset.distanceInterval && preset.monthInterval ? ' or ' : ''}
-									{preset.monthInterval ? `${preset.monthInterval} mo` : ''}
+									{preset.intervals[distanceUnit ?? 'mi'] && preset.intervals['mo'] ? ' or ' : ''}
+									{preset.intervals['mo'] ? `${preset.intervals['mo']} mo` : ''}
 								</p>
 							</div>
 						</button>

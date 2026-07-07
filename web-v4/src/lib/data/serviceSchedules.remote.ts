@@ -6,26 +6,27 @@ import * as v from 'valibot';
 
 export interface PresetItem {
 	name: string;
-	distanceInterval: number | null;
-	monthInterval: number | null;
+	intervals: Record<string, number>;
 	keywords: string[];
 }
 
 export interface PresetGroup {
 	name: string;
-	distanceUnit: string;
+	distanceUnit: string | string[];
 	items: PresetItem[];
 }
 
-export const getPresets = query(v.object({ distanceUnit: v.optional(v.string()) }), async ({ distanceUnit }) => {
-	const event = getRequestEvent();
-	const token = await getAuthToken(event.cookies);
+export const getPresets = query(
+	v.object({ distanceUnit: v.optional(v.string()) }),
+	async ({ distanceUnit }) => {
+		const event = getRequestEvent();
+		const token = await getAuthToken(event.cookies);
 
-	const path = distanceUnit
-		? `/service_schedules/presets?distance_unit=${distanceUnit}`
-		: '/service_schedules/presets';
-
-	return request<Record<string, PresetGroup>>(path, {
-		authToken: token,
-	});
-});
+		return request<Record<string, PresetGroup>>('/service_schedules/presets', {
+			authToken: token,
+			params: {
+				distance_unit: distanceUnit,
+			},
+		});
+	},
+);

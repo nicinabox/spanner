@@ -30,6 +30,8 @@
 	$effect(() => {
 		getPresets({ distanceUnit: vehicle.distanceUnit }).then((data) => {
 			presetGroups = data;
+		}).catch(() => {
+			presetGroups = {};
 		});
 	});
 

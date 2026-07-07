@@ -1,66 +1,75 @@
 ---
 name: RV
-distance_unit: mi
+distance_unit:
+- mi
 items:
-  - name: Oil Change
-    distance_interval: 5000
-    month_interval: 12
-    keywords:
-      - oil change
-      - engine oil
-      - motor oil
-      - oil filter
-    context:
-      - engine
-      - motor
-  - name: Generator Service
-    month_interval: 12
-    keywords:
-      - generator service
-      - generator maintenance
-      - service generator
-  - name: Propane System Check
-    month_interval: 12
-    keywords:
-      - propane system
-      - propane check
-      - propane inspection
-      - lp system
-  - name: Roof Inspection
-    month_interval: 6
-    keywords:
-      - roof inspection
-      - inspect roof
-      - roof check
-      - roof seal
-  - name: Battery
-    month_interval: 60
-    keywords:
-      - new battery
-      - replace battery
-      - battery replacement
-      - battery died
-      - battery dead
-  - name: Tire Inspection
-    month_interval: 12
-    keywords:
-      - tire inspection
-      - inspect tire
-      - tire check
-      - tire condition
-  - name: Transmission Fluid
-    distance_interval: 30000
-    keywords:
-      - transmission fluid
-      - transmission oil
-      - gearbox oil
-      - transmission service
-      - transmission flush
-    context:
-      - transmission
-      - gearbox
-  - name: Air Filter
-    distance_interval: 15000
-    keywords:
-      - air filter
-      - engine air filter
+- name: Oil Change
+  keywords:
+  - oil change
+  - engine oil
+  - motor oil
+  - oil filter
+  context:
+  - engine
+  - motor
+  intervals:
+    mi: 5000
+    mo: 12
+- name: Generator Service
+  keywords:
+  - generator service
+  - generator maintenance
+  - service generator
+  intervals:
+    mo: 12
+- name: Propane System Check
+  keywords:
+  - propane system
+  - propane check
+  - propane inspection
+  - lp system
+  intervals:
+    mo: 12
+- name: Roof Inspection
+  keywords:
+  - roof inspection
+  - inspect roof
+  - roof check
+  - roof seal
+  intervals:
+    mo: 6
+- name: Battery
+  keywords:
+  - new battery
+  - replace battery
+  - battery replacement
+  - battery died
+  - battery dead
+  intervals:
+    mo: 60
+- name: Tire Inspection
+  keywords:
+  - tire inspection
+  - inspect tire
+  - tire check
+  - tire condition
+  intervals:
+    mo: 12
+- name: Transmission Fluid
+  keywords:
+  - transmission fluid
+  - transmission oil
+  - gearbox oil
+  - transmission service
+  - transmission flush
+  context:
+  - transmission
+  - gearbox
+  intervals:
+    mi: 30000
+- name: Air Filter
+  keywords:
+  - air filter
+  - engine air filter
+  intervals:
+    mi: 15000

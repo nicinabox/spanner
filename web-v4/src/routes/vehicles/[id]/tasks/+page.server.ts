@@ -4,19 +4,12 @@ import {
 	completeServiceSchedule,
 	deleteServiceSchedule,
 	createServiceSchedule,
-	getPresets,
 } from '$lib/data/serviceSchedules';
 import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
 import { getClassifications, createClassification } from '$lib/data/classifications';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-
-type SchedulePreset = {
-	name: string;
-	distanceInterval: number | null;
-	monthInterval: number | null;
-};
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
@@ -76,25 +69,16 @@ export const actions: Actions = {
 
 	suggest: async ({ locals, params, request }) => {
 		const data = await request.formData();
-		const presetNames = JSON.parse((data.get('preset_names') as string) || '[]') as string[];
-		if (!presetNames.length) {
+		const presetData = JSON.parse((data.get('preset_data') as string) || '[]') as Array<{
+			name: string;
+			intervals: Record<string, number>;
+		}>;
+		if (!presetData.length) {
 			return { success: true };
 		}
 
-		const allPresets = await getPresets({ authToken: locals.authToken });
-		const nameLookup = new Set(presetNames.map((n) => n.toLowerCase()));
-		const selectedPresets = Object.values(allPresets)
-			.flat()
-			.filter((preset) => nameLookup.has(preset.name.toLowerCase()));
-		const uniquePresets = Object.values(
-			selectedPresets.reduce<Record<string, SchedulePreset>>((acc, preset) => {
-				const key = preset.name.toLowerCase();
-				if (!acc[key] || preset.distanceInterval || preset.monthInterval) {
-					acc[key] = preset;
-				}
-				return acc;
-			}, {}),
-		);
+		const vehicle = await getVehicle(params.id!, { authToken: locals.authToken });
+		const distanceUnit = vehicle.distanceUnit || 'mi';
 
 		const [existing, existingSchedules] = await Promise.all([
 			getClassifications(params.id!, locals),
@@ -103,7 +87,7 @@ export const actions: Actions = {
 		const existingClassificationIds = new Set(existingSchedules.map((s) => s.classificationId));
 		const opts = { authToken: locals.authToken, webUrl: locals.webUrl };
 
-		for (const preset of uniquePresets) {
+		for (const preset of presetData) {
 			let classificationId = existing.find(
 				(c) => c.name.toLowerCase() === preset.name.toLowerCase(),
 			)?.id;
@@ -126,8 +110,8 @@ export const actions: Actions = {
 				{
 					serviceSchedule: {
 						classificationId,
-						distanceInterval: preset.distanceInterval,
-						monthInterval: preset.monthInterval,
+						distanceInterval: preset.intervals[distanceUnit] ?? null,
+						monthInterval: preset.intervals['mo'] ?? null,
 					},
 				},
 				opts,
