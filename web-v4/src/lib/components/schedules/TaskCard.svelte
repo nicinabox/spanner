@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button, Card } from '$lib';
 	import { umamiEvent } from '$lib/umami';
-	import { isScheduleOverdue } from '$lib/utils/schedules';
+	import { getIntervalSummary, isScheduleOverdue } from '$lib/utils/schedules';
 	import { Calendar, RefreshCw, ChevronRight } from 'lucide-svelte';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
@@ -13,21 +13,12 @@
 		schedule: ServiceSchedule;
 		vehicle: Vehicle;
 		classificationName: string;
-		intervalSummary: string;
 		completing: boolean;
 		oncomplete: () => void;
 		oncancel: () => void;
 	}
 
-	let {
-		schedule,
-		vehicle,
-		classificationName,
-		intervalSummary,
-		completing,
-		oncomplete,
-		oncancel,
-	}: Props = $props();
+	let { schedule, vehicle, classificationName, completing, oncomplete, oncancel }: Props = $props();
 
 	const getDueSummary = (schedule: ServiceSchedule): string => {
 		const parts: string[] = [];
@@ -42,6 +33,7 @@
 	};
 
 	let dueSummary = $derived(getDueSummary(schedule));
+	let intervalSummary = $derived(getIntervalSummary(schedule, vehicle.distanceUnit));
 </script>
 
 <Card variant="outline" size="sm" class="gap-3">

@@ -62,17 +62,6 @@
 	const classificationName = (classificationId: number): string => {
 		return classifications.find((c) => c.id === classificationId)?.name ?? 'Unknown';
 	};
-
-	const intervalSummary = (schedule: ServiceSchedule): string => {
-		const parts: string[] = [];
-		if (schedule.monthInterval) {
-			parts.push(`${schedule.monthInterval} mo`);
-		}
-		if (schedule.distanceInterval) {
-			parts.push(formatMileage(schedule.distanceInterval, vehicle.distanceUnit));
-		}
-		return parts.join(' or ');
-	};
 </script>
 
 <div class="mb-3">
@@ -111,7 +100,6 @@
 					{schedule}
 					{vehicle}
 					classificationName={classificationName(schedule.classificationId)}
-					intervalSummary={intervalSummary(schedule)}
 					completing={completingId === schedule.id}
 					oncomplete={() => (completingId = schedule.id)}
 					oncancel={() => (completingId = null)}

@@ -38,7 +38,7 @@
 			<h1 class="text-xl">Danger Zone</h1>
 
 			<fieldset>
-				<label class="flex items-center justify-between gap-6">
+				<div class="flex items-center justify-between gap-6">
 					<div>
 						<span class="font-medium">Permanently delete</span>
 						<p class="text-sm text-ink-500">This reminder will be permanently deleted.</p>
@@ -69,7 +69,7 @@
 						{/snippet}
 						<p>This reminder will be permanently deleted.</p>
 					</Confirm>
-				</label>
+				</div>
 			</fieldset>
 		</Card>
 	</div>

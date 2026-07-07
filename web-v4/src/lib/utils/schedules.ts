@@ -1,10 +1,12 @@
 import type { ServiceSchedule } from '$lib/data/serviceSchedules';
-import type { Vehicle } from '$lib/data/vehicles';
+import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
 import { parseDateUTC } from './date';
+import { formatMileage } from './vehicle';
 
 export const getOverdueSchedulesCount = (vehicle: Vehicle) => {
 	if (vehicle.retired) return undefined;
-	return vehicle.serviceSchedules.filter((s) => isScheduleOverdue(s, vehicle.estimatedMileage)).length;
+	return vehicle.serviceSchedules.filter((s) => isScheduleOverdue(s, vehicle.estimatedMileage))
+		.length;
 };
 
 export const isScheduleOverdue = (schedule: ServiceSchedule, estimatedMileage?: number) => {
@@ -40,4 +42,18 @@ export const sortSchedulesByDue = (schedules: ServiceSchedule[], estimatedMileag
 
 		return aMileage - bMileage;
 	});
+};
+
+export const getIntervalSummary = (
+	schedule: Pick<ServiceSchedule, 'monthInterval' | 'distanceInterval'>,
+	distanceUnit: DistanceUnit = 'mi',
+): string => {
+	const parts: string[] = [];
+	if (schedule.monthInterval) {
+		parts.push(`${schedule.monthInterval} mo`);
+	}
+	if (schedule.distanceInterval) {
+		parts.push(formatMileage(schedule.distanceInterval, distanceUnit));
+	}
+	return parts.join(' or ');
 };

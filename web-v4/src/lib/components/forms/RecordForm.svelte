@@ -32,7 +32,15 @@
 		distanceUnit?: string;
 	}
 
-	let { vehicle, record, errors = [], action = '', id, classifications = [], distanceUnit }: Props = $props();
+	let {
+		vehicle,
+		record,
+		errors = [],
+		action = '',
+		id,
+		classifications = [],
+		distanceUnit,
+	}: Props = $props();
 
 	// svelte-ignore state_referenced_locally
 	let recordId = record?.id;
@@ -47,9 +55,7 @@
 	let attachmentErrors = $derived(allErrors.filter((e) => e.id === 'attachments'));
 
 	// svelte-ignore state_referenced_locally
-	let date = $state(
-		record?.date ? record.date.slice(0, 10) : formatDateISO(new Date()),
-	);
+	let date = $state(record?.date ? record.date.slice(0, 10) : formatDateISO(new Date()));
 	// svelte-ignore state_referenced_locally
 	let mileage = $state(record?.mileage?.toString() ?? vehicle.estimatedMileage?.toString() ?? '');
 	// svelte-ignore state_referenced_locally
@@ -92,9 +98,7 @@
 	}
 
 	let allClassifications = $state<Classification[]>(classifications);
-	let selectedClassificationIds = $state<number[]>(
-		record?.classifications?.map((c) => c.id) ?? [],
-	);
+	let selectedClassificationIds = $state<number[]>(record?.classifications?.map((c) => c.id) ?? []);
 
 	let presetNames = $state<Set<string>>(new Set());
 

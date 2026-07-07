@@ -5,16 +5,24 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { getPresets, type PresetItem } from '$lib/data/serviceSchedules.remote';
 	import { Check, Plus, RefreshCw } from 'lucide-svelte';
+	import { getIntervalSummary } from '$lib/utils/schedules';
+	import type { DistanceUnit } from '$lib/data/vehicles';
 
 	interface Props {
 		open: boolean;
 		onOpenChange: (open: boolean) => void;
 		existingClassificationNames?: Set<string>;
 		initialType?: string | null;
-		distanceUnit?: string;
+		distanceUnit?: DistanceUnit;
 	}
 
-	let { open, onOpenChange, existingClassificationNames = new Set(), initialType = null, distanceUnit }: Props = $props();
+	let {
+		open,
+		onOpenChange,
+		existingClassificationNames = new Set(),
+		initialType = null,
+		distanceUnit,
+	}: Props = $props();
 
 	let presets: Record<string, PresetItem[]> | null = $state(null);
 	let loading = $state(true);
@@ -66,16 +74,26 @@
 			await update();
 		};
 	};
-	const title = $derived(initialType ? `${initialType.charAt(0).toUpperCase() + initialType.slice(1)} Tasks` : 'Common Tasks');
+	const title = $derived(
+		initialType
+			? `${initialType.charAt(0).toUpperCase() + initialType.slice(1)} Tasks`
+			: 'Common Tasks',
+	);
 	const formId = 'suggest-form';
 </script>
 
-<Dialog {open} {onOpenChange} title={title}>
+<Dialog {open} {onOpenChange} {title}>
 	<form id={formId} method="POST" action="?/suggest" use:enhance={submit}>
 		{#if loading}
 			<p class="text-ink-400 text-center py-8">Loading presets...</p>
 		{:else}
-			<input type="hidden" name="preset_data" value={JSON.stringify(selectedPresets.map((p) => ({ name: p.name, intervals: p.intervals })))} />
+			<input
+				type="hidden"
+				name="preset_data"
+				value={JSON.stringify(
+					selectedPresets.map((p) => ({ name: p.name, intervals: p.intervals })),
+				)}
+			/>
 			<p class="mb-4">Common tasks for {initialType}s. You can edit them any time.</p>
 			<ul class="space-y-2">
 				{#each currentPresets as preset, i}
@@ -106,11 +124,13 @@
 								<p class="font-medium truncate">{preset.name}</p>
 								<p class="text-sm text-ink-500 flex items-center gap-1">
 									<RefreshCw size={14} class="text-ink-400 shrink-0" />
-									{preset.intervals[distanceUnit ?? 'mi']
-										? `${preset.intervals[distanceUnit ?? 'mi']!.toLocaleString()} ${distanceUnit ?? 'mi'}`
-										: ''}
-									{preset.intervals[distanceUnit ?? 'mi'] && preset.intervals['mo'] ? ' or ' : ''}
-									{preset.intervals['mo'] ? `${preset.intervals['mo']} mo` : ''}
+									{getIntervalSummary(
+										{
+											distanceInterval: preset.intervals[distanceUnit ?? 'mi'],
+											monthInterval: preset.intervals.mo,
+										},
+										distanceUnit,
+									)}
 								</p>
 							</div>
 						</button>
@@ -121,7 +141,9 @@
 	</form>
 
 	{#snippet actions()}
-		<Button type="button" variant="ghost" form={formId} onclick={() => onOpenChange(false)}>Cancel</Button>
+		<Button type="button" variant="ghost" form={formId} onclick={() => onOpenChange(false)}
+			>Cancel</Button
+		>
 		<Button type="submit" form={formId} disabled={checked.size === 0}>
 			<Plus size={16} />
 			Add {checked.size} task{checked.size !== 1 ? 's' : ''}

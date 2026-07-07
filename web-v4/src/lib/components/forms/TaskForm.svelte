@@ -27,36 +27,56 @@
 <form method="POST" {action} use:enhance autocomplete="off">
 	<div class="space-y-3">
 		<input type="hidden" name="classificationId" value={schedule?.classificationId ?? ''} />
-		<Field label="Name" name="newName" required>
-			<Input
-				type="text"
-				name="newName"
-				bind:value={newClassificationName}
-				placeholder="e.g. Oil Change"
-				autocomplete="off"
-			/>
-		</Field>
-		<Field
-			label="Keywords"
-			name="keywords"
-			hint="Words that trigger auto-classification when updating History"
-		>
-			<Textarea name="keywords" bind:value={keywords} placeholder="e.g., oil change, change oil" />
-		</Field>
 
-		<Field label={MileageLabel(vehicle.distanceUnit)} name="distanceInterval">
-			<InputGroup
-				name="distanceInterval"
-				type="number"
-				bind:value={distanceInterval}
-				placeholder="Optional"
+		<fieldset>
+			<Field label="Name" name="newName" required>
+				<Input
+					type="text"
+					name="newName"
+					bind:value={newClassificationName}
+					placeholder="e.g. Oil Change"
+					autocomplete="off"
+				/>
+			</Field>
+			<Field
+				label="Keywords"
+				name="keywords"
+				hint="Words that should match notes when updating History"
 			>
-				{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
-			</InputGroup>
-		</Field>
-		<Field label="Months" name="monthInterval">
-			<Input type="number" name="monthInterval" bind:value={monthInterval} placeholder="Optional" />
-		</Field>
+				<Textarea
+					name="keywords"
+					bind:value={keywords}
+					rows={1}
+					placeholder="e.g., oil change, change oil"
+				/>
+			</Field>
+		</fieldset>
+
+		<fieldset class="flex sm:gap-6 flex-col sm:flex-row *:flex-1">
+			<Field label="Month Interval" name="monthInterval">
+				<Input
+					type="number"
+					name="monthInterval"
+					bind:value={monthInterval}
+					placeholder="Optional"
+					min="0"
+					step="6"
+				/>
+			</Field>
+			<Field label={MileageLabel(vehicle.distanceUnit) + ' Interval'} name="distanceInterval">
+				<InputGroup
+					name="distanceInterval"
+					type="number"
+					bind:value={distanceInterval}
+					placeholder="Optional"
+					min="0"
+					step="5000"
+				>
+					{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
+				</InputGroup>
+			</Field>
+		</fieldset>
+
 		<div class="flex gap-3">
 			<Button type="submit">{schedule ? 'Update Task' : 'Create Task'}</Button>
 		</div>

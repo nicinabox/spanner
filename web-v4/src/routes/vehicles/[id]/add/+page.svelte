@@ -70,10 +70,24 @@
 			<h1 class="text-xl font-semibold">{title}</h1>
 
 			{#if view === 'record'}
-				<RecordForm {vehicle} record={{ notes: notesParam } as any} action="?/record" classifications={data.classifications} distanceUnit={vehicle.distanceUnit} />
+				<RecordForm
+					{vehicle}
+					record={{ notes: notesParam } as any}
+					action="?/record"
+					classifications={data.classifications}
+					distanceUnit={vehicle.distanceUnit}
+				/>
 			{:else if view === 'reminder'}
+				<p>
+					Reminders are mileage-aware, non-recurring todos for one-off upcoming maintenance,
+					registration renewals, inspections, etc
+				</p>
 				<ReminderForm {vehicle} action="?/reminder" errors={form?.errors} />
 			{:else if view === 'schedule'}
+				<p>
+					Tasks are mileage-aware, recurring reminders that advance when updating History. Refer to
+					your owner's manual for your exact maintenance schedule.
+				</p>
 				<TaskForm {vehicle} />
 			{:else if view === 'mileage-adjustment'}
 				<p>
