@@ -54,12 +54,12 @@ class Record < ApplicationRecord
   end
 
   def classify_notes
-    record_classifications.auto_tagged.destroy_all
     return if notes.blank? || !saved_changes?
 
     HeuristicClassifier.classify(notes, vehicle:).each do |result|
       next if result[:confidence] < 0.25
       next unless vehicle.service_schedules.exists?(classification_id: result[:classification].id)
+      next if record_classifications.exists?(classification_id: result[:classification].id)
 
       record_classifications.create!(
         classification: result[:classification],

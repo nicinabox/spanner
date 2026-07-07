@@ -29,13 +29,13 @@ class RecordClassificationTest < ActiveSupport::TestCase
     assert_includes names, 'Tire Rotation'
   end
 
-  test 'updating record notes reclassifies' do
+  test 'updating record notes adds new classifications without removing existing' do
     record = @vehicle.records.create!(date: Time.zone.today, notes: 'Changed oil')
     assert_includes record.classifications.pluck(:name), 'Oil Change'
 
     record.update!(notes: 'New battery')
     assert_includes record.classifications.pluck(:name), 'Battery'
-    assert_not_includes record.classifications.pluck(:name), 'Oil Change'
+    assert_includes record.classifications.pluck(:name), 'Oil Change'
   end
 
   test 'record classification requires classifier' do

@@ -7,16 +7,17 @@ module V2
       updated = 0
 
       vehicle.records.find_each do |record|
-        record.record_classifications.auto_tagged.destroy_all
+        next if record.notes.blank?
 
         HeuristicClassifier.classify(record.notes, vehicle:).each do |result|
-          record.record_classifications.find_or_create_by!(
-            classification: result[:classification]
-          ) do |rc|
-            rc.classifier = result[:classifier]
-            rc.confidence = result[:confidence]
-            rc.auto_tagged = true
-          end
+          next if record.record_classifications.exists?(classification_id: result[:classification].id)
+
+          record.record_classifications.create!(
+            classification: result[:classification],
+            classifier: result[:classifier],
+            confidence: result[:confidence],
+            auto_tagged: true
+          )
         end
         updated += 1
       end
@@ -24,6 +25,19 @@ module V2
       vehicle.service_schedules.each(&:recalculate_next_due)
 
       render json: { records_updated: updated }
+    end
+
+    def classify
+      notes = params[:notes]
+      results = HeuristicClassifier.classify(notes)
+
+      render json: results.map { |r|
+        {
+          classification: ClassificationSerializer.new(r[:classification]).serializable_hash,
+          classifier: r[:classifier],
+          confidence: r[:confidence]
+        }
+      }
     end
 
     private
