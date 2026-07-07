@@ -89,7 +89,9 @@
 			{/if}
 		</div>
 	</div>
-	<p class="text-base text-ink-400 mt-1">Tasks auto-advance on completion</p>
+	{#if schedules.length}
+		<p class="text-base text-ink-400 mt-1">Tasks auto-advance on completion</p>
+	{/if}
 </div>
 
 {#if schedules.length}
@@ -112,7 +114,7 @@
 		size="md"
 		heading="No tasks yet"
 		variant="filled"
-		details="Set tasks for recurring maintenance schedules"
+		details="Mileage-aware tasks for maintenance that advance automatically when updating History"
 		class="max-w-none bg-ink-50 text-ink-700"
 	/>
 {/if}

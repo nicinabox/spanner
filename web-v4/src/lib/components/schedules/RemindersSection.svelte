@@ -36,7 +36,9 @@
 			</Button>
 		{/if}
 	</div>
-	<p class="text-base text-ink-400 mt-1">One-off todos for maintenance and deadlines</p>
+	{#if reminders.length}
+		<p class="text-base text-ink-400 mt-1">One-off todos for maintenance and deadlines</p>
+	{/if}
 </div>
 
 {#if reminders.length}
@@ -57,7 +59,8 @@
 	<EmptyState
 		size="md"
 		heading="No reminders yet"
-		details="Set reminders for upcoming maintenance, registration renewals, or inspections"
+		details="Mileage-aware todos for upcoming maintenance, registration
+		renewals, inspections, etc"
 		variant="filled"
 		class="max-w-none bg-ink-50 text-ink-700"
 	/>

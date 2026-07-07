@@ -34,11 +34,15 @@
 			{@render media()}
 		</div>
 	{/if}
-	<h2 class="group-data-[size=md]:text-xl group-data-[size=lg]:text-2xl font-semibold text-pretty">
+	<h2
+		class="group-data-[size=md]/card:text-xl group-data-[size=lg]/card:text-2xl font-semibold text-pretty"
+	>
 		{heading}
 	</h2>
 	{#if details}
-		<p class="text-base text-ink-500 mt-2 text-pretty">{details}</p>
+		<p class="text-base text-ink-500 mt-2 text-pretty sm:group-data-[size=md]/card:max-w-3/5">
+			{details}
+		</p>
 	{/if}
 	{#if action}
 		<div class="mt-6 flex gap-2">
