@@ -52,7 +52,13 @@
 					{ value: 'settings', label: 'Settings', href: '/settings', preload: false },
 					{ value: 'signout', label: 'Sign out', href: '/logout', preload: false },
 				]}
-			/>
+			>
+				{#snippet start()}
+					<span class="text-ink-500 text-sm font-medium">
+						{session.email}
+					</span>
+				{/snippet}
+			</Menu>
 			<ThemeToggle size="sm" />
 		{/if}
 	</div>

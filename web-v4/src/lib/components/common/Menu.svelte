@@ -27,6 +27,8 @@
 
 	interface Props {
 		trigger: string | Snippet;
+		start?: Snippet;
+		end?: Snippet;
 		items?: Item[];
 		optionItems?: OptionItem[];
 		theme?: 'light' | 'dark';
@@ -43,6 +45,8 @@
 
 	let {
 		trigger,
+		start,
+		end,
 		items = [],
 		optionItems = [],
 		theme,
@@ -82,6 +86,10 @@
 	});
 </script>
 
+{#snippet separator()}
+	<li role="separator" class="h-px bg-ink-200 my-1 mx-2.5 p-0 cursor-default"></li>
+{/snippet}
+
 <div class="relative leading-none" data-theme={theme}>
 	<Button
 		{...triggerProps}
@@ -111,9 +119,12 @@
 				'starting:opacity-0 starting:scale-[0.97] starting:-translate-y-2',
 			]}
 		>
+			{#if start}
+				<li role="menuitem" class="p-2 px-3 min-h-10">{@render start()}</li>
+			{/if}
 			{#each items as item}
 				{#if item.separator}
-					<li role="separator" class="h-px bg-ink-200 my-1 mx-2.5 p-0 cursor-default"></li>
+					{@render separator()}
 				{:else}
 					{const preload = item.preload ?? true}
 					<li
@@ -141,11 +152,11 @@
 				{/if}
 			{/each}
 			{#if items.length > 0 && optionItems.length > 0}
-				<li role="separator" class="h-px bg-ink-200 my-1 mx-2.5 p-0 cursor-default"></li>
+				{@render separator()}
 			{/if}
 			{#each optionItems as item}
 				{#if item.type === 'separator'}
-					<li role="separator" class="h-px bg-ink-200 my-1 mx-2.5 p-0 cursor-default"></li>
+					{@render separator()}
 				{:else}
 					<li
 						{...api.getOptionItemProps(item as menu.OptionItemProps)}
@@ -161,6 +172,12 @@
 					</li>
 				{/if}
 			{/each}
+
+			{#if end}
+				<li role="menuitem">
+					{@render end()}
+				</li>
+			{/if}
 		</ul>
 	</div>
 </div>
