@@ -4,6 +4,7 @@ import {
 	completeServiceSchedule,
 	deleteServiceSchedule,
 	createServiceSchedule,
+	getPresets,
 } from '$lib/data/serviceSchedules';
 import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
 import { getClassifications, createClassification } from '$lib/data/classifications';
@@ -13,13 +14,14 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
-	const [schedules, classifications, reminders] = await Promise.all([
+	const [schedules, classifications, reminders, presetGroups] = await Promise.all([
 		getServiceSchedules(params.id!, locals),
 		getClassifications(params.id!, locals),
 		getVehicleReminders(params.id!, locals),
+		getPresets({ authToken: locals.authToken, webUrl: locals.webUrl, params: { distance_unit: vehicle.distanceUnit } }),
 	]);
 
-	return { vehicle, schedules, classifications, reminders };
+	return { vehicle, schedules, classifications, reminders, presetGroups };
 };
 
 export const actions: Actions = {
