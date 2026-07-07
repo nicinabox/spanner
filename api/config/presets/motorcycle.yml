@@ -1,0 +1,56 @@
+---
+name: Motorcycle
+distance_unit: mi
+items:
+  - name: Oil Change
+    distance_interval: 3000
+    month_interval: 12
+    keywords:
+      - oil change
+      - engine oil
+      - motor oil
+      - oil filter
+    context:
+      - engine
+      - motor
+  - name: Chain Adjustment
+    distance_interval: 500
+    keywords:
+      - chain adjustment
+      - adjust chain
+      - tighten chain
+      - chain tension
+  - name: Chain Replacement
+    distance_interval: 20000
+    keywords:
+      - chain replacement
+      - replace chain
+      - new chain
+      - chain and sprocket
+  - name: Brake Fluid
+    month_interval: 24
+    keywords:
+      - brake fluid
+      - DOT3
+      - DOT4
+      - DOT5
+      - brake flush
+  - name: Spark Plugs
+    distance_interval: 15000
+    keywords:
+      - spark plug
+      - plug wire
+      - ngk
+      - replace spark plug
+  - name: Air Filter
+    distance_interval: 12000
+    keywords:
+      - air filter
+      - engine air filter
+  - name: Tire Replacement
+    distance_interval: 10000
+    keywords:
+      - tire replacement
+      - replace tire
+      - new tire
+      - new tires

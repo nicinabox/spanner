@@ -3,7 +3,7 @@
 	import Dialog from '$lib/components/common/Dialog.svelte';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { getPresets, type Preset } from '$lib/data/serviceSchedules.remote';
+	import { getPresets, type PresetItem } from '$lib/data/serviceSchedules.remote';
 	import { Check, Plus, RefreshCw } from 'lucide-svelte';
 
 	interface Props {
@@ -11,11 +11,12 @@
 		onOpenChange: (open: boolean) => void;
 		existingClassificationNames?: Set<string>;
 		initialType?: string | null;
+		distanceUnit?: string;
 	}
 
-	let { open, onOpenChange, existingClassificationNames = new Set(), initialType = null }: Props = $props();
+	let { open, onOpenChange, existingClassificationNames = new Set(), initialType = null, distanceUnit }: Props = $props();
 
-	let presets: Record<string, Preset[]> | null = $state(null);
+	let presets: Record<string, PresetItem[]> | null = $state(null);
 	let loading = $state(true);
 	let checked = $state<Set<number>>(new Set());
 
@@ -23,14 +24,16 @@
 		if (open) {
 			loading = true;
 			checked = new Set();
-			getPresets({}).then((data) => {
-				presets = data;
+			getPresets({ distanceUnit }).then((data) => {
+				presets = Object.fromEntries(
+					Object.entries(data).map(([key, group]) => [key, group.items]),
+				);
 				loading = false;
 			});
 		}
 	});
 
-	const currentPresets: Preset[] = $derived(
+	const currentPresets: PresetItem[] = $derived(
 		initialType && presets ? (presets[initialType] ?? []) : [],
 	);
 

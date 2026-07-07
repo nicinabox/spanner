@@ -5,6 +5,8 @@
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import { formatMileage } from '$lib/utils/vehicle';
 	import { Wrench, PlusIcon } from 'lucide-svelte';
+	import { getPresets } from '$lib/data/serviceSchedules.remote';
+	import type { PresetGroup } from '$lib/data/serviceSchedules.remote';
 	import TaskCard from './TaskCard.svelte';
 	import SuggestTasksDialog from '$lib/components/dialogs/SuggestTasksDialog.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
@@ -23,6 +25,22 @@
 	let completingId = $state<number | null>(null);
 	let suggestOpen = $state(false);
 	let suggestType = $state<string | null>(null);
+	let presetGroups = $state<Record<string, PresetGroup> | null>(null);
+
+	$effect(() => {
+		getPresets({ distanceUnit: vehicle.distanceUnit }).then((data) => {
+			presetGroups = data;
+		});
+	});
+
+	let splitItems = $derived(
+		presetGroups
+			? Object.entries(presetGroups).map(([key, group]) => ({
+					value: key,
+					label: group.name,
+				}))
+			: [],
+	);
 
 	const existingClassificationNames = $derived(
 		new Set(
@@ -75,12 +93,7 @@
 			{#if !vehicle.retired}
 				<SplitButton
 					size="sm"
-					items={[
-						{ value: 'car', label: 'Car' },
-						{ value: 'motorcycle', label: 'Motorcycle' },
-						{ value: 'boat', label: 'Boat' },
-						{ value: 'rv', label: 'RV' },
-					]}
+					items={splitItems}
 					onAction={() => {
 						window.location.href = `/vehicles/${vehicle.id}/add?view=schedule`;
 					}}
@@ -131,4 +144,5 @@
 	}}
 	initialType={suggestType}
 	{existingClassificationNames}
+	distanceUnit={vehicle.distanceUnit}
 />

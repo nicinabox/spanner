@@ -17,6 +17,7 @@
 	import { loadDraft, saveDraft, clearDraft } from '$lib/utils/draft';
 	import type { Classification } from '$lib/data/classifications';
 	import { classifyNotes } from '$lib/data/classify.remote';
+	import { getPresets } from '$lib/data/serviceSchedules.remote';
 	import Badge from '$lib/components/common/Badge.svelte';
 	import Menu from '$lib/components/common/Menu.svelte';
 	import { RefreshCw } from 'lucide-svelte';
@@ -28,9 +29,10 @@
 		action?: string;
 		id?: number;
 		classifications?: Classification[];
+		distanceUnit?: string;
 	}
 
-	let { vehicle, record, errors = [], action = '', id, classifications = [] }: Props = $props();
+	let { vehicle, record, errors = [], action = '', id, classifications = [], distanceUnit }: Props = $props();
 
 	// svelte-ignore state_referenced_locally
 	let recordId = record?.id;
@@ -90,10 +92,30 @@
 	}
 
 	let allClassifications = $state<Classification[]>(classifications);
-	let selectedClassificationIds = $state<number[]>(record?.classifications?.map((c) => c.id) ?? []);
+	let selectedClassificationIds = $state<number[]>(
+		record?.classifications?.map((c) => c.id) ?? [],
+	);
+
+	let presetNames = $state<Set<string>>(new Set());
+
+	$effect(() => {
+		getPresets({ distanceUnit }).then((data) => {
+			const names = new Set<string>();
+			for (const group of Object.values(data)) {
+				for (const item of group.items) {
+					names.add(item.name.toLowerCase());
+				}
+			}
+			presetNames = names;
+		});
+	});
 
 	let availableClassifications = $derived(
-		allClassifications.filter((c) => !selectedClassificationIds.some((id) => id === c.id)),
+		allClassifications.filter(
+			(c) =>
+				!selectedClassificationIds.some((id) => id === c.id) &&
+				presetNames.has(c.name.toLowerCase()),
+		),
 	);
 
 	let selectedClassifications = $derived(

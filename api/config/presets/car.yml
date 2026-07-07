@@ -1,0 +1,91 @@
+---
+name: Car
+distance_unit: mi
+items:
+  - name: Oil Change
+    distance_interval: 5000
+    month_interval: 6
+    keywords:
+      - oil change
+      - engine oil
+      - motor oil
+      - oil filter
+    context:
+      - engine
+      - motor
+  - name: Tire Rotation
+    distance_interval: 7500
+    keywords:
+      - tire rotation
+      - rotate tire
+      - rotate tyre
+  - name: Air Filter
+    distance_interval: 30000
+    keywords:
+      - air filter
+      - engine air filter
+  - name: Brake Fluid
+    month_interval: 24
+    keywords:
+      - brake fluid
+      - DOT3
+      - DOT4
+      - DOT5
+      - brake flush
+  - name: Cabin Air Filter
+    distance_interval: 30000
+    keywords:
+      - cabin air filter
+      - cabin filter
+  - name: Coolant
+    distance_interval: 60000
+    month_interval: 60
+    keywords:
+      - coolant
+      - antifreeze
+      - radiator fluid
+      - coolant flush
+  - name: Spark Plugs
+    distance_interval: 100000
+    keywords:
+      - spark plug
+      - plug wire
+      - ngk
+      - replace spark plug
+  - name: Transmission Fluid
+    distance_interval: 60000
+    keywords:
+      - transmission fluid
+      - transmission oil
+      - gearbox oil
+      - transmission service
+      - transmission flush
+    context:
+      - transmission
+      - gearbox
+  - name: Drive Belt
+    distance_interval: 100000
+    keywords:
+      - serpentine belt
+      - accessory belt
+      - timing belt
+      - drive belt
+      - replace belt
+      - new belt
+  - name: Battery
+    month_interval: 60
+    keywords:
+      - new battery
+      - replace battery
+      - battery replacement
+      - battery died
+      - battery dead
+  - name: Wiper Blades
+    month_interval: 12
+    keywords:
+      - wiper blades
+      - replace wipers
+      - new wipers
+      - windshield wipers
+      - wiper replacement
+      - wipers

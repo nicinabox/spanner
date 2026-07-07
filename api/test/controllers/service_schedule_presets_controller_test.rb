@@ -11,9 +11,13 @@ class ServiceSchedulePresetsControllerTest < ActionDispatch::IntegrationTest
     body = response_body
     assert_includes body.keys, 'car'
     assert_includes body.keys, 'boat'
-    assert body['car'].is_a?(Array)
-    assert body['car'].first.key?('name')
-    assert body['car'].first.key?('distance_interval')
-    assert body['car'].first.key?('month_interval')
+    assert body['car'].is_a?(Hash)
+    assert body['car'].key?('name')
+    assert body['car'].key?('distance_unit')
+    assert body['car'].key?('items')
+    assert body['car']['items'].is_a?(Array)
+    assert body['car']['items'].first.key?('name')
+    assert body['car']['items'].first.key?('distance_interval')
+    assert body['car']['items'].first.key?('month_interval')
   end
 end

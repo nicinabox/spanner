@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class HeuristicClassifier < NoteClassifier
-  PRESET_KEYWORDS = YAML.safe_load_file(
-    Rails.root.join('config/presets.yml'),
-    permitted_classes: [Symbol]
-  ).deep_symbolize_keys
+  PRESET_KEYWORDS = Dir[Rails.root.join('config/presets/*.yml')].sort.each_with_object({}) do |path, hash|
+    type = File.basename(path, '.yml')
+    hash[type] = YAML.safe_load_file(path, permitted_classes: [Symbol]).deep_symbolize_keys
+  end.freeze
 
   def self.classify(text, **)
     new.classify(text, **)
@@ -19,7 +19,7 @@ class HeuristicClassifier < NoteClassifier
     vehicle_classifications = vehicle_classifications_for(vehicle)
     overridden_names = vehicle_classifications.map(&:name).map(&:downcase)
 
-    all_context_words = PRESET_KEYWORDS.values.flatten.flat_map { |p| p[:context] || [] }.uniq
+    all_context_words = PRESET_KEYWORDS.values.flat_map { |v| v[:items] }.flat_map { |p| p[:context] || [] }.uniq
 
     results = match_preset_keywords(normalized, stemmed, overridden_names, all_context_words) +
               match_vehicle_classifications(normalized, stemmed, vehicle_classifications)
@@ -41,8 +41,8 @@ class HeuristicClassifier < NoteClassifier
   def match_preset_keywords(normalized, stemmed, overridden_names, all_context_words)
     results = []
 
-    PRESET_KEYWORDS.each_value do |presets|
-      presets.each do |preset|
+    PRESET_KEYWORDS.each_value do |group|
+      group[:items].each do |preset|
         name = preset[:name]
         next if overridden_names.include?(name.downcase)
 

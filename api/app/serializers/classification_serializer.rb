@@ -8,8 +8,8 @@ class ClassificationSerializer < ActiveModel::Serializer
     kw = object.keywords
     return kw if kw.present?
 
-    ServiceSchedule::PRESETS.each_value do |items|
-      items.each do |item|
+    ServiceSchedule::PRESETS.each_value do |group|
+      group[:items].each do |item|
         return item[:keywords] if item[:name].casecmp?(object.name)
       end
     end

@@ -100,6 +100,7 @@
 									<RecordForm
 										{vehicle}
 										classifications={data.classifications}
+										distanceUnit={vehicle.distanceUnit}
 										record={{ notes: reminder.notes, mileage: vehicle.estimatedMileage } as any}
 										action={`/vehicles/${vehicle.id}/add?/record&reminder_id=${reminder.id}`}
 									/>

@@ -70,7 +70,7 @@
 			<h1 class="text-xl font-semibold">{title}</h1>
 
 			{#if view === 'record'}
-				<RecordForm {vehicle} record={{ notes: notesParam } as any} action="?/record" classifications={data.classifications} />
+				<RecordForm {vehicle} record={{ notes: notesParam } as any} action="?/record" classifications={data.classifications} distanceUnit={vehicle.distanceUnit} />
 			{:else if view === 'reminder'}
 				<ReminderForm {vehicle} action="?/reminder" errors={form?.errors} />
 			{:else if view === 'schedule'}

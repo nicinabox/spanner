@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class ServiceSchedule < ApplicationRecord
-  PRESETS = YAML.safe_load_file(Rails.root.join('config/presets.yml'), permitted_classes: [Symbol]).deep_symbolize_keys.freeze
+  PRESETS = Dir[Rails.root.join('config/presets/*.yml')].sort.each_with_object({}) do |path, hash|
+    type = File.basename(path, '.yml')
+    hash[type] = YAML.safe_load_file(path, permitted_classes: [Symbol]).deep_symbolize_keys
+  end.freeze
 
   belongs_to :vehicle
   belongs_to :classification

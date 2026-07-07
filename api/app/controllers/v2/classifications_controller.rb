@@ -73,8 +73,8 @@ module V2
     end
 
     def matching_preset_keywords(name)
-      ServiceSchedule::PRESETS.each_value do |items|
-        items.each do |item|
+      ServiceSchedule::PRESETS.each_value do |group|
+        group[:items].each do |item|
           return item[:keywords] if item[:name].casecmp?(name)
         end
       end

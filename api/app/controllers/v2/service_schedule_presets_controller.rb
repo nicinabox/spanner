@@ -3,7 +3,13 @@
 module V2
   class ServiceSchedulePresetsController < ApplicationController
     def index
-      render json: ServiceSchedule::PRESETS
+      presets = ServiceSchedule::PRESETS
+
+      if params[:distance_unit].present?
+        presets = presets.select { |_, group| group[:distance_unit] == params[:distance_unit] }
+      end
+
+      render json: presets
     end
   end
 end
