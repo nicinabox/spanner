@@ -6,12 +6,13 @@
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Vehicle } from '$lib/data/vehicles';
+	import { intlFormatDateUTC } from '$lib/utils/date';
+	import { formatMileage } from '$lib/utils/vehicle';
 
 	interface Props {
 		schedule: ServiceSchedule;
 		vehicle: Vehicle;
 		classificationName: string;
-		dueSummary: string;
 		intervalSummary: string;
 		completing: boolean;
 		oncomplete: () => void;
@@ -22,66 +23,77 @@
 		schedule,
 		vehicle,
 		classificationName,
-		dueSummary,
 		intervalSummary,
 		completing,
 		oncomplete,
 		oncancel,
 	}: Props = $props();
+
+	const getDueSummary = (schedule: ServiceSchedule): string => {
+		const parts: string[] = [];
+		if (schedule.nextDueDate) {
+			parts.push(intlFormatDateUTC(schedule.nextDueDate));
+		}
+		if (schedule.nextDueMileage) {
+			if (parts.length) parts.push('or');
+			parts.push(formatMileage(schedule.nextDueMileage, vehicle.distanceUnit));
+		}
+		return parts.length ? `Due ${parts.join(' ')}` : '';
+	};
+
+	let dueSummary = $derived(getDueSummary(schedule));
 </script>
 
-<li>
-	<Card variant="outline" size="sm" class="gap-3">
-		<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-			<div class="space-y-0">
-				<a
-					href={`/vehicles/${vehicle.id}/tasks/${schedule.id}/edit`}
-					class="font-medium text-lg flex items-center gap-3 text-ink-900 underline"
-				>
-					{#if isScheduleOverdue(schedule, vehicle.estimatedMileage)}
-						<span class="w-2 h-2 rounded-full bg-warning shrink-0"></span>
-					{/if}
-					{classificationName}
-				</a>
-				{#if dueSummary}
-					<p class="text-base text-ink-900 flex items-center gap-2">
-						<Calendar size={18} class="text-ink-500 shrink-0" />
-						{dueSummary}
-					</p>
+<Card variant="outline" size="sm" class="gap-3">
+	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+		<div class="space-y-0">
+			<a
+				href={`/vehicles/${vehicle.id}/tasks/${schedule.id}/edit`}
+				class="font-medium text-lg flex items-center gap-3 text-ink-900 underline"
+			>
+				{#if isScheduleOverdue(schedule, vehicle.estimatedMileage)}
+					<span class="w-2 h-2 rounded-full bg-warning shrink-0"></span>
 				{/if}
-				<p class="text-base text-ink-500 flex items-center gap-2">
-					<RefreshCw size={18} class="text-ink-500 shrink-0" />
-					{intervalSummary}
+				{classificationName}
+			</a>
+			{#if dueSummary}
+				<p class="text-base text-ink-900 flex items-center gap-2">
+					<Calendar size={18} class="text-ink-500 shrink-0" />
+					{dueSummary}
 				</p>
-			</div>
-			<div class="flex items-center gap-2">
-				{#if completing}
-					<Button size="sm" variant="outline" onclick={oncancel}>Cancel</Button>
-				{:else}
-					<Button
-						size="sm"
-						variant="outline"
-						onclick={oncomplete}
-						{...umamiEvent('complete_schedule')}
-					>
-						Complete
-						<ChevronRight size={16} />
-					</Button>
-				{/if}
-			</div>
+			{/if}
+			<p class="text-base text-ink-500 flex items-center gap-2">
+				<RefreshCw size={18} class="text-ink-500 shrink-0" />
+				{intervalSummary}
+			</p>
 		</div>
-		{#if completing}
-			<div class="border-t border-ink-200 pt-4">
-				<RecordForm
-					{vehicle}
-					id={schedule.id}
-					record={{
-						notes: classificationName,
-						mileage: vehicle.estimatedMileage,
-					} as any}
-					action="?/complete"
-				/>
-			</div>
-		{/if}
-	</Card>
-</li>
+		<div class="flex items-center gap-2">
+			{#if completing}
+				<Button size="sm" variant="outline" onclick={oncancel}>Cancel</Button>
+			{:else}
+				<Button
+					size="sm"
+					variant="outline"
+					onclick={oncomplete}
+					{...umamiEvent('complete_schedule')}
+				>
+					Complete
+					<ChevronRight size={16} />
+				</Button>
+			{/if}
+		</div>
+	</div>
+	{#if completing}
+		<div class="border-t border-ink-200 pt-4">
+			<RecordForm
+				{vehicle}
+				id={schedule.id}
+				record={{
+					notes: classificationName,
+					mileage: vehicle.estimatedMileage,
+				} as any}
+				action="?/complete"
+			/>
+		</div>
+	{/if}
+</Card>

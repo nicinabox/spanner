@@ -73,18 +73,6 @@
 		}
 		return parts.join(' or ');
 	};
-
-	const dueSummary = (schedule: ServiceSchedule): string => {
-		const parts: string[] = [];
-		if (schedule.nextDueDate) {
-			parts.push(intlFormatDateUTC(schedule.nextDueDate));
-		}
-		if (schedule.nextDueMileage) {
-			if (parts.length) parts.push('or');
-			parts.push(formatMileage(schedule.nextDueMileage, vehicle.distanceUnit));
-		}
-		return parts.length ? `Due ${parts.join(' ')}` : '';
-	};
 </script>
 
 <div class="mb-3">
@@ -118,16 +106,17 @@
 {#if schedules.length}
 	<ul class="space-y-3">
 		{#each sorted as schedule (schedule.id)}
-			<TaskCard
-				{schedule}
-				{vehicle}
-				classificationName={classificationName(schedule.classificationId)}
-				dueSummary={dueSummary(schedule)}
-				intervalSummary={intervalSummary(schedule)}
-				completing={completingId === schedule.id}
-				oncomplete={() => (completingId = schedule.id)}
-				oncancel={() => (completingId = null)}
-			/>
+			<li>
+				<TaskCard
+					{schedule}
+					{vehicle}
+					classificationName={classificationName(schedule.classificationId)}
+					intervalSummary={intervalSummary(schedule)}
+					completing={completingId === schedule.id}
+					oncomplete={() => (completingId = schedule.id)}
+					oncancel={() => (completingId = null)}
+				/>
+			</li>
 		{/each}
 	</ul>
 {:else}
