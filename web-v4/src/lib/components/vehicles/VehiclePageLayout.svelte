@@ -14,6 +14,7 @@
 	import Badge from '../common/Badge.svelte';
 	import { vehiclePath } from '$lib/routes';
 	import { enhanceInline } from '$lib/utils/form';
+	import { page } from '$app/state';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -40,7 +41,7 @@
 		tabs: customTabs,
 	}: Props = $props();
 
-	const isSmallScreen = new MediaQuery('(max-width: 640px');
+	const isSmallScreen = new MediaQuery('(max-width: 640px', page.data.isMobile);
 
 	let shareOpen = $state(false);
 

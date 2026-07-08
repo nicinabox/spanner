@@ -9,6 +9,7 @@ declare global {
 			authToken: string | undefined;
 			session: Session | null | undefined;
 			webUrl: string;
+			isMobile: boolean;
 		}
 		// interface PageData {}
 		// interface PageState {}

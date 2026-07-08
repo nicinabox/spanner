@@ -2,17 +2,17 @@
 	import { Button } from '$lib';
 	import InstallDialog from '$lib/components/dialogs/InstallDialog.svelte';
 	import { Download } from 'lucide-svelte';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { browser } from '$app/env';
 	import { initInstallPrompt, triggerInstallPrompt } from '$lib/utils/install.svelte';
 
 	let open = $state(false);
 
-	const isTouch = new MediaQuery('(pointer: coarse)');
+	const isTouch = new MediaQuery('(pointer: coarse)', page.data.isMobile);
 	const isStandaloneDisplay = new MediaQuery('(display-mode: standalone)');
 
-	const canShow = $derived(browser && !isStandaloneDisplay.current && isTouch.current);
+	const canShow = $derived(!isStandaloneDisplay.current && isTouch.current);
 
 	onMount(() => {
 		initInstallPrompt();
