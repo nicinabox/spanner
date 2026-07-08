@@ -3,6 +3,7 @@
 	import { umamiEvent } from '$lib/umami';
 	import { isReminderOverdue } from '$lib/utils/reminders';
 	import { Calendar, ChevronRight, RefreshCwOffIcon } from 'lucide-svelte';
+	import DueIndicator from './DueIndicator.svelte';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import type { Reminder } from '$lib/data/reminders';
 	import type { Vehicle } from '$lib/data/vehicles';
@@ -41,15 +42,17 @@
 <Card variant="outline" size="sm" class="gap-3">
 	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 		<div class="space-y-0">
-			<a
-				href={`/vehicles/${vehicle.id}/reminders/${reminder.id}/edit`}
-				class="font-medium text-lg flex items-center gap-3 text-ink-900 underline"
-			>
+			<div class="flex items-center gap-3">
 				{#if isReminderOverdue(reminder, vehicle.estimatedMileage)}
-					<span class="w-2 h-2 rounded-full bg-warning shrink-0"></span>
+					<DueIndicator />
 				{/if}
-				{reminder.notes}
-			</a>
+				<a
+					href={`/vehicles/${vehicle.id}/reminders/${reminder.id}/edit`}
+					class="font-medium text-lg text-ink-900 underline"
+				>
+					{reminder.notes}
+				</a>
+			</div>
 			<p class="text-base text-ink-900 flex items-center gap-2">
 				<Calendar size={18} class="text-ink-500 shrink-0" />
 				{dueSummary}

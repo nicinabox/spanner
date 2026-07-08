@@ -8,6 +8,7 @@
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import { formatMileage } from '$lib/utils/vehicle';
+	import DueIndicator from './DueIndicator.svelte';
 
 	interface Props {
 		schedule: ServiceSchedule;
@@ -39,15 +40,17 @@
 <Card variant="outline" size="sm" class="gap-3">
 	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 		<div class="space-y-0">
-			<a
-				href={`/vehicles/${vehicle.id}/tasks/${schedule.id}/edit`}
-				class="font-medium text-lg flex items-center gap-3 text-ink-900 underline"
-			>
+			<div class="flex items-center gap-2">
 				{#if isScheduleOverdue(schedule, vehicle.estimatedMileage)}
-					<span class="w-2 h-2 rounded-full bg-warning shrink-0"></span>
+					<DueIndicator />
 				{/if}
-				{classificationName}
-			</a>
+				<a
+					href={`/vehicles/${vehicle.id}/tasks/${schedule.id}/edit`}
+					class="font-medium text-lg text-ink-900 underline"
+				>
+					{classificationName}
+				</a>
+			</div>
 			{#if dueSummary}
 				<p class="text-base text-ink-900 flex items-center gap-2">
 					<Calendar size={18} class="text-ink-500 shrink-0" />
