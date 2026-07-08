@@ -2,17 +2,23 @@
 
 class ServiceSchedule < ApplicationRecord
   def self.validate_preset_group!(type, data)
-    raise ArgumentError, "Preset '#{type}' missing 'name'" unless data[:name].present?
-    raise ArgumentError, "Preset '#{type}' missing 'distance_unit'" unless data[:distance_unit].present?
+    raise ArgumentError, "Preset '#{type}' missing 'name'" if data[:name].blank?
+    raise ArgumentError, "Preset '#{type}' missing 'distance_unit'" if data[:distance_unit].blank?
     raise ArgumentError, "Preset '#{type}' 'distance_unit' must be an array" unless data[:distance_unit].is_a?(Array)
     raise ArgumentError, "Preset '#{type}' missing 'items'" unless data[:items].is_a?(Array)
   end
 
   def self.validate_preset_item!(type, item)
-    raise ArgumentError, "Preset '#{type}' item missing 'name'" unless item[:name].present?
+    raise ArgumentError, "Preset '#{type}' item missing 'name'" if item[:name].blank?
     raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' missing 'keywords'" unless item[:keywords].is_a?(Array)
-    raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' missing 'intervals'" unless item[:intervals].is_a?(Hash)
-    raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' 'intervals' must not be empty" if item[:intervals].empty?
+    unless item[:intervals].is_a?(Hash)
+      raise ArgumentError,
+            "Preset '#{type}' item '#{item[:name]}' missing 'intervals'"
+    end
+    if item[:intervals].empty?
+      raise ArgumentError,
+            "Preset '#{type}' item '#{item[:name]}' 'intervals' must not be empty"
+    end
 
     item[:intervals].each_key do |key|
       valid = %w[mi km nmi mo hr].include?(key.to_s)
@@ -20,7 +26,7 @@ class ServiceSchedule < ApplicationRecord
     end
   end
 
-  PRESETS = Dir[Rails.root.join('config/presets/*.yml')].sort.each_with_object({}) do |path, hash|
+  PRESETS = Rails.root.glob('config/presets/*.yml').each_with_object({}) do |path, hash|
     type = File.basename(path, '.yml')
     data = YAML.safe_load_file(path, permitted_classes: [Symbol]).deep_symbolize_keys
 
@@ -55,20 +61,26 @@ class ServiceSchedule < ApplicationRecord
     if month_interval.present?
       attrs[:next_due_date] = next_date(last_record)
     elsif distance_interval.present? && attrs[:next_due_mileage]
-      mpd = vehicle.miles_per_day
-      if mpd&.positive?
-        current_mileage = last_record&.mileage || vehicle.estimated_mileage || 0
-        remaining_miles = attrs[:next_due_mileage] - current_mileage
-        days = (remaining_miles / mpd.to_f).ceil
-        attrs[:next_due_date] = Time.zone.today + days.days
-      end
+      attrs[:next_due_date] = estimated_next_date(last_record, attrs[:next_due_mileage])
     end
 
     update!(attrs)
   end
 
-  def has_matching_records?
+  def matching_records?
     last_matching_record.present?
+  end
+
+  private
+
+  def estimated_next_date(last_record, next_due_mileage)
+    mpd = vehicle.miles_per_day
+    return unless mpd&.positive?
+
+    current_mileage = last_record&.mileage || vehicle.estimated_mileage || 0
+    remaining_miles = next_due_mileage - current_mileage
+    days = (remaining_miles / mpd.to_f).ceil
+    Time.zone.today + days.days
   end
 
   def complete!(notes: nil, date: nil, mileage: nil)
@@ -83,7 +95,10 @@ class ServiceSchedule < ApplicationRecord
     record
   end
 
+  # rubocop:disable Lint/UselessAccessModifier
   private
+
+  # rubocop:enable Lint/UselessAccessModifier
 
   def at_least_one_interval
     return if distance_interval.present? || month_interval.present?

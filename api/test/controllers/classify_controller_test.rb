@@ -14,7 +14,7 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     body = response_body
     assert body.is_a?(Array)
-    assert body.any? { |r| r['classification']['name'] == 'Oil Change' }
+    assert(body.any? { |r| r['classification']['name'] == 'Oil Change' })
   end
 
   test 'classify returns confidence scores' do
@@ -26,7 +26,7 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
     result = body.find { |r| r['classification']['name'] == 'Oil Change' }
     assert_not_nil result
     assert result['confidence'].is_a?(Float)
-    assert result['confidence'] > 0
+    assert result['confidence'].positive?
     assert result['confidence'] <= 1.0
     assert_equal 'heuristic', result['classifier']
   end

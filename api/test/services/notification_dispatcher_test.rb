@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+
+# rubocop:disable Style/OneClassPerFile
 require 'webmock/minitest'
 require 'minitest/mock'
 
@@ -212,3 +214,4 @@ class NotificationDispatcherTest < ActiveSupport::TestCase
     originals.each { |k, v| v.nil? ? ENV.delete(k) : ENV[k] = v }
   end
 end
+# rubocop:enable Style/OneClassPerFile

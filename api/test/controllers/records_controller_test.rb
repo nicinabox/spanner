@@ -89,12 +89,16 @@ class RecordsControllerTest < ActionDispatch::IntegrationTest
     vehicle = @user.vehicles.first
 
     # Use a real preset classification that has keywords
-    oil = Classification.find_or_create_by!(name: 'Oil Change') { |c| c.system = true; c.key = 'oil_change' }
+    oil = Classification.find_or_create_by!(name: 'Oil Change') do |c|
+      c.system = true
+      c.key = 'oil_change'
+    end
     other = Classification.create!(name: 'Other', system: true, key: 'other', keywords: ['other service'])
 
     # Manually add 'other' to a record
     record = vehicle.records.create!(date: Time.zone.today, notes: 'Some notes')
-    record.record_classifications.create!(classification: other, classifier: 'manual', confidence: 1.0, auto_tagged: false)
+    record.record_classifications.create!(classification: other, classifier: 'manual', confidence: 1.0,
+                                          auto_tagged: false)
 
     # Create a service schedule for oil so auto-tagging activates
     vehicle.service_schedules.create!(classification: oil, distance_interval: 5000)
@@ -111,7 +115,10 @@ class RecordsControllerTest < ActionDispatch::IntegrationTest
 
   test 'does not duplicate existing classifications on re-save' do
     vehicle = @user.vehicles.first
-    oil = Classification.find_or_create_by!(name: 'Oil Change') { |c| c.system = true; c.key = 'oil_change' }
+    oil = Classification.find_or_create_by!(name: 'Oil Change') do |c|
+      c.system = true
+      c.key = 'oil_change'
+    end
     vehicle.service_schedules.create!(classification: oil, distance_interval: 5000)
 
     record = vehicle.records.create!(date: Time.zone.today, notes: 'Oil change')

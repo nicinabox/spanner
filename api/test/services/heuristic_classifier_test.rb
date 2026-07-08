@@ -34,7 +34,7 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     assert_instance_of Classification, result[:classification]
     assert_equal 'heuristic', result[:classifier]
     assert result[:confidence].is_a?(Float)
-    assert result[:confidence] > 0
+    assert result[:confidence].positive?
     assert result[:confidence] <= 1.0
   end
 
@@ -82,15 +82,15 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     oil = results.find { |r| r[:classification].key == 'oil_change' }
     assert_not_nil trans
     assert_not_nil oil
-    assert trans[:confidence] > oil[:confidence], \
-      "expected transmission (#{trans[:confidence]}) > oil (#{oil[:confidence]})"
+    assert trans[:confidence] > oil[:confidence],
+           "expected transmission (#{trans[:confidence]}) > oil (#{oil[:confidence]})"
   end
 
   test 'context-free oil change still matches' do
     results = HeuristicClassifier.classify('oil change')
     oil = results.find { |r| r[:classification].key == 'oil_change' }
     assert_not_nil oil
-    assert oil[:confidence] > 0
+    assert oil[:confidence].positive?
   end
 
   test 'deduplicates same classification from preset and vehicle' do

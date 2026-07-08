@@ -27,10 +27,10 @@ gem 'postmark-rails'
 gem 'premailer-rails'
 gem 'queue_classic', '>= 4.0.0'
 gem 'rufus-scheduler', '~> 3.9'
-gem 'stemmer', '~> 1.0'
 gem 'schema2type'
 gem 'sentry-rails'
 gem 'sentry-ruby'
+gem 'stemmer', '~> 1.0'
 gem 'virtus'
 
 group :development, :test do

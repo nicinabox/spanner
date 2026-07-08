@@ -17,8 +17,8 @@ class Record < ApplicationRecord
   default_scope { order(date: :asc, id: :asc) }
 
   after_update :update_mileage_reminders
-  after_destroy :update_mileage_reminders, :recalculate_matching_service_schedules
   before_destroy :capture_schedule_classification_ids, prepend: true
+  after_destroy :update_mileage_reminders, :recalculate_matching_service_schedules
   after_save :update_mileage_reminders, :classify_notes, :advance_matching_service_schedules
 
   def mileage_greater_than_trailing_record
@@ -80,8 +80,8 @@ class Record < ApplicationRecord
   end
 
   def recalculate_matching_service_schedules
-    vehicle.service_schedules.where(classification_id: @schedule_classification_ids).each do |schedule|
-      if schedule.has_matching_records?
+    vehicle.service_schedules.where(classification_id: @schedule_classification_ids).find_each do |schedule|
+      if schedule.matching_records?
         schedule.recalculate_next_due
       else
         schedule.update!(next_due_date: nil, next_due_mileage: nil)
