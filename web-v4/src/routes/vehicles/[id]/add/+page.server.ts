@@ -113,7 +113,7 @@ export const actions = {
 			return fail(422, getHTTPErrors(error));
 		}
 
-		redirect(303, `/vehicles/${params.id}/reminders`);
+		redirect(303, `/vehicles/${params.id}/tasks`);
 	},
 
 	'mileage-adjustment': async ({ request, locals, params }) => {
@@ -153,7 +153,9 @@ export const actions = {
 		const newName = data.newName;
 
 		if (!classificationId && !newName) {
-			return fail(400, { errors: [{ id: 'classificationId', title: 'Select or create a service' }] });
+			return fail(400, {
+				errors: [{ id: 'classificationId', title: 'Select or create a service' }],
+			});
 		}
 
 		if (!data.distanceInterval && !data.monthInterval) {
