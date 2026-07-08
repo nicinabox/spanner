@@ -117,7 +117,7 @@
 		{#if history.length}
 			<div class="mb-6 flex gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar">
 				{#if nextReminder}
-					<a href={`/vehicles/${vehicle.id}/reminders`} class="no-underline text-inherit min-w-fit">
+					<a href={`/vehicles/${vehicle.id}/tasks`} class="no-underline text-inherit min-w-fit">
 						<Card
 							variant="outline"
 							size="sm"
