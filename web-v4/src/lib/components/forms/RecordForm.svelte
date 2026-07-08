@@ -17,7 +17,6 @@
 	import { loadDraft, saveDraft, clearDraft } from '$lib/utils/draft';
 	import type { Classification } from '$lib/data/classifications';
 	import { classifyNotes } from '$lib/data/classify.remote';
-	import { getPresets } from '$lib/data/serviceSchedules.remote';
 	import Badge from '$lib/components/common/Badge.svelte';
 	import Menu from '$lib/components/common/Menu.svelte';
 	import { RefreshCw } from 'lucide-svelte';
@@ -100,25 +99,13 @@
 	let allClassifications = $state<Classification[]>(classifications);
 	let selectedClassificationIds = $state<number[]>(record?.classifications?.map((c) => c.id) ?? []);
 
-	let presetNames = $state<Set<string>>(new Set());
-
-	$effect(() => {
-		getPresets({ distanceUnit }).then((data) => {
-			const names = new Set<string>();
-			for (const group of Object.values(data)) {
-				for (const item of group.items) {
-					names.add(item.name.toLowerCase());
-				}
-			}
-			presetNames = names;
-		});
-	});
+	let activeIdSet = $derived(new Set(vehicle.serviceSchedules.map((s) => s.classificationId)));
 
 	let availableClassifications = $derived(
 		allClassifications.filter(
 			(c) =>
 				!selectedClassificationIds.some((id) => id === c.id) &&
-				presetNames.has(c.name.toLowerCase()),
+				(activeIdSet.size === 0 || activeIdSet.has(c.id)),
 		),
 	);
 
