@@ -85,7 +85,9 @@
 		}
 	}
 
+	// svelte-ignore state_referenced_locally
 	let allClassifications = $state<Classification[]>(classifications);
+	// svelte-ignore state_referenced_locally
 	let selectedClassificationIds = $state<number[]>(record?.classifications?.map((c) => c.id) ?? []);
 
 	let activeIdSet = $derived(new Set(vehicle.serviceSchedules.map((s) => s.classificationId)));

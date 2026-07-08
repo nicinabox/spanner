@@ -17,10 +17,14 @@
 
 	let { vehicle, schedule, action = '?/schedule' }: Props = $props();
 
+	// svelte-ignore state_referenced_locally
 	let distanceInterval = $state(schedule?.distanceInterval?.toString() ?? '');
+	// svelte-ignore state_referenced_locally
 	let monthInterval = $state(schedule?.monthInterval?.toString() ?? '');
 
+	// svelte-ignore state_referenced_locally
 	let newClassificationName = $state(schedule?.classification?.name ?? '');
+	// svelte-ignore state_referenced_locally
 	let keywords = $state(schedule?.classification?.keywords?.join(', ') ?? '');
 </script>
 
