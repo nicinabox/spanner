@@ -76,8 +76,9 @@ class ServiceSchedule < ApplicationRecord
     mpd = vehicle.miles_per_day
     return unless mpd&.positive?
 
-    current_mileage = last_record&.mileage || vehicle.estimated_mileage || 0
+    current_mileage = vehicle.estimated_mileage || last_record&.mileage || 0
     remaining_miles = next_due_mileage - current_mileage
+
     days = (remaining_miles / mpd.to_f).ceil
     Time.zone.today + days.days
   end
