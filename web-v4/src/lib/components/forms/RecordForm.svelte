@@ -202,7 +202,7 @@
 		</Field>
 
 		{#if record?.id}
-			<Field name="classifications" label="Classifications">
+			<Field name="classifications" label="Tasks">
 				<div class="flex flex-wrap gap-2 items-center">
 					{#each selectedClassifications as c (c.id)}
 						<Badge size="md" dismissible ondismiss={() => removeClassification(c)}>
@@ -263,16 +263,17 @@
 		</Field>
 	</fieldset>
 
-	{#if id}
-		<input type="hidden" name="id" value={id} />
+	{#if record?.id}
+		<input type="hidden" name="id" value={record.id} />
+
+		{#each selectedClassificationIds as cid}
+			<input type="hidden" name="record[classification_ids][]" value={cid} />
+		{:else}
+			<input type="hidden" name="record[classification_ids][]" value="" />
+		{/each}
 	{/if}
+
 	<input type="hidden" name="attachments_to_delete" value={markedForDeletion.join(',')} />
-	{#each selectedClassificationIds as cid}
-		<input type="hidden" name="record[classification_ids][]" value={cid} />
-	{/each}
-	{#if selectedClassificationIds.length === 0}
-		<input type="hidden" name="record[classification_ids][]" value="" />
-	{/if}
 
 	<div class="flex gap-3">
 		<Button type="submit" disabled={submitting}>
