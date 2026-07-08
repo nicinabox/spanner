@@ -99,21 +99,22 @@ class HeuristicClassifier < NoteClassifier
     ratio = matched.to_f / keywords.size
 
     confidence = 0.4 + (ratio * 0.3)
+    confidence += context_score(normalized, context_words, conflicting_context)
+    confidence += 0.1 if normalized.match?(/\b#{Regexp.escape(name.downcase)}\b/)
+    confidence.clamp(0.0, 1.0).round(2)
+  end
 
+  def context_score(normalized, context_words, conflicting_context)
+    score = 0.0
     if context_words.any?
       if context_words.any? { |w| normalized.include?(w) }
-        confidence += 0.4
+        score += 0.4
       else
-        confidence -= 0.2
+        score -= 0.2
       end
     end
-
-    if conflicting_context.any? { |w| normalized.include?(w) }
-      confidence -= 0.2
-    end
-
-    confidence += 0.1 if normalized.match?(/\b#{Regexp.escape(name.downcase)}\b/)
-    [[confidence, 0.0].max, 1.0].min.round(2)
+    score -= 0.2 if conflicting_context.any? { |w| normalized.include?(w) }
+    score
   end
 
   def classify_keywords(stemmed, tokens)

@@ -95,10 +95,7 @@ class ServiceSchedule < ApplicationRecord
     record
   end
 
-  # rubocop:disable Lint/UselessAccessModifier
   private
-
-  # rubocop:enable Lint/UselessAccessModifier
 
   def at_least_one_interval
     return if distance_interval.present? || month_interval.present?
