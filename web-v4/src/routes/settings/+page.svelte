@@ -12,6 +12,7 @@
 	let newEmail = $derived(form?.email ?? '');
 	let webhookSuccess = $derived(form?.webhookSuccess);
 	let webhookTestSuccess = $state(false);
+	// svelte-ignore state_referenced_locally
 	let webhookUrl = $state(data.webhookUrl);
 </script>
 

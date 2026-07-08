@@ -142,10 +142,10 @@
 
 {#if href}
 	<a {href} class={classes} aria-disabled={disabled || undefined} {...attrs}>
-		{@render children()}
+		{@render children?.()}
 	</a>
 {:else}
 	<button {type} {disabled} class={classes} {...attrs}>
-		{@render children()}
+		{@render children?.()}
 	</button>
 {/if}
