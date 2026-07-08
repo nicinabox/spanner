@@ -56,9 +56,9 @@
 
 {#if hasItems}
 	<div class="mb-3">
-		<div class="flex items-center justify-between">
+		<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
 			<h2 class="text-xl font-semibold flex items-center gap-2">Tasks &amp; Reminders</h2>
-			<div class="flex items-center gap-2">
+			<div class="flex flex-row items-center gap-2 max-sm:*:flex-1">
 				{#if !vehicle.retired}
 					<Button
 						variant="outline"
@@ -79,6 +79,7 @@
 							suggestType = e.value;
 							suggestOpen = true;
 						}}
+					class="w-full sm:w-auto [&>*:first-child]:flex-1"
 					>
 						<PlusIcon size={14} />
 						New Task
