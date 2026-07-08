@@ -73,11 +73,12 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
   test 'recalculate_next_due from mileage interval with matching record' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
-    vehicle.records.create!(
+    record = vehicle.records.create!(
       date: 30.days.ago,
       notes: 'Oil change',
       mileage: 50_000
     )
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
 
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
@@ -105,11 +106,12 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
   test 'recalculate_next_due from month interval with matching record' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
-    vehicle.records.create!(
+    record = vehicle.records.create!(
       date: 30.days.ago,
       notes: 'Oil change',
       mileage: 50_000
     )
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
 
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
@@ -124,11 +126,12 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
   test 'recalculate_next_due with both intervals sets both next_due fields' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
-    vehicle.records.create!(
+    record = vehicle.records.create!(
       date: 30.days.ago,
       notes: 'Oil change',
       mileage: 50_000
     )
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
 
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
@@ -251,11 +254,12 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
   test 'auto-advances schedule when matching record is saved' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
-    vehicle.records.create!(
+    record = vehicle.records.create!(
       date: 60.days.ago,
       notes: 'Oil change',
       mileage: 50_000
     )
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
 
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,

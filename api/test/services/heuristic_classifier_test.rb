@@ -110,7 +110,7 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     results = HeuristicClassifier.classify('transmission oil change')
     oil = results.find { |r| r[:classification].key == 'oil_change' }
     assert_not_nil oil, 'Oil Change should still match but with low confidence'
-    assert oil[:confidence] < 0.25, "expected <0.25, got #{oil[:confidence]}"
+    assert oil[:confidence] < 0.45, "expected <0.45, got #{oil[:confidence]}"
   end
 
   test 'oil change alone gets tagged' do

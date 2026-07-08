@@ -66,7 +66,12 @@ class HeuristicClassifier < NoteClassifier
 
         context = preset[:context] || []
         conflicting = all_context_words - context
-        confidence = calculate_confidence(normalized, name, context, keywords, conflicting, stemmed)
+        confidence = calculate_confidence(
+          normalized, name,
+          context_words: context,
+          keywords:,
+          conflicting_context: conflicting
+        )
         results << { classification:, classifier: 'heuristic', confidence: }
       end
     end
@@ -79,7 +84,11 @@ class HeuristicClassifier < NoteClassifier
       next if classification.keywords.blank?
       next unless classify_keywords(stemmed, classification.keywords)
 
-      confidence = calculate_confidence(normalized, classification.name, [], classification.keywords, [], stemmed)
+      confidence = calculate_confidence(
+        normalized, classification.name,
+        context_words: [],
+        keywords: classification.keywords
+      )
       results << { classification:, classifier: 'heuristic', confidence: }
     end
   end
@@ -90,22 +99,21 @@ class HeuristicClassifier < NoteClassifier
     ratio = matched.to_f / keywords.size
 
     confidence = 0.4 + (ratio * 0.3)
-    confidence += context_score(normalized, context_words, conflicting_context)
-    confidence += 0.1 if normalized.match?(/\b#{Regexp.escape(name.downcase)}\b/)
-    confidence.clamp(0.0, 1.0).round(2)
-  end
 
-  def context_score(normalized, context_words, conflicting_context)
-    score = 0.0
     if context_words.any?
       if context_words.any? { |w| normalized.include?(w) }
-        score += 0.4
+        confidence += 0.4
       else
-        score -= 0.2
+        confidence -= 0.2
       end
     end
-    score -= 0.2 if conflicting_context.any? { |w| normalized.include?(w) }
-    score
+
+    if conflicting_context.any? { |w| normalized.include?(w) }
+      confidence -= 0.2
+    end
+
+    confidence += 0.1 if normalized.match?(/\b#{Regexp.escape(name.downcase)}\b/)
+    [[confidence, 0.0].max, 1.0].min.round(2)
   end
 
   def classify_keywords(stemmed, tokens)

@@ -72,8 +72,6 @@ class ServiceSchedule < ApplicationRecord
     last_matching_record.present?
   end
 
-  private
-
   def estimated_next_date(last_record, next_due_mileage)
     mpd = vehicle.miles_per_day
     return unless mpd&.positive?
