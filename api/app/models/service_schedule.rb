@@ -11,6 +11,7 @@ class ServiceSchedule < ApplicationRecord
   def self.validate_preset_item!(type, item)
     raise ArgumentError, "Preset '#{type}' item missing 'name'" if item[:name].blank?
     raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' missing 'keywords'" unless item[:keywords].is_a?(Array)
+
     unless item[:intervals].is_a?(Hash)
       raise ArgumentError,
             "Preset '#{type}' item '#{item[:name]}' missing 'intervals'"
