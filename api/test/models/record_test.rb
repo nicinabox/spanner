@@ -70,4 +70,26 @@ class RecordTest < ActiveSupport::TestCase
 
     assert_nil ActiveStorage::Attachment.find_signed(signed_id)
   end
+
+  test 'updating record mileage recalculates matching service schedules' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: User.first)
+    classification = Classification.find_by!(key: 'oil_change')
+
+    schedule = vehicle.service_schedules.find_or_create_by!(classification: classification) do |s|
+      s.distance_interval = 5000
+    end
+    schedule.update!(distance_interval: 5000)
+
+    record = vehicle.records.create!(
+      date: 30.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+    record.classifications << classification unless record.classifications.include?(classification)
+    schedule.recalculate_next_due
+    assert_equal 55_000, schedule.reload.next_due_mileage
+
+    record.update!(mileage: 55_000)
+    assert_equal 60_000, schedule.reload.next_due_mileage
+  end
 end

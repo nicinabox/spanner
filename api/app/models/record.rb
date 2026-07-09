@@ -80,7 +80,8 @@ class Record < ApplicationRecord
   end
 
   def recalculate_matching_service_schedules
-    vehicle.service_schedules.where(classification_id: @schedule_classification_ids).find_each do |schedule|
+    ids = @schedule_classification_ids || classifications.pluck(:id)
+    vehicle.service_schedules.where(classification_id: ids).find_each do |schedule|
       if schedule.matching_records?
         schedule.recalculate_next_due
       else
