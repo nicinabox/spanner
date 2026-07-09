@@ -59,22 +59,20 @@
 		<fieldset class="flex sm:gap-6 flex-col sm:flex-row *:flex-1">
 			<Field label="Month Interval" name="monthInterval">
 				<Input
-					type="number"
+					inputmode="numeric"
 					name="monthInterval"
 					bind:value={monthInterval}
 					placeholder="Optional"
 					min="0"
-					step="6"
 				/>
 			</Field>
 			<Field label={MileageLabel(vehicle.distanceUnit) + ' Interval'} name="distanceInterval">
 				<InputGroup
 					name="distanceInterval"
-					type="number"
+					inputmode="numeric"
 					bind:value={distanceInterval}
 					placeholder="Optional"
 					min="0"
-					step="5000"
 				>
 					{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
 				</InputGroup>

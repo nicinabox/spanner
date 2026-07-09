@@ -16,7 +16,7 @@ class Record < ApplicationRecord
 
   default_scope { order(date: :asc, id: :asc) }
 
-  after_update :update_mileage_reminders
+  after_update :update_mileage_reminders, :recalculate_matching_service_schedules
   before_destroy :capture_schedule_classification_ids, prepend: true
   after_destroy :update_mileage_reminders, :recalculate_matching_service_schedules
   after_save :update_mileage_reminders, :classify_notes, :advance_matching_service_schedules
