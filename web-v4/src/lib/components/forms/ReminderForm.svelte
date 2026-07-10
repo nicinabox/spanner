@@ -13,7 +13,6 @@
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
 	import { Alert } from '$lib';
-	import { loadDraft, saveDraft, clearDraft } from '$lib/utils/draft';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -27,30 +26,16 @@
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 
-	let draftKey = $derived(
-		reminder?.id ? `reminder:${vehicle.id}:${reminder.id}` : `reminder:${vehicle.id}:new`,
-	);
-
 	// svelte-ignore state_referenced_locally
-	let notes = $state(loadDraft(draftKey) ?? reminder?.notes ?? '');
+	let notes = $state(reminder?.notes ?? '');
 	// svelte-ignore state_referenced_locally
 	let reminderType = $state<ReminderType>(reminder?.reminderType ?? '');
 	// svelte-ignore state_referenced_locally
 	let date = $state(
-		reminder?.date
-			? reminder.date.slice(0, 10)
-			: formatDateISO(addMonths(new Date(), 6)),
+		reminder?.date ? reminder.date.slice(0, 10) : formatDateISO(addMonths(new Date(), 6)),
 	);
 	// svelte-ignore state_referenced_locally
 	let mileage = $state(reminder?.mileage?.toString() ?? '');
-
-	$effect(() => {
-		if (notes && notes !== (reminder?.notes ?? '')) {
-			saveDraft(draftKey, notes);
-		} else if (!notes) {
-			clearDraft(draftKey);
-		}
-	});
 
 	let estimatedDate = $state<Date | null>(null);
 
@@ -94,7 +79,7 @@
 		</div>
 	{/if}
 
-	<fieldset class="flex flex-col gap-4">
+	<fieldset>
 		<Field name="notes" label="Note" {errors} required>
 			<Input name="notes" bind:value={notes} required />
 		</Field>
@@ -112,63 +97,69 @@
 			/>
 		</Field>
 
-		{#if ['date', 'date_or_mileage'].includes(reminderType)}
-			<Field name="date" label="Date" {errors} required>
-				<Input type="date" name="date" bind:value={date} required />
-				<div class="flex gap-2 mt-1.5">
-					<Button
-						type="button"
-						variant="outline"
-						size="xs"
-						onclick={() => (date = formatDateISO(addMonths(parseDateUTC(date), 6)))}
-					>
-						+6 months
-					</Button>
-					<Button
-						type="button"
-						variant="outline"
-						size="xs"
-						onclick={() => (date = formatDateISO(addMonths(parseDateUTC(date), 12)))}
-					>
-						+1 year
-					</Button>
-				</div>
-			</Field>
-		{/if}
-
-		{#if ['mileage', 'date_or_mileage'].includes(reminderType)}
-			<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} {errors} required>
-				<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
-					{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
-				</InputGroup>
-				{#if vehicle.estimatedMileage}
+		<div class="flex sm:gap-6 flex-col sm:flex-row *:flex-1">
+			{#if ['date', 'date_or_mileage'].includes(reminderType)}
+				<Field name="date" label="Date" {errors} required>
+					<Input type="date" name="date" bind:value={date} required />
 					<div class="flex gap-2 mt-1.5">
 						<Button
 							type="button"
 							variant="outline"
 							size="xs"
-							onclick={() =>
-								(mileage = String((mileage ? Number(mileage) : vehicle.estimatedMileage!) + 5000))}
+							onclick={() => (date = formatDateISO(addMonths(parseDateUTC(date), 6)))}
 						>
-							+5k
+							+6 months
 						</Button>
 						<Button
 							type="button"
 							variant="outline"
 							size="xs"
-							onclick={() =>
-								(mileage = String((mileage ? Number(mileage) : vehicle.estimatedMileage!) + 10000))}
+							onclick={() => (date = formatDateISO(addMonths(parseDateUTC(date), 12)))}
 						>
-							+10k
+							+1 year
 						</Button>
 					</div>
-					<p class="text-sm text-ink-400">
-						Estimated {mileageLabel(vehicle.distanceUnit)}
-						{formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}
-					</p>
-				{/if}
-			</Field>
-		{/if}
+				</Field>
+			{/if}
+
+			{#if ['mileage', 'date_or_mileage'].includes(reminderType)}
+				<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} {errors} required>
+					<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
+						{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
+					</InputGroup>
+					{#if vehicle.estimatedMileage}
+						<div class="flex gap-2 mt-1.5">
+							<Button
+								type="button"
+								variant="outline"
+								size="xs"
+								onclick={() =>
+									(mileage = String(
+										(mileage ? Number(mileage) : vehicle.estimatedMileage!) + 5000,
+									))}
+							>
+								+5k
+							</Button>
+							<Button
+								type="button"
+								variant="outline"
+								size="xs"
+								onclick={() =>
+									(mileage = String(
+										(mileage ? Number(mileage) : vehicle.estimatedMileage!) + 10000,
+									))}
+							>
+								+10k
+							</Button>
+						</div>
+						<p class="text-sm text-ink-400">
+							Estimated
+							{formatMileage(vehicle.estimatedMileage, vehicle.distanceUnit)}
+						</p>
+					{/if}
+				</Field>
+			{/if}
+		</div>
 
 		{#if estimatedDate && ['date_or_mileage', 'mileage'].includes(reminderType)}
 			<Alert variant="info">

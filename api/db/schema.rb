@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_03_055329) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_03_162526) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -215,7 +215,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_03_055329) do
   add_foreign_key "record_classifications", "records"
   add_foreign_key "reminders", "service_schedules"
   add_foreign_key "service_schedules", "classifications"
-  add_foreign_key "service_schedules", "records", column: "last_completed_record_id"
+  add_foreign_key "service_schedules", "records", column: "last_completed_record_id", on_delete: :nullify
   add_foreign_key "service_schedules", "vehicles"
   add_foreign_key "share_links", "vehicles"
   add_foreign_key "vehicle_shares", "users"

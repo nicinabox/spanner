@@ -1,0 +1,158 @@
+---
+name: Motorcycle
+distance_unit:
+  - mi
+  - km
+items:
+  - name: Oil Change
+    keywords:
+      - oil change
+      - engine oil
+      - motor oil
+      - oil filter
+    context:
+      - engine
+      - motor
+    intervals:
+      mi: 3000
+      mo: 12
+      km: 5000
+  - name: Chain Adjustment
+    keywords:
+      - chain adjustment
+      - adjust chain
+      - tighten chain
+      - chain tension
+    intervals:
+      mi: 500
+      km: 1000
+  - name: Chain Replacement
+    keywords:
+      - chain replacement
+      - replace chain
+      - new chain
+      - chain and sprocket
+    intervals:
+      mi: 20000
+      km: 20000
+  - name: Brake Fluid
+    keywords:
+      - brake fluid
+      - DOT3
+      - DOT4
+      - DOT5
+      - brake flush
+    intervals:
+      mo: 24
+  - name: Brake Pads
+    keywords:
+      - brake pads
+      - replace brakes
+      - new brake pads
+      - brake pad replacement
+      - brake wear
+    context:
+      - brake
+      - brakes
+    intervals:
+      mi: 10000
+      km: 15000
+  - name: Brake Rotors
+    keywords:
+      - brake rotors
+      - brake discs
+      - warped rotors
+      - replace rotors
+      - rotor replacement
+    context:
+      - brake
+      - brakes
+    intervals:
+      mi: 20000
+      km: 30000
+  - name: Spark Plugs
+    keywords:
+      - spark plug
+      - plug wire
+      - ngk
+      - replace spark plug
+    intervals:
+      mi: 15000
+      km: 15000
+  - name: Air Filter
+    keywords:
+      - air filter
+      - engine air filter
+    intervals:
+      mi: 12000
+      km: 15000
+  - name: Tire Replacement
+    keywords:
+      - tire replacement
+      - replace tire
+      - new tire
+      - new tires
+    intervals:
+      mi: 10000
+      km: 15000
+  - name: Valve Clearance
+    keywords:
+      - valve clearance
+      - valve adjustment
+      - valves
+      - valve check
+      - valve shim
+    context:
+      - engine
+      - valves
+    intervals:
+      mi: 16000
+      km: 20000
+  - name: Coolant
+    keywords:
+      - coolant
+      - antifreeze
+      - radiator fluid
+      - coolant flush
+    intervals:
+      mi: 24000
+      mo: 36
+      km: 40000
+  - name: Fork Oil
+    keywords:
+      - fork oil
+      - fork service
+      - fork seal
+      - front fork
+      - fork rebuild
+    intervals:
+      mi: 24000
+      km: 40000
+  - name: Clutch Cable
+    keywords:
+      - clutch cable
+      - clutch adjustment
+      - clutch lever
+      - replace clutch cable
+    intervals:
+      mi: 12000
+      km: 20000
+  - name: Battery
+    keywords:
+      - new battery
+      - replace battery
+      - battery replacement
+      - battery died
+      - battery dead
+    intervals:
+      mo: 60
+  - name: Wiper Blades
+    keywords:
+      - wiper blades
+      - replace wipers
+      - new wipers
+      - windshield wipers
+      - wiper replacement
+      - wipers
+    intervals:
+      mo: 12

@@ -16,8 +16,9 @@ class Record < ApplicationRecord
 
   default_scope { order(date: :asc, id: :asc) }
 
-  after_update :update_mileage_reminders
-  after_destroy :update_mileage_reminders
+  after_update :update_mileage_reminders, :recalculate_matching_service_schedules
+  before_destroy :capture_schedule_classification_ids, prepend: true
+  after_destroy :update_mileage_reminders, :recalculate_matching_service_schedules
   after_save :update_mileage_reminders, :classify_notes, :advance_matching_service_schedules
 
   def mileage_greater_than_trailing_record
@@ -53,10 +54,13 @@ class Record < ApplicationRecord
   end
 
   def classify_notes
-    record_classifications.auto_tagged.destroy_all
     return if notes.blank? || !saved_changes?
 
     HeuristicClassifier.classify(notes, vehicle:).each do |result|
+      next if result[:confidence] < 0.25
+      next unless vehicle.service_schedules.exists?(classification_id: result[:classification].id)
+      next if record_classifications.exists?(classification_id: result[:classification].id)
+
       record_classifications.create!(
         classification: result[:classification],
         classifier: result[:classifier],
@@ -69,5 +73,20 @@ class Record < ApplicationRecord
   def advance_matching_service_schedules
     matching_schedules = vehicle.service_schedules.where(classification_id: classifications.pluck(:id))
     matching_schedules.each(&:recalculate_next_due)
+  end
+
+  def capture_schedule_classification_ids
+    @schedule_classification_ids = classifications.pluck(:id)
+  end
+
+  def recalculate_matching_service_schedules
+    ids = @schedule_classification_ids || classifications.pluck(:id)
+    vehicle.service_schedules.where(classification_id: ids).find_each do |schedule|
+      if schedule.matching_records?
+        schedule.recalculate_next_due
+      else
+        schedule.update!(next_due_date: nil, next_due_mileage: nil)
+      end
+    end
   end
 end

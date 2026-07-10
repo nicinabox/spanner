@@ -12,11 +12,7 @@
 	let vehicle = $derived(data.vehicle);
 	let reminder = $derived(data.reminder);
 
-	let activeTab = $derived(
-		$page.url.pathname === `/vehicles/${vehicle.id}/reminders/${reminder.id}/edit`
-			? 'reminders'
-			: 'reminders',
-	);
+	let activeTab = $derived('tasks');
 </script>
 
 <svelte:head>
@@ -26,7 +22,7 @@
 <VehiclePageLayout
 	{vehicle}
 	{activeTab}
-	backAction={{ href: `/vehicles/${vehicle.id}/reminders`, label: 'Back' }}
+	backAction={{ href: `/vehicles/${vehicle.id}/tasks`, label: 'Back' }}
 >
 	<div class="max-w-2xl mx-auto">
 		<Card variant="outline" bleed>
@@ -38,7 +34,7 @@
 			<h1 class="text-xl">Danger Zone</h1>
 
 			<fieldset>
-				<label class="flex items-center justify-between gap-6">
+				<div class="flex items-center justify-between gap-6">
 					<div>
 						<span class="font-medium">Permanently delete</span>
 						<p class="text-sm text-ink-500">This reminder will be permanently deleted.</p>
@@ -69,7 +65,7 @@
 						{/snippet}
 						<p>This reminder will be permanently deleted.</p>
 					</Confirm>
-				</label>
+				</div>
 			</fieldset>
 		</Card>
 	</div>

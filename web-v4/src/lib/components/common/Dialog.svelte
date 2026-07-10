@@ -7,8 +7,8 @@
 
 	interface Props {
 		children: Snippet;
+		actions?: Snippet;
 		title?: string;
-		description?: string;
 		open?: boolean;
 		onOpenChange?: (open: boolean) => void;
 		modal?: boolean;
@@ -19,8 +19,8 @@
 
 	let {
 		children,
+		actions,
 		title,
-		description,
 		open = $bindable(false),
 		onOpenChange,
 		modal = true,
@@ -65,13 +65,13 @@
 	>
 		<div
 			{...api.getContentProps()}
-			class="relative w-full max-w-lg rounded-xl bg-surface-raised shadow-lg border border-ink-200"
+			class="relative flex flex-col w-full max-w-lg max-h-[90svh] rounded-xl bg-surface-raised shadow-lg border border-ink-200"
 			in:scale={{ duration: 200, start: 0.95 }}
 			out:scale={{ duration: 150, start: 0.95 }}
 		>
 			{#if title}
 				<div class="flex items-center justify-between pl-8 pr-6 py-6">
-					<h2 {...api.getTitleProps()} class="text-2xl font-semibold">{title}</h2>
+					<h2 {...api.getTitleProps()} class="text-xl font-semibold">{title}</h2>
 					<button
 						{...api.getCloseTriggerProps()}
 						class="flex items-center justify-center rounded-sm p-1 text-ink-400 hover:text-ink-600 transition-colors"
@@ -80,12 +80,14 @@
 					</button>
 				</div>
 			{/if}
-			{#if description}
-				<p {...api.getDescriptionProps()} class="px-8 pt-2 text-sm text-ink-500">{description}</p>
-			{/if}
-			<div class="p-8 pt-0">
+			<div class="p-8 pt-0 overflow-auto flex-1" {...api.getDescriptionProps()}>
 				{@render children()}
 			</div>
+			{#if actions}
+				<div class="flex items-center justify-end gap-2 px-8 py-4 border-t border-ink-200">
+					{@render actions()}
+				</div>
+			{/if}
 		</div>
 	</div>
 {/if}

@@ -10,3 +10,9 @@ input[type='date'] {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 }
+
+a {
+	&:not(:is(:hover, :focus)) {
+		text-decoration-color: color-mix(in srgb, currentColor, transparent 50%);
+	}
+}

@@ -25,18 +25,24 @@ module V2
 
     def create
       record = records.build(record_params)
+      has_manual_ids = params.dig(:record, :classification_ids)
 
       validate_attachment_sizes!
       record.save!
+      record.reload
+      sync_classifications(record) if has_manual_ids
       record.attachments.attach(params[:record][:attachments]) if params[:record][:attachments].present?
       render json: record
     end
 
     def update
       record = records.find(params[:id])
+      has_manual_ids = params.dig(:record, :classification_ids)
 
       validate_attachment_sizes!
       record.update!(record_params)
+      record.reload
+      sync_classifications(record) if has_manual_ids
       record.attachments.attach(params[:record][:attachments]) if params[:record][:attachments].present?
       render json: record
     end
@@ -74,6 +80,26 @@ module V2
 
     def record_params
       params.require(:record).permit(:date, :cost, :mileage, :notes, :record_type)
+    end
+
+    def sync_classifications(record)
+      ids = params.dig(:record, :classification_ids)&.reject(&:blank?)
+      return unless ids
+
+      existing = record.classification_ids
+      to_add = ids.map(&:to_i) - existing
+      to_remove = existing - ids.map(&:to_i)
+
+      to_add.each do |cid|
+        record.record_classifications.find_or_create_by!(
+          classification_id: cid,
+          classifier: 'manual',
+          confidence: 1.0,
+          auto_tagged: false
+        )
+      end
+
+      record.record_classifications.where(classification_id: to_remove).destroy_all
     end
 
     def validate_attachment_sizes!

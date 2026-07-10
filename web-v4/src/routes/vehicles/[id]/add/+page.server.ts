@@ -2,6 +2,8 @@ import { getVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
+import { getClassifications, createClassification } from '$lib/data/classifications';
+import { createServiceSchedule } from '$lib/data/serviceSchedules';
 import { decode } from '$lib/utils/form';
 import { getHTTPErrors } from '$lib/utils/actions';
 import { validateAttachments } from '$lib/utils/file-validation';
@@ -15,12 +17,18 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		redirect(303, `/vehicles/${params.id}`);
 	}
 
-	return { vehicle };
+	const classifications = await getClassifications(params.id!, locals);
+
+	return { vehicle, classifications };
 };
 
 export const actions = {
 	record: async ({ request, locals, params, url }) => {
 		const formData = await request.formData();
+
+		// Read classification_ids before decode to avoid FormData iterator issues
+		const classificationIds = formData.getAll('record[classification_ids][]');
+
 		const data = decode(formData, {
 			date: 'string',
 			notes: 'string',
@@ -39,7 +47,6 @@ export const actions = {
 
 		const files = formData.getAll('record[attachments][]') as File[];
 
-		// Validate file count, types, and sizes server-side
 		const validation = await validateAttachments(files);
 		if (!validation.valid) {
 			return fail(422, {
@@ -58,6 +65,9 @@ export const actions = {
 		);
 		for (const file of files) {
 			body.append('record[attachments][]', file);
+		}
+		for (const id of classificationIds) {
+			body.append('record[classification_ids][]', id);
 		}
 
 		try {
@@ -103,7 +113,7 @@ export const actions = {
 			return fail(422, getHTTPErrors(error));
 		}
 
-		redirect(303, `/vehicles/${params.id}/reminders`);
+		redirect(303, `/vehicles/${params.id}/tasks`);
 	},
 
 	'mileage-adjustment': async ({ request, locals, params }) => {
@@ -114,7 +124,6 @@ export const actions = {
 			return fail(400, { errors: [{ id: 'mileage', title: 'Mileage is required' }] });
 		}
 
-		// Mileage-only adjustment doesn't expose attachment UI, so keep the JSON path.
 		await createHistoryEntry(
 			params.id!,
 			{
@@ -127,5 +136,60 @@ export const actions = {
 		);
 
 		redirect(303, `/vehicles/${params.id}`);
+	},
+
+	schedule: async ({ request, locals, params }) => {
+		const formData = await request.formData();
+		const data = decode(formData, {
+			classificationId: 'number',
+			name: 'string',
+			keywords: 'string',
+			distanceInterval: 'number',
+			monthInterval: 'number',
+			notes: 'string',
+		});
+
+		let classificationId = data.classificationId;
+		const name = data.name;
+
+		if (!classificationId && !name) {
+			return fail(400, {
+				errors: [{ id: 'classificationId', title: 'Select or create a service' }],
+			});
+		}
+
+		if (!data.distanceInterval && !data.monthInterval) {
+			return fail(400, {
+				errors: [{ id: 'form', title: 'Set a distance or month interval' }],
+			});
+		}
+
+		if (name) {
+			const keywords = (data.keywords || '')
+				.split(',')
+				.map((k: string) => k.trim())
+				.filter(Boolean);
+			const classification = await createClassification(
+				params.id!,
+				{ classification: { name, keywords } },
+				locals,
+			);
+			classificationId = classification.id;
+		}
+
+		await createServiceSchedule(
+			params.id!,
+			{
+				serviceSchedule: {
+					classificationId: classificationId,
+					distanceInterval: data.distanceInterval || null,
+					monthInterval: data.monthInterval || null,
+					notes: data.notes || null,
+				},
+			},
+			locals,
+		);
+
+		redirect(303, `/vehicles/${params.id}/tasks`);
 	},
 } satisfies Actions;

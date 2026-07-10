@@ -19,7 +19,15 @@ export function toMultipartFormData(
 	for (const [key, value] of Object.entries(entries)) {
 		if (value === undefined || value === null) continue;
 		const name = prefix ? `${prefix}[${key}]` : key;
-		out.append(name, String(value));
+		if (Array.isArray(value)) {
+			for (const item of value) {
+				if (item !== undefined && item !== null) {
+					out.append(name, String(item));
+				}
+			}
+		} else {
+			out.append(name, String(value));
+		}
 	}
 	return out;
 }

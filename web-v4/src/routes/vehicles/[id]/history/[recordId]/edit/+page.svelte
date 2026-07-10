@@ -33,7 +33,7 @@
 	<div class="max-w-2xl mx-auto">
 		<Card variant="outline" bleed>
 			<h1 class="text-xl font-semibold">Edit Record</h1>
-			<RecordForm {vehicle} {record} action="?/update" />
+			<RecordForm {vehicle} {record} action="?/update" classifications={data.classifications} distanceUnit={vehicle.distanceUnit} />
 		</Card>
 
 		<Card class="mt-6" variant="outline" bleed>

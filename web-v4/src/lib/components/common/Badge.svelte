@@ -2,7 +2,7 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const badgeVariants = tv({
-		base: 'inline-flex items-center gap-1 overflow-hidden h-5 min-w-5 text-center font-medium',
+		base: 'inline-flex justify-center items-center gap-1 overflow-hidden h-5 min-w-5 text-center font-medium',
 		variants: {
 			variant: {
 				warning: 'bg-warning text-black/60 dark:text-black/70',
@@ -20,6 +20,8 @@
 		compoundVariants: [
 			{ pill: false, size: 'sm', class: 'rounded-[4px]' },
 			{ pill: false, size: 'md', class: 'rounded-sm' },
+			{ pill: true, size: 'sm', class: 'px-2' },
+			{ pill: true, size: 'md', class: 'px-2.5' },
 		],
 		defaultVariants: {
 			size: 'sm',

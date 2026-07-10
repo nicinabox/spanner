@@ -30,7 +30,7 @@
 		</div>
 	{/if}
 
-	<fieldset class="flex flex-col gap-4">
+	<fieldset>
 		<Field name="name" label="Name" {errors} required>
 			<Input name="name" autocomplete="off" value={values?.name} required />
 		</Field>

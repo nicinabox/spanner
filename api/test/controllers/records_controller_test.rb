@@ -85,6 +85,73 @@ class RecordsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test 'auto-tags new classifications without removing existing ones' do
+    vehicle = @user.vehicles.first
+
+    # Use a real preset classification that has keywords
+    oil = Classification.find_or_create_by!(name: 'Oil Change') do |c|
+      c.system = true
+      c.key = 'oil_change'
+    end
+    other = Classification.create!(name: 'Other', system: true, key: 'other', keywords: ['other service'])
+
+    # Manually add 'other' to a record
+    record = vehicle.records.create!(date: Time.zone.today, notes: 'Some notes')
+    record.record_classifications.create!(classification: other, classifier: 'manual', confidence: 1.0,
+                                          auto_tagged: false)
+
+    # Create a service schedule for oil so auto-tagging activates
+    vehicle.service_schedules.create!(classification: oil, distance_interval: 5000)
+
+    # Update notes to match oil change — should auto-tag oil without removing other
+    put vehicle_record_url(vehicle, record),
+        params: { record: { notes: 'Oil change and other service' } },
+        headers: http_options(@session.auth_token)[:headers]
+
+    assert_response :success
+    assert_includes record.classifications.reload.pluck(:id), other.id
+    assert_includes record.classifications.pluck(:id), oil.id
+  end
+
+  test 'does not duplicate existing classifications on re-save' do
+    vehicle = @user.vehicles.first
+    oil = Classification.find_or_create_by!(name: 'Oil Change') do |c|
+      c.system = true
+      c.key = 'oil_change'
+    end
+    vehicle.service_schedules.create!(classification: oil, distance_interval: 5000)
+
+    record = vehicle.records.create!(date: Time.zone.today, notes: 'Oil change')
+    assert_equal 1, record.classifications.reload.size
+
+    # Re-save with same notes — should not duplicate
+    put vehicle_record_url(vehicle, record),
+        params: { record: { notes: 'Oil change' } },
+        headers: http_options(@session.auth_token)[:headers]
+
+    assert_response :success
+    assert_equal 1, record.classifications.reload.size
+  end
+
+  test 'syncs classifications from form selection' do
+    vehicle = @user.vehicles.first
+    c1 = Classification.create!(name: 'Test One', system: true, key: 'test_one', keywords: ['one'])
+    c2 = Classification.create!(name: 'Test Two', system: true, key: 'test_two', keywords: ['two'])
+
+    record = vehicle.records.create!(date: Time.zone.today, notes: 'Some notes')
+    record.record_classifications.create!(classification: c1, classifier: 'manual', confidence: 1.0, auto_tagged: false)
+    record.record_classifications.create!(classification: c2, classifier: 'manual', confidence: 1.0, auto_tagged: false)
+    assert_equal 2, record.classifications.reload.size
+
+    # Update with only c1 selected — c2 should be removed
+    put vehicle_record_url(vehicle, record),
+        params: { record: { classification_ids: [c1.id] } },
+        headers: http_options(@session.auth_token)[:headers]
+
+    assert_response :success
+    assert_equal [c1.id], record.classifications.reload.pluck(:id)
+  end
+
   test 'deletes a single attachment' do
     vehicle = @user.vehicles.first
     record = vehicle.records.create!(date: Time.zone.today, notes: 'Oil change')

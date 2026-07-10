@@ -45,7 +45,7 @@
 				</Alert>
 			{/if}
 			<form method="post" action="?/changeEmail" use:enhance>
-				<fieldset class="fieldset">
+				<fieldset>
 					<Field
 						name="email"
 						label="New email"
@@ -80,7 +80,7 @@
 				</Alert>
 			{/if}
 			<form method="post" action="?/changePassword" use:enhance>
-				<fieldset class="fieldset">
+				<fieldset>
 					<Field
 						name="password"
 						label={data.passwordEnabled ? 'New password' : 'Password'}
@@ -116,7 +116,7 @@
 						}
 					}}
 			>
-				<fieldset class="fieldset">
+				<fieldset>
 					<Field
 						name="webhookUrl"
 						label="Webhook URL"

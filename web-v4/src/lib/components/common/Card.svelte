@@ -2,7 +2,7 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const cardVariants = tv({
-		base: 'bg-surface gap-6 flex flex-col',
+		base: 'group/card bg-surface gap-6 flex flex-col',
 		variants: {
 			variant: {
 				elevated: 'shadow-md border border-ink-200',
@@ -51,7 +51,7 @@
 	let classes = $derived(cn(cardVariants({ variant, size }), className));
 </script>
 
-<div class={classes} class:bleed>
+<div class={classes} class:bleed data-size={size}>
 	{#if heading}
 		<h2 class="font-bold text-xl">{heading}</h2>
 	{/if}

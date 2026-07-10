@@ -62,7 +62,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         resources :record_classifications, only: %i[create destroy]
       end
 
-      post :reclassify, on: :member, controller: 'reclassify'
+      get :classify, on: :collection, controller: 'classify'
 
       post :import
       get :export

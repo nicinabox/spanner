@@ -1,0 +1,177 @@
+---
+name: Car
+distance_unit:
+  - mi
+  - km
+items:
+  - name: Oil Change
+    keywords:
+      - oil change
+      - engine oil
+      - motor oil
+      - oil filter
+    context:
+      - engine
+      - motor
+    intervals:
+      mi: 5000
+      mo: 6
+      km: 10000
+  - name: Tire Rotation
+    keywords:
+      - tire rotation
+      - rotate tire
+      - rotate tyre
+    intervals:
+      mi: 7500
+      km: 10000
+  - name: Air Filter
+    keywords:
+      - air filter
+      - engine air filter
+    intervals:
+      mi: 30000
+      km: 30000
+  - name: Brake Fluid
+    keywords:
+      - brake fluid
+      - DOT3
+      - DOT4
+      - DOT5
+      - brake flush
+    intervals:
+      mo: 24
+  - name: Brake Pads
+    keywords:
+      - brake pads
+      - replace brakes
+      - new brake pads
+      - brake pad replacement
+      - brake wear
+    context:
+      - brake
+      - brakes
+    intervals:
+      mi: 30000
+      km: 50000
+  - name: Brake Rotors
+    keywords:
+      - brake rotors
+      - brake discs
+      - warped rotors
+      - replace rotors
+      - rotor replacement
+    context:
+      - brake
+      - brakes
+    intervals:
+      mi: 60000
+      km: 100000
+  - name: Cabin Air Filter
+    keywords:
+      - cabin air filter
+      - cabin filter
+    intervals:
+      mi: 30000
+      mo: 30
+      km: 30000
+  - name: Coolant
+    keywords:
+      - coolant
+      - antifreeze
+      - radiator fluid
+      - coolant flush
+    intervals:
+      mi: 60000
+      mo: 60
+      km: 60000
+  - name: Spark Plugs
+    keywords:
+      - spark plug
+      - plug wire
+      - ngk
+      - replace spark plug
+    intervals:
+      mi: 100000
+      km: 100000
+  - name: Transmission Fluid
+    keywords:
+      - transmission fluid
+      - transmission oil
+      - gearbox oil
+      - transmission service
+      - transmission flush
+    context:
+      - transmission
+      - gearbox
+    intervals:
+      mi: 60000
+      km: 60000
+  - name: Drive Belt
+    keywords:
+      - serpentine belt
+      - accessory belt
+      - timing belt
+      - drive belt
+      - replace belt
+      - new belt
+    intervals:
+      mi: 100000
+      km: 100000
+  - name: Fuel Filter
+    keywords:
+      - fuel filter
+      - replace fuel filter
+      - fuel system
+      - fuel line
+    intervals:
+      mi: 30000
+      km: 30000
+  - name: Differential Fluid
+    keywords:
+      - differential fluid
+      - diff fluid
+      - rear differential
+      - differential service
+      - differential oil
+    intervals:
+      mi: 60000
+      km: 60000
+  - name: Power Steering Fluid
+    keywords:
+      - power steering fluid
+      - steering fluid
+      - power steering
+      - steering rack
+    intervals:
+      mi: 60000
+      km: 60000
+  - name: Wheel Alignment
+    keywords:
+      - wheel alignment
+      - alignment
+      - tire alignment
+      - steering alignment
+      - toe adjustment
+    intervals:
+      mi: 15000
+      km: 20000
+  - name: Battery
+    keywords:
+      - new battery
+      - replace battery
+      - battery replacement
+      - battery died
+      - battery dead
+    intervals:
+      mo: 60
+  - name: Wiper Blades
+    keywords:
+      - wiper blades
+      - replace wipers
+      - new wipers
+      - windshield wipers
+      - wiper replacement
+      - wipers
+    intervals:
+      mo: 12

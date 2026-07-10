@@ -11,7 +11,7 @@ class AddVehicleScopeToClassifications < ActiveRecord::Migration[8.0]
 
     add_index :classifications, %i[vehicle_id name],
               unique: true,
-              where: 'vehicle_id IS NOT NULL',
-              name: 'index_classifications_on_vehicle_id_and_name'
+              where: "vehicle_id IS NOT NULL",
+              name: "index_classifications_on_vehicle_id_and_name"
   end
 end

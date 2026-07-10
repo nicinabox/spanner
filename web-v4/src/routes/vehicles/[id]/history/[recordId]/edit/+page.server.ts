@@ -1,5 +1,6 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { getHistoryEntry } from '$lib/data/history';
+import { getClassifications } from '$lib/data/classifications';
 import { uploadRecord, deleteAttachment, toMultipartFormData } from '$lib/data/multipart';
 import { decode } from '$lib/utils/form';
 import { validateAttachments } from '$lib/utils/file-validation';
@@ -14,12 +15,17 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	}
 
 	const record = await getHistoryEntry(params.id!, params.recordId!, locals);
-	return { vehicle, record };
+	const classifications = await getClassifications(params.id!, locals);
+	return { vehicle, record, classifications };
 };
 
 export const actions = {
 	update: async ({ request, locals, params }) => {
 		const formData = await request.formData();
+
+		// Read classification_ids before decode to avoid FormData iterator issues
+		const classificationIds = formData.getAll('record[classification_ids][]');
+
 		const data = decode(formData, {
 			date: 'string',
 			notes: 'string',
@@ -61,6 +67,9 @@ export const actions = {
 		);
 		for (const file of files) {
 			body.append('record[attachments][]', file);
+		}
+		for (const id of classificationIds) {
+			body.append('record[classification_ids][]', id);
 		}
 
 		try {

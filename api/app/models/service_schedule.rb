@@ -1,53 +1,45 @@
 # frozen_string_literal: true
 
 class ServiceSchedule < ApplicationRecord
-  PRESETS = {
-    car: [
-      { name: 'Oil Change', distance_interval: 5000, month_interval: 6 },
-      { name: 'Tire Rotation', distance_interval: 7500 },
-      { name: 'Air Filter', distance_interval: 30_000 },
-      { name: 'Brake Fluid', month_interval: 24 },
-      { name: 'Cabin Air Filter', distance_interval: 30_000 },
-      { name: 'Coolant', distance_interval: 60_000, month_interval: 60 },
-      { name: 'Spark Plugs', distance_interval: 100_000 },
-      { name: 'Transmission Fluid', distance_interval: 60_000 },
-      { name: 'Drive Belt', distance_interval: 100_000 },
-      { name: 'Battery', month_interval: 60 }
-    ],
-    motorcycle: [
-      { name: 'Oil Change', distance_interval: 3000, month_interval: 12 },
-      { name: 'Chain Adjustment', distance_interval: 500 },
-      { name: 'Chain Replacement', distance_interval: 20_000 },
-      { name: 'Brake Fluid', month_interval: 24 },
-      { name: 'Spark Plugs', distance_interval: 15_000 },
-      { name: 'Air Filter', distance_interval: 12_000 },
-      { name: 'Tire Replacement', distance_interval: 10_000 }
-    ],
-    boat: [
-      { name: 'Oil Change', month_interval: 12 },
-      { name: 'Hull Cleaning', month_interval: 12 },
-      { name: 'Zinc Replacement', month_interval: 12 },
-      { name: 'Impelor Service', month_interval: 24 },
-      { name: 'Fuel Filter', month_interval: 12 },
-      { name: 'Battery', month_interval: 48 },
-      { name: 'Antifreeze / Cooling System', month_interval: 24 },
-      { name: 'Bilge Pump Check', month_interval: 12 },
-      { name: 'Safety Gear Check', month_interval: 12 }
-    ],
-    rv: [
-      { name: 'Oil Change', distance_interval: 5000, month_interval: 12 },
-      { name: 'Generator Service', month_interval: 12 },
-      { name: 'Propane System Check', month_interval: 12 },
-      { name: 'Roof Inspection', month_interval: 6 },
-      { name: 'Battery', month_interval: 60 },
-      { name: 'Tire Inspection', month_interval: 12 },
-      { name: 'Transmission Fluid', distance_interval: 30_000 },
-      { name: 'Air Filter', distance_interval: 15_000 }
-    ]
-  }.freeze
+  def self.validate_preset_group!(type, data)
+    raise ArgumentError, "Preset '#{type}' missing 'name'" if data[:name].blank?
+    raise ArgumentError, "Preset '#{type}' missing 'distance_unit'" if data[:distance_unit].blank?
+    raise ArgumentError, "Preset '#{type}' 'distance_unit' must be an array" unless data[:distance_unit].is_a?(Array)
+    raise ArgumentError, "Preset '#{type}' missing 'items'" unless data[:items].is_a?(Array)
+  end
+
+  def self.validate_preset_item!(type, item)
+    raise ArgumentError, "Preset '#{type}' item missing 'name'" if item[:name].blank?
+    raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' missing 'keywords'" unless item[:keywords].is_a?(Array)
+
+    unless item[:intervals].is_a?(Hash)
+      raise ArgumentError,
+            "Preset '#{type}' item '#{item[:name]}' missing 'intervals'"
+    end
+    if item[:intervals].empty?
+      raise ArgumentError,
+            "Preset '#{type}' item '#{item[:name]}' 'intervals' must not be empty"
+    end
+
+    item[:intervals].each_key do |key|
+      valid = %w[mi km nmi mo hr].include?(key.to_s)
+      raise ArgumentError, "Preset '#{type}' item '#{item[:name]}' invalid interval key '#{key}'" unless valid
+    end
+  end
+
+  PRESETS = Rails.root.glob('config/presets/*.yml').each_with_object({}) do |path, hash|
+    type = File.basename(path, '.yml')
+    data = YAML.safe_load_file(path, permitted_classes: [Symbol]).deep_symbolize_keys
+
+    validate_preset_group!(type, data)
+    data[:items].each { |item| validate_preset_item!(type, item) }
+
+    hash[type] = data
+  end.freeze
 
   belongs_to :vehicle
   belongs_to :classification
+  belongs_to :last_completed_record, class_name: 'Record', optional: true
 
   # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo
   validates :vehicle, presence: true
@@ -66,9 +58,32 @@ class ServiceSchedule < ApplicationRecord
 
     attrs = {}
     attrs[:next_due_mileage] = next_mileage(last_record) if distance_interval.present?
-    attrs[:next_due_date] = next_date(last_record) if month_interval.present?
+
+    date_from_months = next_date(last_record) if month_interval.present?
+    if distance_interval.present? && attrs[:next_due_mileage]
+      date_from_mileage = estimated_next_date(last_record,
+                                              attrs[:next_due_mileage])
+    end
+
+    # Use whichever due date comes first (whichever interval expires sooner)
+    attrs[:next_due_date] = [date_from_months, date_from_mileage].compact.min
 
     update!(attrs)
+  end
+
+  def matching_records?
+    last_matching_record.present?
+  end
+
+  def estimated_next_date(last_record, next_due_mileage)
+    mpd = vehicle.miles_per_day
+    return unless mpd&.positive?
+
+    current_mileage = vehicle.estimated_mileage || last_record&.mileage || 0
+    remaining_miles = next_due_mileage - current_mileage
+
+    days = (remaining_miles / mpd.to_f).ceil
+    Time.zone.today + days.days
   end
 
   def complete!(notes: nil, date: nil, mileage: nil)
@@ -100,7 +115,11 @@ class ServiceSchedule < ApplicationRecord
   end
 
   def next_mileage(last_record)
-    base = last_record&.mileage || vehicle.estimated_mileage || 0
+    # When there's no matching record, the service hasn't been performed yet.
+    # Measure from 0 (not vehicle.estimated_mileage) so the schedule shows as
+    # overdue rather than upcoming — a new 5,000-mile service on an 80,000-mile
+    # car is overdue, not due at 85,000.
+    base = last_record&.mileage || 0
     base + distance_interval
   end
 
