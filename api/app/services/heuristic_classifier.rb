@@ -56,12 +56,8 @@ class HeuristicClassifier < NoteClassifier
         name = preset[:name]
         next if overridden_names.include?(name.downcase)
 
-        classification = Classification.find_or_create_by!(name:) do |c|
-          c.system = true
-          c.key = name.downcase.gsub(/[^a-z0-9]+/, '_').gsub(/_+/, '_').gsub(/_$/, '')
-        end
-
-        keywords = classification.keywords.presence || preset[:keywords]
+        classification = Classification.find_by(name:)
+        keywords = classification&.keywords&.presence || preset[:keywords]
         next unless classify_keywords(stemmed, keywords)
 
         context = preset[:context] || []
@@ -72,6 +68,11 @@ class HeuristicClassifier < NoteClassifier
           keywords:,
           conflicting_context: conflicting
         )
+
+        classification ||= Classification.find_or_create_by!(name:) do |c|
+          c.system = true
+          c.key = name.downcase.gsub(/[^a-z0-9]+/, '_').gsub(/_+/, '_').gsub(/_$/, '')
+        end
         results << { classification:, classifier: 'heuristic', confidence: }
       end
     end

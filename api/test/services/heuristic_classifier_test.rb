@@ -18,6 +18,12 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     assert_empty results
   end
 
+  test 'does not create classifications for non-matching notes' do
+    before_count = Classification.count
+    HeuristicClassifier.classify('Washed and vacuumed car')
+    assert_equal before_count, Classification.count, 'classify should not create classifications for non-matching notes'
+  end
+
   test 'returns empty array for blank notes' do
     results = HeuristicClassifier.classify(nil)
     assert_empty results
