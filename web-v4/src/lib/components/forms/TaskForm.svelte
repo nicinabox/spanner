@@ -23,7 +23,7 @@
 	let monthInterval = $state(schedule?.monthInterval?.toString() ?? '');
 
 	// svelte-ignore state_referenced_locally
-	let newClassificationName = $state(schedule?.classification?.name ?? '');
+	let classificationName = $state(schedule?.classification?.name ?? '');
 	// svelte-ignore state_referenced_locally
 	let keywords = $state(schedule?.classification?.keywords?.join(', ') ?? '');
 </script>
@@ -33,11 +33,11 @@
 		<input type="hidden" name="classificationId" value={schedule?.classificationId ?? ''} />
 
 		<fieldset>
-			<Field label="Name" name="newName" required>
+			<Field label="Name" name="name" required>
 				<Input
 					type="text"
-					name="newName"
-					bind:value={newClassificationName}
+					name="name"
+					bind:value={classificationName}
 					placeholder="e.g. Oil Change"
 					autocomplete="off"
 				/>

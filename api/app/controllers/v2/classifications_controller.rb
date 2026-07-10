@@ -24,16 +24,16 @@ module V2
     def update
       classification = current_user_classifications.find(params[:id])
 
+      classification.update!(classification_params.except(:keywords))
+
       if classification_params[:keywords]
         preset = matching_preset_keywords(classification.name)
         if preset && classification_params[:keywords].sort == preset.sort
           # Keywords match preset defaults — clear DB so serializer fallback picks up future preset updates
           classification.update!(keywords: [])
         else
-          classification.update!(classification_params)
+          classification.update!(keywords: classification_params[:keywords])
         end
-      else
-        classification.update!(classification_params)
       end
 
       render json: classification

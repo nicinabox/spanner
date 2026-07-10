@@ -142,7 +142,7 @@ export const actions = {
 		const formData = await request.formData();
 		const data = decode(formData, {
 			classificationId: 'number',
-			newName: 'string',
+			name: 'string',
 			keywords: 'string',
 			distanceInterval: 'number',
 			monthInterval: 'number',
@@ -150,9 +150,9 @@ export const actions = {
 		});
 
 		let classificationId = data.classificationId;
-		const newName = data.newName;
+		const name = data.name;
 
-		if (!classificationId && !newName) {
+		if (!classificationId && !name) {
 			return fail(400, {
 				errors: [{ id: 'classificationId', title: 'Select or create a service' }],
 			});
@@ -164,14 +164,14 @@ export const actions = {
 			});
 		}
 
-		if (newName) {
+		if (name) {
 			const keywords = (data.keywords || '')
 				.split(',')
 				.map((k: string) => k.trim())
 				.filter(Boolean);
 			const classification = await createClassification(
 				params.id!,
-				{ classification: { name: newName, keywords } },
+				{ classification: { name, keywords } },
 				locals,
 			);
 			classificationId = classification.id;
