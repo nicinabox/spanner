@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import Button from '$lib/components/common/Button.svelte';
+	import Alert from '$lib/components/common/Alert.svelte';
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
@@ -176,11 +177,11 @@
 	class="flex flex-col gap-6"
 >
 	{#if formErrors.length > 0}
-		<div role="alert" class="p-3 rounded-md bg-negative/10 text-negative text-sm">
+		<Alert role="alert">
 			{#each formErrors as e}
 				<p>{e.title}</p>
 			{/each}
-		</div>
+		</Alert>
 	{/if}
 
 	<fieldset>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Card, Switch } from '$lib';
+	import { Button, Card, Switch, Alert } from '$lib';
 	import { umamiEvent } from '$lib/umami';
 	import FileInput from '$lib/components/common/FileInput.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
@@ -71,11 +71,11 @@
 			</div>
 
 			{#if formErrors.length > 0}
-				<div role="alert" class="p-3 rounded-md bg-negative/10 text-negative text-sm">
+				<Alert role="alert">
 					{#each formErrors as e}
 						<p>{e.title}</p>
 					{/each}
-				</div>
+				</Alert>
 			{/if}
 
 			<form method="POST" action="?/import" enctype="multipart/form-data" class="space-y-4">

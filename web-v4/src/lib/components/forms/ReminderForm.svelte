@@ -72,11 +72,11 @@
 	class="flex flex-col gap-6"
 >
 	{#if formErrors.length > 0}
-		<div role="alert" class="p-3 rounded-md bg-negative/10 text-negative text-sm">
+		<Alert role="alert">
 			{#each formErrors as e}
 				<p>{e.title}</p>
 			{/each}
-		</div>
+		</Alert>
 	{/if}
 
 	<fieldset>
