@@ -6,7 +6,7 @@
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
 
-	let { data }: PageProps = $props();
+	let { data, form }: PageProps = $props();
 
 	let vehicle = $derived(data.vehicle);
 	let schedule = $derived(data.schedule);
@@ -24,7 +24,7 @@
 	<div class="max-w-2xl mx-auto">
 		<Card variant="outline" bleed>
 			<h1 class="text-xl font-semibold">Edit Task</h1>
-			<TaskForm {vehicle} {schedule} action="?/update" />
+			<TaskForm {vehicle} {schedule} action="?/update" errors={form?.errors} />
 		</Card>
 
 		<Card class="mt-6" variant="outline" bleed>

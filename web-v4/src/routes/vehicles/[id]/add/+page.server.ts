@@ -164,31 +164,35 @@ export const actions = {
 			});
 		}
 
-		if (name) {
-			const keywords = (data.keywords || '')
-				.split(',')
-				.map((k: string) => k.trim())
-				.filter(Boolean);
-			const classification = await createClassification(
+		try {
+			if (name) {
+				const keywords = (data.keywords || '')
+					.split(',')
+					.map((k: string) => k.trim())
+					.filter(Boolean);
+				const classification = await createClassification(
+					params.id!,
+					{ classification: { name, keywords } },
+					locals,
+				);
+				classificationId = classification.id;
+			}
+
+			await createServiceSchedule(
 				params.id!,
-				{ classification: { name, keywords } },
+				{
+					serviceSchedule: {
+						classificationId: classificationId,
+						distanceInterval: data.distanceInterval || null,
+						monthInterval: data.monthInterval || null,
+						notes: data.notes || null,
+					},
+				},
 				locals,
 			);
-			classificationId = classification.id;
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
 		}
-
-		await createServiceSchedule(
-			params.id!,
-			{
-				serviceSchedule: {
-					classificationId: classificationId,
-					distanceInterval: data.distanceInterval || null,
-					monthInterval: data.monthInterval || null,
-					notes: data.notes || null,
-				},
-			},
-			locals,
-		);
 
 		redirect(303, `/vehicles/${params.id}/tasks`);
 	},

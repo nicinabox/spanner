@@ -105,7 +105,7 @@
 						Tasks are mileage-aware, recurring reminders that advance automatically when updating
 						History. Refer to your owner's manual for your exact maintenance schedule.
 					</p>
-					<TaskForm {vehicle} />
+					<TaskForm {vehicle} errors={form?.errors} />
 				{/if}
 			{:else if view === 'mileage-adjustment'}
 				<p>

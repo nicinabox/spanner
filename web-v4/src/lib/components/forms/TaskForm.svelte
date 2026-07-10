@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Button from '$lib/components/common/Button.svelte';
+	import Alert from '$lib/components/common/Alert.svelte';
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
@@ -8,14 +9,16 @@
 	import Textarea from '$lib/components/common/Textarea.svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Vehicle } from '$lib/data/vehicles';
+	import type { FormError } from '$lib/utils/form';
 
 	interface Props {
 		vehicle: Vehicle;
 		schedule?: ServiceSchedule;
 		action?: string;
+		errors?: FormError[];
 	}
 
-	let { vehicle, schedule, action = '?/schedule' }: Props = $props();
+	let { vehicle, schedule, action = '?/schedule', errors = [] }: Props = $props();
 
 	// svelte-ignore state_referenced_locally
 	let distanceInterval = $state(schedule?.distanceInterval?.toString() ?? '');
@@ -26,11 +29,21 @@
 	let classificationName = $state(schedule?.classification?.name ?? '');
 	// svelte-ignore state_referenced_locally
 	let keywords = $state(schedule?.classification?.keywords?.join(', ') ?? '');
+
+	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 </script>
 
 <form method="POST" {action} use:enhance autocomplete="off">
 	<div class="space-y-3">
 		<input type="hidden" name="classificationId" value={schedule?.classificationId ?? ''} />
+
+		{#if formErrors.length > 0}
+			<Alert role="alert">
+				{#each formErrors as e}
+					<p>{e.title}</p>
+				{/each}
+			</Alert>
+		{/if}
 
 		<fieldset>
 			<Field label="Name" name="name" required>
