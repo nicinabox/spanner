@@ -53,31 +53,36 @@ class HeuristicClassifier < NoteClassifier
 
     PRESET_KEYWORDS.each_value do |group|
       group[:items].each do |preset|
-        name = preset[:name]
-        next if overridden_names.include?(name.downcase)
+        next if overridden_names.include?(preset[:name].downcase)
 
-        classification = Classification.find_by(name:)
-        keywords = classification&.keywords&.presence || preset[:keywords]
-        next unless classify_keywords(stemmed, keywords)
-
-        context = preset[:context] || []
-        conflicting = all_context_words - context
-        confidence = calculate_confidence(
-          normalized, name,
-          context_words: context,
-          keywords:,
-          conflicting_context: conflicting
-        )
-
-        classification ||= Classification.find_or_create_by!(name:) do |c|
-          c.system = true
-          c.key = name.downcase.gsub(/[^a-z0-9]+/, '_').gsub(/_+/, '_').gsub(/_$/, '')
-        end
-        results << { classification:, classifier: 'heuristic', confidence: }
+        result = match_single_preset(normalized, stemmed, preset, all_context_words)
+        results << result if result
       end
     end
 
     results
+  end
+
+  def match_single_preset(normalized, stemmed, preset, all_context_words)
+    name = preset[:name]
+    classification = Classification.find_by(name:)
+    keywords = classification&.keywords.presence || preset[:keywords]
+    return unless classify_keywords(stemmed, keywords)
+
+    context = preset[:context] || []
+    conflicting = all_context_words - context
+    confidence = calculate_confidence(
+      normalized, name,
+      context_words: context,
+      keywords:,
+      conflicting_context: conflicting
+    )
+
+    classification ||= Classification.find_or_create_by!(name:) do |c|
+      c.system = true
+      c.key = name.downcase.gsub(/[^a-z0-9]+/, '_').gsub(/_+/, '_').gsub(/_$/, '')
+    end
+    { classification:, classifier: 'heuristic', confidence: }
   end
 
   def match_vehicle_classifications(normalized, stemmed, vehicle_classifications)

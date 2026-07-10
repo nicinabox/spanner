@@ -208,7 +208,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
     date_from_months = 10.days.ago.to_date + 3.months
     assert_equal date_from_months, schedule.next_due_date,
-           "expected month date #{date_from_months} to be used, got #{schedule.next_due_date}"
+                 "expected month date #{date_from_months} to be used, got #{schedule.next_due_date}"
   end
 
   test 'recalculate_next_due updates next_due_mileage after new matching record' do
