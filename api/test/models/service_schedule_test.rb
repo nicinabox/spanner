@@ -143,7 +143,72 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
     assert schedule.reload.next_due_mileage.present?
     assert_equal 55_000, schedule.reload.next_due_mileage
+    # miles_per_day is 0 for a vehicle with a single record, so estimated_next_date is nil
+    # and the month-based date is used
     assert_equal 30.days.ago.to_date + 12.months, schedule.reload.next_due_date
+  end
+
+  test 'recalculate_next_due with both intervals uses mileage date when sooner' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    # Two records to establish miles_per_day
+    vehicle.records.create!(date: 100.days.ago, notes: 'Purchase', mileage: 40_000)
+    record = vehicle.records.create!(date: 10.days.ago, notes: 'Oil change', mileage: 50_000)
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 5000,
+      month_interval: 12
+    )
+    schedule.recalculate_next_due
+    schedule.reload
+
+    assert_equal 55_000, schedule.next_due_mileage
+
+    date_from_months = 10.days.ago.to_date + 12.months
+    assert schedule.next_due_date < date_from_months,
+           "expected mileage date #{schedule.next_due_date} to be sooner than month date #{date_from_months}"
+  end
+
+  test 'recalculate_next_due with both intervals uses month date when mileage date is nil' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    record = vehicle.records.create!(date: 30.days.ago, notes: 'Oil change', mileage: 50_000)
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 5000,
+      month_interval: 6
+    )
+    schedule.recalculate_next_due
+    schedule.reload
+
+    # miles_per_day is 0, so estimated_next_date returns nil and month date is used
+    assert_equal 30.days.ago.to_date + 6.months, schedule.next_due_date
+  end
+
+  test 'recalculate_next_due with both intervals uses month date when mileage date is later' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    # Two records to establish miles_per_day
+    vehicle.records.create!(date: 100.days.ago, notes: 'Purchase', mileage: 40_000)
+    record = vehicle.records.create!(date: 10.days.ago, notes: 'Oil change', mileage: 50_000)
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    # Large distance interval so mileage date is far in the future, short month interval
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 100_000,
+      month_interval: 3
+    )
+    schedule.recalculate_next_due
+    schedule.reload
+
+    date_from_months = 10.days.ago.to_date + 3.months
+    assert_equal date_from_months, schedule.next_due_date,
+           "expected month date #{date_from_months} to be used, got #{schedule.next_due_date}"
   end
 
   test 'recalculate_next_due updates next_due_mileage after new matching record' do

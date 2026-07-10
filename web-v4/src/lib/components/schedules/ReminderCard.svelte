@@ -21,19 +21,11 @@
 	let { reminder, vehicle, completing, oncomplete, oncancel }: Props = $props();
 
 	export const getDueSummary = (reminder: Reminder): string => {
-		if (!reminder.reminderType) return 'Some day';
-		const parts: string[] = [];
-
-		if (reminder.reminderDate || reminder.date) {
-			parts.push(intlFormatDateUTC(reminder.reminderDate ?? reminder.date!));
-		}
-
-		if (reminder.mileage) {
-			if (parts.length) parts.push('or');
-			parts.push(formatMileage(reminder.mileage, vehicle.distanceUnit));
-		}
-
-		return `Due ${parts.join(' ')}`;
+		if (!reminder.reminderType) return 'Someday';
+		const datePart = reminder.reminderDate ?? reminder.date;
+		if (datePart) return `Due ${intlFormatDateUTC(datePart)}`;
+		if (reminder.mileage) return `Due ${formatMileage(reminder.mileage, vehicle.distanceUnit)}`;
+		return 'Due';
 	};
 
 	let dueSummary = $derived(getDueSummary(reminder));

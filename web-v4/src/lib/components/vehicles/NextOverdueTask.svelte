@@ -8,7 +8,6 @@
 	import type { Reminder } from '$lib/data/reminders';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Vehicle } from '$lib/data/vehicles';
-	import DueIndicator from '../schedules/DueIndicator.svelte';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -27,30 +26,32 @@
 	});
 
 	let title = $derived(
-		item?.kind === 'reminder' ? item.data.notes : (item?.data.classificationName ?? 'Unknown'),
+		item?.kind === 'reminder'
+			? item.data.notes
+			: (item?.data.classificationName ?? 'Unknown'),
 	);
 
 	let dueLine = $derived.by(() => {
 		if (!item) return '';
 		const datePart =
 			item.kind === 'reminder' ? (item.data.reminderDate ?? item.data.date) : item.data.nextDueDate;
-		const mileagePart = item.kind === 'reminder' ? item.data.mileage : item.data.nextDueMileage;
-		if (!datePart && !mileagePart) return '';
-		const parts: string[] = [];
-		if (datePart) parts.push(intlFormatDateUTC(datePart));
-		if (mileagePart) {
-			if (datePart) parts.push('or');
-			parts.push(formatMileage(mileagePart, vehicle.distanceUnit));
-		}
-		return `Due ${parts.join(' ')}`;
+		if (datePart) return `Due ${intlFormatDateUTC(datePart)}`;
+		const mileagePart =
+			item.kind === 'reminder' ? item.data.mileage : item.data.nextDueMileage;
+		if (mileagePart) return `Due ${formatMileage(mileagePart, vehicle.distanceUnit)}`;
+		return '';
 	});
 </script>
 
 {#if item}
 	<a href={`/vehicles/${vehicle.id}/tasks`} class="no-underline text-inherit min-w-fit">
-		<Card variant="outline" size="sm" class="py-2 px-4 gap-0 min-w-60 hover:bg-surface-raised">
+		<Card
+			variant="outline"
+			size="sm"
+			class="py-2 px-4 gap-0 min-w-60 hover:bg-surface-raised"
+		>
 			<p class="text-lg font-medium flex items-center gap-2">
-				<DueIndicator />
+				<span class="w-1.5 h-1.5 rounded-full bg-warning shrink-0"></span>
 				<span class="truncate max-w-xs flex-1">{title}</span>
 				<ChevronRight size={16} class="text-ink-400 shrink-0" />
 			</p>

@@ -59,11 +59,11 @@ class ServiceSchedule < ApplicationRecord
     attrs = {}
     attrs[:next_due_mileage] = next_mileage(last_record) if distance_interval.present?
 
-    if month_interval.present?
-      attrs[:next_due_date] = next_date(last_record)
-    elsif distance_interval.present? && attrs[:next_due_mileage]
-      attrs[:next_due_date] = estimated_next_date(last_record, attrs[:next_due_mileage])
-    end
+    date_from_months = next_date(last_record) if month_interval.present?
+    date_from_mileage = estimated_next_date(last_record, attrs[:next_due_mileage]) if distance_interval.present? && attrs[:next_due_mileage]
+
+    # Use whichever due date comes first (whichever interval expires sooner)
+    attrs[:next_due_date] = [date_from_months, date_from_mileage].compact.min
 
     update!(attrs)
   end

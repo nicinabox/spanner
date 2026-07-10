@@ -22,15 +22,9 @@
 	let { schedule, vehicle, classificationName, completing, oncomplete, oncancel }: Props = $props();
 
 	const getDueSummary = (schedule: ServiceSchedule): string => {
-		const parts: string[] = [];
-		if (schedule.nextDueDate) {
-			parts.push(intlFormatDateUTC(schedule.nextDueDate));
-		}
-		if (schedule.nextDueMileage) {
-			if (parts.length) parts.push('or');
-			parts.push(formatMileage(schedule.nextDueMileage, vehicle.distanceUnit));
-		}
-		return parts.length ? `Due ${parts.join(' ')}` : '';
+		if (schedule.nextDueDate) return `Due ${intlFormatDateUTC(schedule.nextDueDate)}`;
+		if (schedule.nextDueMileage) return `Due ${formatMileage(schedule.nextDueMileage, vehicle.distanceUnit)}`;
+		return '';
 	};
 
 	let dueSummary = $derived(getDueSummary(schedule));
