@@ -13,8 +13,8 @@ module V2
     def create
       schedule = schedules.build(schedule_params)
       schedule.save!
-      apply_classification_to_matching_records(schedule.classification)
       schedule.recalculate_next_due
+      apply_classification_to_matching_records(schedule.classification)
       render json: schedule
     end
 
