@@ -112,6 +112,10 @@ class ServiceSchedule < ApplicationRecord
   end
 
   def next_mileage(last_record)
+    # When there's no matching record, the service hasn't been performed yet.
+    # Measure from 0 (not vehicle.estimated_mileage) so the schedule shows as
+    # overdue rather than upcoming — a new 5,000-mile service on an 80,000-mile
+    # car is overdue, not due at 85,000.
     base = last_record&.mileage || 0
     base + distance_interval
   end
