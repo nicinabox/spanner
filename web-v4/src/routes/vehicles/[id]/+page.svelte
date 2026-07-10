@@ -4,14 +4,12 @@
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
-	import Card from '$lib/components/common/Card.svelte';
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import { page } from '$app/stores';
-	import { BookOpenText, ChevronRight, PlusIcon, Search, X } from 'lucide-svelte';
+	import { BookOpenText, PlusIcon, Search, X } from 'lucide-svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
-	import { formatMileage } from '$lib/utils/vehicle';
-	import { isReminderOverdue, sortRemindersByDue } from '$lib/utils/reminders';
+	import NextOverdueTask from '$lib/components/vehicles/NextOverdueTask.svelte';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
 	import Fuse from 'fuse.js';
@@ -20,24 +18,6 @@
 
 	let vehicle = $derived(data.vehicle);
 	let history = $derived(data.history);
-	let nextReminder = $derived(
-		sortRemindersByDue(data.reminders, vehicle.estimatedMileage).filter(isReminderOverdue)[0],
-	);
-	let reminderOverdue = $derived(
-		nextReminder ? isReminderOverdue(nextReminder, vehicle.estimatedMileage) : false,
-	);
-	let reminderDueLine = $derived.by(() => {
-		if (!nextReminder) return '';
-		const datePart = nextReminder.reminderDate ?? nextReminder.date;
-		if (!datePart && !nextReminder.mileage) return '';
-		const parts: string[] = [];
-		if (datePart) parts.push(intlFormatDateUTC(datePart));
-		if (nextReminder.mileage) {
-			if (datePart) parts.push('or');
-			parts.push(formatMileage(nextReminder.mileage, vehicle.distanceUnit));
-		}
-		return `Due ${parts.join(' ')}`;
-	});
 
 	let searchQuery = $state('');
 
@@ -116,26 +96,11 @@
 	<div class="max-w-6xl mx-auto">
 		{#if history.length}
 			<div class="mb-6 flex gap-12 md:gap-16 overflow-auto pointer-coarse:no-scrollbar">
-				{#if nextReminder}
-					<a href={`/vehicles/${vehicle.id}/tasks`} class="no-underline text-inherit min-w-fit">
-						<Card
-							variant="outline"
-							size="sm"
-							class="py-2 px-4 gap-0 min-w-60 hover:bg-surface-raised"
-						>
-							<p class="text-lg font-medium flex items-center gap-2">
-								{#if reminderOverdue}
-									<span class="w-1.5 h-1.5 rounded-full bg-warning shrink-0"></span>
-								{/if}
-								<span class="truncate max-w-xs flex-1">{nextReminder.notes}</span>
-								<ChevronRight size={16} class="text-ink-400 shrink-0" />
-							</p>
-							{#if reminderDueLine}
-								<p class="text-sm text-ink-500 truncate">{reminderDueLine}</p>
-							{/if}
-						</Card>
-					</a>
-				{/if}
+				<NextOverdueTask
+					{vehicle}
+					reminders={data.reminders}
+					schedules={vehicle.serviceSchedules}
+				/>
 				<Stat
 					title="Estimated mileage"
 					value={vehicle.estimatedMileage

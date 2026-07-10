@@ -35,21 +35,10 @@
 	);
 
 	const existingClassificationNames = $derived(
-		new Set(
-			schedules
-				.map((s) => {
-					const c = classifications.find((cl) => cl.id === s.classificationId);
-					return c?.name.toLowerCase();
-				})
-				.filter(Boolean) as string[],
-		),
+		new Set(schedules.map((s) => s.classificationName?.toLowerCase()).filter(Boolean) as string[]),
 	);
 
 	const sorted = $derived(sortUnifiedByDue(reminders, schedules, vehicle.estimatedMileage));
-
-	const classificationName = (classificationId: number): string => {
-		return classifications.find((c) => c.id === classificationId)?.name ?? 'Unknown';
-	};
 
 	const hasItems = $derived(reminders.length > 0 || schedules.length > 0);
 </script>
@@ -79,7 +68,7 @@
 							suggestType = e.value;
 							suggestOpen = true;
 						}}
-					class="w-full sm:w-auto [&>*:first-child]:flex-1"
+						class="w-full sm:w-auto [&>*:first-child]:flex-1"
 					>
 						<PlusIcon size={14} />
 						New Task
@@ -103,7 +92,7 @@
 					<TaskCard
 						schedule={item.data}
 						{vehicle}
-						classificationName={classificationName(item.data.classificationId)}
+						classificationName={item.data.classificationName ?? 'Unknown'}
 						completing={completingId === `schedule-${item.data.id}`}
 						oncomplete={() => (completingId = `schedule-${item.data.id}`)}
 						oncancel={() => (completingId = null)}

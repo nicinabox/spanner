@@ -7,6 +7,7 @@ export interface ServiceSchedule {
 	id: number;
 	vehicleId: number;
 	classificationId: number;
+	classificationName: string | null;
 	classification?: Classification;
 	distanceInterval: number | null;
 	monthInterval: number | null;
