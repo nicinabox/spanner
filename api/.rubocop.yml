@@ -4,6 +4,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - "db/migrate/**/*"
+    - "db/schema.rb"
     - "bin/**/*"
     - "node_modules/**/*"
     - "vendor/**/*"
