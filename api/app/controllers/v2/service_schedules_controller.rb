@@ -94,7 +94,7 @@ module V2
       return if vehicle.service_schedules.where(classification: classification).any?
 
       vehicle.records.find_each do |record|
-        record.record_classifications.where(classification: classification, auto_tagged: true).destroy_all
+        record.record_classifications.where(classification: classification).destroy_all
       end
     end
   end
