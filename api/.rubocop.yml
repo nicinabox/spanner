@@ -1,5 +1,4 @@
-require:
-  - rubocop-rails
+plugins: rubocop-rails
 
 AllCops:
   NewCops: enable
