@@ -8,20 +8,17 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     @oil = Classification.create!(
       name: 'Oil Change',
       vehicle: @vehicle,
-      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
-      system: false
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
     )
     @air_filter = Classification.create!(
       name: 'Air Filter',
       vehicle: @vehicle,
-      keywords: ['air filter', 'engine air filter'],
-      system: false
+      keywords: ['air filter', 'engine air filter']
     )
     @cabin_filter = Classification.create!(
       name: 'Cabin Air Filter',
       vehicle: @vehicle,
-      keywords: ['cabin air filter', 'cabin filter'],
-      system: false
+      keywords: ['cabin air filter', 'cabin filter']
     )
   end
 
@@ -75,8 +72,7 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     tag = Classification.create!(
       name: 'Hull Cleaning',
       vehicle: @vehicle,
-      keywords: ['hull cleaning', 'clean hull', 'zincs'],
-      system: false
+      keywords: ['hull cleaning', 'clean hull', 'zincs']
     )
     results = HeuristicClassifier.classify('Cleaned the hull and replaced zincs', vehicle: @vehicle)
     assert_includes results.map { |r| r[:classification].id }, tag.id
@@ -86,8 +82,7 @@ class HeuristicClassifierTest < ActiveSupport::TestCase
     Classification.create!(
       name: 'Custom Service',
       vehicle: @vehicle,
-      keywords: ['oil change'],
-      system: false
+      keywords: ['oil change']
     )
     results = HeuristicClassifier.classify('oil change', vehicle: @vehicle)
     names = result_names(results)

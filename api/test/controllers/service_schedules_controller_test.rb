@@ -9,14 +9,12 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
     @oil = Classification.create!(
       name: 'Oil Change',
       vehicle: @vehicle,
-      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
-      system: false
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
     )
     @tire = Classification.create!(
       name: 'Tire Rotation',
       vehicle: @vehicle,
-      keywords: ['tire rotation', 'rotate tires', 'rotate tyres'],
-      system: false
+      keywords: ['tire rotation', 'rotate tires', 'rotate tyres']
     )
     @schedule = ServiceSchedule.create!(
       vehicle: @vehicle,

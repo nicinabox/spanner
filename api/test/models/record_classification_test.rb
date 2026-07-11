@@ -8,8 +8,7 @@ class RecordClassificationTest < ActiveSupport::TestCase
     @classification = Classification.create!(
       name: 'Test Classification',
       vehicle: @vehicle,
-      keywords: ['test'],
-      system: false
+      keywords: ['test']
     )
 
     # Create vehicle-specific classifications with keywords and service schedules
@@ -21,8 +20,7 @@ class RecordClassificationTest < ActiveSupport::TestCase
       c = Classification.create!(
         name: name,
         vehicle: @vehicle,
-        keywords: keywords,
-        system: false
+        keywords: keywords
       )
       @vehicle.service_schedules.find_or_create_by!(classification: c) do |s|
         s.distance_interval = 5000

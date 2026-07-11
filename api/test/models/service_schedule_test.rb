@@ -9,8 +9,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     @classification = Classification.create!(
       name: 'Oil Change',
       vehicle: @vehicle,
-      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
-      system: false
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
     )
   end
 
@@ -221,8 +220,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     classification = Classification.create!(
       name: 'Oil Change',
       vehicle: vehicle,
-      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
-      system: false
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
     )
     vehicle.records.create!(
       date: 30.days.ago,
@@ -333,8 +331,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     classification = Classification.create!(
       name: 'Oil Change',
       vehicle: vehicle,
-      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
-      system: false
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
     )
     record = vehicle.records.create!(
       date: 60.days.ago,

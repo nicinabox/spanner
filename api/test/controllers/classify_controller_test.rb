@@ -9,14 +9,12 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
     @oil = Classification.create!(
       name: 'Oil Change',
       vehicle: @vehicle,
-      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
-      system: false
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
     )
     @tire = Classification.create!(
       name: 'Tire Rotation',
       vehicle: @vehicle,
-      keywords: ['tire rotation', 'rotate tires', 'rotate tyres'],
-      system: false
+      keywords: ['tire rotation', 'rotate tires', 'rotate tyres']
     )
     @vehicle.service_schedules.create!(classification: @oil, distance_interval: 5000)
     @vehicle.service_schedules.create!(classification: @tire, distance_interval: 7500)
@@ -58,8 +56,7 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
     Classification.create!(
       name: 'Battery',
       vehicle: @vehicle,
-      keywords: ['new battery', 'replace battery', 'battery replacement'],
-      system: false
+      keywords: ['new battery', 'replace battery', 'battery replacement']
     )
     # Battery has no service schedule for this vehicle
     get classify_vehicle_url(@vehicle), params: { notes: 'new battery' },

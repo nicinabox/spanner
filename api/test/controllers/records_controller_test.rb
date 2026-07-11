@@ -9,14 +9,12 @@ class RecordsControllerTest < ActionDispatch::IntegrationTest
     @oil = Classification.create!(
       name: 'Oil Change',
       vehicle: @vehicle,
-      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
-      system: false
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
     )
     @other = Classification.create!(
       name: 'Other',
       vehicle: @vehicle,
-      keywords: ['other service'],
-      system: false
+      keywords: ['other service']
     )
   end
 
@@ -124,8 +122,8 @@ class RecordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'syncs classifications from form selection' do
-    c1 = Classification.create!(name: 'Test One', vehicle: @vehicle, keywords: ['one'], system: false)
-    c2 = Classification.create!(name: 'Test Two', vehicle: @vehicle, keywords: ['two'], system: false)
+    c1 = Classification.create!(name: 'Test One', vehicle: @vehicle, keywords: ['one'])
+    c2 = Classification.create!(name: 'Test Two', vehicle: @vehicle, keywords: ['two'])
 
     record = @vehicle.records.create!(date: Time.zone.today, notes: 'Some notes')
     record.record_classifications.create!(classification: c1, classifier: 'manual', confidence: 1.0, auto_tagged: false)

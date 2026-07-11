@@ -3,31 +3,30 @@
 require 'test_helper'
 
 class ClassificationTest < ActiveSupport::TestCase
-  test 'requires key and name' do
-    classification = Classification.new(key: nil, name: nil)
+  test 'requires name and keywords' do
+    classification = Classification.new(name: nil, keywords: nil)
     assert_not classification.valid?
-    assert_includes classification.errors[:key], "can't be blank"
     assert_includes classification.errors[:name], "can't be blank"
+    assert_includes classification.errors[:keywords], "can't be blank"
   end
 
-  test 'requires unique key' do
-    Classification.create!(key: 'test_key', name: 'Test')
-    duplicate = Classification.new(key: 'test_key', name: 'Other')
+  test 'requires unique name per vehicle' do
+    vehicle = vehicles(:one)
+    Classification.create!(name: 'Test', keywords: ['test'], vehicle: vehicle)
+    duplicate = Classification.new(name: 'Test', keywords: ['test'], vehicle: vehicle)
     assert_not duplicate.valid?
-    assert_includes duplicate.errors[:key], 'has already been taken'
+    assert_includes duplicate.errors[:name], 'has already been taken'
   end
 
-  test 'validates key format' do
-    classification = Classification.new(key: 'Invalid Key', name: 'Test')
+  test 'allows same name on different vehicles' do
+    Classification.create!(name: 'Test', keywords: ['test'], vehicle: vehicles(:one))
+    other = Classification.new(name: 'Test', keywords: ['test'], vehicle: vehicles(:two))
+    assert other.valid?
+  end
+
+  test 'requires vehicle' do
+    classification = Classification.new(name: 'Test', keywords: ['test'])
     assert_not classification.valid?
-    assert_includes classification.errors[:key], 'is invalid'
-  end
-
-  test 'system scope returns only system classifications' do
-    system_count = Classification.system.count
-    assert system_count.positive?
-
-    Classification.create!(key: 'custom', name: 'Custom', system: false)
-    assert_equal system_count, Classification.system.count
+    assert_includes classification.errors[:vehicle], 'must exist'
   end
 end

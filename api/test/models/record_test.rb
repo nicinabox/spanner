@@ -9,8 +9,7 @@ class RecordTest < ActiveSupport::TestCase
     oil_class = Classification.create!(
       name: 'Oil Change',
       vehicle: vehicle,
-      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
-      system: false
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
     )
     vehicle.service_schedules.find_or_create_by!(classification: oil_class) do |s|
       s.distance_interval = 5000
@@ -77,8 +76,7 @@ class RecordTest < ActiveSupport::TestCase
     classification = Classification.create!(
       name: 'Oil Change',
       vehicle: vehicle,
-      keywords: ['oil change'],
-      system: false
+      keywords: ['oil change']
     )
 
     schedule = vehicle.service_schedules.find_or_create_by!(classification: classification) do |s|
