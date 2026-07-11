@@ -82,6 +82,8 @@ class ServiceSchedule < ApplicationRecord
     current_mileage = vehicle.estimated_mileage || last_record&.mileage || 0
     remaining_miles = next_due_mileage - current_mileage
 
+    return Time.zone.today if remaining_miles <= 0
+
     days = (remaining_miles / mpd.to_f).ceil
     Time.zone.today + days.days
   end
