@@ -100,6 +100,17 @@ module V2
       end
 
       record.record_classifications.where(classification_id: to_remove).destroy_all
+
+      affected_ids = (to_add + to_remove).uniq
+      return if affected_ids.empty?
+
+      record.vehicle.service_schedules.where(classification_id: affected_ids).find_each do |schedule|
+        if schedule.matching_records?
+          schedule.recalculate_next_due
+        else
+          schedule.update!(next_due_date: nil, next_due_mileage: nil)
+        end
+      end
     end
 
     def validate_attachment_sizes!
