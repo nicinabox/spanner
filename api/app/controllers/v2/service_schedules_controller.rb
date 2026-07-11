@@ -82,8 +82,9 @@ module V2
       elsif params[:service_schedule] && params[:service_schedule][:classification_name].present?
         name = params[:service_schedule][:classification_name]
         keywords = params.dig(:service_schedule, :keywords).presence || [name.downcase]
-        classification = vehicle.classifications.find_or_create_by!(name:)
-        classification.update!(keywords: keywords)
+        classification = vehicle.classifications.where(name:).first_or_initialize
+        classification.keywords = keywords
+        classification.save!
         classification
       else
         raise ActionController::ParameterMissing, 'classification_id or classification_name required'
