@@ -13,8 +13,12 @@ module V2
     def create
       schedule = schedules.build(schedule_params)
       schedule.save!
+      begin
+        apply_classification_to_matching_records(schedule.classification)
+      rescue StandardError => e
+        Rails.logger.error("Failed to apply classification to records: #{e.message}")
+      end
       schedule.recalculate_next_due
-      apply_classification_to_matching_records(schedule.classification)
       render json: schedule
     end
 
