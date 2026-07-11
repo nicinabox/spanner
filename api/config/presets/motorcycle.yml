@@ -146,13 +146,3 @@ items:
       - battery dead
     intervals:
       mo: 60
-  - name: Wiper Blades
-    keywords:
-      - wiper blades
-      - replace wipers
-      - new wipers
-      - windshield wipers
-      - wiper replacement
-      - wipers
-    intervals:
-      mo: 12

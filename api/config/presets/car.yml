@@ -10,6 +10,7 @@ items:
       - engine oil
       - motor oil
       - oil filter
+      - oil + filter
     context:
       - engine
       - motor
