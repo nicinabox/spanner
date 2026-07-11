@@ -2,7 +2,7 @@ import { getVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
-import { getClassifications, createClassification } from '$lib/data/classifications';
+import { getClassifications } from '$lib/data/classifications';
 import { createServiceSchedule } from '$lib/data/serviceSchedules';
 import { decode } from '$lib/utils/form';
 import { getHTTPErrors } from '$lib/utils/actions';
@@ -165,29 +165,26 @@ export const actions = {
 		}
 
 		try {
+			const scheduleData: Record<string, unknown> = {
+				distanceInterval: data.distanceInterval || null,
+				monthInterval: data.monthInterval || null,
+				notes: data.notes || null,
+			};
+
 			if (name) {
 				const keywords = (data.keywords || '')
 					.split(',')
 					.map((k: string) => k.trim())
 					.filter(Boolean);
-				const classification = await createClassification(
-					params.id!,
-					{ classification: { name, keywords } },
-					locals,
-				);
-				classificationId = classification.id;
+				scheduleData.classificationName = name;
+				scheduleData.keywords = keywords;
+			} else {
+				scheduleData.classificationId = classificationId;
 			}
 
 			await createServiceSchedule(
 				params.id!,
-				{
-					serviceSchedule: {
-						classificationId: classificationId,
-						distanceInterval: data.distanceInterval || null,
-						monthInterval: data.monthInterval || null,
-						notes: data.notes || null,
-					},
-				},
+				{ serviceSchedule: scheduleData },
 				locals,
 			);
 		} catch (error) {

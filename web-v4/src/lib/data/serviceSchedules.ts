@@ -34,7 +34,9 @@ export const getServiceSchedules = (vehicleId: number | string, opts: RequestOpt
 
 export interface CreateServiceScheduleData {
 	serviceSchedule: {
-		classificationId: number;
+		classificationId?: number;
+		classificationName?: string;
+		keywords?: string[];
 		distanceInterval: number | null;
 		monthInterval: number | null;
 		notes?: string | null;
