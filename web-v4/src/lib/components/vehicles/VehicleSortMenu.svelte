@@ -1,13 +1,12 @@
 <script lang="ts">
 	import Menu, { type OptionItem } from '$lib/components/common/Menu.svelte';
 	import type { ButtonSize } from '$lib/components/common/Button.svelte';
-	import type { Order, Sortable } from '$lib/data/vehicles';
+	import type { Order, Sortable, VehicleSortStrategy } from '$lib/data/vehicles';
 	import {
 		orderToHuman,
 		vehicleSortOrderToHuman,
 		vehicleSortStrategy,
 		vehicleSortStrategyToHuman,
-		type VehicleSortStrategy,
 	} from '$lib/utils/sortable';
 
 	interface Props {

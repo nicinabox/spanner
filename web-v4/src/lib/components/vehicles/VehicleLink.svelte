@@ -3,10 +3,8 @@
 	import Badge from '$lib/components/common/Badge.svelte';
 	import VehicleColorIndicator from './VehicleColorIndicator.svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
-	import { getOverdueRemindersCount } from '$lib/utils/reminders';
-	import { getOverdueSchedulesCount } from '$lib/utils/tasks';
+	import { getUnifiedOverdueCount } from '$lib/utils/tasks';
 	import { formatMileage } from '$lib/utils/vehicle';
-	import { getColorPalette } from '$lib/utils/colors';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -16,12 +14,7 @@
 
 	let { id, name, milesPerYear, estimatedMileage, distanceUnit } = $derived(vehicle);
 
-	let overdue = $derived.by(() => {
-		const r = getOverdueRemindersCount(vehicle);
-		const s = getOverdueSchedulesCount(vehicle);
-		if (r === undefined && s === undefined) return undefined;
-		return (r ?? 0) + (s ?? 0);
-	});
+	let overdue = $derived(getUnifiedOverdueCount(vehicle));
 </script>
 
 <a

@@ -2,8 +2,14 @@ import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
 import { parseDateUTC } from './date';
 import { formatMileage } from './vehicle';
-import { isReminderOverdue } from './reminders';
+import { getOverdueRemindersCount, isReminderOverdue } from './reminders';
 import type { Reminder } from '$lib/data/reminders';
+
+export function getUnifiedOverdueCount(vehicle: Vehicle) {
+	const r = getOverdueRemindersCount(vehicle) ?? 0;
+	const s = getOverdueSchedulesCount(vehicle) ?? 0;
+	return r + s;
+}
 
 export const getOverdueSchedulesCount = (vehicle: Vehicle) => {
 	if (vehicle.retired) return undefined;

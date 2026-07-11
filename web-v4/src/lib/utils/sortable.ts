@@ -1,8 +1,7 @@
 import { orderBy } from 'lodash-es';
-import type { Order, Sortable, Vehicle } from '$lib/data/vehicles';
+import type { Order, Sortable, Vehicle, VehicleSortStrategy } from '$lib/data/vehicles';
 import { getOverdueRemindersCount } from './reminders';
-
-export type VehicleSortStrategy = 'created_at' | 'name' | 'reminders' | 'mileage' | 'mileage_rate';
+import { getUnifiedOverdueCount } from './tasks';
 
 export const vehicleSortStrategy: Record<
 	VehicleSortStrategy,
@@ -10,7 +9,7 @@ export const vehicleSortStrategy: Record<
 > = {
 	created_at: sortByCreatedAt,
 	name: sortByName,
-	reminders: sortByReminders,
+	reminders: sortByTasks,
 	mileage: sortByMileage,
 	mileage_rate: sortByMileageRate,
 };
@@ -18,7 +17,7 @@ export const vehicleSortStrategy: Record<
 export const vehicleSortStrategyToHuman: Record<VehicleSortStrategy, string> = {
 	name: 'Name',
 	created_at: 'Created',
-	reminders: 'Reminders',
+	reminders: 'Tasks',
 	mileage: 'Mileage',
 	mileage_rate: 'Mileage Rate',
 };
@@ -45,8 +44,8 @@ export function sortByName(vehicles: Vehicle[], order: Order) {
 	return orderBy(vehicles, 'name', order);
 }
 
-export function sortByReminders(vehicles: Vehicle[], order: Order) {
-	return orderBy(vehicles, [getOverdueRemindersCount, 'name'], [order, 'asc']);
+export function sortByTasks(vehicles: Vehicle[], order: Order) {
+	return orderBy(vehicles, [getUnifiedOverdueCount, 'name'], [order, 'asc']);
 }
 
 export function sortByMileage(vehicles: Vehicle[], order: Order) {
