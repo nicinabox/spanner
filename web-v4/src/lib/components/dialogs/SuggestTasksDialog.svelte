@@ -87,6 +87,7 @@
 		{#if loading}
 			<p class="text-ink-400 text-center py-8">Loading presets...</p>
 		{:else}
+			<input type="hidden" name="distance_unit" value={distanceUnit} />
 			<input
 				type="hidden"
 				name="preset_data"

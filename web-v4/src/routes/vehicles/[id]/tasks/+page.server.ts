@@ -76,12 +76,12 @@ export const actions: Actions = {
 			intervals: Record<string, number>;
 			keywords: string[];
 		}>;
+		const distanceUnit = (data.get('distance_unit') as string) || 'mi';
+
 		if (!presetData.length) {
 			return { success: true };
 		}
 
-		const vehicle = await getVehicle(params.id!, { authToken: locals.authToken });
-		const distanceUnit = vehicle.distanceUnit || 'mi';
 		const opts = { authToken: locals.authToken, webUrl: locals.webUrl };
 
 		for (const preset of presetData) {
