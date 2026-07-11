@@ -72,18 +72,17 @@ module V2
 
     def schedule_params
       params.expect(
-        service_schedule: %i[classification_id classification_name keywords distance_interval month_interval notes
-                             enabled]
+        service_schedule: %i[classification_id distance_interval month_interval notes enabled]
       )
     end
 
     def find_or_create_classification
-      if schedule_params[:classification_id].present?
-        vehicle.classifications.find(schedule_params[:classification_id])
-      elsif schedule_params[:classification_name].present?
-        vehicle.classifications.find_or_create_by!(name: schedule_params[:classification_name]) do |c|
-          c.keywords = schedule_params[:keywords].presence || []
-        end
+      if params[:service_schedule] && params[:service_schedule][:classification_id].present?
+        vehicle.classifications.find(params[:service_schedule][:classification_id])
+      elsif params[:service_schedule] && params[:service_schedule][:classification_name].present?
+        name = params[:service_schedule][:classification_name]
+        keywords = params.dig(:service_schedule, :keywords).presence || [name.downcase]
+        vehicle.classifications.find_or_create_by!(name:) { |c| c.keywords = keywords }
       else
         raise ActionController::ParameterMissing, 'classification_id or classification_name required'
       end
