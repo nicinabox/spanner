@@ -3,7 +3,7 @@ import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
-import { createServiceSchedule } from '$lib/data/serviceSchedules';
+import { createServiceSchedule, type CreateServiceScheduleData } from '$lib/data/serviceSchedules';
 import { decode } from '$lib/utils/form';
 import { getHTTPErrors } from '$lib/utils/actions';
 import { validateAttachments } from '$lib/utils/file-validation';
@@ -165,7 +165,7 @@ export const actions = {
 		}
 
 		try {
-			const scheduleData: Record<string, unknown> = {
+			const scheduleData: CreateServiceScheduleData['serviceSchedule'] = {
 				distanceInterval: data.distanceInterval || null,
 				monthInterval: data.monthInterval || null,
 				notes: data.notes || null,
