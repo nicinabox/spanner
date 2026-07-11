@@ -128,7 +128,7 @@ class HeuristicClassifier < NoteClassifier
   end
 
   def phrase_match?(stemmed, token)
-    words = token.split
+    words = token.gsub(/[^a-z0-9\s]/, '').split
     return false if words.empty?
 
     stemmed_words = words.map(&:stem)
