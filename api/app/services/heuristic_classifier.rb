@@ -20,8 +20,9 @@ class HeuristicClassifier < NoteClassifier
     overridden_names = vehicle_classifications.map(&:name).map(&:downcase)
 
     all_context_words = preset_context_words
+    preset_classifications = preload_preset_classifications
 
-    results = match_preset_keywords(normalized, stemmed, overridden_names, all_context_words)
+    results = match_preset_keywords(normalized, stemmed, overridden_names, all_context_words, preset_classifications)
     results += match_vehicle_classifications(normalized, stemmed, vehicle_classifications)
 
     deduplicate_results(results)
@@ -48,14 +49,21 @@ class HeuristicClassifier < NoteClassifier
     vehicle.classifications.where.not(keywords: [])
   end
 
-  def match_preset_keywords(normalized, stemmed, overridden_names, all_context_words)
+  def preload_preset_classifications
+    @preset_classifications ||= begin
+      names = PRESET_KEYWORDS.each_value.flat_map { |g| g[:items].map { |i| i[:name] } }.uniq
+      Classification.where(name: names).index_by(&:name)
+    end
+  end
+
+  def match_preset_keywords(normalized, stemmed, overridden_names, all_context_words, preset_classifications)
     results = []
 
     PRESET_KEYWORDS.each_value do |group|
       group[:items].each do |preset|
         next if overridden_names.include?(preset[:name].downcase)
 
-        result = match_single_preset(normalized, stemmed, preset, all_context_words)
+        result = match_single_preset(normalized, stemmed, preset, all_context_words, preset_classifications)
         results << result if result
       end
     end
@@ -63,9 +71,9 @@ class HeuristicClassifier < NoteClassifier
     results
   end
 
-  def match_single_preset(normalized, stemmed, preset, all_context_words)
+  def match_single_preset(normalized, stemmed, preset, all_context_words, preset_classifications)
     name = preset[:name]
-    classification = Classification.find_by(name:)
+    classification = preset_classifications[name]
     keywords = classification&.keywords.presence || preset[:keywords]
     return unless classify_keywords(stemmed, keywords)
 

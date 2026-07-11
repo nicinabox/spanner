@@ -76,11 +76,12 @@ module V2
     end
 
     def apply_classification_to_matching_records(classification)
+      classifier = HeuristicClassifier.new
       vehicle.records.find_each do |record|
         next if record.notes.blank?
         next if record.classifications.include?(classification)
 
-        HeuristicClassifier.classify(record.notes, vehicle: vehicle).each do |result|
+        classifier.classify(record.notes, vehicle: vehicle).each do |result|
           next unless result[:classification].id == classification.id
 
           record.record_classifications.find_or_create_by(
