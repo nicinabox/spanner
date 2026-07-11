@@ -5,20 +5,28 @@ require 'test_helper'
 class RecordClassificationTest < ActiveSupport::TestCase
   setup do
     @vehicle = Vehicle.first || Vehicle.create!(name: 'Test Vehicle', user: User.first)
-    @classification = Classification.find_or_create_by!(key: 'test_record_class') do |c|
-      c.name = 'Test Classification'
-    end
+    @classification = Classification.create!(
+      name: 'Test Classification',
+      vehicle: @vehicle,
+      keywords: ['test'],
+      system: false
+    )
 
-    # Create service schedules for classifications used in tests
-    %w[oil_change tire_rotation battery].each do |key|
-      c = Classification.find_by(key: key)
-      next unless c
-      next if @vehicle.service_schedules.exists?(classification_id: c.id)
-
-      @vehicle.service_schedules.create!(
-        classification: c,
-        distance_interval: 5000
+    # Create vehicle-specific classifications with keywords and service schedules
+    {
+      'Oil Change' => ['oil change', 'engine oil', 'motor oil', 'oil filter'],
+      'Tire Rotation' => ['tire rotation', 'rotate tires', 'rotate tyres'],
+      'Battery' => ['new battery', 'replace battery', 'battery replacement']
+    }.each do |name, keywords|
+      c = Classification.create!(
+        name: name,
+        vehicle: @vehicle,
+        keywords: keywords,
+        system: false
       )
+      @vehicle.service_schedules.find_or_create_by!(classification: c) do |s|
+        s.distance_interval = 5000
+      end
     end
   end
 

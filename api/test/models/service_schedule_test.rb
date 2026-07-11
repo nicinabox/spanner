@@ -6,7 +6,12 @@ class ServiceScheduleTest < ActiveSupport::TestCase
   setup do
     @user = User.first
     @vehicle = @user.vehicles.first
-    @classification = Classification.find_by!(key: 'oil_change')
+    @classification = Classification.create!(
+      name: 'Oil Change',
+      vehicle: @vehicle,
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
+      system: false
+    )
   end
 
   test 'valid with distance_interval' do
@@ -213,6 +218,12 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
   test 'recalculate_next_due updates next_due_mileage after new matching record' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    classification = Classification.create!(
+      name: 'Oil Change',
+      vehicle: vehicle,
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
+      system: false
+    )
     vehicle.records.create!(
       date: 30.days.ago,
       notes: 'Oil change',
@@ -221,7 +232,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
-      classification: @classification,
+      classification: classification,
       distance_interval: 5000
     )
     schedule.recalculate_next_due
@@ -319,16 +330,22 @@ class ServiceScheduleTest < ActiveSupport::TestCase
 
   test 'auto-advances schedule when matching record is saved' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    classification = Classification.create!(
+      name: 'Oil Change',
+      vehicle: vehicle,
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter'],
+      system: false
+    )
     record = vehicle.records.create!(
       date: 60.days.ago,
       notes: 'Oil change',
       mileage: 50_000
     )
-    record.record_classifications.create!(classification: @classification, classifier: 'test')
+    record.record_classifications.create!(classification: classification, classifier: 'test')
 
     schedule = ServiceSchedule.create!(
       vehicle: vehicle,
-      classification: @classification,
+      classification: classification,
       distance_interval: 5000
     )
     schedule.recalculate_next_due
