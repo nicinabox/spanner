@@ -41,7 +41,7 @@ end
 group :development do
   gem 'dotenv-rails'
   gem 'listen', '~> 3.7'
-  gem 'rubocop'
+  gem 'rubocop', '~> 1.86'
   gem 'rubocop-rails'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
