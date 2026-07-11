@@ -25,10 +25,10 @@ class Record < ApplicationRecord
     return if mileage.nil? || mileage.zero?
 
     trailing_record = vehicle.records
-                             .where(date: ...date)
-                             .where('mileage > ?', 0)
-                             .where.not(id: id)
-                             .last
+      .where(date: ...date)
+      .where('mileage > ?', 0)
+      .where.not(id: id)
+      .last
 
     return unless trailing_record && mileage < trailing_record.mileage
 
@@ -39,10 +39,10 @@ class Record < ApplicationRecord
     return if mileage.nil? || mileage.zero?
 
     leading_record = vehicle.records
-                            .where('date > ?', date)
-                            .where('mileage > ?', 0)
-                            .where.not(id: id)
-                            .first
+      .where('date > ?', date)
+      .where('mileage > ?', 0)
+      .where.not(id: id)
+      .first
 
     return unless leading_record && mileage > leading_record.mileage
 

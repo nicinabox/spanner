@@ -11,6 +11,9 @@ AllCops:
 Rails:
   Enabled: true
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 Style/Documentation:
   Enabled: false
 

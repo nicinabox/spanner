@@ -116,10 +116,10 @@ class ServiceSchedule < ApplicationRecord
 
   def last_matching_record
     vehicle.records
-           .joins(:classifications)
-           .where(classifications: { id: classification_id })
-           .reorder(date: :desc)
-           .first
+      .joins(:classifications)
+      .where(classifications: { id: classification_id })
+      .reorder(date: :desc)
+      .first
   end
 
   def next_mileage(last_record)

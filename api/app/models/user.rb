@@ -86,8 +86,8 @@ class User < ApplicationRecord
     return nil if token.blank?
 
     user = where(email_confirmation_token: token)
-           .where('email_confirmation_token_valid_until > ?', Time.zone.now)
-           .first
+      .where('email_confirmation_token_valid_until > ?', Time.zone.now)
+      .first
     return nil unless user&.unconfirmed_email
 
     if exists?(email: user.unconfirmed_email)

@@ -12,8 +12,8 @@ class Importer
       RecordClassification.where(record_id: record_ids).delete_all
       # rubocop:disable Rails/SkipsModelValidations
       vehicle.service_schedules
-             .where(last_completed_record_id: record_ids)
-             .update_all(last_completed_record_id: nil)
+        .where(last_completed_record_id: record_ids)
+        .update_all(last_completed_record_id: nil)
       # rubocop:enable Rails/SkipsModelValidations
       ActiveStorage::Attachment.where(record_id: record_ids, record_type: 'Record').delete_all
 
@@ -38,8 +38,8 @@ class Importer
       RecordClassification.where(record_id: record_ids).delete_all
       # rubocop:disable Rails/SkipsModelValidations
       vehicle.service_schedules
-             .where(last_completed_record_id: record_ids)
-             .update_all(last_completed_record_id: nil)
+        .where(last_completed_record_id: record_ids)
+        .update_all(last_completed_record_id: nil)
       # rubocop:enable Rails/SkipsModelValidations
       ActiveStorage::Attachment.where(record_id: record_ids, record_type: 'Record').delete_all
 
