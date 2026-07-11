@@ -65,6 +65,7 @@
 					bind:value={keywords}
 					rows={1}
 					placeholder="e.g., oil change, change oil"
+					autocapitalize="off"
 				/>
 			</Field>
 		</fieldset>
