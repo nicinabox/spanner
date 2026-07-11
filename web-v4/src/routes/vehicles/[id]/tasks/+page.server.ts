@@ -74,6 +74,7 @@ export const actions: Actions = {
 		const presetData = JSON.parse((data.get('preset_data') as string) || '[]') as Array<{
 			name: string;
 			intervals: Record<string, number>;
+			keywords: string[];
 		}>;
 		if (!presetData.length) {
 			return { success: true };
@@ -81,44 +82,25 @@ export const actions: Actions = {
 
 		const vehicle = await getVehicle(params.id!, { authToken: locals.authToken });
 		const distanceUnit = vehicle.distanceUnit || 'mi';
-
-		const [existing, existingSchedules] = await Promise.all([
-			getClassifications(params.id!, locals),
-			getServiceSchedules(params.id!, locals),
-		]);
-		const existingClassificationIds = new Set(existingSchedules.map((s) => s.classificationId));
 		const opts = { authToken: locals.authToken, webUrl: locals.webUrl };
 
 		for (const preset of presetData) {
-			let classificationId = existing.find(
-				(c) => c.name.toLowerCase() === preset.name.toLowerCase(),
-			)?.id;
-
-			if (!classificationId) {
-				const classification = await createClassification(
-					params.id!,
-					{ classification: { name: preset.name } },
-					opts,
-				);
-				classificationId = classification.id;
-			}
-
-			if (existingClassificationIds.has(classificationId)) {
-				continue;
-			}
-
+			const classification = await createClassification(
+				params.id!,
+				{ classification: { name: preset.name, keywords: preset.keywords } },
+				opts,
+			);
 			await createServiceSchedule(
 				params.id!,
 				{
 					serviceSchedule: {
-						classificationId,
+						classificationId: classification.id,
 						distanceInterval: preset.intervals[distanceUnit] ?? null,
 						monthInterval: preset.intervals['mo'] ?? null,
 					},
 				},
 				opts,
 			);
-			existingClassificationIds.add(classificationId);
 		}
 
 		return { success: true };

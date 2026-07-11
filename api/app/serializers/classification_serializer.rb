@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
 class ClassificationSerializer < ActiveModel::Serializer
-  attributes :id, :key, :name, :description, :system, :keywords,
+  attributes :id, :key, :name, :description, :system, :vehicle_id, :keywords,
              :created_at, :updated_at
 
   def keywords
     kw = object.keywords
     return kw if kw.present?
 
-    ServiceSchedule::PRESETS.each_value do |group|
-      group[:items].each do |item|
-        return item[:keywords] if item[:name].casecmp?(object.name)
-      end
+    all = ServiceSchedule::PRESETS.each_value.flat_map do |group|
+      group[:items].select { |item| item[:name].casecmp?(object.name) }.flat_map { |item| item[:keywords] }
     end
-
-    kw
+    all.uniq.presence || kw
   end
 end

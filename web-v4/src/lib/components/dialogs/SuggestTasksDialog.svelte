@@ -91,7 +91,7 @@
 				type="hidden"
 				name="preset_data"
 				value={JSON.stringify(
-					selectedPresets.map((p) => ({ name: p.name, intervals: p.intervals })),
+					selectedPresets.map((p) => ({ name: p.name, intervals: p.intervals, keywords: p.keywords })),
 				)}
 			/>
 			<p class="mb-4">Common tasks for {initialType}s. You can edit them any time.</p>

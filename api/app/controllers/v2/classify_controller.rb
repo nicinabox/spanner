@@ -10,14 +10,14 @@ module V2
       schedule_classification_ids = vehicle.service_schedules.pluck(:classification_id)
 
       render json: results
-        .select { |r| schedule_classification_ids.include?(r[:classification].id) }
-        .map { |r|
-          {
-            classification: ClassificationSerializer.new(r[:classification]).serializable_hash,
-            classifier: r[:classifier],
-            confidence: r[:confidence]
-          }
-        }
+                   .select { |r| schedule_classification_ids.include?(r[:classification].id) }
+                   .map { |r|
+                     {
+                       classification: ClassificationSerializer.new(r[:classification]).serializable_hash,
+                       classifier: r[:classifier],
+                       confidence: r[:confidence]
+                     }
+                   }
     end
   end
 end

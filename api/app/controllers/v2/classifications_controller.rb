@@ -14,10 +14,11 @@ module V2
 
     def create
       vehicle = vehicles.find(params[:vehicle_id])
-      classification = vehicle.classifications.build(classification_params)
-      classification.user = current_user
-      classification.system = false
-      classification.save!
+      classification = vehicle.classifications.find_or_create_by!(name: classification_params[:name]) do |c|
+        c.assign_attributes(classification_params)
+        c.user = current_user
+        c.system = false
+      end
       render json: classification
     end
 
@@ -73,12 +74,10 @@ module V2
     end
 
     def matching_preset_keywords(name)
-      ServiceSchedule::PRESETS.each_value do |group|
-        group[:items].each do |item|
-          return item[:keywords] if item[:name].casecmp?(name)
-        end
+      all = ServiceSchedule::PRESETS.each_value.flat_map do |group|
+        group[:items].select { |item| item[:name].casecmp?(name) }.flat_map { |item| item[:keywords] }
       end
-      nil
+      all.uniq.presence
     end
   end
 end
