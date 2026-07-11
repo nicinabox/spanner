@@ -17,9 +17,7 @@ module V2
 
     def update
       classification = vehicle_classification(params[:id])
-
-      classification.update!(keywords: classification_params[:keywords]) if classification_params[:keywords]
-
+      classification.update!(classification_params.to_h)
       render json: classification
     end
 
