@@ -12,12 +12,12 @@ module V2
       render json: results
                    .select { |r| schedule_classification_ids.include?(r[:classification].id) }
                    .map { |r|
-                     {
-                       classification: ClassificationSerializer.new(r[:classification]).serializable_hash,
-                       classifier: r[:classifier],
-                       confidence: r[:confidence]
-                     }
-                   }
+        {
+          classification: ClassificationSerializer.new(r[:classification]).serializable_hash,
+          classifier: r[:classifier],
+          confidence: r[:confidence]
+        }
+      }
     end
   end
 end

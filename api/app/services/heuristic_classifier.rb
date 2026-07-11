@@ -50,7 +50,7 @@ class HeuristicClassifier < NoteClassifier
   end
 
   def preload_preset_classifications
-    @preset_classifications ||= begin
+    @preload_preset_classifications ||= begin
       names = PRESET_KEYWORDS.each_value.flat_map { |g| g[:items].map { |i| i[:name] } }.uniq
       Classification.where(name: names).index_by(&:name)
     end
