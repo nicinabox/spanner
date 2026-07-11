@@ -112,8 +112,9 @@ class User < ApplicationRecord
   def preferences=(value)
     # Accepts either a UserPreferences object or a hash
     prefs_hash = value.is_a?(UserPreferences) ? value.to_hash : value
-    self[:preferences] = prefs_hash
-    @preferences = UserPreferences.new(prefs_hash)
+    merged = (self[:preferences] || {}).merge(prefs_hash.stringify_keys)
+    self[:preferences] = merged
+    @preferences = UserPreferences.new(merged)
   end
 
   def self.expired_sessions
