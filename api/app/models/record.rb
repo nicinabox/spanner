@@ -75,18 +75,28 @@ class Record < ApplicationRecord
     matching_schedules.each(&:recalculate_next_due)
   end
 
+  def sync_manual_classifications(raw_ids)
+    new_ids = raw_ids.reject(&:blank?).map(&:to_i)
+    existing = classification_ids
+    to_add = new_ids - existing
+    to_remove = existing - new_ids
+
+    to_add.each do |cid|
+      record_classifications.find_or_create_by!(classification_id: cid, classifier: 'manual', confidence: 1.0, auto_tagged: false)
+    end
+    record_classifications.where(classification_id: to_remove).destroy_all
+
+    recalculate_matching_service_schedules(to_add + to_remove)
+  end
+
   def capture_schedule_classification_ids
     @schedule_classification_ids = classifications.pluck(:id)
   end
 
-  def recalculate_matching_service_schedules
-    ids = @schedule_classification_ids || classifications.pluck(:id)
-    vehicle.service_schedules.where(classification_id: ids).find_each do |schedule|
-      if schedule.matching_records?
-        schedule.recalculate_next_due
-      else
-        schedule.update!(next_due_date: nil, next_due_mileage: nil)
-      end
-    end
+  def recalculate_matching_service_schedules(ids = nil)
+    ids ||= @schedule_classification_ids || classifications.pluck(:id)
+    return if ids.empty?
+
+    vehicle.service_schedules.where(classification_id: ids).find_each(&:recalculate_next_due)
   end
 end

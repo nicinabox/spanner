@@ -83,34 +83,10 @@ module V2
     end
 
     def sync_classifications(record)
-      ids = params.dig(:record, :classification_ids)&.reject(&:blank?)
+      ids = params.dig(:record, :classification_ids)
       return unless ids
 
-      existing = record.classification_ids
-      to_add = ids.map(&:to_i) - existing
-      to_remove = existing - ids.map(&:to_i)
-
-      to_add.each do |cid|
-        record.record_classifications.find_or_create_by!(
-          classification_id: cid,
-          classifier: 'manual',
-          confidence: 1.0,
-          auto_tagged: false
-        )
-      end
-
-      record.record_classifications.where(classification_id: to_remove).destroy_all
-
-      affected_ids = (to_add + to_remove).uniq
-      return if affected_ids.empty?
-
-      record.vehicle.service_schedules.where(classification_id: affected_ids).find_each do |schedule|
-        if schedule.matching_records?
-          schedule.recalculate_next_due
-        else
-          schedule.update!(next_due_date: nil, next_due_mileage: nil)
-        end
-      end
+      record.sync_manual_classifications(ids)
     end
 
     def validate_attachment_sizes!
