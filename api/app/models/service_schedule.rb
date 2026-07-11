@@ -95,6 +95,12 @@ class ServiceSchedule < ApplicationRecord
       notes: notes.presence || classification.name
     )
 
+    record.record_classifications.find_or_create_by!(classification: classification) do |rc|
+      rc.classifier = 'manual'
+      rc.confidence = 1.0
+      rc.auto_tagged = false
+    end
+
     update!(last_completed_record_id: record.id)
     recalculate_next_due
     record
