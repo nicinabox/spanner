@@ -20,13 +20,14 @@ export interface ClassificationResult {
 export const classifyNotes = command(
 	v.object({
 		notes: v.pipe(v.string(), v.nonEmpty()),
+		vehicleId: v.number(),
 	}),
-	async ({ notes }) => {
+	async ({ notes, vehicleId }) => {
 		const event = getRequestEvent();
 		const token = await getAuthToken(event.cookies);
 
 		return request<ClassificationResult[]>(
-			`/vehicles/classify?notes=${encodeURIComponent(notes)}`,
+			`/vehicles/${vehicleId}/classify?notes=${encodeURIComponent(notes)}`,
 			{ authToken: token },
 		);
 	},

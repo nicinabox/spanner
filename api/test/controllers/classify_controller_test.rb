@@ -5,11 +5,22 @@ require 'test_helper'
 class ClassifyControllerTest < ActionDispatch::IntegrationTest
   setup do
     new_session
+    @vehicle = @user.vehicles.first
+    @oil = Classification.find_or_create_by!(name: 'Oil Change') do |c|
+      c.system = true
+      c.key = 'oil_change'
+    end
+    @tire = Classification.find_or_create_by!(name: 'Tire Rotation') do |c|
+      c.system = true
+      c.key = 'tire_rotation'
+    end
+    @vehicle.service_schedules.create!(classification: @oil, distance_interval: 5000)
+    @vehicle.service_schedules.create!(classification: @tire, distance_interval: 7500)
   end
 
   test 'classify returns results for matching notes' do
-    get classify_vehicles_url, params: { notes: 'oil change' },
-                               headers: http_options(@session.auth_token)[:headers]
+    get classify_vehicle_url(@vehicle), params: { notes: 'oil change' },
+                                         headers: http_options(@session.auth_token)[:headers]
 
     assert_response :success
     body = response_body
@@ -18,8 +29,8 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'classify returns confidence scores' do
-    get classify_vehicles_url, params: { notes: 'oil change' },
-                               headers: http_options(@session.auth_token)[:headers]
+    get classify_vehicle_url(@vehicle), params: { notes: 'oil change' },
+                                        headers: http_options(@session.auth_token)[:headers]
 
     assert_response :success
     body = response_body
@@ -32,24 +43,25 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'classify returns empty array for unrecognized notes' do
-    get classify_vehicles_url, params: { notes: 'washed and waxed' },
-                               headers: http_options(@session.auth_token)[:headers]
+    get classify_vehicle_url(@vehicle), params: { notes: 'washed and waxed' },
+                                         headers: http_options(@session.auth_token)[:headers]
 
     assert_response :success
     assert_equal [], response_body
   end
 
-  test 'classify returns empty array for blank notes' do
-    get classify_vehicles_url, params: { notes: '' },
-                               headers: http_options(@session.auth_token)[:headers]
+  test 'classify returns empty array for notes matching classifications without schedules' do
+    # Battery is a preset classification but has no service schedule for this vehicle
+    get classify_vehicle_url(@vehicle), params: { notes: 'new battery' },
+                                         headers: http_options(@session.auth_token)[:headers]
 
     assert_response :success
     assert_equal [], response_body
   end
 
   test 'classify returns multiple results for multi-service notes' do
-    get classify_vehicles_url, params: { notes: 'oil change and tire rotation' },
-                               headers: http_options(@session.auth_token)[:headers]
+    get classify_vehicle_url(@vehicle), params: { notes: 'oil change and tire rotation' },
+                                         headers: http_options(@session.auth_token)[:headers]
 
     assert_response :success
     names = response_body.map { |r| r['classification']['name'] }
@@ -58,8 +70,8 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'classify includes classification details' do
-    get classify_vehicles_url, params: { notes: 'oil change' },
-                               headers: http_options(@session.auth_token)[:headers]
+    get classify_vehicle_url(@vehicle), params: { notes: 'oil change' },
+                                         headers: http_options(@session.auth_token)[:headers]
 
     assert_response :success
     result = response_body.first

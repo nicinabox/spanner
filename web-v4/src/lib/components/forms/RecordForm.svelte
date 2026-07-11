@@ -70,7 +70,7 @@
 		if (!notes.trim()) return;
 		classifying = true;
 		try {
-			const results = await classifyNotes({ notes });
+			const results = await classifyNotes({ notes, vehicleId: vehicle.id });
 			for (const r of results) {
 				if (r.confidence >= 0.25) {
 					const c = allClassifications.find((cl) => cl.id === r.classification.id);
