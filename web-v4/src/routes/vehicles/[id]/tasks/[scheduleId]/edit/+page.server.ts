@@ -1,5 +1,5 @@
 import { getVehicle } from '$lib/data/vehicles';
-import { getServiceSchedule, updateServiceSchedule, deleteServiceSchedule } from '$lib/data/serviceSchedules';
+import { getServiceSchedule, updateServiceSchedule, deleteServiceSchedule, deferServiceSchedule, clearDeferServiceSchedule } from '$lib/data/serviceSchedules';
 import { updateClassification } from '$lib/data/classifications';
 import { getHTTPErrors } from '$lib/utils/actions';
 import { decode } from '$lib/utils/form';
@@ -60,6 +60,38 @@ export const actions = {
 
 	delete: async ({ locals, params }) => {
 		await deleteServiceSchedule(params.id!, params.scheduleId!, locals);
+		redirect(303, `/vehicles/${params.id}/tasks`);
+	},
+
+	defer: async ({ request, locals, params }) => {
+		const formData = await request.formData();
+		const months = formData.get('months')?.toString();
+		const miles = formData.get('miles')?.toString();
+
+		try {
+			await deferServiceSchedule(
+				params.id!,
+				params.scheduleId!,
+				{
+					months: months ? Number(months) : null,
+					miles: miles ? Number(miles) : null,
+				},
+				locals,
+			);
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
+		}
+
+		redirect(303, `/vehicles/${params.id}/tasks`);
+	},
+
+	clear_defer: async ({ locals, params }) => {
+		try {
+			await clearDeferServiceSchedule(params.id!, params.scheduleId!, locals);
+		} catch (error) {
+			return fail(422, getHTTPErrors(error));
+		}
+
 		redirect(303, `/vehicles/${params.id}/tasks`);
 	},
 } satisfies Actions;

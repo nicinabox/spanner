@@ -4,6 +4,7 @@
 	import { getIntervalSummary, isScheduleOverdue } from '$lib/utils/tasks';
 	import { Calendar, RefreshCw, ChevronRight } from 'lucide-svelte';
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
+	import DeferForm from '$lib/components/forms/DeferForm.svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { intlFormatDateUTC } from '$lib/utils/date';
@@ -15,13 +16,22 @@
 		vehicle: Vehicle;
 		classificationName: string;
 		completing: boolean;
+		deferring: boolean;
 		oncomplete: () => void;
 		oncancel: () => void;
+		ondefer: () => void;
+		oncancelDefer: () => void;
 	}
 
-	let { schedule, vehicle, classificationName, completing, oncomplete, oncancel }: Props = $props();
+	let { schedule, vehicle, classificationName, completing, deferring, oncomplete, oncancel, ondefer, oncancelDefer }: Props = $props();
 
 	const getDueSummary = (schedule: ServiceSchedule): string => {
+		if (schedule.deferred && schedule.nextDueDate) {
+			const parts: string[] = [];
+			if (schedule.deferDeltaMonths) parts.push(`+${schedule.deferDeltaMonths}mo`);
+			if (schedule.deferDeltaMiles) parts.push(`+${formatMileage(schedule.deferDeltaMiles, vehicle.distanceUnit)}`);
+			return `Deferred to ${intlFormatDateUTC(schedule.nextDueDate)} (${parts.join(', ')})`;
+		}
 		if (schedule.nextDueDate) return `Due ${intlFormatDateUTC(schedule.nextDueDate)}`;
 		if (schedule.nextDueMileage) return `Due ${formatMileage(schedule.nextDueMileage, vehicle.distanceUnit)}`;
 		return '';
@@ -59,6 +69,8 @@
 		<div class="flex items-center gap-2">
 			{#if completing}
 				<Button size="sm" variant="outline" onclick={oncancel}>Cancel</Button>
+			{:else if deferring}
+				<Button size="sm" variant="outline" onclick={oncancelDefer}>Cancel</Button>
 			{:else}
 				<Button
 					size="sm"
@@ -68,6 +80,14 @@
 				>
 					Complete
 					<ChevronRight size={16} />
+				</Button>
+				<Button
+					size="sm"
+					variant="outline"
+					onclick={ondefer}
+					{...umamiEvent('defer_schedule')}
+				>
+					Defer
 				</Button>
 			{/if}
 		</div>
@@ -83,6 +103,11 @@
 				} as any}
 				action="?/complete"
 			/>
+		</div>
+	{/if}
+	{#if deferring}
+		<div class="border-t border-ink-200 pt-4">
+			<DeferForm {vehicle} {schedule} action="?/defer" />
 		</div>
 	{/if}
 </Card>

@@ -3,6 +3,7 @@
 	import { umamiEvent } from '$lib/umami';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import TaskForm from '$lib/components/forms/TaskForm.svelte';
+	import DeferForm from '$lib/components/forms/DeferForm.svelte';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
 
@@ -26,6 +27,17 @@
 			<h1 class="text-xl font-semibold">Edit Task</h1>
 			<TaskForm {vehicle} {schedule} action="?/update" errors={form?.errors} />
 		</Card>
+
+		{#if schedule}
+			<Card variant="outline" class="mt-6" bleed>
+				<h2 class="text-xl">Defer</h2>
+				<p class="text-sm text-ink-500 mb-4">
+					Push the due date without completing the service. Deferral is relative to the original
+					scheduled due date.
+				</p>
+				<DeferForm {vehicle} {schedule} />
+			</Card>
+		{/if}
 
 		<Card class="mt-6" variant="outline" bleed>
 			<h1 class="text-xl">Danger Zone</h1>

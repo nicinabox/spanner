@@ -4,6 +4,8 @@ import {
 	completeServiceSchedule,
 	deleteServiceSchedule,
 	createServiceSchedule,
+	deferServiceSchedule,
+	clearDeferServiceSchedule,
 	getPresets,
 } from '$lib/data/serviceSchedules';
 import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
@@ -61,6 +63,46 @@ export const actions: Actions = {
 		} catch {
 			return fail(422, { error: 'Failed to delete schedule' });
 		}
+	},
+
+	defer: async ({ request, locals, params }) => {
+		const formData = await request.formData();
+		const id = formData.get('id')?.toString();
+		const months = formData.get('months')?.toString();
+		const miles = formData.get('miles')?.toString();
+
+		if (!id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
+
+		try {
+			await deferServiceSchedule(
+				params.id!,
+				id,
+				{
+					months: months ? Number(months) : null,
+					miles: miles ? Number(miles) : null,
+				},
+				locals,
+			);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : 'Failed to defer schedule';
+			return fail(422, { errors: [{ id: 'form', title: message }] });
+		}
+
+		redirect(303, `/vehicles/${params.id}/tasks`);
+	},
+
+	clear_defer: async ({ locals, params, request }) => {
+		const id = (await request.formData()).get('id')?.toString();
+		if (!id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
+
+		try {
+			await clearDeferServiceSchedule(params.id!, id, locals);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : 'Failed to clear defer';
+			return fail(422, { errors: [{ id: 'form', title: message }] });
+		}
+
+		redirect(303, `/vehicles/${params.id}/tasks`);
 	},
 
 	delete_reminder: async ({ locals, params, request }) => {

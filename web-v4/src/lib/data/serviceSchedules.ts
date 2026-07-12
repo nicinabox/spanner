@@ -16,6 +16,9 @@ export interface ServiceSchedule {
 	lastCompletedRecordId: number | null;
 	nextDueDate: string | null;
 	nextDueMileage: number | null;
+	deferred: boolean;
+	deferDeltaMonths: number | null;
+	deferDeltaMiles: number | null;
 	createdAt: string;
 	updatedAt: string;
 }
@@ -89,6 +92,30 @@ export const completeServiceSchedule = (
 		...opts,
 		method: 'POST',
 		json: data,
+	});
+};
+
+export const deferServiceSchedule = (
+	vehicleId: number | string,
+	id: number | string,
+	data: { months?: number | null; miles?: number | null } | undefined,
+	opts: RequestOpts,
+) => {
+	return request<ServiceSchedule>(`/vehicles/${vehicleId}/service_schedules/${id}/defer`, {
+		...opts,
+		method: 'POST',
+		json: data ?? {},
+	});
+};
+
+export const clearDeferServiceSchedule = (
+	vehicleId: number | string,
+	id: number | string,
+	opts: RequestOpts,
+) => {
+	return request<ServiceSchedule>(`/vehicles/${vehicleId}/service_schedules/${id}/defer`, {
+		...opts,
+		method: 'DELETE',
 	});
 };
 
