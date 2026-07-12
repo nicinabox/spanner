@@ -34,22 +34,16 @@ module V2
       months = params[:months]
       distance = params[:distance]
 
-      if months.blank? && distance.blank?
-        raise ActionController::BadRequest, 'months or distance required'
-      end
+      raise ActionController::BadRequest, 'months or distance required' if months.blank? && distance.blank?
 
       if months.present?
-        unless schedule.month_interval.present?
-          raise ActionController::BadRequest, 'schedule has no month interval'
-        end
+        raise ActionController::BadRequest, 'schedule has no month interval' if schedule.month_interval.blank?
 
         schedule.defer_delta_months = months.to_i
       end
 
       if distance.present?
-        unless schedule.distance_interval.present?
-          raise ActionController::BadRequest, 'schedule has no distance interval'
-        end
+        raise ActionController::BadRequest, 'schedule has no distance interval' if schedule.distance_interval.blank?
 
         schedule.defer_delta_miles = distance.to_i
       end
