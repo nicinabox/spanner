@@ -12,6 +12,7 @@ import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { fail, redirect } from '@sveltejs/kit';
+import { decode } from '$lib/utils/form';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -67,19 +68,17 @@ export const actions: Actions = {
 
 	defer: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const id = formData.get('id')?.toString();
-		const months = formData.get('months')?.toString();
-		const miles = formData.get('miles')?.toString();
+		const data = decode(formData, { id: 'number', months: 'number', distance: 'number' });
 
-		if (!id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
+		if (!data.id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
 
 		try {
 			await deferServiceSchedule(
 				params.id!,
-				id,
+				data.id,
 				{
-					months: months ? Number(months) : null,
-					miles: miles ? Number(miles) : null,
+					months: data.months || null,
+					distance: data.distance || null,
 				},
 				locals,
 			);
@@ -92,7 +91,8 @@ export const actions: Actions = {
 	},
 
 	clear_defer: async ({ locals, params, request }) => {
-		const id = (await request.formData()).get('id')?.toString();
+		const formData = await request.formData();
+		const { id } = decode(formData, { id: 'number' });
 		if (!id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
 
 		try {

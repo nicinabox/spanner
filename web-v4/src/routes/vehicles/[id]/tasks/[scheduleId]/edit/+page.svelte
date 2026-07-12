@@ -30,10 +30,10 @@
 
 		{#if schedule}
 			<Card variant="outline" class="mt-6" bleed>
-				<h2 class="text-xl">Defer</h2>
-				<p class="text-sm text-ink-500 mb-4">
-					Push the due date without completing the service. Deferral is relative to the original
-					scheduled due date.
+				<h2 class="text-xl font-semibold">Defer</h2>
+				<p>
+					Push the due date without completing. Deferral is relative to the original scheduled due
+					date.
 				</p>
 				<DeferForm {vehicle} {schedule} />
 			</Card>

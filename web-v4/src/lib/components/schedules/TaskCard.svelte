@@ -74,20 +74,20 @@
 			{:else}
 				<Button
 					size="sm"
+					variant="ghost"
+					onclick={ondefer}
+					{...umamiEvent('defer_schedule')}
+				>
+					Defer
+				</Button>
+				<Button
+					size="sm"
 					variant="outline"
 					onclick={oncomplete}
 					{...umamiEvent('complete_schedule')}
 				>
 					Complete
 					<ChevronRight size={16} />
-				</Button>
-				<Button
-					size="sm"
-					variant="outline"
-					onclick={ondefer}
-					{...umamiEvent('defer_schedule')}
-				>
-					Defer
 				</Button>
 			{/if}
 		</div>

@@ -98,7 +98,7 @@ export const completeServiceSchedule = (
 export const deferServiceSchedule = (
 	vehicleId: number | string,
 	id: number | string,
-	data: { months?: number | null; miles?: number | null } | undefined,
+	data: { months?: number | null; distance?: number | null } | undefined,
 	opts: RequestOpts,
 ) => {
 	return request<ServiceSchedule>(`/vehicles/${vehicleId}/service_schedules/${id}/defer`, {

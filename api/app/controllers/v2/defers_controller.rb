@@ -32,10 +32,10 @@ module V2
 
     def set_defer!(schedule)
       months = params[:months]
-      miles = params[:miles]
+      distance = params[:distance]
 
-      if months.blank? && miles.blank?
-        raise ActionController::BadRequest, 'months or miles required'
+      if months.blank? && distance.blank?
+        raise ActionController::BadRequest, 'months or distance required'
       end
 
       if months.present?
@@ -46,12 +46,12 @@ module V2
         schedule.defer_delta_months = months.to_i
       end
 
-      if miles.present?
+      if distance.present?
         unless schedule.distance_interval.present?
           raise ActionController::BadRequest, 'schedule has no distance interval'
         end
 
-        schedule.defer_delta_miles = miles.to_i
+        schedule.defer_delta_miles = distance.to_i
       end
 
       schedule.save!

@@ -65,16 +65,15 @@ export const actions = {
 
 	defer: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const months = formData.get('months')?.toString();
-		const miles = formData.get('miles')?.toString();
+		const data = decode(formData, { months: 'number', distance: 'number' });
 
 		try {
 			await deferServiceSchedule(
 				params.id!,
 				params.scheduleId!,
 				{
-					months: months ? Number(months) : null,
-					miles: miles ? Number(miles) : null,
+					months: data.months || null,
+					distance: data.distance || null,
 				},
 				locals,
 			);

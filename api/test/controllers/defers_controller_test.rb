@@ -40,7 +40,7 @@ class DefersControllerTest < ActionDispatch::IntegrationTest
     schedule.recalculate_next_due
 
     post vehicle_service_schedule_defer_url(@vehicle, schedule),
-         params: { miles: 1000 },
+         params: { distance: 1000 },
          headers: http_options(@session.auth_token)[:headers],
          as: :json
 
@@ -49,7 +49,7 @@ class DefersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1000, schedule.defer_delta_miles
   end
 
-  test 'create defer requires months or miles' do
+  test 'create defer requires months or distance' do
     schedule = ServiceSchedule.create!(
       vehicle: @vehicle,
       classification: @classification,
@@ -79,7 +79,7 @@ class DefersControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
   end
 
-  test 'create defer with miles rejects schedule without distance_interval' do
+  test 'create defer with distance rejects schedule without distance_interval' do
     schedule = ServiceSchedule.create!(
       vehicle: @vehicle,
       classification: @classification,
@@ -87,7 +87,7 @@ class DefersControllerTest < ActionDispatch::IntegrationTest
     )
 
     post vehicle_service_schedule_defer_url(@vehicle, schedule),
-         params: { miles: 1000 },
+         params: { distance: 1000 },
          headers: http_options(@session.auth_token)[:headers],
          as: :json
 

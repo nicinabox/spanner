@@ -21,10 +21,11 @@
 	// svelte-ignore state_referenced_locally
 	let months = $state(schedule.deferDeltaMonths?.toString() ?? '');
 	// svelte-ignore state_referenced_locally
-	let miles = $state(schedule.deferDeltaMiles?.toString() ?? '');
+	let distance = $state(schedule.deferDeltaMiles?.toString() ?? '');
 
 	let hasMonthInterval = $derived(schedule.monthInterval != null);
 	let hasDistanceInterval = $derived(schedule.distanceInterval != null);
+	let bothShown = $derived(hasMonthInterval && hasDistanceInterval);
 	let isDeferred = $derived(schedule.deferred);
 </script>
 
@@ -33,24 +34,36 @@
 	<div class="space-y-3">
 		<div class="flex sm:gap-6 flex-col sm:flex-row *:flex-1">
 			{#if hasMonthInterval}
-				<Field label="Months" name="months" hint="Push due date by months">
+				<Field
+					label="Defer Months"
+					name="months"
+					hint="Push due date by months"
+					required={!bothShown}
+				>
 					<Input
 						inputmode="numeric"
 						name="months"
 						bind:value={months}
-						placeholder="Optional"
+						placeholder={bothShown ? 'Optional' : ''}
 						min="1"
+						required={!bothShown}
 					/>
 				</Field>
 			{/if}
 			{#if hasDistanceInterval}
-				<Field label={MileageLabel(vehicle.distanceUnit)} name="miles" hint="Push mileage threshold by amount">
+				<Field
+					label={'Defer ' + MileageLabel(vehicle.distanceUnit)}
+					name="distance"
+					hint="Push mileage threshold by amount"
+					required={!bothShown}
+				>
 					<InputGroup
-						name="miles"
+						name="distance"
 						inputmode="numeric"
-						bind:value={miles}
-						placeholder="Optional"
+						bind:value={distance}
+						placeholder={bothShown ? 'Optional' : ''}
 						min="1"
+						required={!bothShown}
 					>
 						{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
 					</InputGroup>
@@ -58,7 +71,9 @@
 			{/if}
 		</div>
 		<div class="flex gap-2">
-			<Button type="submit">{isDeferred ? 'Update Defer' : 'Set Defer'}</Button>
+			<Button type="submit"
+				>{isDeferred ? 'Update' : `Defer ${schedule.classificationName ?? 'Task'}`}</Button
+			>
 			{#if isDeferred}
 				<Button variant="outline" formaction="?/clear_defer">Clear Defer</Button>
 			{/if}
