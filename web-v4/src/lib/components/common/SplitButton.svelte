@@ -1,9 +1,10 @@
 <script lang="ts">
 	import * as menu from '@zag-js/menu';
-	import { portal, useMachine, normalizeProps } from '@zag-js/svelte';
+	import { useMachine, normalizeProps } from '@zag-js/svelte';
 	import Button from './Button.svelte';
 	import type { ButtonSize, ButtonVariant, ButtonColor } from './Button.svelte';
 	import { ChevronDown } from 'lucide-svelte';
+	import MenuContent from './MenuContent.svelte';
 	import type { ClassValue } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
 
@@ -27,6 +28,8 @@
 		disabled?: boolean | null;
 		class?: ClassValue;
 		id?: string;
+		start?: Snippet;
+		end?: Snippet;
 	}
 
 	const uniqId = $props.id();
@@ -42,6 +45,8 @@
 		disabled,
 		class: className,
 		id = uniqId,
+		start,
+		end,
 	}: Props = $props();
 
 	// svelte-ignore state_referenced_locally
@@ -90,44 +95,6 @@
 	>
 		<ChevronDown size={16} />
 	</Button>
-</div>
 
-<div use:portal {...api.getPositionerProps()} inert={!api.open}>
-	<ul
-		{...api.getContentProps()}
-		hidden={undefined}
-		class={[
-			'z-50 list-none w-(--reference-width) min-w-[15ch] p-1.5 bg-surface-raised border border-ink-200 rounded-md shadow-md',
-			'origin-(--transform-origin,top) transition-[opacity,scale,translate] duration-250 ease-out-expo',
-			'data-[state=open]:opacity-100 data-[state=open]:scale-100 data-[state=open]:translate-y-0 data-[state=closed]:opacity-0 data-[state=closed]:scale-[0.97] data-[state=closed]:-translate-y-2',
-			'starting:opacity-0 starting:scale-[0.97] starting:-translate-y-2',
-		]}
-	>
-		{#each items as item}
-			{#if item.separator}
-				<li role="separator" class="h-px bg-ink-200 my-1 mx-2.5 p-0 cursor-default"></li>
-			{:else}
-				{const preload = item.preload ?? true}
-				<li
-					{...api.getItemProps({ value: item.value, closeOnSelect: item.closeOnSelect ?? true })}
-					class="flex items-center gap-2 px-3 h-10 rounded-sm cursor-pointer select-none outline-none transition-colors duration-100 ease-out-expo hover:bg-black/6 data-highlighted:bg-black/6 dark:hover:bg-white/8 dark:data-highlighted:bg-white/8"
-				>
-					<span class="flex-1 min-w-0">
-						{#if item.href}
-							<a
-								href={item.href}
-								tabindex="-1"
-								data-sveltekit-preload-data={preload ? 'hover' : 'off'}
-								class="text-inherit no-underline block w-full"
-							>
-								{item.label ?? item.value}
-							</a>
-						{:else}
-							{item.label ?? item.value}
-						{/if}
-					</span>
-				</li>
-			{/if}
-		{/each}
-	</ul>
+	<MenuContent {api} {items} {start} {end} />
 </div>

@@ -70,6 +70,9 @@
 						}}
 						class="w-full sm:w-auto [&>*:first-child]:flex-1"
 					>
+						{#snippet start()}
+							<span class="text-ink-500 text-sm font-medium">Choose from presets</span>
+						{/snippet}
 						<PlusIcon size={14} />
 						New Task
 					</SplitButton>
