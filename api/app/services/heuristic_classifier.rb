@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HeuristicClassifier < NoteClassifier
+class HeuristicClassifier
   def self.classify(text, **)
     new.classify(text, **)
   end
