@@ -464,8 +464,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     )
     schedule.recalculate_next_due
 
-    expected = 30.days.ago.to_date + 6.months + 3.months
-    assert_equal expected, schedule.reload.next_due_date
+    assert_equal Time.zone.today + 3.months, schedule.reload.next_due_date
   end
 
   test 'recalculate_next_due applies defer delta miles' do
@@ -508,8 +507,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule.recalculate_next_due
 
     assert_equal 56_000, schedule.reload.next_due_mileage
-    expected_date = 30.days.ago.to_date + 12.months + 3.months
-    assert_equal expected_date, schedule.reload.next_due_date
+    assert_equal Time.zone.today + 3.months, schedule.reload.next_due_date
   end
 
   test 'complete! clears defer before recalculating' do

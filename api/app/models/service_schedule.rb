@@ -76,7 +76,7 @@ class ServiceSchedule < ApplicationRecord
     attrs[:next_due_mileage] += defer_delta_miles if computed_mileage && defer_delta_miles.present?
 
     date_from_months = next_date(last_record) if month_interval.present?
-    date_from_months = date_from_months + defer_delta_months.months if date_from_months && defer_delta_months.present?
+    date_from_months = Time.zone.today + defer_delta_months.months if date_from_months && defer_delta_months.present?
 
     date_from_mileage = nil
     if distance_interval.present? && attrs[:next_due_mileage]
