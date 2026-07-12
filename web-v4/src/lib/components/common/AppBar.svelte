@@ -45,7 +45,6 @@
 			{@render end()}
 		{:else if session}
 			<Menu
-				trigger={username}
 				theme="dark"
 				size="sm"
 				items={[
@@ -53,6 +52,7 @@
 					{ value: 'signout', label: 'Sign out', href: '/logout', preload: false },
 				]}
 			>
+				{username}
 				{#snippet start()}
 					<span class="text-ink-500 text-sm font-medium">
 						{session.email}

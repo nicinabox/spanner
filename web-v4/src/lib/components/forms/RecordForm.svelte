@@ -202,7 +202,6 @@
 					{/each}
 					{#if availableClassifications.length > 0}
 						<Menu
-							trigger="Add"
 							variant="outline"
 							size="xs"
 							items={availableClassifications.map((c) => ({
@@ -213,7 +212,9 @@
 								const c = allClassifications.find((cl) => cl.id === Number(value));
 								if (c) addClassification(c);
 							}}
-						/>
+						>
+							Add
+						</Menu>
 					{/if}
 					<Button
 						type="button"

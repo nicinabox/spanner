@@ -2,6 +2,8 @@ export { default as Alert } from './components/common/Alert.svelte';
 export { default as Badge } from './components/common/Badge.svelte';
 export { default as AppBar } from './components/common/AppBar.svelte';
 export { default as Button } from './components/common/Button.svelte';
+export { default as ButtonGroup } from './components/common/ButtonGroup.svelte';
+export { default as Menu } from './components/common/Menu.svelte';
 export { default as Card } from './components/common/Card.svelte';
 export { default as Clipboard } from './components/common/Clipboard.svelte';
 export { default as Combobox } from './components/common/Combobox.svelte';

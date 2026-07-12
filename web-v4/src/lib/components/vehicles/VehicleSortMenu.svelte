@@ -45,8 +45,6 @@
 	]);
 </script>
 
-<Menu
-	trigger="Order By: {orderToHuman(sortable)} {vehicleSortStrategyToHuman[sortStrategy]}"
-	{optionItems}
-	{size}
-/>
+<Menu {optionItems} {size}>
+	Order By: {orderToHuman(sortable)} {vehicleSortStrategyToHuman[sortStrategy]}
+</Menu>
