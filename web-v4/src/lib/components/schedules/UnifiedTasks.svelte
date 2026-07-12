@@ -21,7 +21,7 @@
 		presetGroups: Record<string, PresetGroup>;
 	}
 
-	let { reminders, schedules, classifications, vehicle, presetGroups }: Props = $props();
+	let { reminders, schedules, vehicle, presetGroups }: Props = $props();
 
 	let completingId = $state<string | null>(null);
 	let deferringId = $state<string | null>(null);

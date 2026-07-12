@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { enhance, applyAction } from '$app/forms';
 	import Button from '$lib/components/common/Button.svelte';
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
@@ -14,22 +14,33 @@
 		schedule: ServiceSchedule;
 		action?: string;
 		errors?: FormError[];
+		onsuccess?: () => void;
 	}
 
-	let { vehicle, schedule, action = '?/defer', errors = [] }: Props = $props();
-
-	// svelte-ignore state_referenced_locally
-	let months = $state(schedule.deferDeltaMonths?.toString() ?? '');
-	// svelte-ignore state_referenced_locally
-	let distance = $state(schedule.deferDeltaMiles?.toString() ?? '');
+	let { vehicle, schedule, action = '?/defer', errors = [], onsuccess }: Props = $props();
 
 	let hasMonthInterval = $derived(schedule.monthInterval != null);
 	let hasDistanceInterval = $derived(schedule.distanceInterval != null);
 	let bothShown = $derived(hasMonthInterval && hasDistanceInterval);
 	let isDeferred = $derived(schedule.deferred);
+
+	// svelte-ignore state_referenced_locally
+	let months = $state(schedule.deferDeltaMonths?.toString() ?? '');
+	// svelte-ignore state_referenced_locally
+	let distance = $state(schedule.deferDeltaMiles?.toString() ?? '');
 </script>
 
-<form method="POST" {action} use:enhance autocomplete="off">
+<form
+	method="POST"
+	{action}
+	use:enhance={() => {
+		return async ({ result }) => {
+			await applyAction(result);
+			onsuccess?.();
+		};
+	}}
+	autocomplete="off"
+>
 	<input type="hidden" name="id" value={schedule.id} />
 	<div class="space-y-3">
 		<div class="flex sm:gap-6 flex-col sm:flex-row *:flex-1">
@@ -75,7 +86,7 @@
 				>{isDeferred ? 'Update' : `Defer ${schedule.classificationName ?? 'Task'}`}</Button
 			>
 			{#if isDeferred}
-				<Button variant="outline" formaction="?/clear_defer">Clear Defer</Button>
+				<Button type="submit" variant="outline" formaction="?/clear_defer">Clear</Button>
 			{/if}
 		</div>
 	</div>

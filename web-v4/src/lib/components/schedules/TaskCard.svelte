@@ -23,17 +23,35 @@
 		oncancelDefer: () => void;
 	}
 
-	let { schedule, vehicle, classificationName, completing, deferring, oncomplete, oncancel, ondefer, oncancelDefer }: Props = $props();
+	let {
+		schedule,
+		vehicle,
+		classificationName,
+		completing,
+		deferring,
+		oncomplete,
+		oncancel,
+		ondefer,
+		oncancelDefer,
+	}: Props = $props();
 
 	const getDueSummary = (schedule: ServiceSchedule): string => {
-		if (schedule.deferred && schedule.nextDueDate) {
-			const parts: string[] = [];
-			if (schedule.deferDeltaMonths) parts.push(`+${schedule.deferDeltaMonths}mo`);
-			if (schedule.deferDeltaMiles) parts.push(`+${formatMileage(schedule.deferDeltaMiles, vehicle.distanceUnit)}`);
-			return `Deferred to ${intlFormatDateUTC(schedule.nextDueDate)} (${parts.join(', ')})`;
+		const deltaParts: string[] = [];
+		if (schedule.deferDeltaMonths) deltaParts.push(`+${schedule.deferDeltaMonths} mo`);
+		if (schedule.deferDeltaMiles)
+			deltaParts.push(`+${formatMileage(schedule.deferDeltaMiles, vehicle.distanceUnit)}`);
+		const deltaStr = deltaParts.length ? ` (${deltaParts.join(', ')})` : '';
+
+		if (schedule.deferred) {
+			if (schedule.nextDueDate)
+				return `Deferred to ${intlFormatDateUTC(schedule.nextDueDate)}${deltaStr}`;
+			if (schedule.nextDueMileage)
+				return `Deferred to ${formatMileage(schedule.nextDueMileage, vehicle.distanceUnit)}${deltaStr}`;
+			return 'Deferred';
 		}
 		if (schedule.nextDueDate) return `Due ${intlFormatDateUTC(schedule.nextDueDate)}`;
-		if (schedule.nextDueMileage) return `Due ${formatMileage(schedule.nextDueMileage, vehicle.distanceUnit)}`;
+		if (schedule.nextDueMileage)
+			return `Due ${formatMileage(schedule.nextDueMileage, vehicle.distanceUnit)}`;
 		return '';
 	};
 
@@ -72,12 +90,7 @@
 			{:else if deferring}
 				<Button size="sm" variant="outline" onclick={oncancelDefer}>Cancel</Button>
 			{:else}
-				<Button
-					size="sm"
-					variant="ghost"
-					onclick={ondefer}
-					{...umamiEvent('defer_schedule')}
-				>
+				<Button size="sm" variant="ghost" onclick={ondefer} {...umamiEvent('defer_schedule')}>
 					Defer
 				</Button>
 				<Button
@@ -107,7 +120,7 @@
 	{/if}
 	{#if deferring}
 		<div class="border-t border-ink-200 pt-4">
-			<DeferForm {vehicle} {schedule} action="?/defer" />
+			<DeferForm {vehicle} {schedule} action="?/defer" onsuccess={oncancelDefer} />
 		</div>
 	{/if}
 </Card>
