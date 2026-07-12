@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
 class NotificationDispatcher
-  CHANNELS = [EmailChannel, WebhookChannel].freeze
+  DEFAULT_CHANNELS = [EmailChannel.new, WebhookChannel.new].freeze
 
-  def self.dispatch(event, **)
-    CHANNELS.each do |channel|
-      next unless channel.available?
+  def initialize(channels: DEFAULT_CHANNELS)
+    @channels = channels
+  end
 
-      channel.deliver(event, **)
+  def dispatch(event, **kwargs)
+    @channels.each do |channel|
+      next unless channel.can_deliver?(event, kwargs[:user])
+
+      channel.deliver(event, **kwargs)
     rescue StandardError => e
-      Rails.logger.error("#{channel}: #{e.message}")
+      Rails.logger.error("#{channel.class}: #{e.message}")
     end
   end
 end

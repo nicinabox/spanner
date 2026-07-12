@@ -6,10 +6,10 @@ module V2
       reminders = current_user.vehicles.flat_map(&:reminders).first(3)
 
       if reminders.any?
-        WebhookChannel.deliver(:reminder_today, user: current_user, reminders: reminders)
+        WebhookChannel.new.deliver(:reminder_today, user: current_user, reminders: reminders)
       else
         # Send a generic test even without reminders
-        WebhookChannel.deliver(:test, user: current_user, reminders: [])
+        WebhookChannel.new.deliver(:test, user: current_user, reminders: [])
       end
       render json: { message: 'Test notification sent' }, status: :ok
     end

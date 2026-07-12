@@ -2,14 +2,18 @@
 
 require 'net/http'
 
-class WebhookChannel
+class WebhookChannel < Channel
   TIMEOUT = 5
 
-  def self.available?
+  private
+
+  def available?
     true
   end
 
-  def self.deliver(event, user:, reminders: nil, schedules: nil)
+  public
+
+  def deliver(event, user:, reminders: nil, schedules: nil)
     webhook_url = user.preferences.webhook_url.presence
     return unless webhook_url
 
@@ -28,7 +32,9 @@ class WebhookChannel
     http.request(request)
   end
 
-  def self.build_payload(event, user, reminders: nil, schedules: nil)
+  private
+
+  def build_payload(event, user, reminders: nil, schedules: nil)
     payload = base_payload(event, user)
 
     if schedules
@@ -39,9 +45,8 @@ class WebhookChannel
 
     payload
   end
-  private_class_method :build_payload
 
-  def self.apply_ntfy_format(request, event, reminders: nil, schedules: nil)
+  def apply_ntfy_format(request, event, reminders: nil, schedules: nil)
     priority = event.to_s.start_with?('schedule') ? '4' : '3'
     title, message = ntfy_title_and_message(reminders:, schedules:)
 
@@ -51,26 +56,23 @@ class WebhookChannel
     request['Tags'] = 'wrench'
     request['Actions'] = "view, View Vehicles, #{Rails.application.config.x.web_url}/vehicles"
   end
-  private_class_method :apply_ntfy_format
 
-  def self.ntfy_title_and_message(reminders: nil, schedules: nil)
+  def ntfy_title_and_message(reminders: nil, schedules: nil)
     if schedules
       ntfy_schedules_content(schedules)
     else
       ntfy_reminders_content(Array(reminders))
     end
   end
-  private_class_method :ntfy_title_and_message
 
-  def self.ntfy_schedules_content(schedules)
+  def ntfy_schedules_content(schedules)
     names = schedules.map { |s| s.vehicle.name }.uniq
     title = "Schedules due for #{names.to_sentence}"
     message = schedules.map { |s| "#{s.vehicle.name}: #{s.classification.name}" }.join("\n")
     [title, message]
   end
-  private_class_method :ntfy_schedules_content
 
-  def self.ntfy_reminders_content(reminders)
+  def ntfy_reminders_content(reminders)
     names = reminders.map { |r| r.vehicle.name }.uniq
     title = "Reminders for #{names.to_sentence}"
     message = reminders.group_by(&:vehicle).map do |vehicle, veh_reminders|
@@ -78,23 +80,20 @@ class WebhookChannel
     end.join("\n\n")
     [title, message]
   end
-  private_class_method :ntfy_reminders_content
 
-  def self.vehicle_link(vehicle)
+  def vehicle_link(vehicle)
     "[#{vehicle.name}](#{Rails.application.config.x.web_url}/vehicles/#{vehicle.id})"
   end
-  private_class_method :vehicle_link
 
-  def self.base_payload(event, user)
+  def base_payload(event, user)
     {
       event: event,
       timestamp: Time.zone.now.iso8601,
       user: { email: user.email }
     }
   end
-  private_class_method :base_payload
 
-  def self.reminder_payload(reminder)
+  def reminder_payload(reminder)
     {
       notes: reminder.notes,
       vehicle: reminder.vehicle.name,
@@ -102,9 +101,8 @@ class WebhookChannel
       mileage: reminder.mileage
     }
   end
-  private_class_method :reminder_payload
 
-  def self.schedule_payload(schedule)
+  def schedule_payload(schedule)
     {
       classification: schedule.classification.name,
       vehicle: schedule.vehicle.name,
@@ -113,5 +111,4 @@ class WebhookChannel
       notes: schedule.notes
     }
   end
-  private_class_method :schedule_payload
 end

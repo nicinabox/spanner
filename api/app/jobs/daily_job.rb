@@ -33,7 +33,7 @@ class DailyJob < ApplicationJob
         end
       end
 
-      NotificationDispatcher.dispatch(:reminder_upcoming, user: user, reminders: user_reminders)
+      NotificationDispatcher.new.dispatch(:reminder_upcoming, user: user, reminders: user_reminders)
       user.record_reminder_sent!
     end
   end
@@ -49,7 +49,7 @@ class DailyJob < ApplicationJob
     by_user.each do |user, user_schedules|
       next unless user.reminder_eligible?
 
-      NotificationDispatcher.dispatch(:schedule_due_upcoming, user: user, schedules: user_schedules)
+      NotificationDispatcher.new.dispatch(:schedule_due_upcoming, user: user, schedules: user_schedules)
     end
   end
 
