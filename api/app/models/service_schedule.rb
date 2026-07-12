@@ -54,14 +54,18 @@ class ServiceSchedule < ApplicationRecord
     defer_delta_months.present? || defer_delta_miles.present?
   end
 
+  # rubocop:disable Naming/PredicateMethod
   def deferred
     deferred?
   end
+  # rubocop:enable Naming/PredicateMethod
 
   def clear_defer!
     update!(defer_delta_months: nil, defer_delta_miles: nil)
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def recalculate_next_due
     unless enabled?
       update!(next_due_date: nil, next_due_mileage: nil)
@@ -89,6 +93,8 @@ class ServiceSchedule < ApplicationRecord
 
     update!(attrs)
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def matching_records?
     last_matching_record.present?
