@@ -6,9 +6,9 @@ namespace :notes do
   desc 'Export all notes'
   task :all, [] => :environment do |_t, _args|
     records = Record.reorder('notes')
-                    .select(:notes)
-                    .where.not(notes: [nil, ''])
-                    .distinct
+      .select(:notes)
+      .where.not(notes: [nil, ''])
+      .distinct
 
     Exporter.notes(records, 'notes.csv')
   end
@@ -22,10 +22,10 @@ namespace :notes do
   desc 'Export all matching notes'
   task :match, %i[term limit] => :environment do |_t, args|
     records = Record.reorder('notes')
-                    .select(:notes)
-                    .where('notes ILIKE ?', "%#{args.term.downcase}%")
-                    .distinct
-                    .limit(args.limit || 100)
+      .select(:notes)
+      .where('notes ILIKE ?', "%#{args.term.downcase}%")
+      .distinct
+      .limit(args.limit || 100)
 
     Exporter.notes(records, "notes_#{args.term.parameterize.underscore}.csv")
   end

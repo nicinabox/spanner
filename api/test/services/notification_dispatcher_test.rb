@@ -8,10 +8,16 @@ require 'minitest/mock'
 class EmailChannelTest < ActiveSupport::TestCase
   setup do
     @user = User.first
+    @vehicle = @user.vehicles.first
+    @oil = Classification.create!(
+      name: 'Oil Change',
+      vehicle: @vehicle,
+      keywords: ['oil change']
+    )
     @reminders = @user.reminders.to_a
     @schedule = ServiceSchedule.new(
-      vehicle: @user.vehicles.first,
-      classification: Classification.find_by!(key: 'oil_change'),
+      vehicle: @vehicle,
+      classification: @oil,
       distance_interval: 5000,
       next_due_mileage: 55_000,
       next_due_date: 3.months.from_now.to_date
@@ -75,10 +81,16 @@ end
 class WebhookChannelTest < ActiveSupport::TestCase
   setup do
     @user = User.first
+    @vehicle = @user.vehicles.first
+    @oil = Classification.create!(
+      name: 'Oil Change',
+      vehicle: @vehicle,
+      keywords: ['oil change']
+    )
     @reminders = @user.reminders.to_a
     @schedule = ServiceSchedule.new(
-      vehicle: @user.vehicles.first,
-      classification: Classification.find_by!(key: 'oil_change'),
+      vehicle: @vehicle,
+      classification: @oil,
       distance_interval: 5000,
       next_due_mileage: 55_000,
       next_due_date: 3.months.from_now.to_date

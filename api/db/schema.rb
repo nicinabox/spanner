@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_03_162526) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_11_202318) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -44,17 +44,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_03_162526) do
   end
 
   create_table "classifications", force: :cascade do |t|
-    t.string "key"
     t.string "name", null: false
-    t.text "description"
-    t.boolean "system", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "vehicle_id"
-    t.bigint "user_id"
+    t.bigint "vehicle_id", null: false
     t.text "keywords", default: [], array: true
-    t.index ["key"], name: "index_classifications_on_key", unique: true
-    t.index ["user_id"], name: "index_classifications_on_user_id"
     t.index ["vehicle_id", "name"], name: "index_classifications_on_vehicle_id_and_name", unique: true, where: "(vehicle_id IS NOT NULL)"
     t.index ["vehicle_id"], name: "index_classifications_on_vehicle_id"
   end
@@ -209,7 +203,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_03_162526) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "classifications", "users"
   add_foreign_key "classifications", "vehicles"
   add_foreign_key "record_classifications", "classifications"
   add_foreign_key "record_classifications", "records"

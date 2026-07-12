@@ -33,8 +33,8 @@ module V2
 
     def login
       user = User.where(login_token: params[:login_token])
-                 .where('login_token_valid_until > ?', Time.zone.now)
-                 .first
+        .where('login_token_valid_until > ?', Time.zone.now)
+        .first
 
       if user
         session = create_session!(user)

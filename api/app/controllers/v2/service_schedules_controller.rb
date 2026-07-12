@@ -11,7 +11,8 @@ module V2
     end
 
     def create
-      schedule = schedules.build(schedule_params)
+      classification = find_or_create_classification
+      schedule = schedules.build(schedule_params.merge(classification_id: classification.id))
       schedule.save!
       begin
         apply_classification_to_matching_records(schedule.classification)
@@ -73,6 +74,21 @@ module V2
       params.expect(
         service_schedule: %i[classification_id distance_interval month_interval notes enabled]
       )
+    end
+
+    def find_or_create_classification
+      if params[:service_schedule] && params[:service_schedule][:classification_id].present?
+        vehicle.classifications.find(params[:service_schedule][:classification_id])
+      elsif params[:service_schedule] && params[:service_schedule][:classification_name].present?
+        name = params[:service_schedule][:classification_name]
+        keywords = params.dig(:service_schedule, :keywords).presence || [name.downcase]
+        classification = vehicle.classifications.where(name:).first_or_initialize
+        classification.keywords = keywords
+        classification.save!
+        classification
+      else
+        raise ActionController::ParameterMissing, 'classification_id or classification_name required'
+      end
     end
 
     def apply_classification_to_matching_records(classification)

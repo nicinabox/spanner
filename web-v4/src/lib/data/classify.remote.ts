@@ -7,10 +7,8 @@ import * as v from 'valibot';
 export interface ClassificationResult {
 	classification: {
 		id: number;
-		key: string | null;
 		name: string;
-		system: boolean;
-		vehicleId: number | null;
+		vehicleId: number;
 		keywords: string[];
 	};
 	classifier: string;

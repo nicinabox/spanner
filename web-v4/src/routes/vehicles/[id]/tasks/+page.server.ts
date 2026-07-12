@@ -7,7 +7,7 @@ import {
 	getPresets,
 } from '$lib/data/serviceSchedules';
 import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
-import { getClassifications, createClassification } from '$lib/data/classifications';
+import { getClassifications } from '$lib/data/classifications';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
@@ -76,25 +76,21 @@ export const actions: Actions = {
 			intervals: Record<string, number>;
 			keywords: string[];
 		}>;
+		const distanceUnit = (data.get('distance_unit') as string) || 'mi';
+
 		if (!presetData.length) {
 			return { success: true };
 		}
 
-		const vehicle = await getVehicle(params.id!, { authToken: locals.authToken });
-		const distanceUnit = vehicle.distanceUnit || 'mi';
 		const opts = { authToken: locals.authToken, webUrl: locals.webUrl };
 
 		for (const preset of presetData) {
-			const classification = await createClassification(
-				params.id!,
-				{ classification: { name: preset.name, keywords: preset.keywords } },
-				opts,
-			);
 			await createServiceSchedule(
 				params.id!,
 				{
 					serviceSchedule: {
-						classificationId: classification.id,
+						classificationName: preset.name,
+						keywords: preset.keywords,
 						distanceInterval: preset.intervals[distanceUnit] ?? null,
 						monthInterval: preset.intervals['mo'] ?? null,
 					},

@@ -17,10 +17,10 @@ class Exporter
     CSV.open(file, 'wb', force_quotes: true) do |csv|
       records.each do |r|
         notes = r.notes
-                 .gsub(/\W+/, ' ')
-                 .gsub(/\r?\n+/, '')
-                 .downcase
-                 .strip
+          .gsub(/\W+/, ' ')
+          .gsub(/\r?\n+/, '')
+          .downcase
+          .strip
 
         next if notes.blank?
 

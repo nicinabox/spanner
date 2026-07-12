@@ -10,8 +10,7 @@ class RecordClassificationsControllerTest < ActionDispatch::IntegrationTest
     @tag = Classification.create!(
       name: 'Custom Tag',
       vehicle: @vehicle,
-      keywords: [],
-      system: false
+      keywords: ['custom']
     )
   end
 

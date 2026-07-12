@@ -7,23 +7,14 @@ class ClassificationsControllerTest < ActionDispatch::IntegrationTest
     new_session
   end
 
-  test 'returns system classifications' do
-    get classifications_url, headers: http_options(@session.auth_token)[:headers]
-    assert_response :success
-    body = response_body
-    assert body.is_a?(Array)
-    assert(body.any? { |c| c['key'] == 'oil_change' })
-  end
-
-  test 'index returns system and vehicle classifications' do
+  test 'index returns vehicle classifications' do
     vehicle = @user.vehicles.first
-    Classification.create!(name: 'Hull Clean', vehicle: vehicle, user: @user, system: false)
+    Classification.create!(name: 'Hull Clean', vehicle: vehicle, keywords: ['hull'])
 
     get vehicle_classifications_url(vehicle),
         headers: http_options(@session.auth_token)[:headers]
     assert_response :success
     body = response_body
-    assert(body.any? { |c| c['key'] == 'oil_change' })
     assert(body.any? { |c| c['name'] == 'Hull Clean' })
   end
 
@@ -38,7 +29,7 @@ class ClassificationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'update user classification keywords' do
     vehicle = @user.vehicles.first
-    tag = Classification.create!(name: 'Hull Clean', vehicle: vehicle, user: @user, system: false)
+    tag = Classification.create!(name: 'Hull Clean', vehicle: vehicle, keywords: ['hull'])
     put classification_url(tag),
         params: { classification: { keywords: ['hull clean', 'zincs'] } },
         headers: http_options(@session.auth_token)[:headers]
@@ -46,16 +37,9 @@ class ClassificationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ['hull clean', 'zincs'], tag.reload.keywords
   end
 
-  test 'cannot delete system classification' do
-    system_tag = Classification.system.first
-    delete classification_url(system_tag),
-           headers: http_options(@session.auth_token)[:headers]
-    assert_response :unprocessable_entity
-  end
-
   test 'cannot delete classification referenced by schedules' do
     vehicle = @user.vehicles.first
-    tag = Classification.create!(name: 'Hull Clean', vehicle: vehicle, user: @user, system: false)
+    tag = Classification.create!(name: 'Hull Clean', vehicle: vehicle, keywords: ['hull'])
     ServiceSchedule.create!(vehicle: vehicle, classification: tag, distance_interval: 5000)
 
     delete classification_url(tag),

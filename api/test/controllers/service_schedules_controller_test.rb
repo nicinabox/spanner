@@ -6,10 +6,19 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
   setup do
     new_session
     @vehicle = @user.vehicles.first
-    @classification = Classification.find_by!(key: 'oil_change')
+    @oil = Classification.create!(
+      name: 'Oil Change',
+      vehicle: @vehicle,
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
+    )
+    @tire = Classification.create!(
+      name: 'Tire Rotation',
+      vehicle: @vehicle,
+      keywords: ['tire rotation', 'rotate tires', 'rotate tyres']
+    )
     @schedule = ServiceSchedule.create!(
       vehicle: @vehicle,
-      classification: @classification,
+      classification: @oil,
       distance_interval: 5000
     )
   end
@@ -29,12 +38,10 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'create creates a schedule and recalculates next due' do
-    @other_classification = Classification.find_by!(key: 'tire_rotation')
-
     assert_difference -> { ServiceSchedule.count }, 1 do
       post vehicle_service_schedules_url(@vehicle),
            params: { service_schedule: {
-             classification_id: @other_classification.id,
+             classification_id: @tire.id,
              distance_interval: 7500
            } },
            headers: http_options(@session.auth_token)[:headers]
@@ -91,7 +98,7 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
   test 'create rejects duplicate classification for vehicle' do
     post vehicle_service_schedules_url(@vehicle),
          params: { service_schedule: {
-           classification_id: @classification.id,
+           classification_id: @oil.id,
            distance_interval: 3000
          } },
          headers: http_options(@session.auth_token)[:headers]
@@ -100,15 +107,14 @@ class ServiceSchedulesControllerTest < ActionDispatch::IntegrationTest
 
   test 'create tags matching records with classification' do
     record = @vehicle.records.create!(date: 1.day.ago, notes: 'Got a tire rotation today', mileage: 50_000)
-    other_classification = Classification.find_by!(key: 'tire_rotation')
 
     post vehicle_service_schedules_url(@vehicle),
          params: { service_schedule: {
-           classification_id: other_classification.id,
+           classification_id: @tire.id,
            distance_interval: 7500
          } },
          headers: http_options(@session.auth_token)[:headers]
     assert_response :success
-    assert_includes record.reload.classifications, other_classification
+    assert_includes record.reload.classifications, @tire
   end
 end

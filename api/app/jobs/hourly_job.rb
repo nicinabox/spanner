@@ -60,9 +60,9 @@ class HourlyJob < ApplicationJob
 
   def dispatch_due_schedules(user, date)
     schedules = ServiceSchedule.joins(:vehicle)
-                               .where(vehicles: { user_id: user.id })
-                               .where(next_due_date: date.all_day, enabled: true)
-                               .includes(:vehicle, :classification)
+      .where(vehicles: { user_id: user.id })
+      .where(next_due_date: date.all_day, enabled: true)
+      .includes(:vehicle, :classification)
     return if schedules.empty?
 
     NotificationDispatcher.dispatch(:schedule_due_today, user: user, schedules: schedules)

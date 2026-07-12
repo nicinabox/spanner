@@ -1,16 +1,19 @@
-require:
-  - rubocop-rails
+plugins: rubocop-rails
 
 AllCops:
   NewCops: enable
   Exclude:
     - "db/migrate/**/*"
+    - "db/schema.rb"
     - "bin/**/*"
     - "node_modules/**/*"
     - "vendor/**/*"
 
 Rails:
   Enabled: true
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
 
 Style/Documentation:
   Enabled: false

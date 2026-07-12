@@ -6,14 +6,16 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
   setup do
     new_session
     @vehicle = @user.vehicles.first
-    @oil = Classification.find_or_create_by!(name: 'Oil Change') do |c|
-      c.system = true
-      c.key = 'oil_change'
-    end
-    @tire = Classification.find_or_create_by!(name: 'Tire Rotation') do |c|
-      c.system = true
-      c.key = 'tire_rotation'
-    end
+    @oil = Classification.create!(
+      name: 'Oil Change',
+      vehicle: @vehicle,
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
+    )
+    @tire = Classification.create!(
+      name: 'Tire Rotation',
+      vehicle: @vehicle,
+      keywords: ['tire rotation', 'rotate tires', 'rotate tyres']
+    )
     @vehicle.service_schedules.create!(classification: @oil, distance_interval: 5000)
     @vehicle.service_schedules.create!(classification: @tire, distance_interval: 7500)
   end
@@ -51,7 +53,12 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'classify returns empty array for notes matching classifications without schedules' do
-    # Battery is a preset classification but has no service schedule for this vehicle
+    Classification.create!(
+      name: 'Battery',
+      vehicle: @vehicle,
+      keywords: ['new battery', 'replace battery', 'battery replacement']
+    )
+    # Battery has no service schedule for this vehicle
     get classify_vehicle_url(@vehicle), params: { notes: 'new battery' },
                                         headers: http_options(@session.auth_token)[:headers]
 
@@ -78,6 +85,5 @@ class ClassifyControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil result['classification']
     assert result['classification']['id'].is_a?(Integer)
     assert result['classification']['name'].is_a?(String)
-    assert result['classification']['key'].is_a?(String)
   end
 end

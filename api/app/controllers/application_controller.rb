@@ -44,8 +44,8 @@ class ApplicationController < ActionController::API
   def authenticate_token
     authenticate_with_http_token do |token, _options|
       session = Session.where(auth_token: token)
-                       .where('auth_token_valid_until > ?', Time.zone.now)
-                       .first
+        .where('auth_token_valid_until > ?', Time.zone.now)
+        .first
 
       if session
         session.update(

@@ -98,11 +98,11 @@ class Vehicle < ApplicationRecord
   def periods
     @periods ||= begin
       selected = records
-                 .unscope(:order)
-                 .where.not(mileage: nil)
-                 .limit(WEIGHT_COEFFICIENT)
-                 .order(date: :desc)
-                 .pluck(:date, :mileage)
+        .unscope(:order)
+        .where.not(mileage: nil)
+        .limit(WEIGHT_COEFFICIENT)
+        .order(date: :desc)
+        .pluck(:date, :mileage)
 
       results = selected.each_with_index.map do |r, i|
         previous = selected[i + 1]

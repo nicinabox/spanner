@@ -6,13 +6,13 @@ class RecordTest < ActiveSupport::TestCase
   test 'classify_notes on save' do
     vehicle = Vehicle.first || Vehicle.create!(name: 'Test Vehicle', user: User.first)
 
-    # Ensure Oil Change has a service schedule so auto-tagging works
-    oil_class = Classification.find_by(key: 'oil_change')
-    if oil_class && !vehicle.service_schedules.exists?(classification_id: oil_class.id)
-      vehicle.service_schedules.create!(
-        classification: oil_class,
-        distance_interval: 5000
-      )
+    oil_class = Classification.create!(
+      name: 'Oil Change',
+      vehicle: vehicle,
+      keywords: ['oil change', 'engine oil', 'motor oil', 'oil filter']
+    )
+    vehicle.service_schedules.find_or_create_by!(classification: oil_class) do |s|
+      s.distance_interval = 5000
     end
 
     oil_changes = [
@@ -31,7 +31,7 @@ class RecordTest < ActiveSupport::TestCase
     end
 
     records.each do |record|
-      is_oil_change = record.classifications.exists?(key: 'oil_change')
+      is_oil_change = record.classifications.exists?(id: oil_class.id)
 
       if oil_changes.include? record.notes
         assert is_oil_change, record.notes
@@ -73,7 +73,11 @@ class RecordTest < ActiveSupport::TestCase
 
   test 'updating record mileage recalculates matching service schedules' do
     vehicle = Vehicle.create!(name: 'Test Car', user: User.first)
-    classification = Classification.find_by!(key: 'oil_change')
+    classification = Classification.create!(
+      name: 'Oil Change',
+      vehicle: vehicle,
+      keywords: ['oil change']
+    )
 
     schedule = vehicle.service_schedules.find_or_create_by!(classification: classification) do |s|
       s.distance_interval = 5000

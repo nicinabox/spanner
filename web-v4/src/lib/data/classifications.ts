@@ -3,10 +3,8 @@ import type { RequestOpts } from './types';
 
 export interface Classification {
 	id: number;
-	key: string | null;
 	name: string;
-	system: boolean;
-	vehicleId: number | null;
+	vehicleId: number;
 	keywords: string[];
 	createdAt: string;
 	updatedAt: string;

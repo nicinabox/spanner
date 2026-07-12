@@ -46,7 +46,7 @@
 		{/if}
 
 		<fieldset>
-			<Field label="Name" name="name" required>
+			<Field label="Name" name="name" required {errors}>
 				<Input
 					type="text"
 					name="name"
@@ -59,6 +59,7 @@
 				label="Keywords"
 				name="keywords"
 				hint="Words that should match notes when updating History"
+				{errors}
 			>
 				<Textarea
 					name="keywords"
@@ -71,7 +72,7 @@
 		</fieldset>
 
 		<fieldset class="flex sm:gap-6 flex-col sm:flex-row *:flex-1">
-			<Field label="Month Interval" name="monthInterval">
+			<Field label="Month Interval" name="monthInterval" {errors}>
 				<Input
 					inputmode="numeric"
 					name="monthInterval"
@@ -80,7 +81,11 @@
 					min="0"
 				/>
 			</Field>
-			<Field label={MileageLabel(vehicle.distanceUnit) + ' Interval'} name="distanceInterval">
+			<Field
+				label={MileageLabel(vehicle.distanceUnit) + ' Interval'}
+				name="distanceInterval"
+				{errors}
+			>
 				<InputGroup
 					name="distanceInterval"
 					inputmode="numeric"
