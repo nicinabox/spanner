@@ -182,11 +182,7 @@ export const actions = {
 				scheduleData.classificationId = classificationId;
 			}
 
-			await createServiceSchedule(
-				params.id!,
-				{ serviceSchedule: scheduleData },
-				locals,
-			);
+			await createServiceSchedule(params.id!, { serviceSchedule: scheduleData }, locals);
 		} catch (error) {
 			return fail(422, getHTTPErrors(error));
 		}

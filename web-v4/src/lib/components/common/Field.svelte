@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
+	import camelcase from 'camelcase';
 	import type { FormError } from '$lib/utils/form';
 	import type { Snippet } from 'svelte';
 	import { cn } from '$lib/utils/cn';
@@ -25,7 +26,7 @@
 	}: Props = $props();
 
 	let id = $derived(name);
-	let fieldErrors = $derived(errors.filter((e) => e.id === name));
+	let fieldErrors = $derived(errors.filter((e) => e.id === name || camelcase(e.id) === name));
 	let hasErrors = $derived(fieldErrors.length > 0);
 
 	let describedBy = $derived(

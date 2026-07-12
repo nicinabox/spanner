@@ -47,7 +47,7 @@ class ServiceScheduleTest < ActiveSupport::TestCase
       classification: @classification
     )
     assert_not schedule.valid?
-    assert(schedule.errors[:base].any? { |e| e.include?('distance_interval') || e.include?('month_interval') })
+    assert_includes schedule.errors[:distance_interval], 'must exist'
   end
 
   test 'requires vehicle' do

@@ -111,7 +111,8 @@ class ServiceSchedule < ApplicationRecord
   def at_least_one_interval
     return if distance_interval.present? || month_interval.present?
 
-    errors.add(:base, 'at least one of distance_interval or month_interval must be present')
+    errors.add(:distance_interval, :required)
+    errors.add(:month_interval, :required)
   end
 
   def last_matching_record
