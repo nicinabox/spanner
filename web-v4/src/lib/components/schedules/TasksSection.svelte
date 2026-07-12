@@ -23,6 +23,7 @@
 	let { schedules, classifications, vehicle }: Props = $props();
 
 	let completingId = $state<number | null>(null);
+	let deferringId = $state<number | null>(null);
 	let suggestOpen = $state(false);
 	let suggestType = $state<string | null>(null);
 	let presetGroups = $state<Record<string, PresetGroup> | null>(null);
@@ -103,8 +104,17 @@
 					{vehicle}
 					classificationName={classificationName(schedule.classificationId)}
 					completing={completingId === schedule.id}
-					oncomplete={() => (completingId = schedule.id)}
+					deferring={deferringId === schedule.id}
+					oncomplete={() => {
+						deferringId = null;
+						completingId = schedule.id;
+					}}
 					oncancel={() => (completingId = null)}
+					ondefer={() => {
+						completingId = null;
+						deferringId = schedule.id;
+					}}
+					oncancelDefer={() => (deferringId = null)}
 				/>
 			</li>
 		{/each}

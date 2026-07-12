@@ -48,6 +48,24 @@ class ServiceSchedule < ApplicationRecord
   validates :classification_id, uniqueness: { scope: :vehicle_id }
   validate :at_least_one_interval
 
+  scope :deferred, -> { where.not(defer_delta_months: nil).or(where.not(defer_delta_miles: nil)) }
+
+  def deferred?
+    defer_delta_months.present? || defer_delta_miles.present?
+  end
+
+  # rubocop:disable Naming/PredicateMethod
+  def deferred
+    deferred?
+  end
+  # rubocop:enable Naming/PredicateMethod
+
+  def clear_defer!
+    update!(defer_delta_months: nil, defer_delta_miles: nil)
+  end
+
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def recalculate_next_due
     unless enabled?
       update!(next_due_date: nil, next_due_mileage: nil)
@@ -57,9 +75,14 @@ class ServiceSchedule < ApplicationRecord
     last_record = last_matching_record
 
     attrs = {}
-    attrs[:next_due_mileage] = next_mileage(last_record) if distance_interval.present?
+    computed_mileage = next_mileage(last_record) if distance_interval.present?
+    attrs[:next_due_mileage] = computed_mileage
+    attrs[:next_due_mileage] += defer_delta_miles if computed_mileage && defer_delta_miles.present?
 
     date_from_months = next_date(last_record) if month_interval.present?
+    date_from_months = Time.zone.today + defer_delta_months.months if date_from_months && defer_delta_months.present?
+
+    date_from_mileage = nil
     if distance_interval.present? && attrs[:next_due_mileage]
       date_from_mileage = estimated_next_date(last_record,
                                               attrs[:next_due_mileage])
@@ -70,6 +93,8 @@ class ServiceSchedule < ApplicationRecord
 
     update!(attrs)
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def matching_records?
     last_matching_record.present?
@@ -102,6 +127,7 @@ class ServiceSchedule < ApplicationRecord
     end
 
     update!(last_completed_record_id: record.id)
+    clear_defer!
     recalculate_next_due
     record
   end

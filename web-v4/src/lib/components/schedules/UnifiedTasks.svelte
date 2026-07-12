@@ -21,9 +21,10 @@
 		presetGroups: Record<string, PresetGroup>;
 	}
 
-	let { reminders, schedules, classifications, vehicle, presetGroups }: Props = $props();
+	let { reminders, schedules, vehicle, presetGroups }: Props = $props();
 
 	let completingId = $state<string | null>(null);
+	let deferringId = $state<string | null>(null);
 	let suggestOpen = $state(false);
 	let suggestType = $state<string | null>(null);
 
@@ -97,8 +98,17 @@
 						{vehicle}
 						classificationName={item.data.classificationName ?? 'Unknown'}
 						completing={completingId === `schedule-${item.data.id}`}
-						oncomplete={() => (completingId = `schedule-${item.data.id}`)}
+						deferring={deferringId === `schedule-${item.data.id}`}
+						oncomplete={() => {
+							deferringId = null;
+							completingId = `schedule-${item.data.id}`;
+						}}
 						oncancel={() => (completingId = null)}
+						ondefer={() => {
+							completingId = null;
+							deferringId = `schedule-${item.data.id}`;
+						}}
+						oncancelDefer={() => (deferringId = null)}
 					/>
 				{/if}
 			</li>

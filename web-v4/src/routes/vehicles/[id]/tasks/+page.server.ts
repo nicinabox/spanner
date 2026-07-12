@@ -4,12 +4,15 @@ import {
 	completeServiceSchedule,
 	deleteServiceSchedule,
 	createServiceSchedule,
+	deferServiceSchedule,
+	clearDeferServiceSchedule,
 	getPresets,
 } from '$lib/data/serviceSchedules';
 import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { fail, redirect } from '@sveltejs/kit';
+import { decode } from '$lib/utils/form';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -61,6 +64,45 @@ export const actions: Actions = {
 		} catch {
 			return fail(422, { error: 'Failed to delete schedule' });
 		}
+	},
+
+	defer: async ({ request, locals, params }) => {
+		const formData = await request.formData();
+		const data = decode(formData, { id: 'number', months: 'number', distance: 'number' });
+
+		if (!data.id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
+
+		try {
+			await deferServiceSchedule(
+				params.id!,
+				data.id,
+				{
+					months: data.months || null,
+					distance: data.distance || null,
+				},
+				locals,
+			);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : 'Failed to defer schedule';
+			return fail(422, { errors: [{ id: 'form', title: message }] });
+		}
+
+		redirect(303, `/vehicles/${params.id}/tasks`);
+	},
+
+	clear_defer: async ({ locals, params, request }) => {
+		const formData = await request.formData();
+		const { id } = decode(formData, { id: 'number' });
+		if (!id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
+
+		try {
+			await clearDeferServiceSchedule(params.id!, id, locals);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : 'Failed to clear defer';
+			return fail(422, { errors: [{ id: 'form', title: message }] });
+		}
+
+		redirect(303, `/vehicles/${params.id}/tasks`);
 	},
 
 	delete_reminder: async ({ locals, params, request }) => {
