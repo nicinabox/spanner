@@ -5,6 +5,28 @@ require 'test_helper'
 require 'webmock/minitest'
 require 'minitest/mock'
 
+class TestChannel < Channel
+  attr_reader :deliveries
+
+  def initialize
+    super
+    @deliveries = []
+    @available = true
+  end
+
+  def available?
+    @available
+  end
+
+  def disable!
+    @available = false
+  end
+
+  def deliver(event, user:, reminders: nil, schedules: nil)
+    @deliveries << { event:, user:, reminders:, schedules: }
+  end
+end
+
 class EmailChannelTest < ActiveSupport::TestCase
   setup do
     @user = User.first
@@ -27,43 +49,43 @@ class EmailChannelTest < ActiveSupport::TestCase
 
   test 'available? returns true when POSTMARK_API_KEY set' do
     with_env('POSTMARK_API_KEY' => 'key', 'SMTP_HOST' => nil) do
-      assert EmailChannel.available?
+      assert EmailChannel.new.can_deliver?(:reminder_today, @user)
     end
   end
 
   test 'available? returns true when SMTP_HOST set' do
     with_env('POSTMARK_API_KEY' => nil, 'SMTP_HOST' => 'smtp.example.com') do
-      assert EmailChannel.available?
+      assert EmailChannel.new.can_deliver?(:reminder_today, @user)
     end
   end
 
   test 'available? returns false when neither set' do
     with_env('POSTMARK_API_KEY' => nil, 'SMTP_HOST' => nil) do
-      assert_not EmailChannel.available?
+      assert_not EmailChannel.new.can_deliver?(:reminder_today, @user)
     end
   end
 
   test 'delivers reminder_today via RemindersMailer' do
     assert_emails 1 do
-      EmailChannel.deliver(:reminder_today, user: @user, reminders: @reminders)
+      EmailChannel.new.deliver(:reminder_today, user: @user, reminders: @reminders)
     end
   end
 
   test 'delivers reminder_upcoming via RemindersMailer' do
     assert_emails 1 do
-      EmailChannel.deliver(:reminder_upcoming, user: @user, reminders: @reminders)
+      EmailChannel.new.deliver(:reminder_upcoming, user: @user, reminders: @reminders)
     end
   end
 
   test 'delivers schedule_due_today via RemindersMailer' do
     assert_emails 1 do
-      EmailChannel.deliver(:schedule_due_today, user: @user, schedules: @schedules)
+      EmailChannel.new.deliver(:schedule_due_today, user: @user, schedules: @schedules)
     end
   end
 
   test 'delivers schedule_due_upcoming via RemindersMailer' do
     assert_emails 1 do
-      EmailChannel.deliver(:schedule_due_upcoming, user: @user, schedules: @schedules)
+      EmailChannel.new.deliver(:schedule_due_upcoming, user: @user, schedules: @schedules)
     end
   end
 
@@ -98,7 +120,7 @@ class WebhookChannelTest < ActiveSupport::TestCase
   end
 
   test 'available? returns true' do
-    assert WebhookChannel.available?
+    assert WebhookChannel.new.can_deliver?(:reminder_today, @user)
   end
 
   test 'sends reminder payload to webhook URL' do
@@ -106,7 +128,7 @@ class WebhookChannelTest < ActiveSupport::TestCase
     @user.save!
     stub_request(:post, 'https://hooks.example.com')
 
-    WebhookChannel.deliver(:reminder_today, user: @user, reminders: @reminders)
+    WebhookChannel.new.deliver(:reminder_today, user: @user, reminders: @reminders)
 
     assert_requested(:post, 'https://hooks.example.com') do |req|
       body = JSON.parse(req.body)
@@ -121,7 +143,7 @@ class WebhookChannelTest < ActiveSupport::TestCase
     @user.save!
     stub_request(:post, 'https://hooks.example.com')
 
-    WebhookChannel.deliver(:schedule_due_today, user: @user, schedules: [@schedule])
+    WebhookChannel.new.deliver(:schedule_due_today, user: @user, schedules: [@schedule])
 
     assert_requested(:post, 'https://hooks.example.com') do |req|
       body = JSON.parse(req.body)
@@ -129,16 +151,6 @@ class WebhookChannelTest < ActiveSupport::TestCase
         body.key?('schedules') &&
         !body.key?('reminders')
     end
-  end
-
-  private
-
-  def with_env(vars)
-    originals = vars.to_h { |k, _| [k.to_s, ENV.fetch(k.to_s, nil)] }
-    vars.each { |k, v| v.nil? ? ENV.delete(k.to_s) : ENV[k.to_s] = v }
-    yield
-  ensure
-    originals.each { |k, v| v.nil? ? ENV.delete(k) : ENV[k] = v }
   end
 end
 
@@ -148,80 +160,70 @@ class NotificationDispatcherTest < ActiveSupport::TestCase
     @reminders = @user.reminders.to_a
   end
 
-  test 'dispatches to email channel when available' do
-    EmailChannel.stub(:available?, true) do
-      WebhookChannel.stub(:available?, false) do
-        assert_emails 1 do
-          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
-        end
-      end
-    end
-  end
+  test 'dispatches to available channels' do
+    channel = TestChannel.new
+    dispatcher = NotificationDispatcher.new(channels: [channel])
 
-  test 'dispatches to webhook channel when available' do
-    @user.preferences.webhook_url = 'https://hooks.example.com'
-    @user.save!
-    stub_request(:post, 'https://hooks.example.com')
+    dispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
 
-    EmailChannel.stub(:available?, false) do
-      WebhookChannel.stub(:available?, true) do
-        NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
-      end
-    end
-
-    assert_requested :post, 'https://hooks.example.com'
-  end
-
-  test 'dispatches to both channels when both available' do
-    @user.preferences.webhook_url = 'https://hooks.example.com'
-    @user.save!
-    stub_request(:post, 'https://hooks.example.com')
-
-    EmailChannel.stub(:available?, true) do
-      WebhookChannel.stub(:available?, true) do
-        assert_emails 1 do
-          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
-        end
-      end
-    end
-
-    assert_requested :post, 'https://hooks.example.com'
+    assert_equal 1, channel.deliveries.size
+    assert_equal :reminder_today, channel.deliveries.first[:event]
   end
 
   test 'skips unavailable channels' do
-    EmailChannel.stub(:available?, false) do
-      WebhookChannel.stub(:available?, false) do
-        assert_emails 0 do
-          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
-        end
-      end
-    end
+    channel = TestChannel.new
+    channel.disable!
+    dispatcher = NotificationDispatcher.new(channels: [channel])
+
+    dispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
+
+    assert_empty channel.deliveries
+  end
+
+  test 'dispatches to all available channels' do
+    channel_a = TestChannel.new
+    channel_b = TestChannel.new
+    dispatcher = NotificationDispatcher.new(channels: [channel_a, channel_b])
+
+    dispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
+
+    assert_equal 1, channel_a.deliveries.size
+    assert_equal 1, channel_b.deliveries.size
+  end
+
+  test 'skips unavailable but delivers to available' do
+    channel_a = TestChannel.new
+    channel_b = TestChannel.new
+    channel_b.disable!
+    dispatcher = NotificationDispatcher.new(channels: [channel_a, channel_b])
+
+    dispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
+
+    assert_equal 1, channel_a.deliveries.size
+    assert_empty channel_b.deliveries
   end
 
   test 'continues to next channel if one raises' do
-    @user.preferences.webhook_url = 'https://hooks.example.com'
-    @user.save!
-    stub_request(:post, 'https://hooks.example.com')
+    channel_a = TestChannel.new
+    # Inject a channel that redefines deliver to raise
+    failing = Class.new(Channel) do
+      define_method(:available?) { true }
+      define_method(:deliver) { |*| raise 'down' }
+    end.new
+    dispatcher = NotificationDispatcher.new(channels: [failing, channel_a])
 
-    EmailChannel.stub(:available?, true) do
-      WebhookChannel.stub(:available?, true) do
-        # Stub deliver to raise, then verify webhook still fires
-        EmailChannel.stub(:deliver, ->(*, **) { raise 'email down' }) do
-          NotificationDispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
-        end
-      end
-    end
+    dispatcher.dispatch(:reminder_today, user: @user, reminders: @reminders)
 
-    assert_requested :post, 'https://hooks.example.com'
+    assert_equal 1, channel_a.deliveries.size
   end
 
-  private
+  test 'delivers with user and event context' do
+    channel = TestChannel.new
+    dispatcher = NotificationDispatcher.new(channels: [channel])
 
-  def with_env(vars)
-    originals = vars.transform_keys(&:to_s).transform_values { |k| ENV.fetch(k, nil) }
-    vars.each { |k, v| v.nil? ? ENV.delete(k.to_s) : ENV[k.to_s] = v }
-    yield
-  ensure
-    originals.each { |k, v| v.nil? ? ENV.delete(k) : ENV[k] = v }
+    dispatcher.dispatch(:schedule_due_upcoming, user: @user, schedules: [])
+
+    assert_equal :schedule_due_upcoming, channel.deliveries.first[:event]
+    assert_equal @user, channel.deliveries.first[:user]
   end
 end

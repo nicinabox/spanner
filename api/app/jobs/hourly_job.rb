@@ -54,7 +54,7 @@ class HourlyJob < ApplicationJob
     end
     return if filtered.empty?
 
-    NotificationDispatcher.dispatch(:reminder_today, user: user, reminders: filtered)
+    NotificationDispatcher.new.dispatch(:reminder_today, user: user, reminders: filtered)
     user.record_reminder_sent!
   end
 
@@ -65,6 +65,6 @@ class HourlyJob < ApplicationJob
       .includes(:vehicle, :classification)
     return if schedules.empty?
 
-    NotificationDispatcher.dispatch(:schedule_due_today, user: user, schedules: schedules)
+    NotificationDispatcher.new.dispatch(:schedule_due_today, user: user, schedules: schedules)
   end
 end
