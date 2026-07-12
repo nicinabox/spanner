@@ -383,4 +383,156 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     schedule.reload
     assert_equal original_mileage, schedule.reload.next_due_mileage
   end
+
+  # -- Defer tests --
+
+  test 'deferred? true when months delta set' do
+    schedule = ServiceSchedule.create!(
+      vehicle: @vehicle,
+      classification: @classification,
+      month_interval: 12
+    )
+    schedule.update!(defer_delta_months: 6)
+    assert schedule.deferred?
+  end
+
+  test 'deferred? true when miles delta set' do
+    schedule = ServiceSchedule.create!(
+      vehicle: @vehicle,
+      classification: @classification,
+      distance_interval: 5000
+    )
+    schedule.update!(defer_delta_miles: 1000)
+    assert schedule.deferred?
+  end
+
+  test 'deferred? false when no deltas set' do
+    schedule = ServiceSchedule.create!(
+      vehicle: @vehicle,
+      classification: @classification,
+      month_interval: 12
+    )
+    assert_not schedule.deferred?
+  end
+
+  test 'clear_defer! clears both deltas' do
+    schedule = ServiceSchedule.create!(
+      vehicle: @vehicle,
+      classification: @classification,
+      month_interval: 12,
+      defer_delta_months: 6,
+      defer_delta_miles: 1000
+    )
+    schedule.clear_defer!
+    schedule.reload
+    assert_nil schedule.defer_delta_months
+    assert_nil schedule.defer_delta_miles
+  end
+
+  test 'deferred scope returns deferred schedules' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    normal = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 5000
+    )
+    deferred = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: Classification.create!(name: 'Test', vehicle: vehicle, keywords: ['test']),
+      distance_interval: 5000,
+      defer_delta_miles: 1000
+    )
+
+    assert_includes ServiceSchedule.deferred, deferred
+    assert_not_includes ServiceSchedule.deferred, normal
+  end
+
+  test 'recalculate_next_due applies defer delta months' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    record = vehicle.records.create!(
+      date: 30.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      month_interval: 6,
+      defer_delta_months: 3
+    )
+    schedule.recalculate_next_due
+
+    expected = 30.days.ago.to_date + 6.months + 3.months
+    assert_equal expected, schedule.reload.next_due_date
+  end
+
+  test 'recalculate_next_due applies defer delta miles' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    record = vehicle.records.create!(
+      date: 30.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 5000,
+      defer_delta_miles: 1000
+    )
+    schedule.recalculate_next_due
+
+    assert_equal 56_000, schedule.reload.next_due_mileage
+  end
+
+  test 'recalculate_next_due applies both defer deltas' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    record = vehicle.records.create!(
+      date: 30.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 5000,
+      month_interval: 12,
+      defer_delta_months: 3,
+      defer_delta_miles: 1000
+    )
+    schedule.recalculate_next_due
+
+    assert_equal 56_000, schedule.reload.next_due_mileage
+    expected_date = 30.days.ago.to_date + 12.months + 3.months
+    assert_equal expected_date, schedule.reload.next_due_date
+  end
+
+  test 'complete! clears defer before recalculating' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    record = vehicle.records.create!(
+      date: 30.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 5000,
+      defer_delta_miles: 1000
+    )
+    schedule.recalculate_next_due
+    assert_equal 56_000, schedule.reload.next_due_mileage
+
+    schedule.complete!
+
+    assert_nil schedule.reload.defer_delta_miles
+    assert_equal 55_000, schedule.reload.next_due_mileage
+  end
 end

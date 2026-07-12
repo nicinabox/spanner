@@ -49,6 +49,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       resources :classifications, only: %i[index create]
       resources :service_schedules do
         post :complete, on: :member
+        resource :defer, only: %i[create update destroy]
       end
 
       get 'reminders/estimate_date', to: 'reminders#estimate_date'
