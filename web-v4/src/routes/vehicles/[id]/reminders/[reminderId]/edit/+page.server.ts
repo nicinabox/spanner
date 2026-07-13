@@ -3,7 +3,7 @@ import { getReminder, updateReminder, deleteReminder } from '$lib/data/reminders
 import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { reminderFormSchema } from '../../_schemas';
+import { reminderFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {

@@ -10,7 +10,7 @@ import { updateClassification } from '$lib/data/classifications';
 import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { serviceScheduleFormSchema, scheduleDeferFormSchema } from '../../_schemas';
+import { serviceScheduleFormSchema, scheduleDeferFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {

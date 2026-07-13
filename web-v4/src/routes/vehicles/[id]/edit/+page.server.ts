@@ -3,7 +3,7 @@ import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { booleanForm } from '$lib/schemas/forms';
-import { vehicleFormSchema } from '../../_schemas';
+import { vehicleFormSchema } from '../../schemas';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
 import { vehiclePath } from '$lib/routes';

@@ -2,7 +2,7 @@ import { createVehicle } from '$lib/data/vehicles';
 import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { vehicleFormSchema } from '../_schemas';
+import { vehicleFormSchema } from '../schemas';
 
 export const actions = {
 	default: withActionErrors(async ({ request, locals }) => {
