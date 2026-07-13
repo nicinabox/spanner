@@ -13,79 +13,17 @@
 	import NextOverdueTask from '$lib/components/vehicles/NextOverdueTask.svelte';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
-	import Fuse from 'fuse.js';
+	import { createHistorySearch } from '$lib/utils/historySearch.svelte';
 
 	let { data }: PageProps = $props();
 
 	let vehicle = $derived(data.vehicle);
 	let history = $derived(data.history);
 
-	let searchQuery = $state('');
+	const historySearch = createHistorySearch(() => history);
 
 	let activeTab = $derived(
 		$page.url.pathname === `/vehicles/${vehicle.id}` ? 'history' : 'history',
-	);
-
-	let fuse = $derived(
-		new Fuse(history, {
-			useTokenSearch: true,
-			tokenMatch: 'all',
-			keys: [
-				'notes',
-				'cost',
-				{
-					name: 'mileage',
-					getFn: (item) => {
-						const m = item.mileage;
-						if (m == null) return '';
-						const s = m.toString();
-
-						const rounded1k = Math.round(m / 1000) * 1000;
-						const rounded5k = Math.round(m / 5000) * 5000;
-						const floor10k = Math.floor(m / 10_000) * 10000;
-
-						const abbrevRounded = Math.round(rounded5k / 1000) + 'k';
-						const abbrevFloor = Math.round(floor10k / 1000) + 'k';
-
-						const result = [
-							s,
-							m.toLocaleString(),
-							abbrevRounded,
-							abbrevFloor,
-							rounded1k.toString(),
-							rounded5k.toString(),
-							floor10k.toString(),
-						];
-
-						console.log(result);
-						return result;
-					},
-				},
-				{
-					name: 'date',
-					getFn: (item) => {
-						try {
-							const d = new Date(item.date);
-							return [
-								item.date.slice(0, 10),
-								d.getFullYear().toString(),
-								d.toLocaleDateString('en-US', { month: 'long' }),
-								d.toLocaleDateString('en-US', { month: 'short' }),
-							];
-						} catch {
-							return item.date;
-						}
-					},
-				},
-			],
-			threshold: 0.3,
-			minMatchCharLength: 2,
-			ignoreLocation: true,
-		}),
-	);
-
-	let filteredHistory = $derived(
-		searchQuery ? fuse.search(searchQuery).map((r) => r.item) : history,
 	);
 </script>
 
@@ -148,15 +86,15 @@
 						<Search size={16} />
 					</span>
 					<Input
-						bind:value={searchQuery}
+						bind:value={historySearch.query}
 						type="search"
 						name="search"
 						placeholder="Search history"
 					/>
-					{#if searchQuery}
+					{#if historySearch.query}
 						<button
 							type="button"
-							onclick={() => (searchQuery = '')}
+							onclick={() => (historySearch.query = '')}
 							class="flex rounded-xs items-center text-ink-500 hover:text-ink-800 p-3"
 						>
 							<X size={16} />
@@ -171,11 +109,11 @@
 				{/if}
 			</div>
 
-			{#if !filteredHistory.length && searchQuery.length >= 2}
-				<p class="text-center text-ink-400 py-12">No results for "{searchQuery}"</p>
+			{#if !historySearch.filtered.length && historySearch.query.length >= historySearch.minQueryLength}
+				<p class="text-center text-ink-400 py-12">No results for "{historySearch.query}"</p>
 			{:else}
 				<HistoryTable
-					history={searchQuery.length < 2 ? history : filteredHistory}
+					history={historySearch.filtered}
 					{vehicle}
 					editable={!vehicle.retired}
 				/>
