@@ -5,6 +5,7 @@
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
+import InputAddon from '$lib/components/common/InputAddon.svelte';
 	import { MileageLabel } from '$lib/utils/vehicle';
 	import Textarea from '$lib/components/common/Textarea.svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
@@ -86,14 +87,9 @@
 				name="distanceInterval"
 				{errors}
 			>
-				<InputGroup
-					name="distanceInterval"
-					inputmode="numeric"
-					bind:value={distanceInterval}
-					placeholder="Optional"
-					min="0"
-				>
-					{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
+				<InputGroup>
+					<Input bind:value={distanceInterval} name="distanceInterval" inputmode="numeric" placeholder="Optional" min="0" />
+					<InputAddon>{vehicle.distanceUnit}</InputAddon>
 				</InputGroup>
 			</Field>
 		</fieldset>

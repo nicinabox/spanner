@@ -123,39 +123,32 @@
 						hint="Receive notifications via webhook (e.g. ntfy.sh)."
 						errors={form?.errors}
 					>
-						<InputGroup
-							name="webhookUrl"
-							type="url"
-							bind:value={webhookUrl}
-							oninput={() => (webhookSuccess = false)}
-							autocomplete="off"
-						>
-							{#snippet end()}
-								{#if webhookUrl}
-									{#if webhookTestSuccess}
-										<Check size={16} class="text-positive" />
-									{:else}
-										<Button
-											type="submit"
-											variant="ghost"
-											color="neutral"
-											size="sm"
-											class="-mr-2"
-											onclick={async (e: Event) => {
-												e.preventDefault();
-												const { testWebhook } = await import('./webhook.remote.ts');
-												try {
-													await testWebhook();
-													webhookTestSuccess = true;
-													setTimeout(() => (webhookTestSuccess = false), 2000);
-												} catch {}
-											}}
-										>
-											Test
-										</Button>
-									{/if}
+						<InputGroup>
+							<Input bind:value={webhookUrl} name="webhookUrl" type="url" oninput={() => (webhookSuccess = false)} autocomplete="off" />
+							{#if webhookUrl}
+								{#if webhookTestSuccess}
+									<Check size={16} class="text-positive" />
+								{:else}
+									<Button
+										type="submit"
+										variant="ghost"
+										color="neutral"
+										size="sm"
+										class="-mr-2"
+										onclick={async (e: Event) => {
+											e.preventDefault();
+											const { testWebhook } = await import('./webhook.remote.ts');
+											try {
+												await testWebhook();
+												webhookTestSuccess = true;
+												setTimeout(() => (webhookTestSuccess = false), 2000);
+											} catch {}
+										}}
+									>
+										Test
+									</Button>
 								{/if}
-							{/snippet}
+							{/if}
 						</InputGroup>
 					</Field>
 				</fieldset>

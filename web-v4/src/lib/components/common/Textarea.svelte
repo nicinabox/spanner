@@ -8,7 +8,7 @@
 				outline: '',
 				filled: 'border-0 bg-ink-200/60',
 				plain:
-					'border-0 bg-transparent shadow-none focus-within:outline-0 focus-within:bg-transparent',
+					'border-0 bg-transparent shadow-none rounded-none h-auto px-0 focus-within:border-transparent focus-within:outline-0 focus-within:bg-transparent',
 			},
 			size: {
 				sm: 'text-base rounded-sm',
@@ -46,10 +46,11 @@
 	};
 
 	let field = getContext<FieldContext | undefined>('field');
+	let inputGroup = getContext<{ variant: string; size: string } | undefined>('input-group');
 
 	let {
-		variant,
-		size,
+		variant = inputGroup?.variant as TextareaVariant | undefined ?? 'outline',
+		size = inputGroup?.size as TextareaSize | undefined ?? 'md',
 		name,
 		value = $bindable(),
 		placeholder,
@@ -81,7 +82,7 @@
 		{readonly}
 		aria-describedby={ariaDescribedBy}
 		aria-invalid={ariaInvalid}
-		class="placeholder:text-ink-400"
+		class="placeholder:text-ink-400 outline-none"
 		oninput={(e) => (value = (e.target as HTMLTextAreaElement).value)}
 		{...rest}></textarea>
 </div>
@@ -107,13 +108,14 @@
 		line-height: 1.5;
 	}
 
+	div[data-variant='plain']::after,
+	div[data-variant='plain'] :global(textarea) {
+		padding: 0.5rem 0.75rem;
+	}
+
 	div :global(textarea) {
 		background: transparent;
 		border-radius: inherit;
 		resize: none;
 	}
-
-	/*div[data-variant='plain'] :global(textarea:focus-visible) {
-		outline: none;
-	}*/
 </style>

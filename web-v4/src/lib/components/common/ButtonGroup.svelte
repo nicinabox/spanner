@@ -4,14 +4,19 @@
 
 	type Props = {
 		children?: Snippet;
+		divider?: boolean;
 		class?: ClassValue;
 		[key: string]: unknown;
 	};
 
-	let { children, class: className, ...rest }: Props = $props();
+	let { children, divider = true, class: className, ...rest }: Props = $props();
 </script>
 
-<div class="button-group inline-flex items-center {className}" {...rest}>
+<div
+	class="button-group inline-flex items-center {className}"
+	style={divider ? undefined : '--divider-color: transparent'}
+	{...rest}
+>
 	{@render children?.()}
 </div>
 

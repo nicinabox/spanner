@@ -4,6 +4,8 @@
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
+	import InputAddon from '$lib/components/common/InputAddon.svelte';
+	import Stepper from '$lib/components/common/Stepper.svelte';
 	import { MileageLabel } from '$lib/utils/vehicle';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Vehicle } from '$lib/data/vehicles';
@@ -51,14 +53,29 @@
 					hint="Push due date by months"
 					required={!bothShown}
 				>
-					<Input
-						inputmode="numeric"
-						name="months"
-						bind:value={months}
-						placeholder={bothShown ? 'Optional' : ''}
-						min="1"
-						required={!bothShown}
-					/>
+					<InputGroup>
+						<Input
+							inputmode="numeric"
+							name="months"
+							bind:value={months}
+							placeholder={bothShown ? 'Optional' : ''}
+							min="1"
+							required={!bothShown}
+						/>
+						<Stepper
+							size="sm"
+							variant="ghost"
+							class="mr-1"
+							onincrement={() => {
+								let v = parseInt(months) || 0;
+								months = String(v + 6);
+							}}
+							ondecrement={() => {
+								let v = parseInt(months) || 0;
+								if (v > 0) months = String(v - 6);
+							}}
+						/>
+					</InputGroup>
 				</Field>
 			{/if}
 			{#if hasDistanceInterval}
@@ -68,15 +85,16 @@
 					hint="Push mileage threshold by amount"
 					required={!bothShown}
 				>
-					<InputGroup
-						name="distance"
-						inputmode="numeric"
-						bind:value={distance}
-						placeholder={bothShown ? 'Optional' : ''}
-						min="1"
-						required={!bothShown}
-					>
-						{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
+					<InputGroup>
+						<Input
+							bind:value={distance}
+							name="distance"
+							inputmode="numeric"
+							placeholder={bothShown ? 'Optional' : ''}
+							min="1"
+							required={!bothShown}
+						/>
+						<InputAddon>{vehicle.distanceUnit}</InputAddon>
 					</InputGroup>
 				</Field>
 			{/if}

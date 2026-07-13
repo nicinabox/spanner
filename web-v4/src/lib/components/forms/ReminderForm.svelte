@@ -5,6 +5,7 @@
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
+import InputAddon from '$lib/components/common/InputAddon.svelte';
 	import NativeSelect from '$lib/components/common/NativeSelect.svelte';
 	import { formatDateISO, intlFormatDate, parseDateUTC } from '$lib/utils/date';
 	import { formatMileage, mileageLabel, MileageLabel } from '$lib/utils/vehicle';
@@ -124,8 +125,9 @@
 
 			{#if ['mileage', 'date_or_mileage'].includes(reminderType)}
 				<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} {errors} required>
-					<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
-						{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
+					<InputGroup>
+						<Input bind:value={mileage} name="mileage" inputmode="numeric" />
+						<InputAddon>{vehicle.distanceUnit}</InputAddon>
 					</InputGroup>
 					{#if vehicle.estimatedMileage}
 						<div class="flex gap-2 mt-1.5">

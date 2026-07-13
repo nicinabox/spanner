@@ -2,9 +2,11 @@
 	import * as clipboard from '@zag-js/clipboard';
 	import { useMachine, normalizeProps } from '@zag-js/svelte';
 	import InputGroup from './InputGroup.svelte';
+	import Input from './Input.svelte';
 	import { Check, Copy } from 'lucide-svelte';
 	import Button from './Button.svelte';
 	import Tooltip from './Tooltip.svelte';
+	import { InputAddon } from '$lib';
 
 	interface Props {
 		value: string;
@@ -30,21 +32,20 @@
 	let label = $derived(api.copied ? 'Copied' : 'Copy');
 </script>
 
-<InputGroup
-	variant="filled"
-	name="clipboard"
-	{value}
-	readonly
-	onfocus={(e) => (e.target as HTMLInputElement)?.select()}
->
-	{#snippet end()}
+<InputGroup variant="filled">
+	<Input
+		{value}
+		name="clipboard"
+		readonly
+		onfocus={(e) => (e.target as HTMLInputElement)?.select()}
+	/>
+	<InputAddon class="p-0 mx-1">
 		<Tooltip content={label}>
 			{#snippet children(tooltipProps)}
 				<Button
 					{...tooltipProps}
 					{...triggerProps}
 					aria-label={label}
-					class="-mx-2"
 					variant="ghost"
 					color="neutral"
 					size="sm"
@@ -59,5 +60,5 @@
 				</Button>
 			{/snippet}
 		</Tooltip>
-	{/snippet}
+	</InputAddon>
 </InputGroup>

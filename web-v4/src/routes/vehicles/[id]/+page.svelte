@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib';
 	import { umamiEvent } from '$lib/umami';
+	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';
@@ -142,26 +143,25 @@
 			</EmptyState>
 		{:else}
 			<div class="flex justify-between gap-10 mb-4">
-				<InputGroup
-					type="search"
-					name="search"
-					placeholder="Search history"
-					variant="filled"
-					class="w-full sm:w-1/2 lg:w-1/3"
-					bind:value={searchQuery}
-				>
-					{#snippet start()}<Search size={16} />{/snippet}
-					{#snippet end()}
-						{#if searchQuery}
-							<button
-								type="button"
-								onclick={() => (searchQuery = '')}
-								class="flex rounded-xs items-center text-ink-500 hover:text-ink-800 p-3 -mx-3"
-							>
-								<X size={16} />
-							</button>
-						{/if}
-					{/snippet}
+				<InputGroup variant="filled" class="w-full sm:w-1/2 lg:w-1/3">
+					<span class="p-3 text-sm text-ink-500">
+						<Search size={16} />
+					</span>
+					<Input
+						bind:value={searchQuery}
+						type="search"
+						name="search"
+						placeholder="Search history"
+					/>
+					{#if searchQuery}
+						<button
+							type="button"
+							onclick={() => (searchQuery = '')}
+							class="flex rounded-xs items-center text-ink-500 hover:text-ink-800 p-3"
+						>
+							<X size={16} />
+						</button>
+					{/if}
 				</InputGroup>
 				{#if !vehicle.retired}
 					<Button href="/vehicles/{vehicle.id}/add" {...umamiEvent('add_record')}>

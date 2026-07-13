@@ -7,6 +7,7 @@
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
+import InputAddon from '$lib/components/common/InputAddon.svelte';
 	import Textarea from '$lib/components/common/Textarea.svelte';
 	import AttachmentEditor from '$lib/components/attachments/AttachmentEditor.svelte';
 	import { formatDateISO } from '$lib/utils/date';
@@ -232,15 +233,17 @@
 		{/if}
 
 		<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} errors={allErrors}>
-			<InputGroup name="mileage" bind:value={mileage} inputmode="numeric">
-				{#snippet endAddon()}{vehicle.distanceUnit}{/snippet}
+			<InputGroup>
+				<Input bind:value={mileage} name="mileage" inputmode="numeric" />
+				<InputAddon>{vehicle.distanceUnit}</InputAddon>
 			</InputGroup>
 		</Field>
 
 		{#if vehicle.preferences.enableCost}
 			<Field name="cost" label="Cost" errors={allErrors}>
-				<InputGroup name="cost" bind:value={cost} inputmode="numeric">
-					{#snippet startAddon()}{getCurrencySymbol()}{/snippet}
+				<InputGroup>
+					<InputAddon>{getCurrencySymbol()}</InputAddon>
+					<Input bind:value={cost} name="cost" inputmode="numeric" />
 				</InputGroup>
 			</Field>
 		{/if}

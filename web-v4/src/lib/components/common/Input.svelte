@@ -7,6 +7,7 @@
 			variant: {
 				outline: '',
 				filled: 'border-0 bg-ink-200/60',
+				plain: 'border-0 bg-transparent shadow-none rounded-none focus:bg-transparent focus-visible:border-transparent focus-visible:outline-none',
 			},
 			size: {
 				sm: 'h-8 px-2 rounded-sm text-base',
@@ -45,10 +46,11 @@
 	};
 
 	let field = getContext<FieldContext | undefined>('field');
+	let inputGroup = getContext<{ variant: string; size: string } | undefined>('input-group');
 
 	let {
-		variant,
-		size,
+		variant = inputGroup?.variant as InputVariant | undefined ?? 'outline',
+		size = inputGroup?.size as InputSize | undefined ?? 'md',
 		name,
 		value = $bindable(),
 		required,
