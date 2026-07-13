@@ -93,13 +93,13 @@ describe('toMultipartFormData', () => {
 		expect(fd.getAll('record[classificationIds]')).toEqual(['1', '2', '3']);
 	});
 
-	it('getAll works after decode iterates FormData', () => {
+	it('getAll works after iterating FormData', () => {
 		const fd = new FormData();
 		fd.append('record[classification_ids][]', '1');
 		fd.append('record[classification_ids][]', '3');
 		fd.append('record[date]', '2024-01-15');
 
-		// Simulate decode iterating all entries
+		// Simulate iterating all entries
 		for (const _ of fd.entries()) {
 			// consume iterator
 		}
@@ -108,16 +108,16 @@ describe('toMultipartFormData', () => {
 		expect(ids).toEqual(['1', '3']);
 	});
 
-	it('reads classification_ids before decode to be safe', () => {
+	it('reads classification_ids before iterating FormData to be safe', () => {
 		const fd = new FormData();
 		fd.append('record[classification_ids][]', '1');
 		fd.append('record[classification_ids][]', '3');
 		fd.append('record[date]', '2024-01-15');
 
-		// Read before decode (the fix)
+		// Read before iterating
 		const ids = fd.getAll('record[classification_ids][]');
 
-		// Simulate decode iterating all entries
+		// Simulate iterating all entries
 		for (const _ of fd.entries()) {
 			// consume iterator
 		}
