@@ -4,11 +4,42 @@ import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
 import { createServiceSchedule, type CreateServiceScheduleData } from '$lib/data/serviceSchedules';
-import { decode } from '$lib/utils/form';
-import { getHTTPErrors } from '$lib/utils/actions';
+import { withActionErrors } from '$lib/utils/actions';
+import { parseForm } from '$lib/utils/schema';
 import { validateAttachments } from '$lib/utils/file-validation';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { reminderFormSchema } from '../reminders/schemas';
+import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
+
+const mileageAdjustmentSchema = v.object({
+	mileage: v.nullish(
+		v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))),
+		null,
+	),
+});
+
+const recordFormSchema = v.object({
+	date: v.pipe(v.string('Date is required'), v.minLength(1, 'Date is required')),
+	notes: v.pipe(v.string('Notes is required'), v.minLength(1, 'Notes is required')),
+	mileage: v.nullish(
+		v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))),
+		null,
+	),
+	cost: v.nullish(
+		v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))),
+		null,
+	),
+});
+
+const scheduleFormSchema = v.object({
+	classificationId: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+	name: v.optional(v.string(''), ''),
+	keywords: v.optional(v.string(''), ''),
+	distanceInterval: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+	monthInterval: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+	notes: v.optional(v.string(''), ''),
+});
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
@@ -23,29 +54,15 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 export const actions = {
-	record: async ({ request, locals, params, url }) => {
+	record: withActionErrors(async ({ request, locals, params, url }) => {
 		const formData = await request.formData();
+		const parsed = parseForm(formData, recordFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		// Read classification_ids before decode to avoid FormData iterator issues
-		const classificationIds = formData.getAll('record[classification_ids][]');
-
-		const data = decode(formData, {
-			date: 'string',
-			notes: 'string',
-			mileage: 'number',
-			cost: 'number',
-		});
-
-		if (!data.date) {
-			return fail(400, { errors: [{ id: 'date', title: 'Date is required' }] });
-		}
-		if (!data.notes) {
-			return fail(400, { errors: [{ id: 'notes', title: 'Notes is required' }] });
-		}
-
-		const reminderId = url.searchParams.get('reminder_id');
-
+		// Read attachments and classification IDs after schema parse so the
+		// iterator isn't disturbed by the FormData → entries conversion.
 		const files = formData.getAll('record[attachments][]') as File[];
+		const classificationIds = formData.getAll('record[classification_ids][]');
 
 		const validation = await validateAttachments(files);
 		if (!validation.valid) {
@@ -56,10 +73,10 @@ export const actions = {
 
 		const body = toMultipartFormData(
 			{
-				date: data.date,
-				notes: data.notes,
-				mileage: typeof data.mileage === 'number' ? data.mileage : null,
-				cost: typeof data.cost === 'number' ? data.cost : null,
+				date: parsed.data.date,
+				notes: parsed.data.notes,
+				mileage: parsed.data.mileage,
+				cost: parsed.data.cost,
 			},
 			{ prefix: 'record' },
 		);
@@ -70,57 +87,39 @@ export const actions = {
 			body.append('record[classification_ids][]', id);
 		}
 
-		try {
-			await uploadRecord(params.id!, undefined, body, locals);
-			if (reminderId) {
-				await deleteReminder(params.id!, reminderId, locals);
-			}
-		} catch (err) {
-			const message = err instanceof Error ? err.message : 'Upload failed';
-			return fail(422, {
-				errors: [{ id: 'form', title: message }],
-			});
+		const reminderId = url.searchParams.get('reminder_id');
+
+		await uploadRecord(params.id!, undefined, body, locals);
+		if (reminderId) {
+			await deleteReminder(params.id!, reminderId, locals);
 		}
 
 		redirect(303, `/vehicles/${params.id}`);
-	},
+	}),
 
-	reminder: async ({ request, locals, params }) => {
+	reminder: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const data = decode(formData, {
-			notes: 'string',
-			reminderType: 'string',
-			date: 'string',
-			mileage: 'number',
-		});
+		const parsed = parseForm(formData, reminderFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		if (!data.notes) {
-			return fail(400, { errors: [{ id: 'notes', title: 'Note is required' }] });
-		}
-
-		try {
-			await createVehicleReminder(
-				params.id!,
-				{
-					notes: data.notes as string,
-					reminderType: (data.reminderType as string) || null,
-					date: (data.date as string) || null,
-					mileage: typeof data.mileage === 'number' ? data.mileage : null,
-				} as never,
-				locals,
-			);
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
-		}
-
+		await createVehicleReminder(
+			params.id!,
+			{
+				notes: parsed.data.notes,
+				reminderType: parsed.data.reminderType || null,
+				date: parsed.data.date || null,
+				mileage: parsed.data.mileage ?? null,
+			} as never,
+			locals,
+		);
 		redirect(303, `/vehicles/${params.id}/tasks`);
-	},
+	}),
 
-	'mileage-adjustment': async ({ request, locals, params }) => {
+	mileageAdjustment: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const data = decode(formData, { mileage: 'number' });
-
-		if (typeof data.mileage !== 'number') {
+		const parsed = parseForm(formData, mileageAdjustmentSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
+		if (typeof parsed.data.mileage !== 'number') {
 			return fail(400, { errors: [{ id: 'mileage', title: 'Mileage is required' }] });
 		}
 
@@ -129,28 +128,20 @@ export const actions = {
 			{
 				date: new Date().toISOString().split('T')[0],
 				notes: 'Mileage adjustment',
-				mileage: data.mileage,
+				mileage: parsed.data.mileage,
 				recordType: 'mileage adjustment',
 			} as never,
 			locals,
 		);
-
 		redirect(303, `/vehicles/${params.id}`);
-	},
+	}),
 
-	schedule: async ({ request, locals, params }) => {
+	schedule: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const data = decode(formData, {
-			classificationId: 'number',
-			name: 'string',
-			keywords: 'string',
-			distanceInterval: 'number',
-			monthInterval: 'number',
-			notes: 'string',
-		});
+		const parsed = parseForm(formData, scheduleFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		let classificationId = data.classificationId;
-		const name = data.name;
+		const { classificationId, name } = parsed.data;
 
 		if (!classificationId && !name) {
 			return fail(400, {
@@ -158,35 +149,30 @@ export const actions = {
 			});
 		}
 
-		if (!data.distanceInterval && !data.monthInterval) {
+		if (!parsed.data.distanceInterval && !parsed.data.monthInterval) {
 			return fail(400, {
 				errors: [{ id: 'form', title: 'Set a distance or month interval' }],
 			});
 		}
 
-		try {
-			const scheduleData: CreateServiceScheduleData['serviceSchedule'] = {
-				distanceInterval: data.distanceInterval || null,
-				monthInterval: data.monthInterval || null,
-				notes: data.notes || null,
-			};
+		const scheduleData: CreateServiceScheduleData['serviceSchedule'] = {
+			distanceInterval: parsed.data.distanceInterval,
+			monthInterval: parsed.data.monthInterval,
+			notes: parsed.data.notes || null,
+		};
 
-			if (name) {
-				const keywords = (data.keywords || '')
-					.split(',')
-					.map((k: string) => k.trim())
-					.filter(Boolean);
-				scheduleData.classificationName = name;
-				scheduleData.keywords = keywords;
-			} else {
-				scheduleData.classificationId = classificationId;
-			}
-
-			await createServiceSchedule(params.id!, { serviceSchedule: scheduleData }, locals);
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
+		if (name) {
+			const keywords = (parsed.data.keywords || '')
+				.split(',')
+				.map((k: string) => k.trim())
+				.filter(Boolean);
+			scheduleData.classificationName = name;
+			scheduleData.keywords = keywords;
+		} else {
+			scheduleData.classificationId = classificationId ?? undefined;
 		}
 
+		await createServiceSchedule(params.id!, { serviceSchedule: scheduleData }, locals);
 		redirect(303, `/vehicles/${params.id}/tasks`);
-	},
+	}),
 } satisfies Actions;

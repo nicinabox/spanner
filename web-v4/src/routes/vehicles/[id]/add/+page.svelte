@@ -112,7 +112,7 @@
 					Correct your {mileageLabel(vehicle.distanceUnit)} estimate when you haven't had recent service
 					and the estimate is off significantly from actual {mileageLabel(vehicle.distanceUnit)}.
 				</p>
-				<MileageAdjustmentForm {vehicle} action="?/mileage-adjustment" />
+				<MileageAdjustmentForm {vehicle} action="?/mileageAdjustment" />
 			{/if}
 		</Card>
 	</div>
