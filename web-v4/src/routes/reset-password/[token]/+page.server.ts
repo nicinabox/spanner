@@ -1,6 +1,7 @@
 import { resetPassword } from '$lib/data/session';
 import { setSession } from '$lib/utils/session';
 import { HTTPError } from '$lib/data/client';
+import { withActionErrors } from '$lib/utils/actions';
 import { parseForm, resetPasswordSchema } from '$lib/utils/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
@@ -14,16 +15,13 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 };
 
 export const actions = {
-	reset: async ({ request, params, cookies }) => {
+	reset: withActionErrors(async ({ request, params, cookies }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, resetPasswordSchema);
-
-		if (parsed.errors) {
-			return fail(422, { errors: parsed.errors });
-		}
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		try {
-			const session = await resetPassword(params.token, { password: parsed.data.password });
+			const session = await resetPassword(params.token!, { password: parsed.data.password });
 			await setSession(cookies, session);
 		} catch (error) {
 			if (error instanceof HTTPError && error.status === 422) {
@@ -35,5 +33,5 @@ export const actions = {
 		}
 
 		redirect(303, '/vehicles');
-	},
+	}),
 } satisfies Actions;
