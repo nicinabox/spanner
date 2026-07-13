@@ -31,6 +31,7 @@
 		start?: Snippet;
 		end?: Snippet;
 		positioning?: menu.PositioningOptions;
+		showIndicator?: boolean;
 		items?: Item[];
 		optionItems?: OptionItem[];
 		theme?: 'light' | 'dark';
@@ -56,6 +57,7 @@
 		theme,
 		variant = 'ghost',
 		positioning,
+		showIndicator = true,
 		icon,
 		color,
 		size,
@@ -106,7 +108,9 @@
 	class={className}
 >
 	{@render children?.()}
-	<span {...api.getIndicatorProps()}><ChevronDown size={16} /></span>
+	{#if showIndicator}
+		<span {...api.getIndicatorProps()}><ChevronDown size={16} /></span>
+	{/if}
 </Button>
 
 <MenuContent {api} {items} {optionItems} {start} {end} {itemEnd} />
