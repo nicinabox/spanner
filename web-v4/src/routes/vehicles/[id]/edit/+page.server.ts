@@ -2,15 +2,15 @@ import { deleteVehicle, getVehicle, updateVehicle } from '$lib/data/vehicles';
 import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { booleanForm } from '$lib/schemas/forms';
 import { vehicleFormSchema } from '../../schemas';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
 import { vehiclePath } from '$lib/routes';
+import { booleanSchema } from '$lib/schemas';
 
 const editVehicleFormSchema = v.object({
 	...vehicleFormSchema.entries,
-	retired: booleanForm,
+	retired: booleanSchema,
 });
 
 export const load: PageServerLoad = async ({ locals, params }) => {
