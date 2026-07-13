@@ -7,7 +7,7 @@
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
-import InputAddon from '$lib/components/common/InputAddon.svelte';
+	import InputAddon from '$lib/components/common/InputAddon.svelte';
 	import Textarea from '$lib/components/common/Textarea.svelte';
 	import AttachmentEditor from '$lib/components/attachments/AttachmentEditor.svelte';
 	import { formatDateISO } from '$lib/utils/date';
@@ -20,7 +20,8 @@ import InputAddon from '$lib/components/common/InputAddon.svelte';
 	import { classifyNotes } from '$lib/data/classify.remote';
 	import Badge from '$lib/components/common/Badge.svelte';
 	import Menu from '$lib/components/common/Menu.svelte';
-	import { RefreshCw } from 'lucide-svelte';
+	import { RotateCw } from 'lucide-svelte';
+	import Tooltip from '../common/Tooltip.svelte';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -190,47 +191,52 @@ import InputAddon from '$lib/components/common/InputAddon.svelte';
 			<Input type="date" name="date" bind:value={date} required />
 		</Field>
 		<Field name="notes" label="Notes" errors={allErrors} required>
-			<Textarea name="notes" bind:value={notes} required class="min-h-30" />
-		</Field>
+			<InputGroup orientation="vertical">
+				<Textarea name="notes" bind:value={notes} required rows={2} />
 
-		{#if record?.id}
-			<Field name="classifications" label="Tasks">
-				<div class="flex flex-wrap gap-2 items-center">
-					{#each selectedClassifications as c (c.id)}
-						<Badge size="md" dismissible ondismiss={() => removeClassification(c)}>
-							{c.name}
-						</Badge>
-					{/each}
-					{#if availableClassifications.length > 0}
-						<Menu
-							variant="outline"
-							size="xs"
-							items={availableClassifications.map((c) => ({
-								value: String(c.id),
-								label: c.name,
-							}))}
-							onSelect={({ value }) => {
-								const c = allClassifications.find((cl) => cl.id === Number(value));
-								if (c) addClassification(c);
-							}}
-						>
-							Add
-						</Menu>
-					{/if}
-					<Button
-						type="button"
-						variant="ghost"
-						size="xs"
-						onclick={handleClassify}
-						disabled={classifying || !notes.trim()}
-						title="Suggest from notes"
-						icon
-					>
-						<RefreshCw size={14} class={classifying ? 'animate-spin' : ''} />
-					</Button>
-				</div>
-			</Field>
-		{/if}
+				{#if record?.id}
+					<InputAddon class="flex flex-wrap gap-2 py-2 mt-2 items-center border-t border-ink-200">
+						<Tooltip content="Suggest from notes">
+							{#snippet children(props)}
+								<Button
+									{...props}
+									type="button"
+									variant="ghost"
+									size="xs"
+									onclick={handleClassify}
+									disabled={classifying || !notes.trim()}
+									icon
+								>
+									<RotateCw size={14} class={classifying ? 'animate-spin' : ''} />
+								</Button>
+							{/snippet}
+						</Tooltip>
+
+						{#each selectedClassifications as c (c.id)}
+							<Badge size="md" dismissible ondismiss={() => removeClassification(c)}>
+								{c.name}
+							</Badge>
+						{/each}
+
+						{#if availableClassifications.length > 0}
+							<Menu
+								size="xs"
+								items={availableClassifications.map((c) => ({
+									value: String(c.id),
+									label: c.name,
+								}))}
+								onSelect={({ value }) => {
+									const c = allClassifications.find((cl) => cl.id === Number(value));
+									if (c) addClassification(c);
+								}}
+							>
+								Add task
+							</Menu>
+						{/if}
+					</InputAddon>
+				{/if}
+			</InputGroup>
+		</Field>
 
 		<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} errors={allErrors}>
 			<InputGroup>
