@@ -42,6 +42,11 @@ const buildHistoryFuse = (history: HistoryEntry[]) =>
 			'cost',
 			{ name: 'mileage', getFn: (item: HistoryEntry) => mileageTokens(item.mileage) },
 			{ name: 'date', getFn: (item: HistoryEntry) => dateTokens(item.date) },
+			{
+				name: 'classifications',
+				getFn: (item: HistoryEntry) =>
+					item.classifications.flatMap((c) => [c.name, ...c.keywords]),
+			},
 		],
 		threshold: 0.3,
 		minMatchCharLength: MIN_QUERY_LENGTH,

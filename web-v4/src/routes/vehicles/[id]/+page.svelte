@@ -22,6 +22,14 @@
 
 	const historySearch = createHistorySearch(() => history);
 
+	let searchInputEl: HTMLInputElement | undefined = $state();
+
+	function applyClassificationFilter(name: string) {
+		historySearch.query = name;
+		searchInputEl?.focus();
+		searchInputEl?.scrollIntoView({ block: 'center' });
+	}
+
 	let activeTab = $derived(
 		$page.url.pathname === `/vehicles/${vehicle.id}` ? 'history' : 'history',
 	);
@@ -87,6 +95,7 @@
 					</span>
 					<Input
 						bind:value={historySearch.query}
+						bind:ref={searchInputEl}
 						type="search"
 						name="search"
 						placeholder="Search history"
@@ -116,6 +125,7 @@
 					history={historySearch.filtered}
 					{vehicle}
 					editable={!vehicle.retired}
+					onClassificationClick={applyClassificationFilter}
 				/>
 			{/if}
 		{/if}

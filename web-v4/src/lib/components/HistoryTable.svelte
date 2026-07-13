@@ -22,9 +22,10 @@
 		history: HistoryEntry[];
 		vehicle: Vehicle;
 		editable?: boolean;
+		onClassificationClick?: (name: string) => void;
 	}
 
-	let { history, vehicle, editable = true }: Props = $props();
+	let { history, vehicle, editable = true, onClassificationClick }: Props = $props();
 
 	let showAdjustments = $derived(vehicle.preferences.showMileageAdjustmentRecords);
 
@@ -162,7 +163,17 @@
 						{#if record.classifications?.length}
 							<div class="flex flex-wrap gap-1 mt-1">
 								{#each record.classifications as c}
-									<Badge variant="neutral">{c.name}</Badge>
+									{#if onClassificationClick}
+										<button
+											type="button"
+											class="cursor-pointer inline-flex rounded-sm hover:bg-ink-200/50 transition-colors"
+											onclick={() => onClassificationClick?.(c.name)}
+										>
+											<Badge variant="neutral">{c.name}</Badge>
+										</button>
+									{:else}
+										<Badge variant="neutral">{c.name}</Badge>
+									{/if}
 								{/each}
 							</div>
 						{/if}
