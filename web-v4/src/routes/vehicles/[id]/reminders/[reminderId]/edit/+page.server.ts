@@ -3,18 +3,8 @@ import { getReminder, updateReminder, deleteReminder } from '$lib/data/reminders
 import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import * as v from 'valibot';
+import { reminderFormSchema } from '../../_schemas';
 import type { PageServerLoad } from './$types';
-
-export const reminderFormSchema = v.object({
-	notes: v.pipe(v.string('Note is required'), v.minLength(1, 'Note is required')),
-	reminderType: v.optional(v.string(''), ''),
-	date: v.optional(v.string(''), ''),
-	mileage: v.nullish(
-		v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))),
-		null,
-	),
-});
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
