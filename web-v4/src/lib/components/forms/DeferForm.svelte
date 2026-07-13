@@ -105,7 +105,7 @@
 				>{isDeferred ? 'Update' : `Defer ${schedule.classificationName ?? 'Task'}`}</Button
 			>
 			{#if isDeferred}
-				<Button type="submit" variant="outline" formaction="?/clear_defer">Clear</Button>
+				<Button type="submit" variant="outline" formaction="?/clearDefer">Clear</Button>
 			{/if}
 		</div>
 	</div>

@@ -8,7 +8,7 @@ import {
 	clearDeferServiceSchedule,
 	getPresets,
 } from '$lib/data/serviceSchedules';
-import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
+import { getVehicleReminders } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { withActionErrors } from '$lib/utils/actions';
@@ -96,7 +96,7 @@ export const actions: Actions = {
 		redirect(303, `/vehicles/${params.id}/tasks`);
 	}),
 
-	clear_defer: withActionErrors(async ({ locals, params, request }) => {
+	clearDefer: withActionErrors(async ({ locals, params, request }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, idOnlySchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
@@ -104,13 +104,6 @@ export const actions: Actions = {
 
 		await clearDeferServiceSchedule(params.id!, parsed.data.id, locals);
 		redirect(303, `/vehicles/${params.id}/tasks`);
-	}),
-
-	delete_reminder: withActionErrors(async ({ locals, params, request }) => {
-		const formData = await request.formData();
-		const id = Number(formData.get('id'));
-		await deleteReminder(params.id!, id, locals);
-		return { success: true };
 	}),
 
 	suggest: async ({ locals, params, request }) => {
