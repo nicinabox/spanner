@@ -5,12 +5,13 @@
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
-import InputAddon from '$lib/components/common/InputAddon.svelte';
+	import InputAddon from '$lib/components/common/InputAddon.svelte';
 	import { MileageLabel } from '$lib/utils/vehicle';
 	import Textarea from '$lib/components/common/Textarea.svelte';
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
+	import Stepper from '../common/Stepper.svelte';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -74,13 +75,28 @@ import InputAddon from '$lib/components/common/InputAddon.svelte';
 
 		<fieldset class="flex sm:gap-6 flex-col sm:flex-row *:flex-1">
 			<Field label="Month Interval" name="monthInterval" {errors}>
-				<Input
-					inputmode="numeric"
-					name="monthInterval"
-					bind:value={monthInterval}
-					placeholder="Optional"
-					min="0"
-				/>
+				<InputGroup>
+					<Input
+						inputmode="numeric"
+						name="monthInterval"
+						bind:value={monthInterval}
+						placeholder="Optional"
+						min="0"
+					/>
+					<Stepper
+						size="sm"
+						variant="ghost"
+						class="mr-1"
+						onincrement={() => {
+							let v = parseInt(monthInterval) || 0;
+							monthInterval = String(v + 6);
+						}}
+						ondecrement={() => {
+							let v = parseInt(monthInterval) || 0;
+							if (v > 0) monthInterval = String(v - 6);
+						}}
+					/>
+				</InputGroup>
 			</Field>
 			<Field
 				label={MileageLabel(vehicle.distanceUnit) + ' Interval'}
@@ -88,7 +104,13 @@ import InputAddon from '$lib/components/common/InputAddon.svelte';
 				{errors}
 			>
 				<InputGroup>
-					<Input bind:value={distanceInterval} name="distanceInterval" inputmode="numeric" placeholder="Optional" min="0" />
+					<Input
+						bind:value={distanceInterval}
+						name="distanceInterval"
+						inputmode="numeric"
+						placeholder="Optional"
+						min="0"
+					/>
 					<InputAddon>{vehicle.distanceUnit}</InputAddon>
 				</InputGroup>
 			</Field>
