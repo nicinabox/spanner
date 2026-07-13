@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 };
 
 export const actions = {
-	reset: withActionErrors(async ({ request, params, cookies }) => {
+	resetPassword: withActionErrors(async ({ request, params, cookies }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, resetPasswordSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });

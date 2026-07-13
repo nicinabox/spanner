@@ -82,7 +82,7 @@ export const actions = {
 		}
 	}),
 
-	signin: withActionErrors(async ({ cookies, request }) => {
+	signinWithToken: withActionErrors(async ({ cookies, request }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, tokenSchema);
 		if (parsed.errors) return fail(422, { status: 'pending', errors: parsed.errors });

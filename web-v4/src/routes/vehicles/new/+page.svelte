@@ -24,7 +24,7 @@
 	<div class="max-w-xl mx-auto">
 		<Card variant="outline" bleed>
 			<h1>New Vehicle</h1>
-			<VehicleForm errors={form?.errors} />
+			<VehicleForm action="?/createVehicle" errors={form?.errors} />
 		</Card>
 	</div>
 </PageLayout>

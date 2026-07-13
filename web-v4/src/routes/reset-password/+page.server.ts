@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ url }) => {
 };
 
 export const actions = {
-	request: withActionErrors(async (event) => {
+	requestReset: withActionErrors(async (event) => {
 		const formData = await event.request.formData();
 		const parsed = parseForm(formData, requestResetSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });

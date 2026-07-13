@@ -26,7 +26,7 @@
 			{:else}
 				<h1>Reset password</h1>
 				<p>Enter your email and we'll send you a link to reset your password.</p>
-				<form method="post" action="?/request" use:enhance>
+				<form method="post" action="?/requestReset" use:enhance>
 					<fieldset>
 						<Field name="email" label="Email" errors={form?.errors} required>
 							<Input

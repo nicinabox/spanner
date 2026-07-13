@@ -5,7 +5,7 @@ import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { vehicleFormSchema } from '../schemas';
 
 export const actions = {
-	default: withActionErrors(async ({ request, locals }) => {
+	createVehicle: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, vehicleFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });

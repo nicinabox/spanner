@@ -60,7 +60,7 @@
 </script>
 
 {#if form?.status === 'pending'}
-	<form method="post" action="?/signin" use:enhance class="w-full">
+	<form method="post" action="?/signinWithToken" use:enhance class="w-full">
 		<p class="mb-4 text-lg">
 			We sent a sign-in link to your email. Click the link to sign in instantly.
 		</p>
