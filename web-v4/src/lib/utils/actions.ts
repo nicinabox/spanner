@@ -1,9 +1,7 @@
 import { fail, isRedirect, redirect } from '@sveltejs/kit';
 import { HTTPError } from '$lib/data/client';
-import { parseForm } from './schema';
 import type { FormError } from './form';
 import type { RequestEvent } from '@sveltejs/kit';
-import type { GenericSchema, InferOutput } from 'valibot';
 
 export const getHTTPErrors = (error: unknown): { errors: FormError[] } => {
 	if (error instanceof HTTPError && error.status === 401) {
@@ -26,43 +24,26 @@ export function requireField(
 ): { errors: FormError[] } | null {
 	if (data[key]) return null;
 	return { errors: [{ id: key, title: message }] };
-}
+};
 
 type FormActionEvent = RequestEvent & { request: Request };
 
 /**
- * Wrap a SvelteKit action with the standard pipeline: parse FormData, validate
- * against a valibot schema, run the handler, and convert thrown API errors
- * into fail(422) responses. Redirects thrown from the handler pass through.
+ * Wrap a SvelteKit action handler with the standard error pipeline. The
+ * handler keeps its full return type via the `TResult` generic, so
+ * downstream `form?.x` reads stay type-safe.
+ *
+ * Catches any error the handler throws (other than SvelteKit `redirect`),
+ * converts it via `getHTTPErrors`, and returns `fail(422, ...)`. The handler
+ * is responsible for parsing FormData, schema validation, and any
+ * `requireField` checks.
  */
-export function withFormAction<TSchema extends GenericSchema>(
-	handler: (data: InferOutput<TSchema>, event: FormActionEvent) => Promise<unknown>,
-	schema: TSchema,
-): (event: FormActionEvent) => Promise<unknown>;
-export function withFormAction(
-	handler: (data: Record<string, FormDataEntryValue>, event: FormActionEvent) => Promise<unknown>,
-): (event: FormActionEvent) => Promise<unknown>;
-export function withFormAction(
-	handler: (data: any, event: FormActionEvent) => Promise<unknown>,
-	schema?: GenericSchema,
-) {
-	return async (event: FormActionEvent) => {
-		const formData = await event.request.formData();
-		if (schema) {
-			const parsed = parseForm(formData, schema);
-			if (parsed.errors) {
-				return fail(422, { errors: parsed.errors });
-			}
-			try {
-				return await handler(parsed.data as never, event);
-			} catch (e) {
-				if (isRedirect(e)) throw e;
-				return fail(422, getHTTPErrors(e));
-			}
-		}
-		const data = Object.fromEntries(formData);
+export function withActionErrors<TResult>(
+	handler: (event: FormActionEvent) => Promise<TResult>,
+): (event: FormActionEvent) => Promise<TResult | ReturnType<typeof fail<{ errors: FormError[] }>>> {
+	return async (event) => {
 		try {
-			return await handler(data, event);
+			return await handler(event);
 		} catch (e) {
 			if (isRedirect(e)) throw e;
 			return fail(422, getHTTPErrors(e));

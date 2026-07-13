@@ -1,7 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { isRedirect, redirect } from '@sveltejs/kit';
-import * as v from 'valibot';
-import { withFormAction, requireField } from './actions';
+import { describe, it, expect } from 'vitest';
+import { fail, isRedirect, redirect } from '@sveltejs/kit';
+import { requireField, withActionErrors } from './actions';
 
 const formDataFrom = (obj: Record<string, string>) => {
 	const fd = new FormData();
@@ -13,10 +12,6 @@ const fakeEvent = (formData: FormData) =>
 	({
 		request: { formData: async () => formData },
 	}) as never;
-
-const emailSchema = v.object({
-	email: v.pipe(v.string(), v.minLength(1, "Email can't be blank")),
-});
 
 describe('requireField', () => {
 	it('returns null when the field has a truthy value', () => {
@@ -35,39 +30,38 @@ describe('requireField', () => {
 	});
 });
 
-describe('withFormAction', () => {
-	it('parses FormData, validates against the schema, and calls the handler', async () => {
-		const handler = vi.fn(async (data: { email: string }) => ({ ok: true, data }));
-		const action = withFormAction(handler, emailSchema);
+describe('withActionErrors', () => {
+	it('returns the handler result on success and preserves its type', async () => {
+		const handler = async () => ({ status: 'pending' as const });
+		const wrapped = withActionErrors(handler);
+		const result = await wrapped(fakeEvent(formDataFrom({})));
 
-		const result = await action(fakeEvent(formDataFrom({ email: 'a@b.com' })));
-
-		expect(handler).toHaveBeenCalledWith({ email: 'a@b.com' }, expect.anything());
-		expect(result).toEqual({ ok: true, data: { email: 'a@b.com' } });
+		expect(result).toEqual({ status: 'pending' });
 	});
 
-	it('returns fail(422) with errors when the schema rejects the input', async () => {
-		const handler = vi.fn();
-		const action = withFormAction(handler, emailSchema);
-
-		const result = await action(fakeEvent(formDataFrom({ email: '' })));
-
-		expect(handler).not.toHaveBeenCalled();
-		expect(result).toMatchObject({
-			status: 422,
-			data: { errors: expect.any(Array) },
-		});
-		expect((result as { data: { errors: { id: string }[] } }).data.errors[0].id).toBe('email');
+	it('preserves the handler return type through the wrapper (TS check)', async () => {
+		// Compile-time assertion: the wrapped signature must keep the event
+		// parameter and thread TResult through to the return. If the wrapper
+		// erases the event type, this block fails to compile.
+		const wrapped = withActionErrors(async () => ({ status: 'pending' as const }));
+		const event = fakeEvent(new FormData());
+		// Calling with the event must typecheck.
+		const result = await wrapped(event);
+		if (result && 'status' in result) {
+			// Narrowed: success path
+			expect(result.status).toBe('pending');
+		} else {
+			expect.fail('expected success path');
+		}
 	});
 
 	it('converts thrown API errors into fail(422, getHTTPErrors(e))', async () => {
-		const apiError = new Error('boom');
 		const handler = async () => {
-			throw apiError;
+			throw new Error('boom');
 		};
-		const action = withFormAction(handler, emailSchema);
+		const wrapped = withActionErrors(handler);
 
-		const result = await action(fakeEvent(formDataFrom({ email: 'a@b.com' })));
+		const result = await wrapped(fakeEvent(formDataFrom({})));
 
 		expect(result).toMatchObject({
 			status: 422,
@@ -79,41 +73,25 @@ describe('withFormAction', () => {
 		const handler = async () => {
 			throw redirect(303, '/vehicles');
 		};
-		const action = withFormAction(handler, emailSchema);
+		const wrapped = withActionErrors(handler);
 
 		try {
-			await action(fakeEvent(formDataFrom({ email: 'a@b.com' })));
+			await wrapped(fakeEvent(formDataFrom({})));
 			expect.fail('expected redirect to be thrown');
 		} catch (e) {
 			expect(isRedirect(e)).toBe(true);
 		}
 	});
 
-	it('propagates fail(400) responses returned by the handler', async () => {
-		const handler = async (data: { email: string }) => {
-			const err = requireField(data, 'email', 'Email is required');
-			if (err) {
-				const { fail } = await import('@sveltejs/kit');
-				return fail(400, err);
-			}
-			return { ok: true };
-		};
-		const action = withFormAction(handler, emailSchema);
+	it('propagates fail(400) responses returned by the handler (no error conversion)', async () => {
+		const handler = async () => fail(400, { errors: [{ id: 'email', title: 'Email is required' }] });
+		const wrapped = withActionErrors(handler);
 
-		const result = await action(fakeEvent(formDataFrom({ email: '' })));
+		const result = await wrapped(fakeEvent(formDataFrom({})));
 
-		// Validation kicks in first via the schema; this branch verifies the
-		// handler-driven path when the schema is permissive.
-		expect(result).toBeDefined();
-	});
-
-	it('works without a schema (parses everything as Record)', async () => {
-		const handler = vi.fn(async (data: Record<string, unknown>) => data);
-		const action = withFormAction(handler);
-
-		const result = await action(fakeEvent(formDataFrom({ name: 'Alice' })));
-
-		expect(handler).toHaveBeenCalled();
-		expect(result).toEqual({ name: 'Alice' });
+		expect(result).toMatchObject({
+			status: 400,
+			data: { errors: [{ id: 'email', title: 'Email is required' }] },
+		});
 	});
 });
