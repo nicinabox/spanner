@@ -2,7 +2,7 @@ import { deleteVehicle, getVehicle, updateVehicle } from '$lib/data/vehicles';
 import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { vehicleFormSchema } from '../../new/+page.server';
+import { vehicleFormSchema } from '../../_schemas';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
 import { vehiclePath } from '$lib/routes';
