@@ -1,10 +1,16 @@
 import { getCurrentUser } from '$lib/data/user';
-import { getAllVehicles } from '$lib/data/vehicles';
+import { getAllVehicles, type Sortable, type VehicleSortStrategy, type Order } from '$lib/data/vehicles';
 import { updateUser } from '$lib/data/user';
-import { getHTTPErrors } from '$lib/utils/actions';
-import { decode } from '$lib/utils/form';
-import { fail, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { withActionErrors } from '$lib/utils/actions';
+import { parseForm } from '$lib/utils/schema';
+import { fail } from '@sveltejs/kit';
+import * as v from 'valibot';
+import type { Actions, PageServerLoad } from './$types';
+
+const userPreferencesSchema = v.object({
+	strategy: v.optional(v.string(''), ''),
+	order: v.optional(v.string(''), ''),
+});
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const [vehicles, user] = await Promise.all([getAllVehicles(locals), getCurrentUser(locals)]);
@@ -13,22 +19,19 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	updateUserPreferences: async ({ request, locals }) => {
+	updateUserPreferences: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
-		const data = decode(formData);
+		const parsed = parseForm(formData, userPreferencesSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		try {
-			const user = await updateUser(
-				{
-					preferences: {
-						vehiclesSortOrder: [data.strategy, data.order],
-					},
+		const user = await updateUser(
+			{
+				preferences: {
+					vehiclesSortOrder: [parsed.data.strategy, parsed.data.order] as Sortable,
 				},
-				locals,
-			);
-			return { user };
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
-		}
-	},
+			},
+			locals,
+		);
+		return { user };
+	}),
 } satisfies Actions;
