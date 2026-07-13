@@ -2,7 +2,6 @@ import { getVehicle } from '$lib/data/vehicles';
 import {
 	getServiceSchedules,
 	completeServiceSchedule,
-	deleteServiceSchedule,
 	createServiceSchedule,
 	deferServiceSchedule,
 	clearDeferServiceSchedule,
@@ -64,17 +63,6 @@ export const actions: Actions = {
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Failed to complete schedule';
 			return fail(422, { errors: [{ id: 'form', title: message }] });
-		}
-	},
-
-	delete: async ({ locals, params, request }) => {
-		const id = Number((await request.formData()).get('id'));
-
-		try {
-			await deleteServiceSchedule(params.id!, id, locals);
-			return { success: true };
-		} catch {
-			return fail(422, { error: 'Failed to delete schedule' });
 		}
 	},
 
