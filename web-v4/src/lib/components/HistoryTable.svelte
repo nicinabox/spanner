@@ -57,16 +57,23 @@
 	const years = $derived(allYears.toSorted((a, b) => Number(b) - Number(a)));
 
 	onMount(() => {
-		const observer = new IntersectionObserver(([entry]) => {
-			const root = entry.target.parentNode as HTMLElement | null;
-			if (root) {
-				if (entry.isIntersecting) {
-					delete root.dataset.state;
-				} else {
-					root.dataset.state = 'top';
+		const appbarHeight =
+			parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--appbar-height')) ||
+			56;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				const root = entry.target.parentNode as HTMLElement | null;
+				if (root) {
+					if (entry.isIntersecting) {
+						delete root.dataset.state;
+					} else {
+						root.dataset.state = 'top';
+					}
 				}
-			}
-		});
+			},
+			{ rootMargin: `-${appbarHeight}px 0px 0px 0px` },
+		);
 
 		const elements = document.querySelectorAll('.sticky-sentinel');
 
@@ -79,10 +86,13 @@
 </script>
 
 {#each years as year (year)}
-	<div id={`year-${year}`} class="history-table group mb-6 rounded-sm bg-surface-raised shadow-sm">
-		<div class="sticky-sentinel"></div>
+	<div
+		id={`year-${year}`}
+		class="history-table overflow-clip group mb-6 rounded-sm bg-surface-raised shadow-sm"
+	>
+		<div class="sticky-sentinel h-px"></div>
 		<header
-			class="sticky top-0 z-10 items-center flex rounded-t-[inherit] bg-inherit px-4 py-2 group-data-[state=top]:rounded-t-none group-data-[state=top]:shadow-sm"
+			class="sticky top-(--appbar-height) z-10 items-center flex rounded-t-[inherit] bg-inherit px-4 py-2 group-data-[state=top]:rounded-t-none group-data-[state=top]:shadow-sm"
 		>
 			<h2 class="text-lg font-semibold m-0">{year}</h2>
 			{#if hiddenCounts[year] > 0}

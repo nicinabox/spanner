@@ -2,6 +2,11 @@
 @plugin '@tailwindcss/typography';
 @import './styles/theme.css';
 
+:root {
+	/* Measured at runtime by AppBar; fallback prevents layout shift on first paint. */
+	--appbar-height: 3.5rem;
+}
+
 /* Date input matches other inputs */
 input[type='date'] {
 	width: 100%;

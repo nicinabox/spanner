@@ -16,9 +16,22 @@
 	let { start, center, end, session, class: className = '' }: Props = $props();
 
 	let username = $derived(session?.email?.split('@')[0] ?? '');
+
+	let headerEl: HTMLElement | undefined = $state();
+
+	$effect(() => {
+		if (!headerEl) return;
+		const ro = new ResizeObserver(([entry]) => {
+			const h = entry.target.getBoundingClientRect().height;
+			document.documentElement.style.setProperty('--appbar-height', `${h}px`);
+		});
+		ro.observe(headerEl);
+		return () => ro.disconnect();
+	});
 </script>
 
 <header
+	bind:this={headerEl}
 	class={cn(
 		'sticky top-0 z-40 bg-brand-500 text-ink-50 shadow-md',
 		'flex flex-wrap items-center *:flex-1 gap-3 p-2',

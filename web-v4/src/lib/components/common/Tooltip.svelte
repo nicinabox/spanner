@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as tooltip from '@zag-js/tooltip';
-	import { useMachine, normalizeProps } from '@zag-js/svelte';
+	import { useMachine, normalizeProps, portal } from '@zag-js/svelte';
 	import { scale } from 'svelte/transition';
 	import type { Snippet } from 'svelte';
 
@@ -58,10 +58,10 @@
 {@render children(api.getTriggerProps() as Record<string, unknown>)}
 
 {#if api.open}
-	<div {...api.getPositionerProps()}>
+	<div use:portal {...api.getPositionerProps()}>
 		<div
 			{...api.getContentProps()}
-			class="px-2.5 py-1.5 text-xs rounded-[4px] bg-ink-900 text-ink-50 shadow-sm"
+			class="px-2.5 py-1.5 z-20 text-xs rounded-[4px] bg-ink-900 text-ink-50 shadow-sm"
 			in:scale={{ duration: 150, start: 0.95 }}
 			out:scale={{ duration: 100, start: 0.95 }}
 		>
