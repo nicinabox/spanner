@@ -111,7 +111,7 @@
 		href?: string;
 		type?: 'button' | 'submit' | 'reset' | null;
 		disabled?: boolean | null;
-		class?: ClassValue;
+		class?: ClassValue | null;
 		children?: Snippet;
 		[key: string]: unknown;
 	};
