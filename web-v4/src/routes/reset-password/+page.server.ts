@@ -1,8 +1,14 @@
 import { requestReset } from '$lib/data/session';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm, requestResetSchema } from '$lib/utils/schema';
+import { parseForm } from '$lib/utils/schema';
 import { fail } from '@sveltejs/kit';
+import { emailSchema } from '$lib/schemas/auth';
+import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
+
+const requestResetSchema = v.object({
+	email: emailSchema,
+});
 
 export const load: PageServerLoad = async ({ url }) => {
 	return {

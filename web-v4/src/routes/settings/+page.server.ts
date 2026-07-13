@@ -2,11 +2,27 @@ import { requestEmailChange, deleteAccount, updateWebhookUrl } from '$lib/data/s
 import { setPassword } from '$lib/data/session';
 import { getCurrentUser } from '$lib/data/user';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm, changeEmailSchema, changePasswordSchema } from '$lib/utils/schema';
+import { parseForm } from '$lib/utils/schema';
 import { safeAsync } from '$lib/utils/async';
 import { fail, redirect } from '@sveltejs/kit';
+import { emailSchema, passwordSchema } from '$lib/schemas/auth';
 import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
+
+const passwordMatchCheck = v.check(
+	(value: { password: string; confirm_password: string }) =>
+		value.password === value.confirm_password,
+	'Passwords do not match',
+);
+
+const changeEmailSchema = v.object({ email: emailSchema });
+const changePasswordSchema = v.pipe(
+	v.object({
+		password: passwordSchema,
+		confirm_password: v.string('Password confirmation is required'),
+	}),
+	v.forward(passwordMatchCheck, ['confirm_password']),
+);
 
 const webhookFormSchema = v.object({
 	webhookUrl: v.optional(v.string(''), ''),

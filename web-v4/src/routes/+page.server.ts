@@ -6,7 +6,18 @@ import { setSession } from '$lib/utils/session';
 import { getCurrentUser } from '$lib/data/user';
 import { safeAsync } from '$lib/utils/async';
 import { getHTTPErrors } from '$lib/utils/actions';
-import { loginSchema, parseForm, tokenSchema } from '$lib/utils/schema';
+import { parseForm } from '$lib/utils/schema';
+import { emailSchema, passwordSchema } from '$lib/schemas/auth';
+import * as v from 'valibot';
+
+const loginSchema = v.object({
+	email: emailSchema,
+	password: v.optional(passwordSchema, ''),
+});
+
+const tokenSchema = v.object({
+	token: v.pipe(v.string("Token can't be blank"), v.trim(), v.minLength(1, "Token can't be blank")),
+});
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const [user] = await safeAsync(getCurrentUser(locals));
