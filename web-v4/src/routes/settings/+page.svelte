@@ -151,7 +151,6 @@
 											type="submit"
 											variant="ghost"
 											color="neutral"
-											class="-mr-2"
 											size="sm"
 											onclick={async (e: Event) => {
 												e.preventDefault();

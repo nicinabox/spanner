@@ -18,9 +18,11 @@
 		<InputGroup>
 			<InputAddon><Search size={16} /></InputAddon>
 			<Input placeholder="Search..." />
-			<Button variant="ghost" size="sm" icon class="mr-1">
-				<X size={14} />
-			</Button>
+			<InputAddon>
+				<Button variant="ghost" size="sm" icon>
+					<X size={14} />
+				</Button>
+			</InputAddon>
 		</InputGroup>
 		<InputGroup>
 			<Textarea placeholder="Generate with AI..." rows={1} />

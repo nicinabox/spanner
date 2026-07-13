@@ -83,19 +83,20 @@
 						placeholder="Optional"
 						min="0"
 					/>
-					<Stepper
-						size="sm"
-						variant="ghost"
-						class="mr-1"
-						onincrement={() => {
-							let v = parseInt(monthInterval) || 0;
-							monthInterval = String(v + 6);
-						}}
-						ondecrement={() => {
-							let v = parseInt(monthInterval) || 0;
-							if (v > 0) monthInterval = String(v - 6);
-						}}
-					/>
+					<InputAddon>
+						<Stepper
+							size="sm"
+							variant="ghost"
+							onincrement={() => {
+								let v = parseInt(monthInterval) || 0;
+								monthInterval = String(v + 6);
+							}}
+							ondecrement={() => {
+								let v = parseInt(monthInterval) || 0;
+								if (v > 0) monthInterval = String(v - 6);
+							}}
+						/>
+					</InputAddon>
 				</InputGroup>
 			</Field>
 			<Field

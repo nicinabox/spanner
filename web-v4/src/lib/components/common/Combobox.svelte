@@ -7,6 +7,7 @@
 	import Badge from './Badge.svelte';
 	import Button from './Button.svelte';
 	import type { KeyboardEventHandler } from 'svelte/elements';
+	import { InputAddon } from '$lib';
 
 	interface Props {
 		multiple?: boolean;
@@ -134,9 +135,11 @@
 					onkeydown(e);
 				}}
 			/>
-			<Button {...triggerProps} icon class="mr-1" size="sm" color="neutral" variant="ghost">
-				<ChevronDown size={18} />
-			</Button>
+			<InputAddon>
+				<Button {...triggerProps} icon size="sm" color="neutral" variant="ghost">
+					<ChevronDown size={18} />
+				</Button>
+			</InputAddon>
 		</InputGroup>
 	</div>
 </div>
