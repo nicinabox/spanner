@@ -2,7 +2,17 @@
 	import { enhance } from '$app/forms';
 	import { umamiEvent } from '$lib/umami';
 	import { ArrowLeft, Check } from 'lucide-svelte';
-	import { Button, Card, Confirm, Field, Input, PageLayout, Alert, InputGroup } from '$lib';
+	import {
+		Button,
+		Card,
+		Confirm,
+		Field,
+		Input,
+		PageLayout,
+		Alert,
+		InputGroup,
+		InputAddon,
+	} from '$lib';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
 
@@ -124,30 +134,39 @@
 						errors={form?.errors}
 					>
 						<InputGroup>
-							<Input bind:value={webhookUrl} name="webhookUrl" type="url" oninput={() => (webhookSuccess = false)} autocomplete="off" />
+							<Input
+								bind:value={webhookUrl}
+								name="webhookUrl"
+								type="url"
+								oninput={() => (webhookSuccess = false)}
+								autocomplete="off"
+							/>
+
 							{#if webhookUrl}
-								{#if webhookTestSuccess}
-									<Check size={16} class="text-positive" />
-								{:else}
-									<Button
-										type="submit"
-										variant="ghost"
-										color="neutral"
-										size="sm"
-										class="-mr-2"
-										onclick={async (e: Event) => {
-											e.preventDefault();
-											const { testWebhook } = await import('./webhook.remote.ts');
-											try {
-												await testWebhook();
-												webhookTestSuccess = true;
-												setTimeout(() => (webhookTestSuccess = false), 2000);
-											} catch {}
-										}}
-									>
-										Test
-									</Button>
-								{/if}
+								<InputAddon>
+									{#if webhookTestSuccess}
+										<Check size={16} class="text-positive" />
+									{:else}
+										<Button
+											type="submit"
+											variant="ghost"
+											color="neutral"
+											class="-mr-2"
+											size="sm"
+											onclick={async (e: Event) => {
+												e.preventDefault();
+												const { testWebhook } = await import('./webhook.remote.ts');
+												try {
+													await testWebhook();
+													webhookTestSuccess = true;
+													setTimeout(() => (webhookTestSuccess = false), 2000);
+												} catch {}
+											}}
+										>
+											Test
+										</Button>
+									{/if}
+								</InputAddon>
 							{/if}
 						</InputGroup>
 					</Field>
