@@ -10,21 +10,8 @@ import { updateClassification } from '$lib/data/classifications';
 import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import * as v from 'valibot';
+import { serviceScheduleFormSchema, scheduleDeferFormSchema } from '../../_schemas';
 import type { PageServerLoad } from './$types';
-
-export const serviceScheduleFormSchema = v.object({
-	classificationId: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
-	name: v.optional(v.string(''), ''),
-	keywords: v.optional(v.string(''), ''),
-	distanceInterval: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
-	monthInterval: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
-});
-
-const deferFormSchema = v.object({
-	months: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
-	distance: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
-});
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
@@ -79,7 +66,7 @@ export const actions = {
 
 	defer: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, deferFormSchema);
+		const parsed = parseForm(formData, scheduleDeferFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		await deferServiceSchedule(
@@ -94,7 +81,7 @@ export const actions = {
 		redirect(303, `/vehicles/${params.id}/tasks`);
 	}),
 
-	clear_defer: withActionErrors(async ({ locals, params }) => {
+	clearDefer: withActionErrors(async ({ locals, params }) => {
 		await clearDeferServiceSchedule(params.id!, params.scheduleId!, locals);
 		redirect(303, `/vehicles/${params.id}/tasks`);
 	}),
