@@ -9,24 +9,12 @@ import { parseForm } from '$lib/utils/schema';
 import { validateAttachments } from '$lib/utils/file-validation';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { reminderFormSchema } from '../reminders/schemas';
+import { recordFormSchema } from '../history/schemas';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
 
 const mileageAdjustmentSchema = v.object({
 	mileage: v.nullish(
-		v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))),
-		null,
-	),
-});
-
-const recordFormSchema = v.object({
-	date: v.pipe(v.string('Date is required'), v.minLength(1, 'Date is required')),
-	notes: v.pipe(v.string('Notes is required'), v.minLength(1, 'Notes is required')),
-	mileage: v.nullish(
-		v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))),
-		null,
-	),
-	cost: v.nullish(
 		v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))),
 		null,
 	),
