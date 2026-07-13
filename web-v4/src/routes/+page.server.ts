@@ -5,7 +5,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { setSession } from '$lib/utils/session';
 import { getCurrentUser } from '$lib/data/user';
 import { safeAsync } from '$lib/utils/async';
-import { getHTTPErrors } from '$lib/utils/actions';
+import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { emailSchema, passwordSchema } from '$lib/schemas/auth';
 import * as v from 'valibot';
@@ -18,6 +18,9 @@ const loginSchema = v.object({
 const tokenSchema = v.object({
 	token: v.pipe(v.string("Token can't be blank"), v.trim(), v.minLength(1, "Token can't be blank")),
 });
+
+const isRedirect = (error: unknown): boolean =>
+	typeof error === 'object' && error !== null && 'location' in error;
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const [user] = await safeAsync(getCurrentUser(locals));
@@ -32,13 +35,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	login: async ({ request, cookies, locals }) => {
+	login: withActionErrors(async ({ request, cookies, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, loginSchema);
-
-		if (parsed.errors) {
-			return fail(401, { errors: parsed.errors });
-		}
+		if (parsed.errors) return fail(401, { errors: parsed.errors });
 
 		const timeZoneOffset = formData.get('timeZoneOffset') as string | null;
 
@@ -56,20 +56,17 @@ export const actions = {
 
 			return { status: 'pending' };
 		} catch (error) {
-			if (typeof error === 'object' && error !== null && 'location' in error) throw error;
+			if (isRedirect(error)) throw error;
 			return fail(401, {
 				errors: [{ id: 'form', title: 'Invalid email or password' }],
 			});
 		}
-	},
+	}),
 
-	magicLink: async ({ request, locals }) => {
+	magicLink: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, loginSchema);
-
-		if (parsed.errors) {
-			return fail(422, { errors: parsed.errors });
-		}
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		try {
 			await session.login({
@@ -78,28 +75,20 @@ export const actions = {
 
 			return { status: 'pending' };
 		} catch (error) {
-			if (typeof error === 'object' && error !== null && 'location' in error) throw error;
+			if (isRedirect(error)) throw error;
 			return fail(422, {
 				errors: [{ id: 'form', title: 'Could not send magic link. Please try again.' }],
 			});
 		}
-	},
+	}),
 
-	signin: async ({ cookies, request }) => {
+	signin: withActionErrors(async ({ cookies, request }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, tokenSchema);
+		if (parsed.errors) return fail(422, { status: 'pending', errors: parsed.errors });
 
-		if (parsed.errors) {
-			return fail(422, { status: 'pending', errors: parsed.errors });
-		}
-
-		try {
-			const sess = await session.signin(parsed.data.token);
-			await setSession(cookies, sess);
-		} catch (error) {
-			return fail(422, { status: 'pending', ...getHTTPErrors(error) });
-		}
-
+		const sess = await session.signin(parsed.data.token);
+		await setSession(cookies, sess);
 		redirect(303, '/vehicles');
-	},
+	}),
 } satisfies Actions;
