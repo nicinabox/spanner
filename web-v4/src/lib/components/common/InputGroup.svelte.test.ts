@@ -1,130 +1,82 @@
 import { describe, it, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import { createRawSnippet } from 'svelte';
 import InputGroup from './InputGroup.svelte';
+import InputAddon from './InputAddon.svelte';
+import Input from './Input.svelte';
 
 describe('InputGroup', () => {
-	it('renders input with start slot', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			placeholder: 'Search...',
-			start: createRawSnippet(() => ({ render: () => '🔍' })),
-		});
-
-		const input = container.querySelector('input');
-		expect(input).toBeTruthy();
-		expect(input?.getAttribute('placeholder')).toBe('Search...');
+	it('renders a wrapper div with flex layout', () => {
+		const { container } = render(InputGroup);
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper).toBeTruthy();
+		expect(wrapper.tagName).toBe('DIV');
+		expect(wrapper.className).toContain('flex');
 	});
 
-	it('renders input with end slot', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			end: createRawSnippet(() => ({ render: () => '✕' })),
-		});
-
-		const input = container.querySelector('input');
-		expect(input).toBeTruthy();
+	it('applies horizontal layout by default (items-center)', () => {
+		const { container } = render(InputGroup);
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper.className).toContain('items-center');
+		expect(wrapper.className).not.toContain('flex-col');
 	});
 
-	it('renders input with both start and end slots', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			start: createRawSnippet(() => ({ render: () => '🔍' })),
-			end: createRawSnippet(() => ({ render: () => '✕' })),
-		});
-
-		const input = container.querySelector('input');
-		expect(input).toBeTruthy();
+	it('applies vertical layout when orientation is "vertical"', () => {
+		const { container } = render(InputGroup, { orientation: 'vertical' });
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper.className).toContain('flex-col');
+		expect(wrapper.className).not.toContain('items-center');
 	});
 
-	it('renders with startAddon', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			startAddon: createRawSnippet(() => ({ render: () => '$' })),
-		});
-
-		const input = container.querySelector('input');
-		expect(input).toBeTruthy();
+	it('applies outline variant by default (visible border)', () => {
+		const { container } = render(InputGroup);
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper.className).toContain('border');
 	});
 
-	it('renders with endAddon', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			endAddon: createRawSnippet(() => ({ render: () => 'kg' })),
-		});
-
-		const input = container.querySelector('input');
-		expect(input).toBeTruthy();
+	it('applies filled variant when specified (bg-ink-200/60)', () => {
+		const { container } = render(InputGroup, { variant: 'filled' });
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper.className).toContain('bg-ink-200/60');
 	});
 
-	it('renders standalone (no slots)', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			placeholder: 'Enter text',
-		});
-
-		const input = container.querySelector('input');
-		expect(input).toBeTruthy();
-		expect(input?.getAttribute('placeholder')).toBe('Enter text');
+	it('forwards class prop to the wrapper', () => {
+		const { container } = render(InputGroup, { class: 'w-72' });
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper.className).toContain('w-72');
 	});
 
-	it('forwards input attributes', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			type: 'search',
-			placeholder: 'Search...',
-			disabled: true,
-			readonly: true,
-			autocomplete: 'off',
-			inputmode: 'search',
-		});
-
-		const input = container.querySelector('input')!;
-		expect(input.getAttribute('type')).toBe('search');
-		expect(input.getAttribute('placeholder')).toBe('Search...');
-		expect(input.hasAttribute('disabled')).toBe(true);
-		expect(input.hasAttribute('readonly')).toBe(true);
-		expect(input.getAttribute('autocomplete')).toBe('off');
-		expect(input.getAttribute('inputmode')).toBe('search');
+	it('forwards extra attributes to the wrapper div', () => {
+		const { container } = render(InputGroup, { 'data-testid': 'group' });
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper.getAttribute('data-testid')).toBe('group');
 	});
 
-	it('binds value', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			value: 'initial',
-		});
-
-		const input = container.querySelector('input')!;
-		expect(input.value).toBe('initial');
+	it('has focus-within ring styles for accessibility', () => {
+		const { container } = render(InputGroup);
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper.className).toContain('focus-within:outline-focus-ring');
 	});
 
-	it('focuses input when clicking start element', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			start: createRawSnippet(() => ({ render: () => '🔍' })),
-		});
+	it('always sets wrapper h-auto (size controls child Inputs, not the group)', () => {
+		const { container } = render(InputGroup, { size: 'lg' });
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper.className).toContain('h-auto');
+	});
+});
 
-		const input = container.querySelector('input')!;
-		const outer = container.firstElementChild as HTMLElement;
-		const inlineWrapper = outer.firstElementChild as HTMLElement;
-		const startEl = inlineWrapper.firstElementChild as HTMLElement;
-
-		startEl.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
-		expect(document.activeElement).toBe(input);
+describe('InputAddon', () => {
+	it('renders as an inline span', () => {
+		const { container } = render(InputAddon);
+		const span = container.firstElementChild as HTMLElement;
+		expect(span).toBeTruthy();
+		expect(span.tagName).toBe('SPAN');
+		expect(span.className).toContain('inline-flex');
+		expect(span.className).toContain('items-center');
 	});
 
-	it('focuses input when clicking end element', async () => {
-		const { container } = render(InputGroup, {
-			name: 'test',
-			end: createRawSnippet(() => ({ render: () => '✕' })),
-		});
-
-		const input = container.querySelector('input')!;
-		const outer = container.firstElementChild as HTMLElement;
-		const inlineWrapper = outer.firstElementChild as HTMLElement;
-		const endEl = inlineWrapper.lastElementChild as HTMLElement;
-
-		endEl.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
-		expect(document.activeElement).toBe(input);
+	it('forwards class to the span', () => {
+		const { container } = render(InputAddon, { class: 'text-red-500' });
+		const span = container.firstElementChild as HTMLElement;
+		expect(span.className).toContain('text-red-500');
 	});
 });
