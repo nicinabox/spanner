@@ -40,7 +40,7 @@ class DailyJob < ApplicationJob
 
   def upcoming_schedules
     schedules = ServiceSchedule.where(
-      next_due_date: Time.zone.today..2.weeks.from_now,
+      next_due_date: 1.day.from_now.to_date..2.weeks.from_now.to_date,
       enabled: true
     ).includes(:vehicle, :classification)
 
