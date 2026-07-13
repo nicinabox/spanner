@@ -11,9 +11,21 @@ import {
 import { getVehicleReminders, deleteReminder } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
+import { withActionErrors } from '$lib/utils/actions';
+import { parseForm } from '$lib/utils/schema';
 import { fail, redirect } from '@sveltejs/kit';
-import { decode } from '$lib/utils/form';
+import * as v from 'valibot';
 import type { PageServerLoad, Actions } from './$types';
+
+const deferFormSchema = v.object({
+	id: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+	months: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+	distance: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+});
+
+const idOnlySchema = v.object({
+	id: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+});
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
@@ -66,50 +78,40 @@ export const actions: Actions = {
 		}
 	},
 
-	defer: async ({ request, locals, params }) => {
+	defer: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const data = decode(formData, { id: 'number', months: 'number', distance: 'number' });
+		const parsed = parseForm(formData, deferFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
+		if (!parsed.data.id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
 
-		if (!data.id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
-
-		try {
-			await deferServiceSchedule(
-				params.id!,
-				data.id,
-				{
-					months: data.months || null,
-					distance: data.distance || null,
-				},
-				locals,
-			);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Failed to defer schedule';
-			return fail(422, { errors: [{ id: 'form', title: message }] });
-		}
-
+		await deferServiceSchedule(
+			params.id!,
+			parsed.data.id,
+			{
+				months: parsed.data.months ?? null,
+				distance: parsed.data.distance ?? null,
+			},
+			locals,
+		);
 		redirect(303, `/vehicles/${params.id}/tasks`);
-	},
+	}),
 
-	clear_defer: async ({ locals, params, request }) => {
+	clear_defer: withActionErrors(async ({ locals, params, request }) => {
 		const formData = await request.formData();
-		const { id } = decode(formData, { id: 'number' });
-		if (!id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
+		const parsed = parseForm(formData, idOnlySchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
+		if (!parsed.data.id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
 
-		try {
-			await clearDeferServiceSchedule(params.id!, id, locals);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Failed to clear defer';
-			return fail(422, { errors: [{ id: 'form', title: message }] });
-		}
-
+		await clearDeferServiceSchedule(params.id!, parsed.data.id, locals);
 		redirect(303, `/vehicles/${params.id}/tasks`);
-	},
+	}),
 
-	delete_reminder: async ({ locals, params, request }) => {
-		const id = Number((await request.formData()).get('id'));
+	delete_reminder: withActionErrors(async ({ locals, params, request }) => {
+		const formData = await request.formData();
+		const id = Number(formData.get('id'));
 		await deleteReminder(params.id!, id, locals);
 		return { success: true };
-	},
+	}),
 
 	suggest: async ({ locals, params, request }) => {
 		const data = await request.formData();
