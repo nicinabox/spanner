@@ -10,14 +10,16 @@ import { recordFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-	const vehicle = await getVehicle(params.id!, locals);
+	const [vehicle, record, classifications] = await Promise.all([
+		getVehicle(params.id!, locals),
+		getHistoryEntry(params.id!, params.recordId!, locals),
+		getClassifications(params.id!, locals),
+	]);
 
 	if (vehicle.retired) {
 		redirect(303, `/vehicles/${params.id}`);
 	}
 
-	const record = await getHistoryEntry(params.id!, params.recordId!, locals);
-	const classifications = await getClassifications(params.id!, locals);
 	return { vehicle, record, classifications };
 };
 

@@ -30,13 +30,14 @@ const scheduleFormSchema = v.object({
 });
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-	const vehicle = await getVehicle(params.id!, locals);
+	const [vehicle, classifications] = await Promise.all([
+		getVehicle(params.id!, locals),
+		getClassifications(params.id!, locals),
+	]);
 
 	if (vehicle.retired) {
 		redirect(303, `/vehicles/${params.id}`);
 	}
-
-	const classifications = await getClassifications(params.id!, locals);
 
 	return { vehicle, classifications };
 };

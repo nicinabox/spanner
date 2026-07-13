@@ -7,8 +7,10 @@ import { reminderFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-	const vehicle = await getVehicle(params.id!, locals);
-	const reminder = await getReminder(params.id!, params.reminderId!, locals);
+	const [vehicle, reminder] = await Promise.all([
+		getVehicle(params.id!, locals),
+		getReminder(params.id!, params.reminderId!, locals),
+	]);
 
 	return { vehicle, reminder };
 };

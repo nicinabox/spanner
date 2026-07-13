@@ -14,8 +14,10 @@ import { serviceScheduleFormSchema, scheduleDeferFormSchema } from '../../schema
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-	const vehicle = await getVehicle(params.id!, locals);
-	const schedule = await getServiceSchedule(params.id!, params.scheduleId!, locals);
+	const [vehicle, schedule] = await Promise.all([
+		getVehicle(params.id!, locals),
+		getServiceSchedule(params.id!, params.scheduleId!, locals),
+	]);
 
 	return { vehicle, schedule };
 };
