@@ -33,5 +33,7 @@ export const calculateDeltaMileage = (record: HistoryEntry, history: HistoryEntr
 };
 
 export function sortNewestDateFirst(a: HistoryEntry, b: HistoryEntry) {
-	return new Date(b.date).getTime() - new Date(a.date).getTime();
+	const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+	if (dateDiff !== 0) return dateDiff;
+	return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
 }
