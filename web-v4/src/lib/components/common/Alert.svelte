@@ -17,6 +17,14 @@
 	});
 
 	export type AlertVariant = VariantProps<typeof alertVariants>['variant'];
+
+	export type AlertProps = {
+		variant?: AlertVariant;
+		role?: 'alert' | 'status';
+		class?: ClassValue;
+		dismissible?: boolean;
+		children: Snippet;
+	};
 </script>
 
 <script lang="ts">
@@ -25,21 +33,13 @@
 	import type { Snippet } from 'svelte';
 	import type { ClassValue } from 'svelte/elements';
 
-	type Props = {
-		variant?: AlertVariant;
-		role?: 'alert' | 'status';
-		class?: ClassValue;
-		dismissible?: boolean;
-		children: Snippet;
-	};
-
 	let {
 		role = 'status',
 		variant = role === 'alert' ? 'negative' : 'info',
 		class: className,
 		dismissible = false,
 		children,
-	}: Props = $props();
+	}: AlertProps = $props();
 
 	let dismissed = $state(false);
 </script>
