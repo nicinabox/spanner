@@ -268,7 +268,7 @@
 		{/each}
 	{/if}
 
-	<input type="hidden" name="attachments_to_delete" value={markedForDeletion.join(',')} />
+	<input type="hidden" name="attachmentsToDelete" value={markedForDeletion.join(',')} />
 
 	<div class="flex gap-3">
 		<Button type="submit" disabled={submitting}>

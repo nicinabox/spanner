@@ -27,6 +27,7 @@ export interface RecordCreateData {
 	cost?: string | null;
 	recordType?: string | null;
 	classificationIds?: number[];
+	attachmentsToDelete?: string[];
 }
 
 export type RecordUpdateData = Partial<RecordCreateData>;

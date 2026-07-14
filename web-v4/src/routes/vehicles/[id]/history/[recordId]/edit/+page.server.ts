@@ -29,16 +29,12 @@ export const actions = {
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		// Process deletions BEFORE update so the multipart PUT doesn't include them.
-		// REVIEW: casing
-		const toDelete = (formData.get('attachments_to_delete')?.toString() ?? '')
-			.split(',')
-			.map((s) => s.trim())
-			.filter(Boolean);
+		const { attachmentsToDelete, ...parseData } = parsed.data;
 
-		const body = encode({ record: parsed.data });
+		const body = encode({ record: parseData });
 
 		// REVIEW: should be able to batch
-		for (const signedId of toDelete) {
+		for (const signedId of attachmentsToDelete ?? []) {
 			await deleteAttachment(params.id!, params.recordId!, signedId, locals);
 		}
 		await updateHistoryEntry(params.id!, params.recordId!, body, locals);

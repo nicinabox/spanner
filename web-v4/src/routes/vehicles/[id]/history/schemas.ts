@@ -19,6 +19,17 @@ export const recordFormSchema = v.object({
 	cost: v.optional(numberSchema),
 	classificationIds: v.optional(v.union([v.string(), v.array(v.string())])),
 	attachments: v.optional(attachmentsSchema),
+	attachmentsToDelete: v.optional(
+		v.pipe(
+			v.string(),
+			v.transform((s) =>
+				s
+					.split(',')
+					.map((s) => s.trim())
+					.filter(Boolean),
+			),
+		),
+	),
 });
 
 export type RecordFormData = v.InferOutput<typeof recordFormSchema>;
