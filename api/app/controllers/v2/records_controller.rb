@@ -44,6 +44,7 @@ module V2
       record.reload
       sync_classifications(record) if has_manual_ids
       record.attachments.attach(params[:record][:attachments]) if params[:record][:attachments].present?
+      purge_attachments!(record)
       render json: record
     end
 
@@ -101,6 +102,15 @@ module V2
         raise(ActiveRecord::RecordInvalid, Record.new.tap do |r|
           r.errors.add(:attachments, 'exceeds the 10MB size limit')
         end)
+      end
+    end
+
+    def purge_attachments!(record)
+      signed_ids = params.dig(:record, :attachments_to_delete)
+      return if signed_ids.blank?
+
+      record.attachments.each do |attachment|
+        attachment.purge if signed_ids.include?(attachment.signed_id)
       end
     end
   end

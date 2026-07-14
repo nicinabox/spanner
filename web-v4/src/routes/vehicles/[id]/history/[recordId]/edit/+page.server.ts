@@ -6,7 +6,6 @@ import { withActionErrors } from '$lib/utils/actions';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { recordFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
-import { deleteAttachment } from '$lib/data/attachments';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const [vehicle, record, classifications] = await Promise.all([
@@ -28,15 +27,7 @@ export const actions = {
 		const parsed = await validate(decode(formData), recordFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		// Process deletions BEFORE update so the multipart PUT doesn't include them.
-		const { attachmentsToDelete, ...parseData } = parsed.data;
-
-		const body = encode({ record: parseData });
-
-		// REVIEW: should be able to batch
-		for (const signedId of attachmentsToDelete ?? []) {
-			await deleteAttachment(params.id!, params.recordId!, signedId, locals);
-		}
+		const body = encode({ record: parsed.data });
 		await updateHistoryEntry(params.id!, params.recordId!, body, locals);
 
 		redirect(303, `/vehicles/${params.id}`);
