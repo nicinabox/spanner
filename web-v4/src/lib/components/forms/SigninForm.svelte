@@ -8,6 +8,7 @@
 	import Alert from '../common/Alert.svelte';
 	import type { FormError } from '$lib/utils/form';
 	import { getTimeZoneOffset } from '$lib/data/client';
+	import ErrorSummary from '../ErrorSummary.svelte';
 
 	interface Props {
 		form: ActionData;
@@ -61,16 +62,16 @@
 
 {#if form?.status === 'pending'}
 	<form method="post" action="?/signinWithToken" use:enhance class="w-full">
-		<p class="mb-4 text-lg">
+		<Alert variant="positive" class="mb-4 text-lg">
 			We sent a sign-in link to your email. Click the link to sign in instantly.
-		</p>
+		</Alert>
 
 		<div class="my-6 flex items-center gap-4">
 			<div class="text-xs text-ink-500 font-medium tracking-wider divider">OR</div>
 		</div>
 
 		<fieldset class="min-w-0">
-			<Field name="token" label="Enter your token" errors={form.errors}>
+			<Field name="token" label="Enter your token" errors={form.errors} required>
 				<Input name="token" autocomplete="off" required />
 			</Field>
 		</fieldset>
@@ -81,13 +82,10 @@
 		</div>
 	</form>
 {:else}
-	<form method="post" action="?/login" use:enhance class="w-full">
+	<form method="post" action="?/sendMagicLink" use:enhance class="w-full">
+		<ErrorSummary {formErrors} />
+
 		<input type="hidden" name="timeZoneOffset" value={tzOffset} />
-		{#if formErrors.length > 0}
-			<Alert class="mb-4">
-				{formErrors[0]?.title || 'Invalid email or password'}
-			</Alert>
-		{/if}
 
 		<fieldset class="min-w-0">
 			<Field
@@ -150,7 +148,7 @@
 					Sign in with password
 				</Button>
 			{:else}
-				<Button type="submit" block>Sign in</Button>
+				<Button type="submit" formaction="?/signinWithPassword" block>Sign in</Button>
 				<Button variant="ghost" block href={`/reset-password?email=${encodeURIComponent(email)}`}
 					>Forgot password?</Button
 				>

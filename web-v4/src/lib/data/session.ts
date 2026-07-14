@@ -29,7 +29,7 @@ export const login = async (
 	opts?: RequestOpts
 ) => {
 	const { timeZoneOffset, ...body } = data;
-	return request<{ auth_token?: string }>('/login', {
+	return request<Session>('/login', {
 		...opts,
 		method: 'POST',
 		json: body,

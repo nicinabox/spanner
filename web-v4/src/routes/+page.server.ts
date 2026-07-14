@@ -1,27 +1,29 @@
 import { PUBLIC_EMAIL_ENABLED } from '$app/env/private';
 import * as session from '$lib/data/session';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, isRedirect, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { setSession } from '$lib/utils/session';
 import { getCurrentUser } from '$lib/data/user';
 import { safeAsync } from '$lib/utils/async';
 import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
-import { emailSchema, passwordSchema } from '$lib/schemas/auth';
+import { emailSchema } from '$lib/schemas/auth';
 import * as v from 'valibot';
 
 const loginSchema = v.object({
 	email: emailSchema,
-	password: v.optional(passwordSchema),
+	password: v.optional(v.string()),
+	timeZoneOffset: v.optional(v.string()),
+});
+
+const magicLinkSchema = v.object({
+	email: emailSchema,
 	timeZoneOffset: v.optional(v.string()),
 });
 
 const tokenSchema = v.object({
 	token: v.pipe(v.string("Token can't be blank"), v.trim(), v.minLength(1, "Token can't be blank")),
 });
-
-const isRedirect = (error: unknown): boolean =>
-	typeof error === 'object' && error !== null && 'location' in error;
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const [user] = await safeAsync(getCurrentUser(locals));
@@ -36,24 +38,15 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	login: withActionErrors(async ({ request, cookies, locals }) => {
+	signinWithPassword: withActionErrors(async ({ request, cookies, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, loginSchema);
 		if (parsed.errors) return fail(401, { errors: parsed.errors });
 
 		try {
-			const result = await session.login({
-				email: parsed.data.email,
-				password: parsed.data.password,
-				timeZoneOffset: parsed.data.timeZoneOffset,
-			}, locals);
-
-			if (result && typeof result === 'object' && 'authToken' in result) {
-				await setSession(cookies, result as session.Session);
-				redirect(303, '/vehicles');
-			}
-
-			return { status: 'pending' };
+			const result = await session.login(parsed.data, locals);
+			await setSession(cookies, result);
+			redirect(303, '/vehicles');
 		} catch (error) {
 			if (isRedirect(error)) throw error;
 			return fail(401, {
@@ -62,19 +55,20 @@ export const actions = {
 		}
 	}),
 
-	magicLink: withActionErrors(async ({ request, locals }) => {
+	sendMagicLink: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, loginSchema);
+		const parsed = parseForm(formData, magicLinkSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		try {
-			await session.login({
-				email: parsed.data.email,
-			}, locals);
-
+			await session.login(
+				{
+					email: parsed.data.email,
+				},
+				locals,
+			);
 			return { status: 'pending' };
-		} catch (error) {
-			if (isRedirect(error)) throw error;
+		} catch {
 			return fail(422, {
 				errors: [{ id: 'form', title: 'Could not send magic link. Please try again.' }],
 			});
