@@ -38,11 +38,12 @@ COPY --from=build /app /app
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
     chown -R 1000:1000 db log storage tmp
-USER 1000:1000
 
 EXPOSE 3001
 
 COPY docker-entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/docker-entrypoint.sh
+
+USER 1000:1000
 
 CMD ["/usr/bin/docker-entrypoint.sh"]
