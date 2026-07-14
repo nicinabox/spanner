@@ -2,7 +2,7 @@ import { getCurrentUser } from '$lib/data/user';
 import { getAllVehicles, type Sortable, type VehicleSortStrategy, type Order } from '$lib/data/vehicles';
 import { updateUser } from '$lib/data/user';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate } from '$lib/utils/formData';
 import { fail } from '@sveltejs/kit';
 import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	updateUserPreferences: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, userPreferencesSchema);
+		const parsed = await validate(decode(formData), userPreferencesSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		const user = await updateUser(

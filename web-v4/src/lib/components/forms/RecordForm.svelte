@@ -136,11 +136,11 @@
 		actionErrors = [];
 		const fd = new FormData();
 		for (const [key, value] of formData.entries()) {
-			if (key.startsWith('record[attachments]')) continue;
+			if (key.startsWith('attachments[') || key === 'attachments') continue;
 			fd.append(key, value);
 		}
 		for (const file of selectedFiles) {
-			fd.append('record[attachments][]', file);
+			fd.append('attachments[]', file);
 		}
 		cancel();
 		fetch(formAction, {
@@ -262,9 +262,9 @@
 		<input type="hidden" name="id" value={record.id} />
 
 		{#each selectedClassificationIds as cid}
-			<input type="hidden" name="record[classificationIds][]" value={cid} />
+			<input type="hidden" name="classificationIds[]" value={cid} />
 		{:else}
-			<input type="hidden" name="record[classificationIds][]" value="" />
+			<input type="hidden" name="classificationIds[]" value="" />
 		{/each}
 	{/if}
 

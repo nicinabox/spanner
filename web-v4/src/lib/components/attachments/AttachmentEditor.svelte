@@ -141,7 +141,7 @@
 
 	<div>
 		<FileInput
-			name="record[attachments][]"
+			name="attachments[]"
 			multiple
 			buttonLabel="Add files"
 			onChange={handleFileInput}

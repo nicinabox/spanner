@@ -5,7 +5,7 @@ import {
 	saveVehiclePreferences,
 	unsubscribeAction,
 } from '$lib/data/settings';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate } from '$lib/utils/formData';
 import { booleanSchema } from '$lib/schemas';
 import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
@@ -42,7 +42,7 @@ export const actions = {
 	update: async ({ params, request }) => {
 		const token = params.token!;
 		const formData = await request.formData();
-		const parsed = parseForm(formData, preferencesFormSchema);
+		const parsed = await validate(decode(formData), preferencesFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		try {

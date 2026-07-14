@@ -6,7 +6,7 @@ import { setSession } from '$lib/utils/session';
 import { getCurrentUser } from '$lib/data/user';
 import { safeAsync } from '$lib/utils/async';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate } from '$lib/utils/formData';
 import { emailSchema } from '$lib/schemas/auth';
 import * as v from 'valibot';
 
@@ -40,7 +40,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	signinWithPassword: withActionErrors(async ({ request, cookies, locals }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, loginSchema);
+		const parsed = await validate(decode(formData), loginSchema);
 		if (parsed.errors) return fail(401, { errors: parsed.errors });
 
 		try {
@@ -57,7 +57,7 @@ export const actions = {
 
 	sendMagicLink: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, magicLinkSchema);
+		const parsed = await validate(decode(formData), magicLinkSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		try {
@@ -77,7 +77,7 @@ export const actions = {
 
 	signinWithToken: withActionErrors(async ({ cookies, request }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, tokenSchema);
+		const parsed = await validate(decode(formData), tokenSchema);
 		if (parsed.errors) return fail(422, { status: 'pending', errors: parsed.errors });
 
 		const sess = await session.signin(parsed.data.token);

@@ -8,7 +8,7 @@ import {
 } from '$lib/data/serviceSchedules';
 import { updateClassification } from '$lib/data/classifications';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate } from '$lib/utils/formData';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { serviceScheduleFormSchema, scheduleDeferFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
@@ -25,7 +25,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions = {
 	update: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, serviceScheduleFormSchema);
+		const parsed = await validate(decode(formData), serviceScheduleFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		const data = parsed.data;
@@ -64,7 +64,7 @@ export const actions = {
 
 	defer: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, scheduleDeferFormSchema);
+		const parsed = await validate(decode(formData), scheduleDeferFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		await deferServiceSchedule(

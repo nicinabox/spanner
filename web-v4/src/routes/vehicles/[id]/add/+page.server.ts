@@ -1,18 +1,17 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
-import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
+import { uploadRecord } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
 import { createServiceSchedule, type ServiceScheduleCreateData } from '$lib/data/serviceSchedules';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
-import { validateAttachments } from '$lib/utils/file-validation';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { reminderFormSchema } from '../reminders/schemas';
 import { recordFormSchema } from '../history/schemas';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
 import { numberSchema } from '$lib/schemas';
+import { decode, encode, validate } from '$lib/utils/formData';
 
 const mileageAdjustmentSchema = v.object({
 	mileage: v.optional(numberSchema),
@@ -43,40 +42,15 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions = {
 	record: withActionErrors(async ({ request, locals, params, url }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, recordFormSchema);
+		const parsed = await validate(decode(formData), recordFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		// Read attachments and classification IDs after schema parse so the
-		// iterator isn't disturbed by the FormData → entries conversion.
-		const files = formData.getAll('record[attachments][]') as File[];
-		const classificationIds = formData.getAll('record[classificationIds][]');
+		const body = encode({ record: parsed.data });
 
-		const validation = await validateAttachments(files);
-		if (!validation.valid) {
-			return fail(422, {
-				errors: [{ id: 'attachments', title: validation.reason }],
-			});
-		}
-
-		const body = toMultipartFormData(
-			{
-				date: parsed.data.date,
-				notes: parsed.data.notes,
-				mileage: parsed.data.mileage,
-				cost: parsed.data.cost,
-			},
-			{ prefix: 'record' },
-		);
-		for (const file of files) {
-			body.append('record[attachments][]', file);
-		}
-		for (const id of classificationIds) {
-			body.append('record[classificationIds][]', id);
-		}
+		await uploadRecord(params.id!, undefined, body, locals);
 
 		// When a record is created from a reminder, delete that reminder for housekeeping
 		const reminderId = url.searchParams.get('reminder_id');
-		await uploadRecord(params.id!, undefined, body, locals);
 		if (reminderId) {
 			await deleteReminder(params.id!, reminderId, locals);
 		}
@@ -86,7 +60,7 @@ export const actions = {
 
 	reminder: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, reminderFormSchema);
+		const parsed = await validate(decode(formData), reminderFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		await createVehicleReminder(params.id!, parsed.data, locals);
@@ -95,7 +69,7 @@ export const actions = {
 
 	mileageAdjustment: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, mileageAdjustmentSchema);
+		const parsed = await validate(decode(formData), mileageAdjustmentSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 		if (typeof parsed.data.mileage !== 'number') {
 			return fail(400, { errors: [{ id: 'mileage', title: 'Mileage is required' }] });
@@ -116,7 +90,7 @@ export const actions = {
 
 	schedule: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, scheduleFormSchema);
+		const parsed = await validate(decode(formData), scheduleFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		const { classificationId, name } = parsed.data;
