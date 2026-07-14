@@ -12,20 +12,18 @@ import { reminderFormSchema } from '../reminders/schemas';
 import { recordFormSchema } from '../history/schemas';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
+import { numberSchema } from '$lib/schemas';
 
 const mileageAdjustmentSchema = v.object({
-	mileage: v.nullish(
-		v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))),
-		null,
-	),
+	mileage: v.nullish(numberSchema, null),
 });
 
 const scheduleFormSchema = v.object({
 	classificationId: v.nullish(numberSchema, null),
 	name: v.optional(v.string(''), ''),
 	keywords: v.optional(v.string(''), ''),
-	distanceInterval: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
-	monthInterval: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+	distanceInterval: v.nullish(numberSchema, null),
+	monthInterval: v.nullish(numberSchema, null),
 	notes: v.optional(v.string(''), ''),
 });
 
@@ -91,16 +89,7 @@ export const actions = {
 		const parsed = parseForm(formData, reminderFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		await createVehicleReminder(
-			params.id!,
-			{
-				notes: parsed.data.notes,
-				reminderType: parsed.data.reminderType || null,
-				date: parsed.data.date || null,
-				mileage: parsed.data.mileage ?? null,
-			} as never,
-			locals,
-		);
+		await createVehicleReminder(params.id!, parsed.data, locals);
 		redirect(303, `/vehicles/${params.id}/tasks`);
 	}),
 
@@ -119,7 +108,7 @@ export const actions = {
 				notes: 'Mileage adjustment',
 				mileage: parsed.data.mileage,
 				recordType: 'mileage adjustment',
-			} as never,
+			},
 			locals,
 		);
 		redirect(303, `/vehicles/${params.id}`);

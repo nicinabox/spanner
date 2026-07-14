@@ -13,10 +13,6 @@ export const getHTTPErrors = (error: unknown): { errors: FormError[] } => {
 	return { errors: [{ id: 'form', title: 'An unexpected error occurred' }] };
 };
 
-/**
- * Validate a single required field on parsed form data. Returns a fail-shaped
- * error response (for use with `return fail(400, ...)`) or null.
- */
 export function requireField(
 	data: Record<string, unknown>,
 	key: string,
@@ -28,16 +24,6 @@ export function requireField(
 
 type FormActionEvent = RequestEvent & { request: Request };
 
-/**
- * Wrap a SvelteKit action handler with the standard error pipeline. The
- * handler keeps its full return type via the `TResult` generic, so
- * downstream `form?.x` reads stay type-safe.
- *
- * Catches any error the handler throws (other than SvelteKit `redirect`),
- * converts it via `getHTTPErrors`, and returns `fail(422, ...)`. The handler
- * is responsible for parsing FormData, schema validation, and any
- * `requireField` checks.
- */
 export function withActionErrors<TResult>(
 	handler: (event: FormActionEvent) => Promise<TResult>,
 ): (event: FormActionEvent) => Promise<TResult | ReturnType<typeof fail<{ errors: FormError[] }>>> {
