@@ -2,6 +2,7 @@ import { request } from './server';
 import type { RequestOpts } from './types';
 import type { Attachment } from './attachments';
 import type { Classification } from './classifications';
+import { withBody } from './client';
 
 export type HistoryEntryType = 'mileage adjustment';
 
@@ -26,6 +27,7 @@ export interface RecordCreateData {
 	cost?: string | null;
 	recordType?: string | null;
 	classificationIds?: number[];
+	attachmentsToDelete?: string[];
 }
 
 export type RecordUpdateData = Partial<RecordCreateData>;
@@ -44,26 +46,26 @@ export const getHistoryEntry = (
 
 export const createHistoryEntry = (
 	vehicleId: number | string,
-	data: RecordCreateData,
+	data: RecordCreateData | FormData,
 	opts: RequestOpts,
 ) => {
 	return request<HistoryEntry>(`/vehicles/${vehicleId}/records`, {
 		...opts,
+		...withBody(data),
 		method: 'POST',
-		json: data,
 	});
 };
 
 export const updateHistoryEntry = (
 	vehicleId: number | string,
 	id: number | string,
-	data: RecordUpdateData,
+	data: RecordUpdateData | FormData,
 	opts: RequestOpts,
 ) => {
 	return request<HistoryEntry>(`/vehicles/${vehicleId}/records/${id}`, {
 		...opts,
+		...withBody(data),
 		method: 'PUT',
-		json: data,
 	});
 };
 
@@ -75,5 +77,17 @@ export const deleteHistoryEntry = (
 	return request<void>(`/vehicles/${vehicleId}/records/${id}`, {
 		...opts,
 		method: 'DELETE',
+	});
+};
+
+export const importHistory = (
+	vehicleId: string | number,
+	formData: FormData,
+	opts: RequestOpts,
+) => {
+	return request(`/vehicles/${vehicleId}/import`, {
+		...opts,
+		method: 'POST',
+		body: formData,
 	});
 };

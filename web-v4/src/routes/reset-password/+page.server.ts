@@ -1,6 +1,6 @@
 import { requestReset } from '$lib/data/session';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate } from '$lib/utils/formData';
 import { fail } from '@sveltejs/kit';
 import { emailSchema } from '$lib/schemas/auth';
 import * as v from 'valibot';
@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ url }) => {
 export const actions = {
 	requestReset: withActionErrors(async (event) => {
 		const formData = await event.request.formData();
-		const parsed = parseForm(formData, requestResetSchema);
+		const parsed = await validate(decode(formData), requestResetSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		await requestReset({ email: parsed.data.email }, event.locals);

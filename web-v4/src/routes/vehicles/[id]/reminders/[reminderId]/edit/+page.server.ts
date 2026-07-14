@@ -1,7 +1,7 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { getReminder, updateReminder, deleteReminder } from '$lib/data/reminders';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate } from '$lib/utils/formData';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { reminderFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions = {
 	update: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, reminderFormSchema);
+		const parsed = await validate(decode(formData), reminderFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		await updateReminder(

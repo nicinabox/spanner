@@ -2,7 +2,7 @@ import { requestEmailChange, deleteAccount, updateWebhookUrl } from '$lib/data/s
 import { setPassword } from '$lib/data/session';
 import { getCurrentUser } from '$lib/data/user';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate } from '$lib/utils/formData';
 import { safeAsync } from '$lib/utils/async';
 import { fail, redirect } from '@sveltejs/kit';
 import { emailSchema, passwordSchema } from '$lib/schemas/auth';
@@ -40,7 +40,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	changeEmail: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, changeEmailSchema);
+		const parsed = await validate(decode(formData), changeEmailSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		await requestEmailChange(parsed.data.email, locals);
@@ -49,7 +49,7 @@ export const actions = {
 
 	changePassword: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, changePasswordSchema);
+		const parsed = await validate(decode(formData), changePasswordSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		await setPassword({ password: parsed.data.password }, locals);
@@ -63,7 +63,7 @@ export const actions = {
 
 	updateWebhook: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, webhookFormSchema);
+		const parsed = await validate(decode(formData), webhookFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		await updateWebhookUrl(parsed.data.webhookUrl, locals);

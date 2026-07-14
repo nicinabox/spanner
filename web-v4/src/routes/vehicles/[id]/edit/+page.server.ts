@@ -1,6 +1,6 @@
 import { deleteVehicle, getVehicle, updateVehicle } from '$lib/data/vehicles';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate } from '$lib/utils/formData';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { vehicleFormSchema } from '../../schemas';
 import * as v from 'valibot';
@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions = {
 	update: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, editVehicleFormSchema);
+		const parsed = await validate(decode(formData), editVehicleFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		await updateVehicle(params.id!, parsed.data, locals);

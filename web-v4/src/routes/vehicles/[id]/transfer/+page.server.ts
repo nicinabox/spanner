@@ -1,8 +1,14 @@
 import { getVehicle } from '$lib/data/vehicles';
-import { importRecords } from '$lib/data/multipart';
-import { validateImportFile } from '$lib/utils/file-validation';
+import { decode, validate } from '$lib/utils/formData';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import * as v from 'valibot';
+import { importHistory } from '$lib/data/history';
+
+const importSchema = v.object({
+	importFile: v.pipe(v.file(), v.mimeType(['text/csv', 'application/vnd.ms-excel', 'text/plain'])),
+	fuelly: v.optional(v.boolean()),
+});
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
@@ -12,23 +18,15 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions = {
 	import: async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const file = formData.get('vehicle[import_file]') as File | null;
-
-		if (!file || file.size === 0) {
+		const parsed = await validate(decode(formData), importSchema);
+		if (parsed.errors) {
 			return fail(422, {
-				errors: [{ id: 'form', title: 'Please select a CSV file to import' }],
-			});
-		}
-
-		const validation = await validateImportFile(file, { maxSize: 10 * 1024 * 1024 });
-		if (!validation.valid) {
-			return fail(422, {
-				errors: [{ id: 'form', title: validation.reason }],
+				errors: [{ id: 'form', title: 'Please select a valid CSV file to import' }],
 			});
 		}
 
 		try {
-			await importRecords(params.id!, formData, locals);
+			await importHistory(params.id!, formData, locals);
 		} catch {
 			return fail(422, {
 				errors: [

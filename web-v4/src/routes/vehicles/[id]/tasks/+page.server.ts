@@ -9,12 +9,14 @@ import {
 } from '$lib/data/serviceSchedules';
 import { getVehicleReminders } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
-import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
-import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate, encode } from '$lib/utils/formData';
 import { fail, redirect } from '@sveltejs/kit';
 import * as v from 'valibot';
 import type { PageServerLoad, Actions } from './$types';
+import { numberSchema } from '$lib/schemas';
+import { withActionErrors } from '$lib/utils/actions';
+import { attachmentsSchema } from '../history/schemas';
+import { createHistoryEntry } from '$lib/data/history';
 
 const completeFormSchema = v.object({
 	id: v.string(),
@@ -22,8 +24,8 @@ const completeFormSchema = v.object({
 	notes: v.optional(v.string()),
 	mileage: v.optional(v.string()),
 	cost: v.optional(v.string()),
+	attachments: v.optional(attachmentsSchema),
 });
-import { numberSchema } from '$lib/schemas';
 
 const deferFormSchema = v.object({
 	id: v.optional(numberSchema),
@@ -54,20 +56,19 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions: Actions = {
 	complete: async ({ locals, params, request }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, completeFormSchema);
+		const parsed = await validate(decode(formData), completeFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		const { id, date, notes, mileage, cost } = parsed.data;
-		const files = formData.getAll('record[attachments][]') as File[];
-
-		const body = toMultipartFormData({ date, notes, mileage, cost }, { prefix: 'record' });
-		for (const file of files) {
-			body.append('record[attachments][]', file);
-		}
+		const body = encode({ record: parsed.data });
 
 		try {
-			const record = await uploadRecord(params.id!, undefined, body, locals);
-			await completeServiceSchedule(params.id!, id, { record_id: (record as any).id }, locals);
+			const result = await createHistoryEntry(params.id!, body, locals);
+			await completeServiceSchedule(
+				params.id!,
+				parsed.data.id,
+				{ record_id: (result as any).id },
+				locals,
+			);
 			redirect(303, `/vehicles/${params.id}/tasks`);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Failed to complete schedule';
@@ -77,7 +78,7 @@ export const actions: Actions = {
 
 	defer: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, deferFormSchema);
+		const parsed = await validate(decode(formData), deferFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 		if (!parsed.data.id)
 			return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
@@ -96,7 +97,7 @@ export const actions: Actions = {
 
 	clearDefer: withActionErrors(async ({ locals, params, request }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, idOnlySchema);
+		const parsed = await validate(decode(formData), idOnlySchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 		if (!parsed.data.id)
 			return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });

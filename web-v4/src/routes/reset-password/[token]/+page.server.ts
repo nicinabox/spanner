@@ -2,7 +2,7 @@ import { resetPassword } from '$lib/data/session';
 import { setSession } from '$lib/utils/session';
 import { HTTPError } from '$lib/data/client';
 import { withActionErrors } from '$lib/utils/actions';
-import { parseForm } from '$lib/utils/schema';
+import { decode, validate } from '$lib/utils/formData';
 import { fail, redirect } from '@sveltejs/kit';
 import { passwordSchema } from '$lib/schemas/auth';
 import * as v from 'valibot';
@@ -33,7 +33,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 export const actions = {
 	resetPassword: withActionErrors(async ({ request, params, cookies }) => {
 		const formData = await request.formData();
-		const parsed = parseForm(formData, resetPasswordSchema);
+		const parsed = await validate(decode(formData), resetPasswordSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		try {
