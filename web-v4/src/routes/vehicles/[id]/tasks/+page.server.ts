@@ -16,14 +16,23 @@ import { fail, redirect } from '@sveltejs/kit';
 import * as v from 'valibot';
 import type { PageServerLoad, Actions } from './$types';
 
+const completeFormSchema = v.object({
+	id: v.string(),
+	date: v.optional(v.string()),
+	notes: v.optional(v.string()),
+	mileage: v.optional(v.string()),
+	cost: v.optional(v.string()),
+});
+import { numberSchema } from '$lib/schemas';
+
 const deferFormSchema = v.object({
-	id: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
-	months: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
-	distance: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+	id: v.optional(numberSchema),
+	months: v.optional(numberSchema),
+	distance: v.optional(numberSchema),
 });
 
 const idOnlySchema = v.object({
-	id: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+	id: v.optional(numberSchema),
 });
 
 export const load: PageServerLoad = async ({ locals, params }) => {
@@ -32,7 +41,11 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		getServiceSchedules(params.id!, locals),
 		getClassifications(params.id!, locals),
 		getVehicleReminders(params.id!, locals),
-		getPresets({ authToken: locals.authToken, webUrl: locals.webUrl, params: { distance_unit: vehicle.distanceUnit } }),
+		getPresets({
+			authToken: locals.authToken,
+			webUrl: locals.webUrl,
+			params: { distance_unit: vehicle.distanceUnit },
+		}),
 	]);
 
 	return { vehicle, schedules, classifications, reminders, presetGroups };
@@ -41,17 +54,13 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 export const actions: Actions = {
 	complete: async ({ locals, params, request }) => {
 		const formData = await request.formData();
-		const id = formData.get('id')?.toString() ?? '';
-		const date = formData.get('date')?.toString();
-		const notes = formData.get('notes')?.toString();
-		const mileage = formData.get('mileage')?.toString();
-		const cost = formData.get('cost')?.toString();
+		const parsed = parseForm(formData, completeFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
+
+		const { id, date, notes, mileage, cost } = parsed.data;
 		const files = formData.getAll('record[attachments][]') as File[];
 
-		const body = toMultipartFormData(
-			{ date, notes, mileage: mileage || null, cost: cost || null },
-			{ prefix: 'record' },
-		);
+		const body = toMultipartFormData({ date, notes, mileage, cost }, { prefix: 'record' });
 		for (const file of files) {
 			body.append('record[attachments][]', file);
 		}
@@ -70,14 +79,15 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, deferFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
-		if (!parsed.data.id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
+		if (!parsed.data.id)
+			return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
 
 		await deferServiceSchedule(
 			params.id!,
 			parsed.data.id,
 			{
-				months: parsed.data.months ?? null,
-				distance: parsed.data.distance ?? null,
+				months: parsed.data.months,
+				distance: parsed.data.distance,
 			},
 			locals,
 		);
@@ -88,7 +98,8 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, idOnlySchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
-		if (!parsed.data.id) return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
+		if (!parsed.data.id)
+			return fail(422, { errors: [{ id: 'form', title: 'Missing schedule id' }] });
 
 		await clearDeferServiceSchedule(params.id!, parsed.data.id, locals);
 		redirect(303, `/vehicles/${params.id}/tasks`);
@@ -115,8 +126,8 @@ export const actions: Actions = {
 				{
 					classificationName: preset.name,
 					keywords: preset.keywords,
-					distanceInterval: preset.intervals[distanceUnit] ?? null,
-					monthInterval: preset.intervals['mo'] ?? null,
+					distanceInterval: preset.intervals[distanceUnit],
+					monthInterval: preset.intervals['mo'],
 				},
 				opts,
 			);

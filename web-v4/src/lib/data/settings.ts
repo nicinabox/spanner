@@ -36,8 +36,8 @@ export const getUnsubscribeContext = (token: string, vehicleId?: number) => {
 };
 
 export type VehiclePreferencesUpdate = {
-	sendReminderEmails: boolean;
-	sendPromptForRecords: boolean;
+	sendReminderEmails?: boolean;
+	sendPromptForRecords?: boolean;
 };
 
 export const saveVehiclePreferences = (

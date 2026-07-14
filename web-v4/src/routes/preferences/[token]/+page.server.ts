@@ -5,7 +5,21 @@ import {
 	saveVehiclePreferences,
 	unsubscribeAction,
 } from '$lib/data/settings';
+import { parseForm } from '$lib/utils/schema';
+import { booleanSchema } from '$lib/schemas';
+import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
+
+const checkbox = v.pipe(
+	v.optional(v.string()),
+	v.transform((v) => v === 'on'),
+);
+
+const preferencesFormSchema = v.object({
+	vehicleId: v.pipe(v.string(), v.transform(Number), v.number('Vehicle is required')),
+	sendReminderEmails: booleanSchema,
+	sendPromptForRecords: booleanSchema,
+});
 
 export const load: PageServerLoad = async ({ params, url }) => {
 	const token = params.token;
@@ -28,19 +42,13 @@ export const actions = {
 	update: async ({ params, request }) => {
 		const token = params.token!;
 		const formData = await request.formData();
-		const vehicleId = Number(formData.get('vehicle_id'));
-
-		if (!vehicleId) {
-			return fail(422, { error: 'Vehicle is required.' });
-		}
-
-		const sendReminderEmails = formData.get('send_reminder_emails') === 'on';
-		const sendPromptForRecords = formData.get('send_prompt_for_records') === 'on';
+		const parsed = parseForm(formData, preferencesFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		try {
-			await saveVehiclePreferences(token, vehicleId, {
-				sendReminderEmails,
-				sendPromptForRecords,
+			await saveVehiclePreferences(token, parsed.data.vehicleId, {
+				sendReminderEmails: parsed.data.sendReminderEmails,
+				sendPromptForRecords: parsed.data.sendPromptForRecords,
 			});
 			return { success: true };
 		} catch {

@@ -8,7 +8,7 @@ export const reminderFormSchema = v.object({
 		v.picklist(['', 'date_or_mileage', 'mileage', 'date'] as const satisfies ReminderType[]),
 		'',
 	),
-	reminderDate: v.nullish(v.string(''), ''),
+	reminderDate: v.optional(v.string('')),
 	date: v.optional(v.string(''), ''),
-	mileage: v.nullish(numberSchema, null),
+	mileage: v.optional(numberSchema),
 });

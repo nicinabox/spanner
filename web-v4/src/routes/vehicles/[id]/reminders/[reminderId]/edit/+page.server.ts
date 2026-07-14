@@ -26,9 +26,9 @@ export const actions = {
 			params.reminderId!,
 			{
 				notes: parsed.data.notes,
-				reminderType: parsed.data.reminderType || null,
-				date: parsed.data.date || null,
-				mileage: parsed.data.mileage ?? null,
+				reminderType: parsed.data.reminderType,
+				date: parsed.data.date,
+				mileage: parsed.data.mileage,
 			},
 			locals,
 		);

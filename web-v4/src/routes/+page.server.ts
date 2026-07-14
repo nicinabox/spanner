@@ -12,7 +12,8 @@ import * as v from 'valibot';
 
 const loginSchema = v.object({
 	email: emailSchema,
-	password: v.optional(passwordSchema, ''),
+	password: v.optional(passwordSchema),
+	timeZoneOffset: v.optional(v.string()),
 });
 
 const tokenSchema = v.object({
@@ -40,13 +41,11 @@ export const actions = {
 		const parsed = parseForm(formData, loginSchema);
 		if (parsed.errors) return fail(401, { errors: parsed.errors });
 
-		const timeZoneOffset = formData.get('timeZoneOffset') as string | null;
-
 		try {
 			const result = await session.login({
 				email: parsed.data.email,
-				password: parsed.data.password || undefined,
-				timeZoneOffset: timeZoneOffset || undefined,
+				password: parsed.data.password,
+				timeZoneOffset: parsed.data.timeZoneOffset,
 			}, locals);
 
 			if (result && typeof result === 'object' && 'authToken' in result) {

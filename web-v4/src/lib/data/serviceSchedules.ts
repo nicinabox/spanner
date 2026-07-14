@@ -27,8 +27,8 @@ export interface ServiceScheduleCreateData {
 	classificationId?: number;
 	classificationName?: string;
 	keywords?: string[];
-	distanceInterval: number | null;
-	monthInterval: number | null;
+	distanceInterval?: number;
+	monthInterval?: number;
 	notes?: string | null;
 }
 

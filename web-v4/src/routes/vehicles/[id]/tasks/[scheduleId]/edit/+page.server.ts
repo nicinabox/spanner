@@ -40,11 +40,7 @@ export const actions = {
 					.filter(Boolean);
 			}
 			if (Object.keys(updateData).length > 0) {
-				await updateClassification(
-					data.classificationId,
-					updateData,
-					locals,
-				);
+				await updateClassification(data.classificationId, updateData, locals);
 			}
 		}
 
@@ -52,9 +48,9 @@ export const actions = {
 			params.id!,
 			params.scheduleId!,
 			{
-				classificationId: data.classificationId || undefined,
-				distanceInterval: data.distanceInterval ?? null,
-				monthInterval: data.monthInterval ?? null,
+				classificationId: data.classificationId,
+				distanceInterval: data.distanceInterval,
+				monthInterval: data.monthInterval,
 			},
 			locals,
 		);
@@ -75,8 +71,8 @@ export const actions = {
 			params.id!,
 			params.scheduleId!,
 			{
-				months: parsed.data.months ?? null,
-				distance: parsed.data.distance ?? null,
+				months: parsed.data.months,
+				distance: parsed.data.distance,
 			},
 			locals,
 		);

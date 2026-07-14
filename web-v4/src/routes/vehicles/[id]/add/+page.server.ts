@@ -15,15 +15,15 @@ import type { PageServerLoad } from './$types';
 import { numberSchema } from '$lib/schemas';
 
 const mileageAdjustmentSchema = v.object({
-	mileage: v.nullish(numberSchema, null),
+	mileage: v.optional(numberSchema),
 });
 
 const scheduleFormSchema = v.object({
-	classificationId: v.nullish(numberSchema, null),
+	classificationId: v.optional(numberSchema),
 	name: v.optional(v.string(''), ''),
 	keywords: v.optional(v.string(''), ''),
-	distanceInterval: v.nullish(numberSchema, null),
-	monthInterval: v.nullish(numberSchema, null),
+	distanceInterval: v.optional(numberSchema),
+	monthInterval: v.optional(numberSchema),
 	notes: v.optional(v.string(''), ''),
 });
 
@@ -136,7 +136,7 @@ export const actions = {
 		const serviceSchedule: ServiceScheduleCreateData = {
 			distanceInterval: parsed.data.distanceInterval,
 			monthInterval: parsed.data.monthInterval,
-			notes: parsed.data.notes || null,
+			notes: parsed.data.notes,
 		};
 
 		if (name) {
