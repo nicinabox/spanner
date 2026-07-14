@@ -5,7 +5,7 @@
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
-import InputAddon from '$lib/components/common/InputAddon.svelte';
+	import InputAddon from '$lib/components/common/InputAddon.svelte';
 	import NativeSelect from '$lib/components/common/NativeSelect.svelte';
 	import { formatDateISO, intlFormatDate, parseDateUTC } from '$lib/utils/date';
 	import { formatMileage, mileageLabel, MileageLabel } from '$lib/utils/vehicle';
@@ -13,7 +13,7 @@ import InputAddon from '$lib/components/common/InputAddon.svelte';
 	import type { Reminder, ReminderType } from '$lib/data/reminders';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
-	import { Alert } from '$lib';
+	import { Alert, ErrorSummary } from '$lib';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -72,13 +72,7 @@ import InputAddon from '$lib/components/common/InputAddon.svelte';
 	use:enhance
 	class="flex flex-col gap-6"
 >
-	{#if formErrors.length > 0}
-		<Alert role="alert">
-			{#each formErrors as e}
-				<p>{e.title}</p>
-			{/each}
-		</Alert>
-	{/if}
+	<ErrorSummary {formErrors} />
 
 	<fieldset>
 		<Field name="notes" label="Note" {errors} required>

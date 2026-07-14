@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance, applyAction } from '$app/forms';
 	import Button from '$lib/components/common/Button.svelte';
+	import ErrorSummary from '$lib/components/ErrorSummary.svelte';
 	import Field from '$lib/components/common/Field.svelte';
 	import Input from '$lib/components/common/Input.svelte';
 	import InputGroup from '$lib/components/common/InputGroup.svelte';
@@ -20,6 +21,8 @@
 	}
 
 	let { vehicle, schedule, action = '?/defer', errors = [], onsuccess }: Props = $props();
+
+	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 
 	let hasMonthInterval = $derived(schedule.monthInterval != null);
 	let hasDistanceInterval = $derived(schedule.distanceInterval != null);
@@ -44,6 +47,7 @@
 	autocomplete="off"
 >
 	<input type="hidden" name="id" value={schedule.id} />
+	<ErrorSummary {formErrors} />
 	<div class="space-y-3">
 		<div class="flex sm:gap-6 flex-col sm:flex-row *:flex-1">
 			{#if hasMonthInterval}
@@ -52,6 +56,7 @@
 					name="months"
 					hint="Push due date by months"
 					required={!bothShown}
+					{errors}
 				>
 					<InputGroup>
 						<Input
@@ -85,6 +90,7 @@
 					name="distance"
 					hint="Push mileage threshold by amount"
 					required={!bothShown}
+					{errors}
 				>
 					<InputGroup>
 						<Input
