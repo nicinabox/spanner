@@ -33,7 +33,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	return {
-		emailEnabled: PUBLIC_EMAIL_ENABLED !== 'false',
+		emailEnabled: PUBLIC_EMAIL_ENABLED,
 	};
 };
 

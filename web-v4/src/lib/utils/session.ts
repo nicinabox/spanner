@@ -8,7 +8,7 @@ export const sessionOptions: SessionOptions = {
 	cookieName: 'session',
 	ttl: 7_776_000, // 90 days
 	cookieOptions: {
-		secure: USE_SECURE_COOKIE !== 'false',
+		secure: USE_SECURE_COOKIE,
 		httpOnly: true,
 		sameSite: 'lax',
 		maxAge: 7_776_000 - 60, // expire cookie 60s before seal
