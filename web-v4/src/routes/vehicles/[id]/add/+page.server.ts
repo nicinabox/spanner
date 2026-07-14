@@ -3,7 +3,7 @@ import { createHistoryEntry } from '$lib/data/history';
 import { uploadRecord, toMultipartFormData } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
-import { createServiceSchedule, type CreateServiceScheduleData } from '$lib/data/serviceSchedules';
+import { createServiceSchedule, type ServiceScheduleCreateData } from '$lib/data/serviceSchedules';
 import { withActionErrors } from '$lib/utils/actions';
 import { parseForm } from '$lib/utils/schema';
 import { validateAttachments } from '$lib/utils/file-validation';
@@ -133,7 +133,7 @@ export const actions = {
 			});
 		}
 
-		const serviceSchedule: CreateServiceScheduleData['serviceSchedule'] = {
+		const serviceSchedule: ServiceScheduleCreateData = {
 			distanceInterval: parsed.data.distanceInterval,
 			monthInterval: parsed.data.monthInterval,
 			notes: parsed.data.notes || null,
@@ -150,7 +150,7 @@ export const actions = {
 			serviceSchedule.classificationId = classificationId ?? undefined;
 		}
 
-		await createServiceSchedule(params.id!, { serviceSchedule }, locals);
+		await createServiceSchedule(params.id!, serviceSchedule, locals);
 		redirect(303, `/vehicles/${params.id}/tasks`);
 	}),
 } satisfies Actions;

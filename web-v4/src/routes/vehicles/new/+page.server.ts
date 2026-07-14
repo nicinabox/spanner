@@ -10,7 +10,7 @@ export const actions = {
 		const parsed = parseForm(formData, vehicleFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		const vehicle = await createVehicle({ vehicle: parsed.data } as never, locals);
+		const vehicle = await createVehicle(parsed.data, locals);
 		redirect(303, `/vehicles/${vehicle.id}`);
 	}),
 } satisfies Actions;

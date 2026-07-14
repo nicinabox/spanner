@@ -10,13 +10,20 @@ export interface Classification {
 	updatedAt: string;
 }
 
+export interface ClassificationCreateData {
+	name: string;
+	keywords?: string[];
+}
+
+export type ClassificationUpdateData = Partial<ClassificationCreateData>;
+
 export const getClassifications = (vehicleId: number | string, opts: RequestOpts) => {
 	return request<Classification[]>(`/vehicles/${vehicleId}/classifications`, opts);
 };
 
 export const createClassification = (
 	vehicleId: number | string,
-	data: Record<string, unknown>,
+	data: ClassificationCreateData,
 	opts: RequestOpts,
 ) => {
 	return request<Classification>(`/vehicles/${vehicleId}/classifications`, {
@@ -28,7 +35,7 @@ export const createClassification = (
 
 export const updateClassification = (
 	id: number | string,
-	data: Record<string, unknown>,
+	data: ClassificationUpdateData,
 	opts: RequestOpts,
 ) => {
 	return request<Classification>(`/classifications/${id}`, {

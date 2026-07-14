@@ -27,7 +27,6 @@ export const actions = {
 			{
 				notes: parsed.data.notes,
 				reminderType: parsed.data.reminderType || null,
-				reminderDate: parsed.data.reminderDate,
 				date: parsed.data.date || null,
 				mileage: parsed.data.mileage ?? null,
 			},

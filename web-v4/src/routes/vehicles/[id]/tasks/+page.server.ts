@@ -113,12 +113,10 @@ export const actions: Actions = {
 			await createServiceSchedule(
 				params.id!,
 				{
-					serviceSchedule: {
-						classificationName: preset.name,
-						keywords: preset.keywords,
-						distanceInterval: preset.intervals[distanceUnit] ?? null,
-						monthInterval: preset.intervals['mo'] ?? null,
-					},
+					classificationName: preset.name,
+					keywords: preset.keywords,
+					distanceInterval: preset.intervals[distanceUnit] ?? null,
+					monthInterval: preset.intervals['mo'] ?? null,
 				},
 				opts,
 			);

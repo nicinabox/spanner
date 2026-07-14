@@ -42,7 +42,7 @@ export const actions = {
 			if (Object.keys(updateData).length > 0) {
 				await updateClassification(
 					data.classificationId,
-					{ classification: updateData },
+					updateData,
 					locals,
 				);
 			}

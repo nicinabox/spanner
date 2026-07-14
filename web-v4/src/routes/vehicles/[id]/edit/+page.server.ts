@@ -24,7 +24,7 @@ export const actions = {
 		const parsed = parseForm(formData, editVehicleFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		await updateVehicle(params.id!, { vehicle: parsed.data } as never, locals);
+		await updateVehicle(params.id!, parsed.data, locals);
 		redirect(303, vehiclePath(Number(params.id)));
 	}),
 	delete: withActionErrors(async ({ locals, params }) => {

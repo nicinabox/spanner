@@ -1,5 +1,5 @@
 import { request } from './server';
-import type { RequestOpts, UpdatableFields } from './types';
+import type { RequestOpts } from './types';
 import type { Sortable } from './vehicles';
 
 export interface User {
@@ -15,10 +15,18 @@ export interface User {
 	};
 }
 
+export interface UserUpdateData {
+	timeZoneOffset?: string;
+	preferences?: {
+		vehiclesSortOrder?: Sortable;
+		webhookUrl?: string;
+	};
+}
+
 export const getCurrentUser = (opts: RequestOpts) => {
 	return request<User>(`/user`, opts);
 };
 
-export const updateUser = (user: UpdatableFields<User>, opts: RequestOpts) => {
+export const updateUser = (user: UserUpdateData, opts: RequestOpts) => {
 	return request<User>(`/user`, { ...opts, method: 'PUT', json: user });
 };

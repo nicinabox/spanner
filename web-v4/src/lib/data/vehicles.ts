@@ -1,5 +1,5 @@
 import { request } from './server';
-import { type CreatableFields, type RequestOpts, type UpdatableFields } from './types';
+import type { RequestOpts } from './types';
 import type { Reminder } from './reminders';
 import type { ServiceSchedule } from './serviceSchedules';
 
@@ -12,11 +12,11 @@ export type Sortable = [VehicleSortStrategy, Order];
 export type Order = 'asc' | 'desc';
 
 export interface VehiclePreferences {
-	enableSharing: boolean;
-	enableCost: boolean;
-	sendReminderEmails: boolean;
-	sendPromptForRecords: boolean;
-	showMileageAdjustmentRecords: boolean;
+	enableSharing?: boolean;
+	enableCost?: boolean;
+	sendReminderEmails?: boolean;
+	sendPromptForRecords?: boolean;
+	showMileageAdjustmentRecords?: boolean;
 }
 
 export interface Vehicle {
@@ -25,6 +25,7 @@ export interface Vehicle {
 	vin: string | null;
 	notes: string;
 	position: number | null;
+	enableCost: boolean;
 	distanceUnit: DistanceUnit;
 	retired: boolean;
 	createdAt: string;
@@ -32,11 +33,25 @@ export interface Vehicle {
 	milesPerYear: number | null;
 	estimatedMileage: number;
 	squishVin: string | null;
-	reminders: Reminder[];
-	serviceSchedules: ServiceSchedule[];
 	color: string | null;
 	preferences: VehiclePreferences;
+	reminders: Reminder[];
+	serviceSchedules: ServiceSchedule[];
 }
+
+export interface VehicleCreateData {
+	name: string;
+	vin?: string;
+	notes?: string;
+	position?: number;
+	enableCost?: boolean;
+	distanceUnit?: DistanceUnit;
+	retired?: boolean;
+	color?: string;
+	preferences?: VehiclePreferences;
+}
+
+export type VehicleUpdateData = Partial<VehicleCreateData>;
 
 export const getAllVehicles = async (opts: RequestOpts) => {
 	return request<Vehicle[]>('/vehicles', opts);
@@ -46,7 +61,7 @@ export const getVehicle = async (id: number | string, opts: RequestOpts) => {
 	return request<Vehicle>(`/vehicles/${id}`, opts);
 };
 
-export const createVehicle = async (data: CreatableFields<Vehicle, 'name'>, opts: RequestOpts) => {
+export const createVehicle = async (data: VehicleCreateData, opts: RequestOpts) => {
 	return request<Vehicle>('/vehicles', {
 		...opts,
 		method: 'POST',
@@ -56,7 +71,7 @@ export const createVehicle = async (data: CreatableFields<Vehicle, 'name'>, opts
 
 export const updateVehicle = async (
 	id: number | string,
-	data: UpdatableFields<Vehicle>,
+	data: VehicleUpdateData,
 	opts: RequestOpts,
 ) => {
 	return request<Vehicle>(`/vehicles/${id}`, {
