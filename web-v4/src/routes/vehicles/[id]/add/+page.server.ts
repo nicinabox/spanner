@@ -74,8 +74,8 @@ export const actions = {
 			body.append('record[classificationIds][]', id);
 		}
 
+		// When a record is created from a reminder, delete that reminder for housekeeping
 		const reminderId = url.searchParams.get('reminder_id');
-
 		await uploadRecord(params.id!, undefined, body, locals);
 		if (reminderId) {
 			await deleteReminder(params.id!, reminderId, locals);

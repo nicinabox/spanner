@@ -1,13 +1,13 @@
 import { command, getRequestEvent } from '$app/server';
-import { getSession } from '$lib/utils/session';
+import { getAuthToken } from '$lib/utils/session';
 import { request } from '$lib/data/server';
 
 export const testWebhook = command(async () => {
 	const event = getRequestEvent();
-	const session = await getSession(event.cookies);
+	const authToken = await getAuthToken(event.cookies);
 
 	await request('/webhooks/test', {
 		method: 'POST',
-		authToken: session?.authToken,
+		authToken: authToken,
 	});
 });
