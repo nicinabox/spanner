@@ -1,5 +1,6 @@
 import * as v from 'valibot';
 import type { FormError } from './form';
+import snakeCaseKeys from 'snakecase-keys';
 
 /**
  * Decode FormData to a nested object.
@@ -66,6 +67,7 @@ function setIn(obj: Record<string, unknown>, path: string[], value: unknown): vo
 
 /**
  * Encode a nested object to FormData for multipart upload.
+ * Key names are converted from camelCase to snake_case for Rails compatibility.
  *
  * Example:
  *   encode({ record: { date: '2024-01-15', attachments: [file1, file2] } })
@@ -94,7 +96,7 @@ export function encode<T extends Record<string, unknown>>(data: T): FormData {
 		}
 	}
 
-	for (const [key, value] of Object.entries(data)) {
+	for (const [key, value] of Object.entries(snakeCaseKeys(data))) {
 		append(key, value);
 	}
 

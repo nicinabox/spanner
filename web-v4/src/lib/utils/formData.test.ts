@@ -140,16 +140,16 @@ describe('encode', () => {
 		const result = encode({ classificationIds: ['1', '2'] });
 		const entries = Array.from(result.entries());
 
-		expect(entries).toContainEqual(['classificationIds[]', '1']);
-		expect(entries).toContainEqual(['classificationIds[]', '2']);
+		expect(entries).toContainEqual(['classification_ids[]', '1']);
+		expect(entries).toContainEqual(['classification_ids[]', '2']);
 	});
 
 	it('handles nested arrays', () => {
 		const result = encode({ record: { classificationIds: ['1', '2'] } });
 		const entries = Array.from(result.entries());
 
-		expect(entries).toContainEqual(['record[classificationIds][]', '1']);
-		expect(entries).toContainEqual(['record[classificationIds][]', '2']);
+		expect(entries).toContainEqual(['record[classification_ids][]', '1']);
+		expect(entries).toContainEqual(['record[classification_ids][]', '2']);
 	});
 
 	it('handles files', () => {
@@ -220,10 +220,7 @@ describe('validate', () => {
 			}),
 		});
 
-		const result = await validate(
-			{ record: { date: '2024-01-15' } },
-			nestedSchema,
-		);
+		const result = await validate({ record: { date: '2024-01-15' } }, nestedSchema);
 
 		expect(result).toEqual({
 			data: { record: { date: '2024-01-15' } },
@@ -236,8 +233,8 @@ describe('decode + encode roundtrip', () => {
 		const fd = new FormData();
 		fd.append('record[date]', '2024-01-15');
 		fd.append('record[notes]', 'Test');
-		fd.append('record[classificationIds][]', '1');
-		fd.append('record[classificationIds][]', '2');
+		fd.append('record[classification_ids][]', '1');
+		fd.append('record[classification_ids][]', '2');
 
 		const decoded = decode(fd);
 		const encoded = encode(decoded);
@@ -245,8 +242,8 @@ describe('decode + encode roundtrip', () => {
 
 		expect(entries).toContainEqual(['record[date]', '2024-01-15']);
 		expect(entries).toContainEqual(['record[notes]', 'Test']);
-		expect(entries).toContainEqual(['record[classificationIds][]', '1']);
-		expect(entries).toContainEqual(['record[classificationIds][]', '2']);
+		expect(entries).toContainEqual(['record[classification_ids][]', '1']);
+		expect(entries).toContainEqual(['record[classification_ids][]', '2']);
 	});
 
 	it('preserves arrays through roundtrip', () => {
