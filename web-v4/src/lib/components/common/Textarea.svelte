@@ -27,7 +27,7 @@
 </script>
 
 <script lang="ts">
-	import { cn } from '$lib/utils/cn';
+	import { cn } from 'tailwind-variants';
 	import { getContext } from 'svelte';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utils/cn';
+	import { cn } from 'tailwind-variants';
 	import { getColorPalette } from '$lib/utils/colors';
 	import type { ClassValue } from 'svelte/elements';
 

@@ -53,7 +53,7 @@
 </script>
 
 <script lang="ts">
-	import { cn } from '$lib/utils/cn';
+	import { cn } from 'tailwind-variants';
 	import { X } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import type { ClassValue } from 'svelte/elements';

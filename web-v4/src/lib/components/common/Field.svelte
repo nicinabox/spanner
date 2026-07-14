@@ -3,7 +3,7 @@
 	import camelcase from 'camelcase';
 	import type { FormError } from '$lib/utils/form';
 	import type { Snippet } from 'svelte';
-	import { cn } from '$lib/utils/cn';
+	import { cn } from 'tailwind-variants';
 
 	type Props = {
 		name: string;

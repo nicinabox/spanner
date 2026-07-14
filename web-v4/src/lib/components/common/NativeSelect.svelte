@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utils/cn';
+	import { cn } from 'tailwind-variants';
 	import { inputVariants, type InputSize, type InputVariant } from './Input.svelte';
 	import { getContext } from 'svelte';
 	import type { HTMLSelectAttributes } from 'svelte/elements';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import { cn } from '$lib/utils/cn';
+	import { cn } from 'tailwind-variants';
 	import { inputVariants, type InputVariant, type InputSize } from './Input.svelte';
 	import type { Snippet } from 'svelte';
 	import type { ClassValue } from 'svelte/elements';

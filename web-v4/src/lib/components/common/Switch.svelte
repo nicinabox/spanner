@@ -37,7 +37,7 @@
 <script lang="ts">
 	import * as zagSwitch from '@zag-js/switch';
 	import { useMachine, normalizeProps } from '@zag-js/svelte';
-	import { cn } from '$lib/utils/cn';
+	import { cn } from 'tailwind-variants';
 	import type { Snippet } from 'svelte';
 	import type { ClassValue } from 'svelte/elements';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utils/cn';
+	import { cn } from 'tailwind-variants';
 	import type { Snippet } from 'svelte';
 	import type { Session } from '$lib/data/session';
 	import Menu from './Menu.svelte';

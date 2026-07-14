@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import Card, { type CardSize, type CardVariant } from './common/Card.svelte';
-	import { cn } from '$lib/utils/cn';
+	import { cn } from 'tailwind-variants';
 
 	interface Props {
 		heading: string;
