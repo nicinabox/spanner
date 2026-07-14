@@ -129,45 +129,36 @@
 
 	let formAction = $derived(action);
 
-	// Custom submit: rebuild FormData with the staged files because the
-	// browser's FileList can't be edited (no per-file removal API).
-	const submit: SubmitFunction = ({ formData, cancel }) => {
+	// Custom submit: replace native attachment entries with JS-managed files
+	// because the browser's FileList can't be edited (no per-file removal API).
+	const submit: SubmitFunction = ({ formData }) => {
 		submitting = true;
 		actionErrors = [];
-		const fd = new FormData();
-		for (const [key, value] of formData.entries()) {
-			if (key.startsWith('attachments[') || key === 'attachments') continue;
-			fd.append(key, value);
+
+		// Remove native attachment entries (the FileInput's value was cleared
+		// after each selection, so they'd be empty anyway).
+		for (const key of formData.keys()) {
+			if (key.startsWith('attachments[') || key === 'attachments') {
+				formData.delete(key);
+			}
 		}
+
+		// Append JS-managed files
 		for (const file of selectedFiles) {
-			fd.append('attachments[]', file);
+			formData.append('attachments[]', file);
 		}
-		cancel();
-		fetch(formAction, {
-			method: 'POST',
-			body: fd,
-			headers: { Accept: 'application/json' },
-		})
-			.then(async (response) => {
-				const result = await response.json();
-				if (result.type === 'redirect') {
-					await goto(result.location, { invalidateAll: true });
-					return;
-				}
-				if (result.type === 'failure' && result.data?.errors) {
-					actionErrors = result.data.errors;
-					return;
-				}
+
+		return async ({ result }) => {
+			if (result.type === 'redirect') {
+				await goto(result.location, { invalidateAll: true });
+			} else if (result.type === 'failure' && result.data?.errors) {
+				actionErrors = result.data.errors;
+			} else if (result.type !== 'success') {
 				// Unexpected response — navigate to vehicle page as fallback.
 				await goto(`/vehicles/${vehicle.id}`, { invalidateAll: true });
-			})
-			.catch(() => {
-				// Network error — leave the user on the form to retry.
-			})
-			.finally(() => {
-				submitting = false;
-			});
-		return () => {};
+			}
+			submitting = false;
+		};
 	};
 </script>
 
