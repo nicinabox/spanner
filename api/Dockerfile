@@ -37,7 +37,7 @@ COPY --from=build /app /app
 
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R 1000:1000 /app/db /app/log /app/storage /app/tmp
+    chown -R 1000:1000 db log storage tmp
 USER 1000:1000
 
 EXPOSE 3001

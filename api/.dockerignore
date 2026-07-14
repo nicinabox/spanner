@@ -1,8 +1,11 @@
-tmp/
-log/
+log/*
+!/log/.keep
+tmp/*
+!/tmp/.keep
 .DS_Store
 *.local
 .env
 .env.*
-storage/
+storage/*
+!/storage/.keep
 public/uploads/
