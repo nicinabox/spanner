@@ -34,8 +34,6 @@ export const actions = {
 	}),
 
 	delete: withActionErrors(async ({ locals, params }) => {
-		// Note: also need to delete attachments on record delete, but backend
-		// handles this automatically via Active Storage dependent destroy.
 		await deleteHistoryEntry(params.id!, params.recordId!, locals);
 		redirect(303, `/vehicles/${params.id}`);
 	}),
