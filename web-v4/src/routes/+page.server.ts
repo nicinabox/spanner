@@ -1,6 +1,6 @@
 import { PUBLIC_EMAIL_ENABLED } from '$app/env/private';
 import * as session from '$lib/data/session';
-import { fail, isRedirect, redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { setSession } from '$lib/utils/session';
 import { getCurrentUser } from '$lib/data/user';
@@ -46,13 +46,13 @@ export const actions = {
 		try {
 			const result = await session.login(parsed.data, locals);
 			await setSession(cookies, result);
-			redirect(303, '/vehicles');
 		} catch (error) {
-			if (isRedirect(error)) throw error;
 			return fail(401, {
 				errors: [{ id: 'form', title: 'Invalid email or password' }],
 			});
 		}
+
+		redirect(303, '/vehicles');
 	}),
 
 	sendMagicLink: withActionErrors(async ({ request, locals }) => {
