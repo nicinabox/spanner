@@ -32,7 +32,7 @@ export const actions = {
 		// Read attachments and classification IDs after schema parse so the
 		// iterator isn't disturbed by the FormData → entries conversion.
 		const files = formData.getAll('record[attachments][]') as File[];
-		const classificationIds = formData.getAll('record[classification_ids][]');
+		const classificationIds = formData.getAll('record[classificationIds][]');
 
 		// Process deletions BEFORE update so the multipart PUT doesn't include them.
 		const toDelete = (formData.get('attachments_to_delete')?.toString() ?? '')
@@ -60,7 +60,7 @@ export const actions = {
 			body.append('record[attachments][]', file);
 		}
 		for (const id of classificationIds) {
-			body.append('record[classification_ids][]', id);
+			body.append('record[classificationIds][]', id);
 		}
 
 		for (const signedId of toDelete) {

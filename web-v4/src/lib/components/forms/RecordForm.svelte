@@ -268,9 +268,9 @@
 		<input type="hidden" name="id" value={record.id} />
 
 		{#each selectedClassificationIds as cid}
-			<input type="hidden" name="record[classification_ids][]" value={cid} />
+			<input type="hidden" name="record[classificationIds][]" value={cid} />
 		{:else}
-			<input type="hidden" name="record[classification_ids][]" value="" />
+			<input type="hidden" name="record[classificationIds][]" value="" />
 		{/each}
 	{/if}
 

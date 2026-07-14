@@ -21,7 +21,7 @@ const mileageAdjustmentSchema = v.object({
 });
 
 const scheduleFormSchema = v.object({
-	classificationId: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
+	classificationId: v.nullish(numberSchema, null),
 	name: v.optional(v.string(''), ''),
 	keywords: v.optional(v.string(''), ''),
 	distanceInterval: v.nullish(v.pipe(v.string(), v.transform((s) => (s ? Number(s) : null))), null),
@@ -51,7 +51,7 @@ export const actions = {
 		// Read attachments and classification IDs after schema parse so the
 		// iterator isn't disturbed by the FormData → entries conversion.
 		const files = formData.getAll('record[attachments][]') as File[];
-		const classificationIds = formData.getAll('record[classification_ids][]');
+		const classificationIds = formData.getAll('record[classificationIds][]');
 
 		const validation = await validateAttachments(files);
 		if (!validation.valid) {
@@ -73,7 +73,7 @@ export const actions = {
 			body.append('record[attachments][]', file);
 		}
 		for (const id of classificationIds) {
-			body.append('record[classification_ids][]', id);
+			body.append('record[classificationIds][]', id);
 		}
 
 		const reminderId = url.searchParams.get('reminder_id');
@@ -144,7 +144,7 @@ export const actions = {
 			});
 		}
 
-		const scheduleData: CreateServiceScheduleData['serviceSchedule'] = {
+		const serviceSchedule: CreateServiceScheduleData['serviceSchedule'] = {
 			distanceInterval: parsed.data.distanceInterval,
 			monthInterval: parsed.data.monthInterval,
 			notes: parsed.data.notes || null,
@@ -155,13 +155,13 @@ export const actions = {
 				.split(',')
 				.map((k: string) => k.trim())
 				.filter(Boolean);
-			scheduleData.classificationName = name;
-			scheduleData.keywords = keywords;
+			serviceSchedule.classificationName = name;
+			serviceSchedule.keywords = keywords;
 		} else {
-			scheduleData.classificationId = classificationId ?? undefined;
+			serviceSchedule.classificationId = classificationId ?? undefined;
 		}
 
-		await createServiceSchedule(params.id!, { serviceSchedule: scheduleData }, locals);
+		await createServiceSchedule(params.id!, { serviceSchedule }, locals);
 		redirect(303, `/vehicles/${params.id}/tasks`);
 	}),
 } satisfies Actions;

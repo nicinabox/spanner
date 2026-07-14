@@ -9,17 +9,17 @@ import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
 
 const passwordMatchCheck = v.check(
-	(value: { password: string; confirm_password: string }) =>
-		value.password === value.confirm_password,
+	(value: { password: string; confirmPassword: string }) =>
+		value.password === value.confirmPassword,
 	'Passwords do not match',
 );
 
 const resetPasswordSchema = v.pipe(
 	v.object({
 		password: passwordSchema,
-		confirm_password: v.string('Password confirmation is required'),
+		confirmPassword: v.string('Password confirmation is required'),
 	}),
-	v.forward(passwordMatchCheck, ['confirm_password']),
+	v.forward(passwordMatchCheck, ['confirmPassword']),
 );
 
 export const load: PageServerLoad = async ({ params, locals }) => {
