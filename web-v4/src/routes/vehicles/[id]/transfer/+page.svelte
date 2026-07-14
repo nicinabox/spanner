@@ -3,7 +3,7 @@
 	import { umamiEvent } from '$lib/umami';
 	import FileInput from '$lib/components/common/FileInput.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { Download, TriangleAlert } from 'lucide-svelte';
 	import type { PageProps } from './$types';
 	import { vehiclePath } from '$lib/routes';
@@ -17,7 +17,7 @@
 	let selectedFile = $state<File | null>(null);
 
 	let activeTab = $derived(
-		$page.url.pathname === `/vehicles/${vehicle.id}/transfer` ? 'history' : 'history',
+		page.url.pathname === `/vehicles/${vehicle.id}/transfer` ? 'history' : 'history',
 	);
 
 	let formErrors = $derived(form?.errors ?? []);

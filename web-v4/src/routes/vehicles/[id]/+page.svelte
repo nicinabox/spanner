@@ -7,7 +7,7 @@
 	import Stat from '$lib/components/common/Stat.svelte';
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { BookOpenText, PlusIcon, Search, X } from 'lucide-svelte';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import NextOverdueTask from '$lib/components/vehicles/NextOverdueTask.svelte';
@@ -31,7 +31,7 @@
 	}
 
 	let activeTab = $derived(
-		$page.url.pathname === `/vehicles/${vehicle.id}` ? 'history' : 'history',
+		page.url.pathname === `/vehicles/${vehicle.id}` ? 'history' : 'history',
 	);
 </script>
 

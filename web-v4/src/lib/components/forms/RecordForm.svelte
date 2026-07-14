@@ -240,7 +240,7 @@
 
 		<Field name="mileage" label={MileageLabel(vehicle.distanceUnit)} errors={allErrors}>
 			<InputGroup>
-				<Input bind:value={mileage} name="mileage" inputmode="numeric" />
+				<Input bind:value={mileage} name="mileage" inputmode="numeric" autocomplete="off" />
 				<InputAddon>{vehicle.distanceUnit}</InputAddon>
 			</InputGroup>
 		</Field>

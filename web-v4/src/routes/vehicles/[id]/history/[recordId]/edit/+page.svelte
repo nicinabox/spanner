@@ -5,7 +5,7 @@
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import { enhance } from '$app/forms';
 	import { invalidate, goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import type { PageProps } from './$types';
 	import { pageTitle } from '$lib/utils/site';
 
@@ -15,7 +15,7 @@
 	let record = $derived(data.record);
 
 	let activeTab = $derived(
-		$page.url.pathname === `/vehicles/${vehicle.id}/history/${record.id}/edit`
+		page.url.pathname === `/vehicles/${vehicle.id}/history/${record.id}/edit`
 			? 'history'
 			: 'history',
 	);

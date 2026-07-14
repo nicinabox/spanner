@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Clipboard, Dialog } from '$lib';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { enhance } from '$app/forms';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import { enhanceInline } from '$lib/utils/form';
@@ -13,7 +13,7 @@
 
 	let { vehicle, open = $bindable(false), onOpenChange }: Props = $props();
 
-	let shareUrl = $derived(`${$page.url.origin}/share/vehicles/${vehicle.id}`);
+	let shareUrl = $derived(`${page.url.origin}/share/vehicles/${vehicle.id}`);
 </script>
 
 <Dialog bind:open title="Share">

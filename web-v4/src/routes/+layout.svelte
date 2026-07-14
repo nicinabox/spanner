@@ -5,7 +5,7 @@
 	import { getCookieData } from '$lib/utils/cookies';
 	import { initUmami, trackPageView } from '$lib/umami';
 	import { afterNavigate } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 
 	let { children } = $props();
@@ -23,7 +23,7 @@
 	});
 
 	afterNavigate(() => {
-		trackPageView($page.route.id);
+		trackPageView(page.route.id);
 	});
 </script>
 

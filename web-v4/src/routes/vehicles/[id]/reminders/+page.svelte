@@ -4,7 +4,7 @@
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { intlFormatDateUTC } from '$lib/utils/date';
 	import { formatMileage } from '$lib/utils/vehicle';
 	import { Bell, ChevronRight, PlusIcon } from 'lucide-svelte';
@@ -19,7 +19,7 @@
 	let reminders = $derived(data.reminders);
 
 	let activeTab = $derived(
-		$page.url.pathname === `/vehicles/${vehicle.id}/reminders` ? 'reminders' : 'history',
+		page.url.pathname === `/vehicles/${vehicle.id}/reminders` ? 'reminders' : 'history',
 	);
 
 	let completingId = $state<number | null>(null);

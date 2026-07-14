@@ -4,7 +4,7 @@
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { enhance } from '$app/forms';
 	import { NotepadText, Pencil } from 'lucide-svelte';
 	import type { PageProps } from './$types';
@@ -18,7 +18,7 @@
 	let vehicle = $derived(data.vehicle);
 
 	let activeTab = $derived(
-		$page.url.pathname === `/vehicles/${vehicle.id}/notes` ? 'notes' : 'history',
+		page.url.pathname === `/vehicles/${vehicle.id}/notes` ? 'notes' : 'history',
 	);
 
 	let view = $state<'edit' | 'preview' | 'saved'>('saved');

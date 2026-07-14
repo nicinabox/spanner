@@ -5,7 +5,7 @@
 	import RecordForm from '$lib/components/forms/RecordForm.svelte';
 	import ReminderForm from '$lib/components/forms/ReminderForm.svelte';
 	import TaskForm from '$lib/components/forms/TaskForm.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { PlusIcon, Gauge, Wrench } from 'lucide-svelte';
 	import type { PageProps } from './$types';
@@ -16,9 +16,9 @@
 
 	let vehicle = $derived(data.vehicle);
 
-	let view = $derived(($page.url.searchParams.get('view') as string | null) ?? 'record');
-	let type = $derived(($page.url.searchParams.get('type') as string | null) ?? 'task');
-	let notesParam = $derived($page.url.searchParams.get('notes') ?? '');
+	let view = $derived((page.url.searchParams.get('view') as string | null) ?? 'record');
+	let type = $derived((page.url.searchParams.get('type') as string | null) ?? 'task');
+	let notesParam = $derived(page.url.searchParams.get('notes') ?? '');
 
 	let title = $derived(
 		{

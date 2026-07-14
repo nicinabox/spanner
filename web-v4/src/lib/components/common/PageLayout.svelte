@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import AppBar from './AppBar.svelte';
 	import type { Snippet } from 'svelte';
 
@@ -19,7 +19,7 @@
 		children,
 	}: Props = $props();
 
-	let session = $derived($page.data.session);
+	let session = $derived(page.data.session);
 </script>
 
 <AppBar {session} {start} {center} {end} class={appbarClass} />
