@@ -4,7 +4,6 @@ import type { FetcherConfig, RequestOpts } from './types';
 import { browser } from '$app/env';
 
 export const apiHeaders = {
-	'Content-Type': 'application/json',
 	Accept: 'application/vnd.api+json; version=2',
 };
 
