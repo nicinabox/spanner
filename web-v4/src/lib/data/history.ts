@@ -19,6 +19,17 @@ export interface HistoryEntry {
 	classifications: Classification[];
 }
 
+export interface RecordCreateData {
+	date: string;
+	notes: string;
+	mileage?: number | null;
+	cost?: string | null;
+	recordType?: string | null;
+	classificationIds?: number[];
+}
+
+export type RecordUpdateData = Partial<RecordCreateData>;
+
 export const getVehicleHistory = (vehicleId: number | string, opts: RequestOpts) => {
 	return request<HistoryEntry[]>(`/vehicles/${vehicleId}/records`, opts);
 };
@@ -33,7 +44,7 @@ export const getHistoryEntry = (
 
 export const createHistoryEntry = (
 	vehicleId: number | string,
-	data: Partial<HistoryEntry>,
+	data: RecordCreateData,
 	opts: RequestOpts,
 ) => {
 	return request<HistoryEntry>(`/vehicles/${vehicleId}/records`, {
@@ -46,7 +57,7 @@ export const createHistoryEntry = (
 export const updateHistoryEntry = (
 	vehicleId: number | string,
 	id: number | string,
-	data: Partial<HistoryEntry>,
+	data: RecordUpdateData,
 	opts: RequestOpts,
 ) => {
 	return request<HistoryEntry>(`/vehicles/${vehicleId}/records/${id}`, {

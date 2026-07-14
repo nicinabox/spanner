@@ -1,44 +1,38 @@
 import { getVehicle } from '$lib/data/vehicles';
-import { getHistoryEntry } from '$lib/data/history';
+import { getHistoryEntry, deleteHistoryEntry } from '$lib/data/history';
 import { getClassifications } from '$lib/data/classifications';
 import { uploadRecord, deleteAttachment, toMultipartFormData } from '$lib/data/multipart';
-import { decode } from '$lib/utils/form';
+import { withActionErrors } from '$lib/utils/actions';
+import { parseForm } from '$lib/utils/schema';
 import { validateAttachments } from '$lib/utils/file-validation';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { recordFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-	const vehicle = await getVehicle(params.id!, locals);
+	const [vehicle, record, classifications] = await Promise.all([
+		getVehicle(params.id!, locals),
+		getHistoryEntry(params.id!, params.recordId!, locals),
+		getClassifications(params.id!, locals),
+	]);
 
 	if (vehicle.retired) {
 		redirect(303, `/vehicles/${params.id}`);
 	}
 
-	const record = await getHistoryEntry(params.id!, params.recordId!, locals);
-	const classifications = await getClassifications(params.id!, locals);
 	return { vehicle, record, classifications };
 };
 
 export const actions = {
-	update: async ({ request, locals, params }) => {
+	update: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
+		const parsed = parseForm(formData, recordFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		// Read classification_ids before decode to avoid FormData iterator issues
-		const classificationIds = formData.getAll('record[classification_ids][]');
-
-		const data = decode(formData, {
-			date: 'string',
-			notes: 'string',
-			mileage: 'number',
-			cost: 'number',
-		});
-
-		if (!data.date) {
-			return fail(400, { errors: [{ id: 'date', title: 'Date is required' }] });
-		}
-		if (!data.notes) {
-			return fail(400, { errors: [{ id: 'notes', title: 'Notes is required' }] });
-		}
+		// Read attachments and classification IDs after schema parse so the
+		// iterator isn't disturbed by the FormData → entries conversion.
+		const files = formData.getAll('record[attachments][]') as File[];
+		const classificationIds = formData.getAll('record[classificationIds][]');
 
 		// Process deletions BEFORE update so the multipart PUT doesn't include them.
 		const toDelete = (formData.get('attachments_to_delete')?.toString() ?? '')
@@ -46,9 +40,6 @@ export const actions = {
 			.map((s) => s.trim())
 			.filter(Boolean);
 
-		const files = formData.getAll('record[attachments][]') as File[];
-
-		// Validate file count, types, and sizes server-side
 		const validation = await validateAttachments(files);
 		if (!validation.valid) {
 			return fail(422, {
@@ -58,10 +49,10 @@ export const actions = {
 
 		const body = toMultipartFormData(
 			{
-				date: data.date,
-				notes: data.notes,
-				mileage: typeof data.mileage === 'number' ? data.mileage : null,
-				cost: typeof data.cost === 'number' ? data.cost : null,
+				date: parsed.data.date,
+				notes: parsed.data.notes,
+				mileage: parsed.data.mileage,
+				cost: parsed.data.cost,
 			},
 			{ prefix: 'record' },
 		);
@@ -69,29 +60,21 @@ export const actions = {
 			body.append('record[attachments][]', file);
 		}
 		for (const id of classificationIds) {
-			body.append('record[classification_ids][]', id);
+			body.append('record[classificationIds][]', id);
 		}
 
-		try {
-			for (const signedId of toDelete) {
-				await deleteAttachment(params.id!, params.recordId!, signedId, locals);
-			}
-			await uploadRecord(params.id!, params.recordId!, body, locals);
-		} catch (err) {
-			const message = err instanceof Error ? err.message : 'Upload failed';
-			return fail(422, {
-				errors: [{ id: 'form', title: message }],
-			});
+		for (const signedId of toDelete) {
+			await deleteAttachment(params.id!, params.recordId!, signedId, locals);
 		}
+		await uploadRecord(params.id!, params.recordId!, body, locals);
 
 		redirect(303, `/vehicles/${params.id}`);
-	},
+	}),
 
-	delete: async ({ locals, params }) => {
+	delete: withActionErrors(async ({ locals, params }) => {
 		// Note: also need to delete attachments on record delete, but backend
 		// handles this automatically via Active Storage dependent destroy.
-		const { deleteHistoryEntry } = await import('$lib/data/history');
 		await deleteHistoryEntry(params.id!, params.recordId!, locals);
 		redirect(303, `/vehicles/${params.id}`);
-	},
+	}),
 } satisfies Actions;

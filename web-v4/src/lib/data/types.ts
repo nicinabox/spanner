@@ -10,7 +10,7 @@ export interface FetcherConfig {
 export interface RequestContext {
 	authToken?: string;
 	webUrl?: string;
-	json?: Record<string, unknown>;
+	json?: Record<string, any>;
 	params?: Record<string, string | number | boolean | undefined | null>;
 }
 

@@ -1,49 +1,42 @@
 import { getVehicle } from '$lib/data/vehicles';
 import { getReminder, updateReminder, deleteReminder } from '$lib/data/reminders';
-import { getHTTPErrors } from '$lib/utils/actions';
+import { withActionErrors } from '$lib/utils/actions';
+import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { reminderFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-	const vehicle = await getVehicle(params.id!, locals);
-	const reminder = await getReminder(params.id!, params.reminderId!, locals);
+	const [vehicle, reminder] = await Promise.all([
+		getVehicle(params.id!, locals),
+		getReminder(params.id!, params.reminderId!, locals),
+	]);
 
 	return { vehicle, reminder };
 };
 
 export const actions = {
-	update: async ({ request, locals, params }) => {
+	update: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const notes = formData.get('notes')?.toString() ?? '';
-		const reminderType = formData.get('reminderType')?.toString() ?? '';
-		const date = formData.get('date')?.toString();
-		const mileage = formData.get('mileage')?.toString();
+		const parsed = parseForm(formData, reminderFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		if (!notes) {
-			return fail(400, { errors: [{ id: 'notes', title: 'Note is required' }] });
-		}
-
-		try {
-			await updateReminder(
-				params.id!,
-				params.reminderId!,
-				{
-					notes,
-					reminderType: reminderType || null,
-					date: date || null,
-					mileage: mileage ? Number(mileage) : null,
-				} as never,
-				locals,
-			);
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
-		}
-
+		await updateReminder(
+			params.id!,
+			params.reminderId!,
+			{
+				notes: parsed.data.notes,
+				reminderType: parsed.data.reminderType || null,
+				date: parsed.data.date || null,
+				mileage: parsed.data.mileage ?? null,
+			},
+			locals,
+		);
 		redirect(303, `/vehicles/${params.id}/tasks`);
-	},
+	}),
 
-	delete: async ({ locals, params }) => {
+	delete: withActionErrors(async ({ locals, params }) => {
 		await deleteReminder(params.id!, params.reminderId!, locals);
 		redirect(303, `/vehicles/${params.id}/tasks`);
-	},
+	}),
 } satisfies Actions;

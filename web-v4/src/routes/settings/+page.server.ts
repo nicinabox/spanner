@@ -1,11 +1,32 @@
 import { requestEmailChange, deleteAccount, updateWebhookUrl } from '$lib/data/settings';
 import { setPassword } from '$lib/data/session';
 import { getCurrentUser } from '$lib/data/user';
-import { getHTTPErrors } from '$lib/utils/actions';
-import { parseForm, changeEmailSchema, changePasswordSchema } from '$lib/utils/schema';
+import { withActionErrors } from '$lib/utils/actions';
+import { parseForm } from '$lib/utils/schema';
 import { safeAsync } from '$lib/utils/async';
 import { fail, redirect } from '@sveltejs/kit';
+import { emailSchema, passwordSchema } from '$lib/schemas/auth';
+import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
+
+const passwordMatchCheck = v.check(
+	(value: { password: string; confirmPassword: string }) =>
+		value.password === value.confirmPassword,
+	'Passwords do not match',
+);
+
+const changeEmailSchema = v.object({ email: emailSchema });
+const changePasswordSchema = v.pipe(
+	v.object({
+		password: passwordSchema,
+		confirmPassword: v.string('Password confirmation is required'),
+	}),
+	v.forward(passwordMatchCheck, ['confirmPassword']),
+);
+
+const webhookFormSchema = v.object({
+	webhookUrl: v.optional(v.string(''), ''),
+});
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const [user] = await safeAsync(getCurrentUser(locals));
@@ -17,57 +38,35 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	changeEmail: async ({ request, locals }) => {
+	changeEmail: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, changeEmailSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		if (parsed.errors) {
-			return fail(422, { errors: parsed.errors });
-		}
+		await requestEmailChange(parsed.data.email, locals);
+		return { emailSuccess: true, email: parsed.data.email };
+	}),
 
-		try {
-			await requestEmailChange(parsed.data.email, locals);
-			return { emailSuccess: true, email: parsed.data.email };
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
-		}
-	},
-
-	changePassword: async ({ request, locals }) => {
+	changePassword: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
 		const parsed = parseForm(formData, changePasswordSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		if (parsed.errors) {
-			return fail(422, { errors: parsed.errors });
-		}
+		await setPassword({ password: parsed.data.password }, locals);
+		return { passwordSuccess: true };
+	}),
 
-		try {
-			await setPassword({ password: parsed.data.password }, locals);
-			return { passwordSuccess: true };
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
-		}
-	},
-
-	delete: async ({ locals }) => {
-		try {
-			await deleteAccount(locals);
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
-		}
-
+	delete: withActionErrors(async ({ locals }) => {
+		await deleteAccount(locals);
 		redirect(303, '/');
-	},
+	}),
 
-	updateWebhook: async ({ request, locals }) => {
+	updateWebhook: withActionErrors(async ({ request, locals }) => {
 		const formData = await request.formData();
-		const webhookUrl = formData.get('webhookUrl') as string;
+		const parsed = parseForm(formData, webhookFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		try {
-			await updateWebhookUrl(webhookUrl, locals);
-			return { webhookSuccess: true, webhookUrl };
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
-		}
-	},
+		await updateWebhookUrl(parsed.data.webhookUrl, locals);
+		return { webhookSuccess: true, webhookUrl: parsed.data.webhookUrl };
+	}),
 } satisfies Actions;

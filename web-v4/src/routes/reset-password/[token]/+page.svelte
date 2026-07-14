@@ -24,13 +24,13 @@
 				</div>
 			{:else}
 				<h1>Change password</h1>
-				<form method="post" action="?/reset" use:enhance class="mt-4">
+				<form method="post" action="?/resetPassword" use:enhance class="mt-4">
 					<fieldset>
 						<Field name="password" label="New password" errors={form?.errors} required>
 							<Input name="password" type="password" autocomplete="new-password" required />
 						</Field>
-						<Field name="confirm_password" label="Confirm password" errors={form?.errors} required>
-							<Input name="confirm_password" type="password" autocomplete="new-password" required />
+						<Field name="confirmPassword" label="Confirm password" errors={form?.errors} required>
+							<Input name="confirmPassword" type="password" autocomplete="new-password" required />
 						</Field>
 					</fieldset>
 					<div class="mt-4">

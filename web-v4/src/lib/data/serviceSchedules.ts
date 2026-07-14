@@ -1,6 +1,6 @@
 import { request } from './server';
 import type { Classification } from './classifications';
-import type { CreatableFields, RequestOpts } from './types';
+import type { RequestOpts } from './types';
 import type { PresetGroup } from './serviceSchedules.remote';
 
 export interface ServiceSchedule {
@@ -23,6 +23,17 @@ export interface ServiceSchedule {
 	updatedAt: string;
 }
 
+export interface ServiceScheduleCreateData {
+	classificationId?: number;
+	classificationName?: string;
+	keywords?: string[];
+	distanceInterval: number | null;
+	monthInterval: number | null;
+	notes?: string | null;
+}
+
+export type ServiceScheduleUpdateData = Partial<ServiceScheduleCreateData>;
+
 export const getServiceSchedule = (
 	vehicleId: number | string,
 	id: number | string,
@@ -35,20 +46,9 @@ export const getServiceSchedules = (vehicleId: number | string, opts: RequestOpt
 	return request<ServiceSchedule[]>(`/vehicles/${vehicleId}/service_schedules`, opts);
 };
 
-export interface CreateServiceScheduleData {
-	serviceSchedule: {
-		classificationId?: number;
-		classificationName?: string;
-		keywords?: string[];
-		distanceInterval: number | null;
-		monthInterval: number | null;
-		notes?: string | null;
-	};
-}
-
 export const createServiceSchedule = (
 	vehicleId: number | string,
-	data: CreatableFields<CreateServiceScheduleData>,
+	data: ServiceScheduleCreateData,
 	opts: RequestOpts,
 ) => {
 	return request<ServiceSchedule>(`/vehicles/${vehicleId}/service_schedules`, {
@@ -61,7 +61,7 @@ export const createServiceSchedule = (
 export const updateServiceSchedule = (
 	vehicleId: number | string,
 	id: number | string,
-	data: Record<string, unknown>,
+	data: ServiceScheduleUpdateData,
 	opts: RequestOpts,
 ) => {
 	return request<ServiceSchedule>(`/vehicles/${vehicleId}/service_schedules/${id}`, {

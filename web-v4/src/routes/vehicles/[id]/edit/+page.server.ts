@@ -1,9 +1,17 @@
 import { deleteVehicle, getVehicle, updateVehicle } from '$lib/data/vehicles';
-import { getHTTPErrors } from '$lib/utils/actions';
-import { decode } from '$lib/utils/form';
+import { withActionErrors } from '$lib/utils/actions';
+import { parseForm } from '$lib/utils/schema';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { vehicleFormSchema } from '../../schemas';
+import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
 import { vehiclePath } from '$lib/routes';
+import { booleanSchema } from '$lib/schemas';
+
+const editVehicleFormSchema = v.object({
+	...vehicleFormSchema.entries,
+	retired: booleanSchema,
+});
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const vehicle = await getVehicle(params.id!, locals);
@@ -11,35 +19,16 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 export const actions = {
-	update: async ({ request, locals, params }) => {
+	update: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();
-		const data = decode(formData, {
-			name: 'string',
-			vin: 'string',
-			color: 'string',
-			distanceUnit: 'string',
-			retired: 'boolean',
-			'preferences.enableCost': 'boolean',
-			'preferences.sendReminderEmails': 'boolean',
-			'preferences.sendPromptForRecords': 'boolean',
-			'preferences.showMileageAdjustmentRecords': 'boolean',
-		});
+		const parsed = parseForm(formData, editVehicleFormSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		try {
-			await updateVehicle(params.id!, { vehicle: data } as never, locals);
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
-		}
-
+		await updateVehicle(params.id!, parsed.data, locals);
 		redirect(303, vehiclePath(Number(params.id)));
-	},
-	delete: async ({ locals, params }) => {
-		try {
-			await deleteVehicle(params.id!, locals);
-		} catch (error) {
-			return fail(422, getHTTPErrors(error));
-		}
-
+	}),
+	delete: withActionErrors(async ({ locals, params }) => {
+		await deleteVehicle(params.id!, locals);
 		redirect(303, '/vehicles');
-	},
+	}),
 } satisfies Actions;

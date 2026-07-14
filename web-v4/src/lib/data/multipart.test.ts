@@ -93,54 +93,54 @@ describe('toMultipartFormData', () => {
 		expect(fd.getAll('record[classificationIds]')).toEqual(['1', '2', '3']);
 	});
 
-	it('getAll works after decode iterates FormData', () => {
+	it('getAll works after iterating FormData', () => {
 		const fd = new FormData();
-		fd.append('record[classification_ids][]', '1');
-		fd.append('record[classification_ids][]', '3');
+		fd.append('record[classificationIds][]', '1');
+		fd.append('record[classificationIds][]', '3');
 		fd.append('record[date]', '2024-01-15');
 
-		// Simulate decode iterating all entries
+		// Simulate iterating all entries
 		for (const _ of fd.entries()) {
 			// consume iterator
 		}
 
-		const ids = fd.getAll('record[classification_ids][]');
+		const ids = fd.getAll('record[classificationIds][]');
 		expect(ids).toEqual(['1', '3']);
 	});
 
-	it('reads classification_ids before decode to be safe', () => {
+	it('reads classification_ids before iterating FormData to be safe', () => {
 		const fd = new FormData();
-		fd.append('record[classification_ids][]', '1');
-		fd.append('record[classification_ids][]', '3');
+		fd.append('record[classificationIds][]', '1');
+		fd.append('record[classificationIds][]', '3');
 		fd.append('record[date]', '2024-01-15');
 
-		// Read before decode (the fix)
-		const ids = fd.getAll('record[classification_ids][]');
+		// Read before iterating
+		const ids = fd.getAll('record[classificationIds][]');
 
-		// Simulate decode iterating all entries
+		// Simulate iterating all entries
 		for (const _ of fd.entries()) {
 			// consume iterator
 		}
 
 		const body = toMultipartFormData({ date: '2024-01-15' }, { prefix: 'record' });
 		for (const id of ids) {
-			body.append('record[classification_ids][]', id);
+			body.append('record[classificationIds][]', id);
 		}
 
-		expect(body.getAll('record[classification_ids][]')).toEqual(['1', '3']);
+		expect(body.getAll('record[classificationIds][]')).toEqual(['1', '3']);
 		expect(body.get('record[date]')).toBe('2024-01-15');
 	});
 
 	it('handles empty classification_ids', () => {
 		const incoming = new FormData();
-		incoming.append('record[classification_ids][]', '');
+		incoming.append('record[classificationIds][]', '');
 
-		const ids = incoming.getAll('record[classification_ids][]');
+		const ids = incoming.getAll('record[classificationIds][]');
 		const body = new FormData();
 		for (const id of ids) {
-			body.append('record[classification_ids][]', id);
+			body.append('record[classificationIds][]', id);
 		}
 
-		expect(body.getAll('record[classification_ids][]')).toEqual(['']);
+		expect(body.getAll('record[classificationIds][]')).toEqual(['']);
 	});
 });
