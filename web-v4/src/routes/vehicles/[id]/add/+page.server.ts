@@ -1,6 +1,5 @@
-import { getVehicle } from '$lib/data/vehicles';
+import { getVehicle, updateVehicle } from '$lib/data/vehicles';
 import { createHistoryEntry } from '$lib/data/history';
-import { uploadRecord } from '$lib/data/multipart';
 import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
 import { createServiceSchedule, type ServiceScheduleCreateData } from '$lib/data/serviceSchedules';
@@ -47,7 +46,7 @@ export const actions = {
 
 		const body = encode({ record: parsed.data });
 
-		await uploadRecord(params.id!, undefined, body, locals);
+		await createHistoryEntry(params.id!, body, locals);
 
 		// When a record is created from a reminder, delete that reminder for housekeeping
 		const reminderId = url.searchParams.get('reminder_id');

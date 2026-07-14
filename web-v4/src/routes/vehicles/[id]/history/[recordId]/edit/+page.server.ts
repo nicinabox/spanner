@@ -1,12 +1,12 @@
 import { getVehicle } from '$lib/data/vehicles';
-import { getHistoryEntry, deleteHistoryEntry } from '$lib/data/history';
+import { getHistoryEntry, deleteHistoryEntry, updateHistoryEntry } from '$lib/data/history';
 import { getClassifications } from '$lib/data/classifications';
 import { decode, validate, encode } from '$lib/utils/formData';
 import { withActionErrors } from '$lib/utils/actions';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { recordFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';
-import { deleteAttachment, uploadRecord } from '$lib/data/multipart';
+import { deleteAttachment } from '$lib/data/attachments';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const [vehicle, record, classifications] = await Promise.all([
@@ -29,6 +29,7 @@ export const actions = {
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		// Process deletions BEFORE update so the multipart PUT doesn't include them.
+		// REVIEW: casing
 		const toDelete = (formData.get('attachments_to_delete')?.toString() ?? '')
 			.split(',')
 			.map((s) => s.trim())
@@ -36,10 +37,11 @@ export const actions = {
 
 		const body = encode({ record: parsed.data });
 
+		// REVIEW: should be able to batch
 		for (const signedId of toDelete) {
 			await deleteAttachment(params.id!, params.recordId!, signedId, locals);
 		}
-		await uploadRecord(params.id!, params.recordId!, body, locals);
+		await updateHistoryEntry(params.id!, params.recordId!, body, locals);
 
 		redirect(303, `/vehicles/${params.id}`);
 	}),

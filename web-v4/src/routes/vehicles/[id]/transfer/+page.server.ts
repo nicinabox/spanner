@@ -1,9 +1,9 @@
 import { getVehicle } from '$lib/data/vehicles';
-import { importRecords } from '$lib/data/multipart';
 import { decode, validate } from '$lib/utils/formData';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import * as v from 'valibot';
+import { importHistory } from '$lib/data/history';
 
 const importSchema = v.object({
 	importFile: v.pipe(v.file(), v.mimeType(['text/csv', 'application/vnd.ms-excel', 'text/plain'])),
@@ -26,7 +26,7 @@ export const actions = {
 		}
 
 		try {
-			await importRecords(params.id!, formData, locals);
+			await importHistory(params.id!, formData, locals);
 		} catch {
 			return fail(422, {
 				errors: [

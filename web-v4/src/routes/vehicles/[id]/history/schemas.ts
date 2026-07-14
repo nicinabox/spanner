@@ -1,11 +1,16 @@
+import { ATTACHMENT_SIZE_LIMIT, MAX_ATTACHMENTS } from '$lib/data/attachments';
 import { numberSchema } from '$lib/schemas';
 import * as v from 'valibot';
 
-export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
-export const MAX_FILES = 10;
-
-export const attachmentFileSchema = v.pipe(v.file(), v.minSize(1), v.maxSize(MAX_FILE_SIZE));
-export const attachmentsSchema = v.pipe(v.array(attachmentFileSchema), v.maxLength(MAX_FILES));
+export const attachmentFileSchema = v.pipe(
+	v.file(),
+	v.minSize(1),
+	v.maxSize(ATTACHMENT_SIZE_LIMIT),
+);
+export const attachmentsSchema = v.pipe(
+	v.array(attachmentFileSchema),
+	v.maxLength(MAX_ATTACHMENTS),
+);
 
 export const recordFormSchema = v.object({
 	date: v.pipe(v.string('Date is required'), v.minLength(1, 'Date is required')),

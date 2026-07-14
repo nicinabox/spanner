@@ -10,6 +10,11 @@ export const apiHeaders = {
 
 const tokenAuthHeader = (token: string | undefined) => (token ? `Token ${token}` : undefined);
 
+export const withBody = (data: FormData | Record<string, any>) => {
+	const [body, json] = data instanceof FormData ? [data, undefined] : [undefined, data];
+	return { body, json };
+};
+
 /**
  * Current browser UTC offset as a signed number string (e.g. `-5`, `5.5`).
  * `Date#getTimezoneOffset` returns minutes WEST of UTC, hence the negation.

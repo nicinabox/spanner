@@ -15,8 +15,8 @@ import * as v from 'valibot';
 import type { PageServerLoad, Actions } from './$types';
 import { numberSchema } from '$lib/schemas';
 import { withActionErrors } from '$lib/utils/actions';
-import { uploadRecord } from '$lib/data/multipart';
 import { attachmentsSchema } from '../history/schemas';
+import { createHistoryEntry } from '$lib/data/history';
 
 const completeFormSchema = v.object({
 	id: v.string(),
@@ -62,7 +62,7 @@ export const actions: Actions = {
 		const body = encode({ record: parsed.data });
 
 		try {
-			const result = await uploadRecord(params.id!, undefined, body, locals);
+			const result = await createHistoryEntry(params.id!, body, locals);
 			await completeServiceSchedule(
 				params.id!,
 				parsed.data.id,
