@@ -22,7 +22,14 @@ const isProtected = (url: string) => {
 	});
 };
 
+const probePattern = /\.(php|asp|aspx|jsp)$|^\/(wp-|wordpress|administrator|vendor\/|composer|\.env|\.git|shell|cgi-bin)/i;
+
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
+	// Silently reject vulnerability scanner probes
+	if (probePattern.test(event.url.pathname)) {
+		return new Response(null, { status: 404 });
+	}
+
 	const session = await getSession(event.cookies);
 
 	if (!session?.authToken && isProtected(event.request.url)) {
