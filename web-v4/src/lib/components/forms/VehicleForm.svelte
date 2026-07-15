@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { enhance, applyAction } from '$app/forms';
 	import Button from '$lib/components/common/Button.svelte';
 	import ErrorSummary from '$lib/components/ErrorSummary.svelte';
 	import Field from '$lib/components/common/Field.svelte';
@@ -80,7 +80,7 @@
 		<legend class="font-semibold mb-4 text-lg">Preferences</legend>
 
 		<Switch
-			name="preferences.enableCost"
+			name="preferences[enableCost]"
 			defaultChecked={values?.preferences?.enableCost ?? true}
 			class="flex-row-reverse w-full justify-between gap-6"
 		>
@@ -93,20 +93,33 @@
 		</Switch>
 
 		<Switch
-			name="preferences.sendReminderEmails"
+			name="preferences[showMileageAdjustmentRecords]"
+			defaultChecked={values?.preferences?.showMileageAdjustmentRecords ?? false}
+			class="flex-row-reverse w-full justify-between gap-6"
+		>
+			<div>
+				<span class="font-medium">Show mileage adjustment records</span>
+				<p class="text-sm text-ink-500 font-normal">Show mileage adjustment records in History.</p>
+			</div>
+		</Switch>
+
+		<hr class="border-ink-200" />
+
+		<Switch
+			name="preferences[sendReminderEmails]"
 			defaultChecked={values?.preferences?.sendReminderEmails ?? true}
 			class="flex-row-reverse w-full justify-between gap-6"
 		>
 			<div>
 				<span class="font-medium">Send reminder emails</span>
 				<p class="text-sm text-ink-500 font-normal">
-					Receive an email for upcoming reminders 2 weeks before and on the due date.
+					Receive an email for upcoming tasks 2 weeks before and on the due date.
 				</p>
 			</div>
 		</Switch>
 
 		<Switch
-			name="preferences.sendPromptForRecords"
+			name="preferences[sendPromptForRecords]"
 			defaultChecked={values?.preferences?.sendPromptForRecords ?? true}
 			class="flex-row-reverse w-full justify-between gap-6"
 		>
@@ -115,17 +128,6 @@
 				<p class="text-sm text-ink-500 font-normal">
 					Receive an email asking if you recently performed service based on your record history.
 				</p>
-			</div>
-		</Switch>
-
-		<Switch
-			name="preferences.showMileageAdjustmentRecords"
-			defaultChecked={values?.preferences?.showMileageAdjustmentRecords ?? true}
-			class="flex-row-reverse w-full justify-between gap-6"
-		>
-			<div>
-				<span class="font-medium">Show mileage adjustment records</span>
-				<p class="text-sm text-ink-500 font-normal">Show mileage adjustment records in History.</p>
 			</div>
 		</Switch>
 	</fieldset>
