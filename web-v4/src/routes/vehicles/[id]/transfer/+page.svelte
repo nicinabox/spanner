@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Button, Card, Switch, ErrorSummary } from '$lib';
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { Button, Card, Switch, ErrorSummary, Alert } from '$lib';
 	import { umamiEvent } from '$lib/umami';
 	import FileInput from '$lib/components/common/FileInput.svelte';
 	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
@@ -8,7 +10,6 @@
 	import type { PageProps } from './$types';
 	import { vehiclePath } from '$lib/routes';
 	import { pageTitle } from '$lib/utils/site';
-	import { exportVehicle } from '$lib/data/vehicles.remote';
 
 	let { data, form }: PageProps = $props();
 
@@ -21,6 +22,20 @@
 	);
 
 	let formErrors = $derived(form?.errors ?? []);
+
+	const exportSubmit: SubmitFunction = () => {
+		return async ({ result }) => {
+			if (result.type === 'success' && result.data?.csv) {
+				const blob = new Blob([result.data.csv], { type: 'text/csv' });
+				const url = URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = `${vehicle.name}.csv`;
+				a.click();
+				URL.revokeObjectURL(url);
+			}
+		};
+	};
 </script>
 
 <svelte:head>
@@ -39,23 +54,12 @@
 		<Card bleed variant="outline">
 			<h2 class="text-lg font-semibold">Export History</h2>
 			<p>Download your vehicle's complete history as a CSV file.</p>
-			<Button
-				onclick={() =>
-					exportVehicle({ vehicleId: String(vehicle.id) }).then((csv) => {
-						const blob = new Blob([csv], { type: 'text/csv' });
-						const url = URL.createObjectURL(blob);
-						const a = document.createElement('a');
-						a.href = url;
-						a.download = `${vehicle.name}.csv`;
-						a.click();
-						URL.revokeObjectURL(url);
-					})}
-				class="self-start"
-				{...umamiEvent('export_csv')}
-			>
-				<Download size={16} />
-				Export CSV
-			</Button>
+			<form method="POST" action="?/export" use:enhance={exportSubmit}>
+				<Button type="submit" class="self-start" {...umamiEvent('export_csv')}>
+					<Download size={16} />
+					Export CSV
+				</Button>
+			</form>
 		</Card>
 
 		<Card bleed variant="outline">
@@ -86,10 +90,9 @@
 
 				<Switch name="fuelly" value="true">This data is from Fuelly</Switch>
 
-				<div class="flex items-start gap-2 p-3 rounded-md bg-warning/10 text-warning text-sm">
-					<TriangleAlert size={16} class="mt-0.5 shrink-0" />
-					<span>This will replace all your existing records for this vehicle!</span>
-				</div>
+				<Alert variant="warning">
+					This will replace all your existing records for this vehicle!
+				</Alert>
 
 				<Button type="submit" {...umamiEvent('import_csv')}>Import</Button>
 			</form>
