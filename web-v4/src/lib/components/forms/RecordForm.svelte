@@ -30,7 +30,7 @@
 		action?: string;
 		id?: number;
 		classifications?: Classification[];
-		distanceUnit?: string;
+		onsuccess?: () => void;
 	}
 
 	let {
@@ -40,7 +40,7 @@
 		action = '',
 		id,
 		classifications = [],
-		distanceUnit,
+		onsuccess,
 	}: Props = $props();
 
 	// svelte-ignore state_referenced_locally
@@ -150,6 +150,7 @@
 
 		return async ({ result }) => {
 			if (result.type === 'redirect') {
+				onsuccess?.();
 				await goto(result.location, { invalidateAll: true });
 			} else if (result.type === 'failure' && result.data?.errors) {
 				actionErrors = result.data.errors;
@@ -249,9 +250,11 @@
 		</Field>
 	</fieldset>
 
-	{#if record?.id}
-		<input type="hidden" name="id" value={record.id} />
+	{#if id}
+		<input type="hidden" name="id" value={id} />
+	{/if}
 
+	{#if record?.id}
 		{#each selectedClassificationIds as cid}
 			<input type="hidden" name="classificationIds[]" value={cid} />
 		{:else}

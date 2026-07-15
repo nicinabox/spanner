@@ -2,7 +2,6 @@ import { getVehicle } from '$lib/data/vehicles';
 import {
 	getServiceSchedules,
 	completeServiceSchedule,
-	createServiceSchedule,
 	createServiceSchedules,
 	deferServiceSchedule,
 	clearDeferServiceSchedule,
@@ -70,27 +69,17 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 export const actions: Actions = {
-	complete: async ({ locals, params, request }) => {
+	complete: withActionErrors(async ({ locals, params, request }) => {
 		const formData = await request.formData();
 		const parsed = await validate(decode(formData), completeFormSchema);
 		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
 		const body = encode({ record: parsed.data });
 
-		try {
-			const result = await createHistoryEntry(params.id!, body, locals);
-			await completeServiceSchedule(
-				params.id!,
-				parsed.data.id,
-				{ record_id: (result as any).id },
-				locals,
-			);
-			redirect(303, `/vehicles/${params.id}/tasks`);
-		} catch (err) {
-			const message = err instanceof Error ? err.message : 'Failed to complete schedule';
-			return fail(422, { errors: [{ id: 'form', title: message }] });
-		}
-	},
+		const result = await createHistoryEntry(params.id!, body, locals);
+		await completeServiceSchedule(params.id!, parsed.data.id, { record_id: result.id }, locals);
+		redirect(303, `/vehicles/${params.id}/tasks`);
+	}),
 
 	defer: withActionErrors(async ({ request, locals, params }) => {
 		const formData = await request.formData();

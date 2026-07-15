@@ -115,6 +115,7 @@
 					mileage: vehicle.estimatedMileage,
 				} as any}
 				action="?/complete"
+				onsuccess={oncancel}
 			/>
 		</div>
 	{/if}
