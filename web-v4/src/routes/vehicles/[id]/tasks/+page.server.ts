@@ -3,6 +3,7 @@ import {
 	getServiceSchedules,
 	completeServiceSchedule,
 	createServiceSchedule,
+	createServiceSchedules,
 	deferServiceSchedule,
 	clearDeferServiceSchedule,
 	getPresets,
@@ -31,6 +32,21 @@ const deferFormSchema = v.object({
 	id: v.optional(numberSchema),
 	months: v.optional(numberSchema),
 	distance: v.optional(numberSchema),
+});
+
+const suggestSchema = v.object({
+	distanceUnit: v.string(),
+	presetData: v.pipe(
+		v.string(),
+		v.transform((input) => JSON.parse(input)),
+		v.array(
+			v.object({
+				name: v.string(),
+				intervals: v.record(v.string(), v.number()),
+				keywords: v.array(v.string()),
+			}),
+		),
+	),
 });
 
 const idOnlySchema = v.object({
@@ -106,34 +122,20 @@ export const actions: Actions = {
 		redirect(303, `/vehicles/${params.id}/tasks`);
 	}),
 
-	suggest: async ({ locals, params, request }) => {
-		const data = await request.formData();
-		const presetData = JSON.parse((data.get('preset_data') as string) || '[]') as Array<{
-			name: string;
-			intervals: Record<string, number>;
-			keywords: string[];
-		}>;
-		const distanceUnit = (data.get('distance_unit') as string) || 'mi';
+	suggest: withActionErrors(async ({ locals, params, request }) => {
+		const formData = await request.formData();
+		const parsed = await validate(decode(formData), suggestSchema);
+		if (parsed.errors) return fail(422, { errors: parsed.errors });
 
-		if (!presetData.length) {
-			return { success: true };
-		}
+		const schedules = parsed.data.presetData.map((preset) => ({
+			classificationName: preset.name,
+			keywords: preset.keywords,
+			distanceInterval: preset.intervals[parsed.data.distanceUnit],
+			monthInterval: preset.intervals['mo'],
+		}));
 
-		const opts = { authToken: locals.authToken, webUrl: locals.webUrl };
-
-		for (const preset of presetData) {
-			await createServiceSchedule(
-				params.id!,
-				{
-					classificationName: preset.name,
-					keywords: preset.keywords,
-					distanceInterval: preset.intervals[distanceUnit],
-					monthInterval: preset.intervals['mo'],
-				},
-				opts,
-			);
-		}
+		await createServiceSchedules(params.id!, schedules, locals);
 
 		return { success: true };
-	},
+	}),
 };

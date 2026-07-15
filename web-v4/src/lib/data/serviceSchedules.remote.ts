@@ -4,18 +4,6 @@ import { getAuthToken } from '$lib/utils/session';
 import { request } from './server';
 import * as v from 'valibot';
 
-export interface PresetItem {
-	name: string;
-	intervals: Record<string, number>;
-	keywords: string[];
-}
-
-export interface PresetGroup {
-	name: string;
-	distanceUnit: string | string[];
-	items: PresetItem[];
-}
-
 export const getPresets = query(
 	v.object({ distanceUnit: v.optional(v.string()) }),
 	async ({ distanceUnit }) => {

@@ -8,7 +8,18 @@ export const getHTTPErrors = (error: unknown): { errors: FormError[] } => {
 		throw redirect(307, '/');
 	}
 	if (error instanceof HTTPError) {
-		return error.data;
+		const data = error.data;
+		// Rails can return errors in different shapes:
+		//   { errors: [{ id, title }] }  — from respond_with_errors
+		//   { error: "message" }         — from respond_with_error
+		//   ""                            — from head :unprocessable_entity
+		if (data && typeof data === 'object' && Array.isArray(data.errors)) {
+			return data as { errors: FormError[] };
+		}
+		if (data && typeof data === 'object' && data.error) {
+			return { errors: [{ id: 'form', title: String(data.error) }] };
+		}
+		return { errors: [{ id: 'form', title: String(data || 'Request failed') }] };
 	}
 	return { errors: [{ id: 'form', title: 'An unexpected error occurred' }] };
 };
@@ -20,7 +31,7 @@ export function requireField(
 ): { errors: FormError[] } | null {
 	if (data[key]) return null;
 	return { errors: [{ id: key, title: message }] };
-};
+}
 
 type FormActionEvent = RequestEvent & { request: Request };
 

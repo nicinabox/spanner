@@ -49,6 +49,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       resources :classifications, only: %i[index create]
       resources :service_schedules do
         post :complete, on: :member
+        post :batch, on: :collection
         resource :defer, only: %i[create update destroy]
       end
 

@@ -10,8 +10,8 @@ export const apiHeaders = {
 const tokenAuthHeader = (token: string | undefined) => (token ? `Token ${token}` : undefined);
 
 export const withBody = (data: FormData | Record<string, any>) => {
-	const [body, json] = data instanceof FormData ? [data, undefined] : [undefined, data];
-	return { body, json };
+	if (data instanceof FormData) return { body: data };
+	return { json: data };
 };
 
 /**

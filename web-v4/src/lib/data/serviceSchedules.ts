@@ -1,7 +1,6 @@
 import { request } from './server';
 import type { Classification } from './classifications';
 import type { RequestOpts } from './types';
-import type { PresetGroup } from './serviceSchedules.remote';
 
 export interface ServiceSchedule {
 	id: number;
@@ -34,6 +33,18 @@ export interface ServiceScheduleCreateData {
 
 export type ServiceScheduleUpdateData = Partial<ServiceScheduleCreateData>;
 
+export interface PresetItem {
+	name: string;
+	intervals: Record<string, number>;
+	keywords: string[];
+}
+
+export interface PresetGroup {
+	name: string;
+	distanceUnit: string | string[];
+	items: PresetItem[];
+}
+
 export const getServiceSchedule = (
 	vehicleId: number | string,
 	id: number | string,
@@ -55,6 +66,18 @@ export const createServiceSchedule = (
 		...opts,
 		method: 'POST',
 		json: data,
+	});
+};
+
+export const createServiceSchedules = (
+	vehicleId: number | string,
+	data: ServiceScheduleCreateData[],
+	opts: RequestOpts,
+) => {
+	return request<ServiceSchedule[]>(`/vehicles/${vehicleId}/service_schedules/batch`, {
+		...opts,
+		method: 'POST',
+		json: { serviceSchedule: data },
 	});
 };
 

@@ -8,10 +8,9 @@
 	import SuggestTasksDialog from '$lib/components/dialogs/SuggestTasksDialog.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import type { Reminder } from '$lib/data/reminders';
-	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
+	import type { PresetGroup, ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Classification } from '$lib/data/classifications';
 	import type { Vehicle } from '$lib/data/vehicles';
-	import type { PresetGroup } from '$lib/data/serviceSchedules.remote';
 
 	interface Props {
 		reminders: Reminder[];
@@ -72,7 +71,7 @@
 						class="w-full sm:w-auto [&>*:first-child]:flex-1"
 					>
 						{#snippet start()}
-							<span class="text-ink-500 text-sm font-medium">Choose from presets</span>
+							<span class="text-ink-500 text-sm font-medium">Choose from suggested</span>
 						{/snippet}
 						<PlusIcon size={14} />
 						New Task
@@ -157,7 +156,7 @@
 		suggestOpen = v;
 		if (!v) suggestType = null;
 	}}
-	initialType={suggestType}
+	presetGroup={suggestType ? presetGroups[suggestType] : null}
 	{existingClassificationNames}
 	distanceUnit={vehicle.distanceUnit}
 />

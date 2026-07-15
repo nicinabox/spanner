@@ -23,6 +23,32 @@ module V2
       render json: schedule
     end
 
+    def batch
+      schedules_data = params.require(:service_schedule)
+      return head :unprocessable_entity if schedules_data.blank?
+
+      results = schedules_data.map do |s|
+        classification = find_or_create_classification(s)
+        schedule = schedules.build(
+          classification_id: classification.id,
+          distance_interval: s[:distance_interval],
+          month_interval: s[:month_interval],
+          notes: s[:notes],
+          enabled: s.fetch(:enabled, true)
+        )
+        schedule.save!
+        begin
+          apply_classification_to_matching_records(schedule.classification)
+        rescue StandardError => e
+          Rails.logger.error("Failed to apply classification to records: #{e.message}")
+        end
+        schedule.recalculate_next_due
+        schedule
+      end
+
+      render json: results
+    end
+
     def update
       schedule = schedules.find(params[:id])
       schedule.update!(schedule_params)
@@ -76,12 +102,14 @@ module V2
       )
     end
 
-    def find_or_create_classification
-      if params[:service_schedule] && params[:service_schedule][:classification_id].present?
-        vehicle.classifications.find(params[:service_schedule][:classification_id])
-      elsif params[:service_schedule] && params[:service_schedule][:classification_name].present?
-        name = params[:service_schedule][:classification_name]
-        keywords = params.dig(:service_schedule, :keywords).presence || [name.downcase]
+    def find_or_create_classification(source = nil)
+      source ||= params[:service_schedule]
+
+      if source && source[:classification_id].present?
+        vehicle.classifications.find(source[:classification_id])
+      elsif source && source[:classification_name].present?
+        name = source[:classification_name]
+        keywords = source[:keywords].presence || [name.downcase]
         classification = vehicle.classifications.where(name:).first_or_initialize
         classification.keywords = keywords
         classification.save!
