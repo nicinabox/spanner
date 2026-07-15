@@ -156,7 +156,6 @@
 	open={suggestOpen}
 	onOpenChange={(v) => {
 		suggestOpen = v;
-		if (!v) suggestType = null;
 	}}
 	presetGroup={suggestType ? presetGroups[suggestType] : null}
 	{existingClassificationNames}
