@@ -29,6 +29,11 @@ class ApplicationController < ActionController::API
     respond_with_error(e.message, status: :unprocessable_entity)
   end
 
+  rescue_from SecureAttachments::SecureAttachmentError do |e|
+    log_exception(e)
+    respond_with_error(e.message, status: :unprocessable_entity)
+  end
+
   protected
 
   attr_reader :current_user, :current_session

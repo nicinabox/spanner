@@ -96,4 +96,78 @@ class RecordTest < ActiveSupport::TestCase
     record.update!(mileage: 55_000)
     assert_equal 60_000, schedule.reload.next_due_mileage
   end
+
+  test 'rejects attachment exceeding 10MB' do
+    # Create a real temp file over 10MB
+    Tempfile.create(['large', '.pdf'], binmode: true) do |f|
+      f.write('x' * (11 * 1024 * 1024))
+      f.rewind
+
+      assert_raises SecureAttachments::SecureAttachmentError, /exceeds/ do
+        SecureAttachments.validate_files!([f])
+      end
+    end
+  end
+
+  test 'rejects disallowed content type' do
+    Tempfile.create(['virus', '.exe'], binmode: true) do |f|
+      f.write("MZ\x90\x00\x03\x00\x00\x00") # PE header
+      f.rewind
+
+      assert_raises SecureAttachments::SecureAttachmentError, /not allowed/ do
+        SecureAttachments.validate_files!([f])
+      end
+    end
+  end
+
+  test 'accepts valid PDF attachment' do
+    Tempfile.create(['receipt', '.pdf'], binmode: true) do |f|
+      f.write("%PDF-1.4 fake pdf content")
+      f.rewind
+
+      # Should not raise
+      assert_nothing_raised { SecureAttachments.validate_files!([f]) }
+    end
+  end
+
+  test 'accepts valid JPEG attachment' do
+    Tempfile.create(['photo', '.jpg'], binmode: true) do |f|
+      f.write("\xFF\xD8\xFF\xE0 fake jpeg content")
+      f.rewind
+
+      # Should not raise
+      assert_nothing_raised { SecureAttachments.validate_files!([f]) }
+    end
+  end
+
+  test 'rejects mismatched magic bytes' do
+    vehicle = Vehicle.first || Vehicle.create!(name: 'Test Vehicle', user: User.first)
+
+    # Claims to be PDF but is actually text
+    Tempfile.create(['fake', '.pdf'], binmode: true) do |f|
+      f.write('This is not a PDF file')
+      f.rewind
+
+      assert_raises SecureAttachments::SecureAttachmentError do
+        SecureAttachments.validate_files!([f])
+      end
+    end
+  end
+
+  test 'rejects attachment count exceeding 10' do
+    vehicle = Vehicle.first || Vehicle.create!(name: 'Test Vehicle', user: User.first)
+    record = vehicle.records.new(date: Time.zone.today, notes: 'Many files')
+
+    11.times do |i|
+      Tempfile.create(['file', '.txt'], binmode: true) do |f|
+        f.write("file content #{i}")
+        f.rewind
+
+        record.attachments.attach(io: f, filename: "file#{i}.txt", content_type: 'text/plain')
+      end
+    end
+
+    assert_not record.valid?
+    assert_includes record.errors[:attachments].join, 'count exceeds'
+  end
 end
