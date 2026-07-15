@@ -6,7 +6,7 @@ import {
 	createServiceSchedules,
 	deferServiceSchedule,
 	clearDeferServiceSchedule,
-	getPresets,
+	getServiceSchedulePresets,
 } from '$lib/data/serviceSchedules';
 import { getVehicleReminders } from '$lib/data/reminders';
 import { getClassifications } from '$lib/data/classifications';
@@ -59,7 +59,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		getServiceSchedules(params.id!, locals),
 		getClassifications(params.id!, locals),
 		getVehicleReminders(params.id!, locals),
-		getPresets({
+		getServiceSchedulePresets({
 			authToken: locals.authToken,
 			webUrl: locals.webUrl,
 			params: { distance_unit: vehicle.distanceUnit },

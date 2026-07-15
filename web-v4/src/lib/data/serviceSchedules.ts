@@ -142,6 +142,6 @@ export const clearDeferServiceSchedule = (
 	});
 };
 
-export const getPresets = (opts: RequestOpts) => {
+export const getServiceSchedulePresets = (opts: RequestOpts) => {
 	return request<Record<string, PresetGroup>>('/service_schedules/presets', opts);
 };
