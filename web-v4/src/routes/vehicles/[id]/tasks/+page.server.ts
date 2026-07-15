@@ -68,7 +68,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	return { vehicle, schedules, classifications, reminders, presetGroups };
 };
 
-export const actions: Actions = {
+export const actions = {
 	complete: withActionErrors(async ({ locals, params, request }) => {
 		const formData = await request.formData();
 		const parsed = await validate(decode(formData), completeFormSchema);
@@ -127,4 +127,4 @@ export const actions: Actions = {
 
 		return { success: true };
 	}),
-};
+} satisfies Actions;
