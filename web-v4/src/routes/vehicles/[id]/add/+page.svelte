@@ -91,7 +91,6 @@
 					record={{ notes: notesParam } as any}
 					action="?/record"
 					classifications={data.classifications}
-					distanceUnit={vehicle.distanceUnit}
 				/>
 			{:else if view === 'tasks'}
 				{#if type === 'reminder'}
