@@ -6,7 +6,7 @@
 	import Button from '$lib/components/common/Button.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import InstallButton from '$lib/components/common/InstallButton.svelte';
-	import PageLayout from '$lib/components/common/PageLayout.svelte';
+	import PageLayout from '$lib/components/PageLayout.svelte';
 	import VehicleSortMenu from '$lib/components/vehicles/VehicleSortMenu.svelte';
 	import { sortVehiclesBy } from '$lib/utils/sortable';
 	import { formatMileage } from '$lib/utils/vehicle';

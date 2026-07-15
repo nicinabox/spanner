@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AppBar from '$lib/components/common/AppBar.svelte';
+	import AppBar from '$lib/components/AppBar.svelte';
 	import HistoryTable from '$lib/components/HistoryTable.svelte';
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import Stat from '$lib/components/common/Stat.svelte';

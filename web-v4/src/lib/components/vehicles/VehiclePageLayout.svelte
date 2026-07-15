@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib';
 	import Menu from '$lib/components/common/Menu.svelte';
-	import PageLayout from '$lib/components/common/PageLayout.svelte';
+	import PageLayout from '$lib/components/PageLayout.svelte';
 	import ShareDialog from '$lib/components/dialogs/ShareDialog.svelte';
 	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
 	import type { Vehicle } from '$lib/data/vehicles';
@@ -131,7 +131,8 @@
 					}
 				}}
 			>
-				<VehicleColorIndicator class="-ml-1.5" color={vehicle.color} size={6} /> {vehicle.name}
+				<VehicleColorIndicator class="-ml-1.5" color={vehicle.color} size={6} />
+				{vehicle.name}
 				{#snippet itemEnd(item)}
 					{#if item.value === 'retire' && vehicle.retired}
 						<Check size={16} />

@@ -2,7 +2,7 @@
 	import { cn } from 'tailwind-variants';
 	import type { Snippet } from 'svelte';
 	import type { Session } from '$lib/data/session';
-	import Menu from './Menu.svelte';
+	import Menu from './common/Menu.svelte';
 	import ThemeToggle from './ThemeToggle.svelte';
 
 	interface Props {

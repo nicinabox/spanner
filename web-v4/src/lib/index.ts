@@ -1,7 +1,7 @@
 export { default as Alert } from './components/common/Alert.svelte';
 export { default as ErrorSummary } from './components/ErrorSummary.svelte';
 export { default as Badge } from './components/common/Badge.svelte';
-export { default as AppBar } from './components/common/AppBar.svelte';
+export { default as AppBar } from './components/AppBar.svelte';
 export { default as Button } from './components/common/Button.svelte';
 export { default as ButtonGroup } from './components/common/ButtonGroup.svelte';
 export { default as Menu } from './components/common/Menu.svelte';
@@ -14,7 +14,7 @@ export { default as Field } from './components/common/Field.svelte';
 export { default as Input } from './components/common/Input.svelte';
 export { default as InputGroup } from './components/common/InputGroup.svelte';
 export { default as InputAddon } from './components/common/InputAddon.svelte';
-export { default as PageLayout } from './components/common/PageLayout.svelte';
+export { default as PageLayout } from './components/PageLayout.svelte';
 export { default as SegmentedControl } from './components/common/SegmentedControl.svelte';
 export { default as SplitButton } from './components/common/SplitButton.svelte';
 export { default as Stepper } from './components/common/Stepper.svelte';
