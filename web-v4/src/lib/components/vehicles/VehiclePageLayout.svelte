@@ -90,7 +90,7 @@
 
 <PageLayout
 	appbarEnd={isSmallScreen.current ? appbarEnd : undefined}
-	appbarClass="grid grid-cols-[1fr_auto_1fr] max-sm:grid-cols-2 items-center gap-3 p-2 *:data-[center]:justify-start"
+	appbarClass="grid grid-cols-[1fr_auto_1fr] max-sm:grid-cols-2 items-center gap-3 p-2 *:data-[center]:justify-start *:data-[start]:max-sm:col-span-2 *:data-[end]:max-sm:hidden"
 >
 	{#snippet appbarStart()}
 		<div class="flex gap-2">
@@ -108,6 +108,7 @@
 			<Menu
 				variant="ghost"
 				theme="dark"
+				class="min-w-0"
 				size="sm"
 				items={[
 					{ value: 'edit', label: 'Edit', href: vehiclePath(vehicle.id, 'edit') },
@@ -132,7 +133,9 @@
 				}}
 			>
 				<VehicleColorIndicator class="-ml-1.5" color={vehicle.color} size={6} />
-				{vehicle.name}
+				<span class="truncate">
+					{vehicle.name}
+				</span>
 				{#snippet itemEnd(item)}
 					{#if item.value === 'retire' && vehicle.retired}
 						<Check size={16} />
