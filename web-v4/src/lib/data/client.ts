@@ -9,9 +9,9 @@ export const apiHeaders = {
 
 const tokenAuthHeader = (token: string | undefined) => (token ? `Token ${token}` : undefined);
 
-export const withBody = (data: FormData | Record<string, any>) => {
+export const withBody = (data: FormData | Record<string, any>, namespace?: string) => {
 	if (data instanceof FormData) return { body: data };
-	return { json: data };
+	return { json: namespace ? { [namespace]: data } : data };
 };
 
 /**
