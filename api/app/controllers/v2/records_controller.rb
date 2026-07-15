@@ -27,11 +27,13 @@ module V2
       record = records.build(record_params)
       has_manual_ids = params.dig(:record, :classification_ids)
 
-      validate_attachment_sizes!
+      if params[:record][:attachments].present?
+        SecureAttachments.validate_files!(params[:record][:attachments])
+        record.attachments.attach(params[:record][:attachments])
+      end
       record.save!
       record.reload
       sync_classifications(record) if has_manual_ids
-      record.attachments.attach(params[:record][:attachments]) if params[:record][:attachments].present?
       render json: record
     end
 
@@ -39,11 +41,13 @@ module V2
       record = records.find(params[:id])
       has_manual_ids = params.dig(:record, :classification_ids)
 
-      validate_attachment_sizes!
+      if params[:record][:attachments].present?
+        SecureAttachments.validate_files!(params[:record][:attachments])
+        record.attachments.attach(params[:record][:attachments])
+      end
       record.update!(record_params)
       record.reload
       sync_classifications(record) if has_manual_ids
-      record.attachments.attach(params[:record][:attachments]) if params[:record][:attachments].present?
       purge_attachments!(record)
       render json: record
     end
@@ -88,21 +92,6 @@ module V2
       return unless ids
 
       record.sync_manual_classifications(ids)
-    end
-
-    def validate_attachment_sizes!
-      uploaded = params[:record][:attachments]
-      return if uploaded.blank?
-
-      Array(uploaded).each do |file|
-        next unless file.respond_to?(:size)
-
-        next unless file.size > Record::MAX_ATTACHMENT_SIZE
-
-        raise(ActiveRecord::RecordInvalid, Record.new.tap do |r|
-          r.errors.add(:attachments, 'exceeds the 10MB size limit')
-        end)
-      end
     end
 
     def purge_attachments!(record)

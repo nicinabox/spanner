@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 class Record < ApplicationRecord
+  include SecureAttachments
+
   validates :notes, :date, presence: true
   validate :mileage_greater_than_trailing_record
   validate :mileage_less_than_leading_record
 
   belongs_to :vehicle
-
-  has_many_attached :attachments, dependent: :purge
-
-  MAX_ATTACHMENT_SIZE = 10.megabytes
 
   has_many :record_classifications, dependent: :destroy
   has_many :classifications, through: :record_classifications
