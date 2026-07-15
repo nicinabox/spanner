@@ -64,6 +64,7 @@ export default defineConfig(({ mode }) => {
 					test: {
 						name: 'server',
 						environment: 'node',
+						restoreMocks: true,
 						include: ['src/**/*.{test,spec}.{js,ts}'],
 						exclude: ['src/**/*.svelte.{test,spec}.{js,ts}'],
 					},
