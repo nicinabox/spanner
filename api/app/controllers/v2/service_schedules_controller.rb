@@ -25,7 +25,7 @@ module V2
 
     def batch
       schedules_data = params.require(:service_schedule)
-      return head :unprocessable_entity if schedules_data.blank?
+      return head :unprocessable_content if schedules_data.blank?
 
       results = schedules_data.map do |s|
         classification = find_or_create_classification(s)

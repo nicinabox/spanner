@@ -122,7 +122,7 @@ class RecordTest < ActiveSupport::TestCase
 
   test 'accepts valid PDF attachment' do
     Tempfile.create(['receipt', '.pdf'], binmode: true) do |f|
-      f.write("%PDF-1.4 fake pdf content")
+      f.write('%PDF-1.4 fake pdf content')
       f.rewind
 
       # Should not raise
@@ -141,7 +141,7 @@ class RecordTest < ActiveSupport::TestCase
   end
 
   test 'rejects mismatched magic bytes' do
-    vehicle = Vehicle.first || Vehicle.create!(name: 'Test Vehicle', user: User.first)
+    Vehicle.first || Vehicle.create!(name: 'Test Vehicle', user: User.first)
 
     # Claims to be PDF but is actually text
     Tempfile.create(['fake', '.pdf'], binmode: true) do |f|

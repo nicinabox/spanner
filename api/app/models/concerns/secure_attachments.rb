@@ -4,9 +4,9 @@ module SecureAttachments
   extend ActiveSupport::Concern
 
   ALLOWED_CONTENT_TYPES = [
-    "image/jpeg", "image/png", "image/gif", "image/webp",
-    "image/heic", "image/heif", "image/avif",
-    "application/pdf", "text/plain", "text/rtf"
+    'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+    'image/heic', 'image/heif', 'image/avif',
+    'application/pdf', 'text/plain', 'text/rtf'
   ].freeze
 
   MAX_ATTACHMENT_SIZE = 10.megabytes
@@ -31,7 +31,8 @@ module SecureAttachments
 
         # Size check
         if file.size > MAX_ATTACHMENT_SIZE
-          raise SecureAttachmentError, "file '#{filename(file)}' exceeds #{MAX_ATTACHMENT_SIZE / 1.megabyte}MB size limit"
+          raise SecureAttachmentError,
+                "file '#{filename(file)}' exceeds #{MAX_ATTACHMENT_SIZE / 1.megabyte}MB size limit"
         end
 
         # Content type check
@@ -48,7 +49,11 @@ module SecureAttachments
     private
 
     def filename(file)
-      file.respond_to?(:original_filename) ? file.original_filename : file.respond_to?(:filename) ? file.filename : "unknown"
+      if file.respond_to?(:original_filename)
+        file.original_filename
+      else
+        file.respond_to?(:filename) ? file.filename : 'unknown'
+      end
     end
 
     def detect_content_type(file)
@@ -57,37 +62,35 @@ module SecureAttachments
       elsif file.respond_to?(:path)
         Marcel::MimeType.for(Pathname.new(file.path))
       else
-        "application/octet-stream"
+        'application/octet-stream'
       end
     end
 
     def validate_magic_bytes!(file, content_type)
       signatures = {
-        "image/jpeg" => "\xFF\xD8\xFF".b,
-        "image/png" => "\x89PNG\r\n\x1A\n".b,
-        "image/gif" => "GIF8".b,
-        "image/webp" => "RIFF".b,
-        "application/pdf" => "%PDF".b,
-        "text/rtf" => "{\\rtf".b
+        'image/jpeg' => "\xFF\xD8\xFF".b,
+        'image/png' => "\x89PNG\r\n\x1A\n".b,
+        'image/gif' => 'GIF8'.b,
+        'image/webp' => 'RIFF'.b,
+        'application/pdf' => '%PDF'.b,
+        'text/rtf' => '{\
+tf'.b
       }
 
       return unless signatures.key?(content_type)
 
       expected = signatures[content_type]
-      original_pos = file.respond_to?(:pos) ? file.pos : 0
+      expected_bytes = read_bytes(file, expected.bytesize)
+      return if expected_bytes.nil?
 
-      begin
-        header = file.read(expected.bytesize)
-        file.rewind
+      raise SecureAttachmentError, 'content does not match declared type' unless expected_bytes.start_with?(expected)
+    end
 
-        header_encoded = header&.force_encoding("BINARY")
-        unless header_encoded&.start_with?(expected)
-          raise SecureAttachmentError, "content does not match declared type"
-        end
-      rescue SecureAttachments::SecureAttachmentError
-        file.rewind if file.respond_to?(:rewind)
-        raise
-      end
+    def read_bytes(file, size)
+      file.rewind
+      file.read(size)&.force_encoding('BINARY')
+    rescue StandardError
+      nil
     end
   end
 
