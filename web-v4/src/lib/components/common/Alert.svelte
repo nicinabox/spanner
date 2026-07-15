@@ -2,7 +2,7 @@
 	import { tv, type VariantProps } from 'tailwind-variants';
 
 	export const alertVariants = tv({
-		base: 'px-4 py-3 rounded-md border border-current/10 bg-current/10',
+		base: 'px-4 py-3 rounded-md border border-current/10 bg-current/10 flex gap-3',
 		variants: {
 			variant: {
 				negative: 'text-red-700 dark:text-red-400',
@@ -29,7 +29,7 @@
 
 <script lang="ts">
 	import { cn } from 'tailwind-variants';
-	import { X } from 'lucide-svelte';
+	import { Info, CircleCheckBig, TriangleAlert, X } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import type { ClassValue } from 'svelte/elements';
 
@@ -45,17 +45,27 @@
 </script>
 
 {#if !dismissed}
-	<div {role} class={cn(alertVariants({ variant }), 'relative', dismissible && 'pr-10', className)}>
+	<div {role} class={cn(alertVariants({ variant }), 'relative', dismissible && 'pr-13', className)}>
+		<span class="inline-block mt-0.5">
+			{#if variant === 'warning' || variant === 'negative'}
+				<TriangleAlert size={20} />
+			{:else if variant === 'positive'}
+				<CircleCheckBig size={20} />
+			{:else if variant === 'info'}
+				<Info size={20} />
+			{/if}
+		</span>
+
 		{@render children()}
 
 		{#if dismissible}
 			<button
 				type="button"
 				onclick={() => (dismissed = true)}
-				class="absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer opacity-80 hover:opacity-100"
+				class="absolute inset-y-0 right-0 flex items-center px-4 cursor-pointer opacity-80 hover:opacity-100"
 				aria-label="Dismiss"
 			>
-				<X size={16} />
+				<X size={20} />
 			</button>
 		{/if}
 	</div>
