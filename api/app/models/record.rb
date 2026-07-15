@@ -69,8 +69,7 @@ class Record < ApplicationRecord
   end
 
   def advance_matching_service_schedules
-    matching_schedules = vehicle.service_schedules.where(classification_id: classifications.pluck(:id))
-    matching_schedules.each(&:recalculate_next_due)
+    vehicle.service_schedules.find_each(&:recalculate_next_due)
   end
 
   def sync_manual_classifications(raw_ids)

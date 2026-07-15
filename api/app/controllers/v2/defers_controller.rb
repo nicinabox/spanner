@@ -36,13 +36,9 @@ module V2
 
       raise ActionController::BadRequest, 'months or distance required' if months.blank? && distance.blank?
 
-      if months.present?
-        schedule.defer_delta_months = months.to_i
-      end
+      schedule.defer_delta_months = months.to_i if months.present?
 
-      if distance.present?
-        schedule.defer_delta_miles = distance.to_i
-      end
+      schedule.defer_delta_miles = distance.to_i if distance.present?
 
       schedule.save!
       schedule.recalculate_next_due
