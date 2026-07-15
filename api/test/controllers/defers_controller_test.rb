@@ -64,7 +64,7 @@ class DefersControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
   end
 
-  test 'create defer with months rejects schedule without month_interval' do
+  test 'create defer with months works without month_interval' do
     schedule = ServiceSchedule.create!(
       vehicle: @vehicle,
       classification: @classification,
@@ -76,10 +76,12 @@ class DefersControllerTest < ActionDispatch::IntegrationTest
          headers: http_options(@session.auth_token)[:headers],
          as: :json
 
-    assert_response :bad_request
+    assert_response :success
+    schedule.reload
+    assert_equal 3, schedule.defer_delta_months
   end
 
-  test 'create defer with distance rejects schedule without distance_interval' do
+  test 'create defer with distance works without distance_interval' do
     schedule = ServiceSchedule.create!(
       vehicle: @vehicle,
       classification: @classification,
@@ -91,7 +93,9 @@ class DefersControllerTest < ActionDispatch::IntegrationTest
          headers: http_options(@session.auth_token)[:headers],
          as: :json
 
-    assert_response :bad_request
+    assert_response :success
+    schedule.reload
+    assert_equal 1000, schedule.defer_delta_miles
   end
 
   test 'update defer modifies defer_delta_months' do

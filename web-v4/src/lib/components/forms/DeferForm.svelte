@@ -24,9 +24,6 @@
 
 	let formErrors = $derived(errors.filter((e) => e.id === 'form'));
 
-	let hasMonthInterval = $derived(schedule.monthInterval != null);
-	let hasDistanceInterval = $derived(schedule.distanceInterval != null);
-	let bothShown = $derived(hasMonthInterval && hasDistanceInterval);
 	let isDeferred = $derived(schedule.deferred);
 
 	// svelte-ignore state_referenced_locally
@@ -50,61 +47,48 @@
 	<ErrorSummary {formErrors} />
 	<div class="space-y-3">
 		<div class="flex sm:gap-6 flex-col sm:flex-row *:flex-1">
-			{#if hasMonthInterval}
-				<Field
-					label="Defer Months"
-					name="months"
-					hint="Push due date by months"
-					required={!bothShown}
-					{errors}
-				>
-					<InputGroup>
-						<Input
-							inputmode="numeric"
-							name="months"
-							bind:value={months}
-							placeholder={bothShown ? 'Optional' : ''}
-							min="1"
-							required={!bothShown}
+			<Field label="Defer Months" name="months" hint="Push due date by months" {errors}>
+				<InputGroup>
+					<Input
+						inputmode="numeric"
+						name="months"
+						bind:value={months}
+						placeholder="Optional"
+						min="1"
+					/>
+					<InputAddon>
+						<Stepper
+							size="sm"
+							variant="ghost"
+							onincrement={() => {
+								let v = parseInt(months) || 0;
+								months = String(v + 6);
+							}}
+							ondecrement={() => {
+								let v = parseInt(months) || 0;
+								if (v > 0) months = String(v - 6);
+							}}
 						/>
-						<InputAddon>
-							<Stepper
-								size="sm"
-								variant="ghost"
-								onincrement={() => {
-									let v = parseInt(months) || 0;
-									months = String(v + 6);
-								}}
-								ondecrement={() => {
-									let v = parseInt(months) || 0;
-									if (v > 0) months = String(v - 6);
-								}}
-							/>
-						</InputAddon>
-					</InputGroup>
-				</Field>
-			{/if}
-			{#if hasDistanceInterval}
-				<Field
-					label={'Defer ' + MileageLabel(vehicle.distanceUnit)}
-					name="distance"
-					hint="Push mileage threshold by amount"
-					required={!bothShown}
-					{errors}
-				>
-					<InputGroup>
-						<Input
-							bind:value={distance}
-							name="distance"
-							inputmode="numeric"
-							placeholder={bothShown ? 'Optional' : ''}
-							min="1"
-							required={!bothShown}
-						/>
-						<InputAddon>{vehicle.distanceUnit}</InputAddon>
-					</InputGroup>
-				</Field>
-			{/if}
+					</InputAddon>
+				</InputGroup>
+			</Field>
+			<Field
+				label={'Defer ' + MileageLabel(vehicle.distanceUnit)}
+				name="distance"
+				hint="Push mileage threshold by amount"
+				{errors}
+			>
+				<InputGroup>
+					<Input
+						bind:value={distance}
+						name="distance"
+						inputmode="numeric"
+						placeholder="Optional"
+						min="1"
+					/>
+					<InputAddon>{vehicle.distanceUnit}</InputAddon>
+				</InputGroup>
+			</Field>
 		</div>
 		<div class="flex gap-2">
 			<Button type="submit"
