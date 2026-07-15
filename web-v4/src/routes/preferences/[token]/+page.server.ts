@@ -59,7 +59,7 @@ export const actions = {
 	unsubscribe: async ({ params, request }) => {
 		const token = params.token!;
 		const formData = await request.formData();
-		const vehicleIdRaw = formData.get('vehicle_id');
+		const vehicleIdRaw = formData.get('vehicleId');
 		const vehicleId =
 			typeof vehicleIdRaw === 'string' && vehicleIdRaw !== '' ? Number(vehicleIdRaw) : null;
 		try {
@@ -76,7 +76,7 @@ export const actions = {
 	reactivate: async ({ params, request }) => {
 		const token = params.token!;
 		const formData = await request.formData();
-		const vehicleIdRaw = formData.get('vehicle_id');
+		const vehicleIdRaw = formData.get('vehicleId');
 		const vehicleId =
 			typeof vehicleIdRaw === 'string' && vehicleIdRaw !== '' ? Number(vehicleIdRaw) : null;
 		try {

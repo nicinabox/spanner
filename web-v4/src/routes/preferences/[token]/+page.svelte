@@ -51,12 +51,12 @@
 					}}
 					class="flex flex-col gap-6"
 				>
-					<input type="hidden" name="vehicle_id" value={data.vehicle.id} />
+					<input type="hidden" name="vehicleId" value={data.vehicle.id} />
 
 					<fieldset class="flex flex-col gap-4">
 						{#key data.vehicle.preferences}
 							<Switch
-								name="send_reminder_emails"
+								name="sendReminderEmails"
 								defaultChecked={data.vehicle.preferences.sendReminderEmails}
 								class="flex-row-reverse w-full justify-between gap-6"
 							>
@@ -69,7 +69,7 @@
 							</Switch>
 
 							<Switch
-								name="send_prompt_for_records"
+								name="sendPromptForRecords"
 								defaultChecked={data.vehicle.preferences.sendPromptForRecords}
 								class="flex-row-reverse w-full justify-between gap-6"
 							>
@@ -97,7 +97,7 @@
 				<p>You are currently unsubscribed from all Spanner emails.</p>
 				<form method="POST" action="?/reactivate" use:enhance>
 					{#if data.vehicle?.id}
-						<input type="hidden" name="vehicle_id" value={data.vehicle.id} />
+						<input type="hidden" name="vehicleId" value={data.vehicle.id} />
 					{/if}
 					<Button type="submit">Reactivate</Button>
 				</form>
@@ -105,7 +105,7 @@
 				<p>Stop receiving reminder emails for all vehicles.</p>
 				<form method="POST" action="?/unsubscribe" use:enhance>
 					{#if data.vehicle?.id}
-						<input type="hidden" name="vehicle_id" value={data.vehicle.id} />
+						<input type="hidden" name="vehicleId" value={data.vehicle.id} />
 					{/if}
 					<Button type="submit" variant="outline" color="danger" {...umamiEvent('unsubscribe')}
 						>Unsubscribe from all</Button
