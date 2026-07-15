@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as radio from '@zag-js/radio-group';
 	import { useMachine, normalizeProps } from '@zag-js/svelte';
+	import type { Snippet } from 'svelte';
 
 	interface Item {
 		value: string;
@@ -9,6 +10,7 @@
 
 	interface Props {
 		items: Item[];
+		children?: Snippet<[Item]>;
 		name?: string;
 		value?: string;
 		defaultValue?: string;
@@ -24,6 +26,7 @@
 
 	let {
 		items,
+		children,
 		name,
 		value: controlledValue,
 		defaultValue,
@@ -76,11 +79,15 @@
 	{#each items as item}
 		<label
 			{...api.getItemProps({ value: item.value })}
-			class="relative z-10 flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50"
+			class="relative z-10 flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50 gap-1.5"
 		>
-			<span {...api.getItemTextProps({ value: item.value })}>
-				{item.label}
-			</span>
+			{#if children}
+				{@render children(item)}
+			{:else}
+				<span {...api.getItemTextProps({ value: item.value })}>
+					{item.label}
+				</span>
+			{/if}
 			<input {...api.getItemHiddenInputProps({ value: item.value })} />
 		</label>
 	{/each}

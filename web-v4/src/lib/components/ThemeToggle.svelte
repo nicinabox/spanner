@@ -64,7 +64,18 @@
 		onValueChange={(details) => {
 			if (details.value) setTheme(details.value as Theme);
 		}}
-	/>
+	>
+		{#snippet children(item)}
+			{#if item.value === 'light'}
+				<Sun size={16} />
+			{:else if item.value === 'dark'}
+				<Moon size={16} />
+			{:else}
+				<Monitor size={16} />
+			{/if}
+			<span>{item.label}</span>
+		{/snippet}
+	</SegmentedControl>
 {:else}
 	<Tooltip content={tooltipContent} closeOnClick={false}>
 		{#snippet children(props)}

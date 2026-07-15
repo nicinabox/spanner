@@ -37,7 +37,7 @@
 		]}
 	>
 		{#if start}
-			<li role="menuitem" class="p-2 px-3 min-h-10">{@render start()}</li>
+			<li role="menuitem" class="flex items-center min-h-10">{@render start()}</li>
 		{/if}
 		{#each items as item}
 			{#if item.separator}
@@ -91,7 +91,7 @@
 		{/each}
 
 		{#if end}
-			<li role="menuitem">
+			<li role="menuitem" class="flex items-center min-h-10">
 				{@render end()}
 			</li>
 		{/if}

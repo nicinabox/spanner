@@ -42,6 +42,7 @@
 		class?: ClassValue;
 		disabled?: boolean | null;
 		onSelect?: (details: { value: string }) => void;
+		defaultHighlightedValue?: string;
 		id?: string;
 		itemEnd?: Snippet<[Item]>;
 	}
@@ -65,6 +66,7 @@
 		disabled,
 		id = defaultId,
 		onSelect,
+		defaultHighlightedValue,
 		itemEnd,
 	}: Props = $props();
 	// svelte-ignore state_referenced_locally
@@ -72,7 +74,7 @@
 		id,
 		onSelect,
 		positioning,
-		defaultHighlightedValue: items[0]?.value,
+		defaultHighlightedValue,
 	});
 	const api = $derived(menu.connect(service, normalizeProps));
 
@@ -80,19 +82,6 @@
 	const triggerProps = $derived.by(() => {
 		const { onpointerdown: _od, ...rest } = api.getTriggerProps();
 		return rest;
-	});
-
-	let highlighted = $state(false);
-
-	$effect(() => {
-		if (api.open) {
-			if (!highlighted && items.length > 0) {
-				api.setHighlightedValue(items[0].value);
-				highlighted = true;
-			}
-		} else {
-			highlighted = false;
-		}
 	});
 </script>
 

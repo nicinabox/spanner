@@ -50,7 +50,6 @@
 		selectionBehavior: multiple ? 'clear' : undefined,
 		openOnKeyPress: true,
 		openOnClick: true,
-		defaultHighlightedValue: options[0]?.value,
 		allowCustomValue: true,
 		name,
 		get collection() {
