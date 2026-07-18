@@ -11,6 +11,7 @@
 	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
 	import type { Vehicle } from '$lib/data/vehicles';
 	import type { FormError } from '$lib/utils/form';
+	import { Confirm } from '$lib';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -19,6 +20,8 @@
 		errors?: FormError[];
 		onsuccess?: () => void;
 	}
+
+	let formId = $props.id();
 
 	let { vehicle, schedule, action = '?/defer', errors = [], onsuccess }: Props = $props();
 
@@ -33,6 +36,7 @@
 </script>
 
 <form
+	id={`defer-form-${formId}`}
 	method="POST"
 	{action}
 	use:enhance={() => {
@@ -91,11 +95,35 @@
 			</Field>
 		</div>
 		<div class="flex gap-2">
-			<Button type="submit"
-				>{isDeferred ? 'Update' : `Defer ${schedule.classificationName ?? 'Task'}`}</Button
-			>
+			<Button type="submit">
+				{isDeferred ? 'Update' : `Defer ${schedule.classificationName ?? 'Task'}`}
+			</Button>
 			{#if isDeferred}
-				<Button type="submit" variant="outline" formaction="?/clearDefer">Clear</Button>
+				<Confirm title="Confirm Clear Deferred">
+					{#snippet trigger({ onOpenChange })}
+						<Button onclick={() => onOpenChange(true)} variant="ghost" color="danger">
+							Clear Deferred
+						</Button>
+					{/snippet}
+					<p>
+						This will immediately clear and reset your deferred intervals back to the standard
+						schedule.
+					</p>
+					{#snippet actions({ onOpenChange })}
+						<Button
+							type="submit"
+							variant="outline"
+							color="danger"
+							form={`defer-form-${formId}`}
+							formaction="?/clearDefer"
+							onclick={() => onOpenChange(false)}
+						>
+							Confirm Clear
+						</Button>
+
+						<Button onclick={() => onOpenChange(false)}>Cancel</Button>
+					{/snippet}
+				</Confirm>
 			{/if}
 		</div>
 	</div>
