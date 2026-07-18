@@ -76,15 +76,21 @@ class ServiceSchedule < ApplicationRecord
     attrs = {}
     attrs[:next_due_mileage] = computed_next_mileage(last_record)
 
-    date_from_months = next_date(last_record) if month_interval.to_i.nonzero?
-    date_from_months = Time.zone.today + defer_delta_months.months if date_from_months && defer_delta_months.present?
+    if defer_delta_months.to_i.nonzero?
+      # A defer is the user's explicit 'I'll do this in N months' override.
+      # It replaces both the month-interval date and the mileage-projected
+      # date; the user told us when, so we trust that.
+      attrs[:next_due_date] = Time.zone.today + defer_delta_months.months
+    else
+      date_from_months = next_date(last_record) if month_interval.to_i.nonzero?
 
-    date_from_mileage = nil
-    if distance_interval.to_i.nonzero? && attrs[:next_due_mileage]
-      date_from_mileage = estimated_next_date(last_record, attrs[:next_due_mileage])
+      date_from_mileage = nil
+      if distance_interval.to_i.nonzero? && attrs[:next_due_mileage]
+        date_from_mileage = estimated_next_date(last_record, attrs[:next_due_mileage])
+      end
+
+      attrs[:next_due_date] = pick_due_date(date_from_months, date_from_mileage)
     end
-
-    attrs[:next_due_date] = pick_due_date(date_from_months, date_from_mileage)
 
     update!(attrs)
   end

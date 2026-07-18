@@ -63,7 +63,7 @@
 	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 		<div class="space-y-0">
 			<div class="flex items-center gap-2">
-				{#if isScheduleOverdue(schedule, vehicle.estimatedMileage)}
+				{#if isScheduleOverdue(schedule)}
 					<DueIndicator />
 				{/if}
 				<a

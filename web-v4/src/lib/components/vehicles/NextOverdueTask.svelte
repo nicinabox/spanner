@@ -21,7 +21,7 @@
 		const sorted = sortUnifiedByDue(reminders, schedules, vehicle.estimatedMileage);
 		return sorted.find((entry) => {
 			if (entry.kind === 'reminder') return isReminderOverdue(entry.data, vehicle.estimatedMileage);
-			return isScheduleOverdue(entry.data, vehicle.estimatedMileage);
+			return isScheduleOverdue(entry.data);
 		});
 	});
 

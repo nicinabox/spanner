@@ -510,6 +510,68 @@ class ServiceScheduleTest < ActiveSupport::TestCase
     assert_equal Time.zone.today + 3.months, schedule.reload.next_due_date
   end
 
+  test 'recalculate_next_due applies defer delta months to mileage-only schedule' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    record = vehicle.records.create!(
+      date: 30.days.ago,
+      notes: 'Oil change',
+      mileage: 50_000
+    )
+    record.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 5000,
+      defer_delta_months: 3
+    )
+    schedule.recalculate_next_due
+
+    assert_equal Time.zone.today + 3.months, schedule.reload.next_due_date
+  end
+
+  test 'recalculate_next_due defer months is absolute and overrides mileage-projected date' do
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    older = vehicle.records.create!(date: 60.days.ago, mileage: 49_000, notes: 'Oil change')
+    older.record_classifications.create!(classification: @classification, classifier: 'test')
+    newer = vehicle.records.create!(date: 30.days.ago, mileage: 50_000, notes: 'Oil change')
+    newer.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 6000,
+      defer_delta_months: 12
+    )
+    schedule.recalculate_next_due
+
+    # 2 records make projection eligible, miles_per_day ~33.3.
+    # next_due_mileage = 50_000 + 6_000 = 56_000. ~6000 / 33.3 ~= 180 days ~= today + 6 months.
+    # Defer is the absolute date: today + 12 months, regardless of projection.
+    assert_equal Time.zone.today + 12.months, schedule.reload.next_due_date
+  end
+
+  test 'recalculate_next_due defer months overrides far-future mileage-projected date' do
+    # Vehicle driven very little, so mileage projection would push the due
+    # date years into the future. Defer must still anchor the date.
+    vehicle = Vehicle.create!(name: 'Test Car', user: @user)
+    older = vehicle.records.create!(date: 90.days.ago, mileage: 29_500, notes: 'Oil change')
+    older.record_classifications.create!(classification: @classification, classifier: 'test')
+    newer = vehicle.records.create!(date: 30.days.ago, mileage: 30_000, notes: 'Oil change')
+    newer.record_classifications.create!(classification: @classification, classifier: 'test')
+
+    schedule = ServiceSchedule.create!(
+      vehicle: vehicle,
+      classification: @classification,
+      distance_interval: 5000,
+      defer_delta_months: 12
+    )
+    schedule.recalculate_next_due
+
+    # mpd ~3.3, remaining 5000 mi ~= 1500 days ~= ~4 years out. Defer wins.
+    assert_equal Time.zone.today + 12.months, schedule.reload.next_due_date
+  end
+
   test 'complete! clears defer before recalculating' do
     vehicle = Vehicle.create!(name: 'Test Car', user: @user)
     record = vehicle.records.create!(

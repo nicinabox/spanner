@@ -13,29 +13,18 @@ export function getUnifiedOverdueCount(vehicle: Vehicle) {
 
 export const getOverdueSchedulesCount = (vehicle: Vehicle) => {
 	if (vehicle.retired) return undefined;
-	return vehicle.serviceSchedules.filter((s) => isScheduleOverdue(s, vehicle.estimatedMileage))
-		.length;
+	return vehicle.serviceSchedules.filter((s) => isScheduleOverdue(s)).length;
 };
 
-export const isScheduleOverdue = (schedule: ServiceSchedule, estimatedMileage?: number) => {
-	if (schedule.nextDueDate) {
-		const date = parseDateUTC(schedule.nextDueDate);
-		if (new Date() > date) return true;
-	}
-	if (
-		schedule.nextDueMileage &&
-		estimatedMileage != null &&
-		estimatedMileage >= schedule.nextDueMileage
-	) {
-		return true;
-	}
-	return false;
+export const isScheduleOverdue = (schedule: ServiceSchedule) => {
+	if (!schedule.nextDueDate) return false;
+	return new Date() > parseDateUTC(schedule.nextDueDate);
 };
 
 export const sortSchedulesByDue = (schedules: ServiceSchedule[], estimatedMileage?: number) => {
 	return [...schedules].sort((a, b) => {
-		const aOverdue = isScheduleOverdue(a, estimatedMileage);
-		const bOverdue = isScheduleOverdue(b, estimatedMileage);
+		const aOverdue = isScheduleOverdue(a);
+		const bOverdue = isScheduleOverdue(b);
 
 		if (aOverdue && !bOverdue) return -1;
 		if (!aOverdue && bOverdue) return 1;
@@ -86,11 +75,11 @@ export function sortUnifiedByDue(
 		const aOverdue =
 			a.kind === 'reminder'
 				? isReminderOverdue(a.data, estimatedMileage)
-				: isScheduleOverdue(a.data, estimatedMileage);
+				: isScheduleOverdue(a.data);
 		const bOverdue =
 			b.kind === 'reminder'
 				? isReminderOverdue(b.data, estimatedMileage)
-				: isScheduleOverdue(b.data, estimatedMileage);
+				: isScheduleOverdue(b.data);
 
 		if (aOverdue && !bOverdue) return -1;
 		if (!aOverdue && bOverdue) return 1;
