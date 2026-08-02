@@ -103,9 +103,10 @@ class RecordTest < ActiveSupport::TestCase
       f.write('x' * (11 * 1024 * 1024))
       f.rewind
 
-      assert_raises SecureAttachments::SecureAttachmentError, /exceeds/ do
+      error = assert_raises(SecureAttachments::SecureAttachmentError) do
         SecureAttachments.validate_files!([f])
       end
+      assert_match(/exceeds/, error.message)
     end
   end
 
@@ -114,9 +115,10 @@ class RecordTest < ActiveSupport::TestCase
       f.write("MZ\x90\x00\x03\x00\x00\x00") # PE header
       f.rewind
 
-      assert_raises SecureAttachments::SecureAttachmentError, /not allowed/ do
+      error = assert_raises(SecureAttachments::SecureAttachmentError) do
         SecureAttachments.validate_files!([f])
       end
+      assert_match(/not allowed/, error.message)
     end
   end
 
