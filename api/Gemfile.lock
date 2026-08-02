@@ -344,10 +344,10 @@ GEM
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
       logger
-    spring (2.1.1)
-    spring-watcher-listen (2.0.1)
+    spring (4.7.0)
+    spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
-      spring (>= 1.2, < 3.0)
+      spring (>= 4)
     ssrf_filter (1.5.0)
     stemmer (1.0.1)
     thor (1.5.0)
@@ -419,7 +419,7 @@ DEPENDENCIES
   sentry-rails
   sentry-ruby
   spring
-  spring-watcher-listen (~> 2.0.0)
+  spring-watcher-listen (~> 2.1.0)
   stemmer (~> 1.0)
   tzinfo-data
   virtus
