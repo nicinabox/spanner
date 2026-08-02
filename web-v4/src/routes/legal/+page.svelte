@@ -2,9 +2,13 @@
 	import sanitizeHtml from 'sanitize-html';
 	import { marked } from 'marked';
 	import { pageTitle } from '$lib/utils/site';
+	import { PUBLIC_CONTACT_EMAIL } from '$app/env/public';
 	import src from './legal.md?raw';
 
-	const html = sanitizeHtml(marked(src, { async: false }));
+	const email = PUBLIC_CONTACT_EMAIL || 'the operator of this instance';
+	const html = sanitizeHtml(
+		marked(src.replaceAll('{{CONTACT_EMAIL}}', email), { async: false }),
+	);
 </script>
 
 <svelte:head>

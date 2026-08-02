@@ -42,4 +42,11 @@ export const variables = defineEnvVars({
 			'Umami analytics config as URLSearchParams string (e.g. websiteId=xxx&scriptUrl=...)',
 		schema: v.optional(v.string(), ''),
 	},
+
+	PUBLIC_CONTACT_EMAIL: {
+		public: true,
+		description:
+			'Contact email shown in the footer and legal page. Leave empty to hide the Help link.',
+		schema: v.optional(v.string(), ''),
+	},
 });
