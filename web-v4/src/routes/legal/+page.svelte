@@ -1,10 +1,10 @@
 <script lang="ts">
-	import insane from 'insane';
+	import sanitizeHtml from 'sanitize-html';
 	import { marked } from 'marked';
 	import { pageTitle } from '$lib/utils/site';
 	import src from './legal.md?raw';
 
-	const html = insane(marked(src, { async: false }));
+	const html = sanitizeHtml(marked(src, { async: false }));
 </script>
 
 <svelte:head>

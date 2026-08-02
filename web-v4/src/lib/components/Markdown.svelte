@@ -1,5 +1,5 @@
 <script lang="ts">
-	import insane from 'insane';
+	import sanitizeHtml from 'sanitize-html';
 	import { marked } from 'marked';
 	import type { HTMLAttributes } from 'svelte/elements';
 
@@ -17,7 +17,7 @@
 				const level = Math.max(Math.min(depth + 1, 6), 3);
 				return `<h${level}>${text}</h${level}>`;
 			};
-			return insane(marked(src ?? '', { async: false, renderer }));
+			return sanitizeHtml(marked(src ?? '', { async: false, renderer }));
 		})(),
 	);
 </script>
