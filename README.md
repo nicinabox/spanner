@@ -25,8 +25,8 @@ This is a monorepo containing two main applications:
 
 ### `/api` - Backend API
 
-- **Framework**: Ruby on Rails 8.0 (API mode)
-- **Language**: Ruby 3.4.6
+- **Framework**: Ruby on Rails 8.1 (API mode)
+- **Language**: Ruby 4.0.6
 - **Database**: PostgreSQL
 - **Server**: Puma
 - **Authentication**: Token-based with email magic links
@@ -36,7 +36,7 @@ This is a monorepo containing two main applications:
 ### Prerequisites
 
 - Node.js 22.19.0+
-- Ruby 3.4.6
+- Ruby 4.0.6
 - PostgreSQL
 - Yarn package manager
 

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-FROM ruby:3.4.6-slim-bookworm AS base
+FROM ruby:4.0.6-slim-bookworm AS base
 
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
