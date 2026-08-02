@@ -4,19 +4,19 @@ import Input from './Input.svelte';
 
 describe('Input', () => {
 	it('renders an input element', async () => {
-		const { container } = render(Input, { name: 'test' });
+		const { container } = await render(Input, { name: 'test' });
 		const input = container.querySelector('input');
 		expect(input).toBeTruthy();
 	});
 
 	it('forwards type attribute', async () => {
-		const { container } = render(Input, { name: 'test', type: 'email' });
+		const { container } = await render(Input, { name: 'test', type: 'email' });
 		const input = container.querySelector('input')!;
 		expect(input.getAttribute('type')).toBe('email');
 	});
 
 	it('forwards placeholder', async () => {
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			name: 'test',
 			placeholder: 'Enter name',
 		});
@@ -25,19 +25,19 @@ describe('Input', () => {
 	});
 
 	it('forwards disabled', async () => {
-		const { container } = render(Input, { name: 'test', disabled: true });
+		const { container } = await render(Input, { name: 'test', disabled: true });
 		const input = container.querySelector('input')!;
 		expect(input.hasAttribute('disabled')).toBe(true);
 	});
 
 	it('forwards readonly', async () => {
-		const { container } = render(Input, { name: 'test', readonly: true });
+		const { container } = await render(Input, { name: 'test', readonly: true });
 		const input = container.querySelector('input')!;
 		expect(input.hasAttribute('readonly')).toBe(true);
 	});
 
 	it('forwards autocomplete', async () => {
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			name: 'test',
 			autocomplete: 'off',
 		});
@@ -46,7 +46,7 @@ describe('Input', () => {
 	});
 
 	it('forwards inputmode', async () => {
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			name: 'test',
 			inputmode: 'numeric',
 		});
@@ -55,7 +55,7 @@ describe('Input', () => {
 	});
 
 	it('forwards pattern', async () => {
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			name: 'test',
 			pattern: '[0-9]+',
 		});
@@ -64,13 +64,13 @@ describe('Input', () => {
 	});
 
 	it('binds initial value', async () => {
-		const { container } = render(Input, { name: 'test', value: 'hello' });
+		const { container } = await render(Input, { name: 'test', value: 'hello' });
 		const input = container.querySelector('input')!;
 		expect(input.value).toBe('hello');
 	});
 
 	it('updates value on input', async () => {
-		const { container } = render(Input, { name: 'test', value: '' });
+		const { container } = await render(Input, { name: 'test', value: '' });
 		const input = container.querySelector('input')!;
 		input.value = 'new value';
 		input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -78,7 +78,7 @@ describe('Input', () => {
 	});
 
 	it('binds ref', async () => {
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			name: 'test',
 		});
 		const input = container.querySelector('input')!;
@@ -86,7 +86,7 @@ describe('Input', () => {
 	});
 
 	it('merges custom class', async () => {
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			name: 'test',
 			class: 'my-class',
 		});
@@ -95,7 +95,7 @@ describe('Input', () => {
 	});
 
 	it('uses name attribute', async () => {
-		const { container } = render(Input, { name: 'username' });
+		const { container } = await render(Input, { name: 'username' });
 		const input = container.querySelector('input')!;
 		expect(input.getAttribute('name')).toBe('username');
 	});
@@ -110,7 +110,7 @@ describe('Input', () => {
 			required: false,
 		});
 
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			props: { name: 'test' },
 			context,
 		});
@@ -128,7 +128,7 @@ describe('Input', () => {
 			required: false,
 		});
 
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			props: {},
 			context,
 		});
@@ -146,7 +146,7 @@ describe('Input', () => {
 			required: false,
 		});
 
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			props: { name: 'prop-name' },
 			context,
 		});
@@ -164,7 +164,7 @@ describe('Input', () => {
 			required: false,
 		});
 
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			props: { name: 'test' },
 			context,
 		});
@@ -182,7 +182,7 @@ describe('Input', () => {
 			required: false,
 		});
 
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			props: { name: 'test' },
 			context,
 		});
@@ -200,7 +200,7 @@ describe('Input', () => {
 			required: true,
 		});
 
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			props: { name: 'test' },
 			context,
 		});
@@ -218,7 +218,7 @@ describe('Input', () => {
 			required: true,
 		});
 
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			props: { name: 'test', required: false },
 			context,
 		});
@@ -227,7 +227,7 @@ describe('Input', () => {
 	});
 
 	it('forwards rest props', async () => {
-		const { container } = render(Input, {
+		const { container } = await render(Input, {
 			name: 'test',
 			'data-test': 'value',
 			maxlength: 10,
