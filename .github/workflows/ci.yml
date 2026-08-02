@@ -79,7 +79,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: lts/*
           cache: npm
           cache-dependency-path: web-v4/package-lock.json
 
