@@ -5,6 +5,7 @@ import { isMobileUserAgent } from '$lib/utils/device';
 import { getSession, setSession, clearSession } from '$lib/utils/session';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 import { HTTPError } from '$lib/data/client';
+import { createRateLimiter, getClientIp } from '$lib/server/rate-limit';
 
 if (PUBLIC_SENTRY_DSN) {
 	Sentry.init({
@@ -22,12 +23,15 @@ const isProtected = (url: string) => {
 	});
 };
 
-const probePattern = /\.(php|asp|aspx|jsp)$|^\/(wp-|wordpress|administrator|vendor\/|composer|\.env|\.git|shell|cgi-bin)/i;
+const rateLimiter = createRateLimiter({ limit: 60, windowMs: 60_000 });
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
-	// Silently reject vulnerability scanner probes
-	if (probePattern.test(event.url.pathname)) {
-		return new Response(null, { status: 404 });
+	const result = rateLimiter.check(getClientIp(event));
+	if (result.limited) {
+		return new Response(null, {
+			status: 429,
+			headers: { 'Retry-After': String(result.retryAfterSec) },
+		});
 	}
 
 	const session = await getSession(event.cookies);
