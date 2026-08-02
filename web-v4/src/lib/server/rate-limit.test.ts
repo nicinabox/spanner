@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { RequestEvent } from '@sveltejs/kit';
-import { createRateLimiter, getClientIp } from './rate-limit';
+import { createRateLimiter } from './rate-limit';
+import { getClientIp } from './get-client-ip';
 
 const makeEvent = (overrides: Partial<RequestEvent> = {}): RequestEvent =>
 	({

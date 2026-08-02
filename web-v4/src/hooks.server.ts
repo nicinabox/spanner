@@ -1,11 +1,12 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SENTRY_DSN } from '$app/env/public';
-import { isMobileUserAgent } from '$lib/utils/device';
-import { getSession, setSession } from '$lib/utils/session';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 import { HTTPError } from '$lib/data/client';
-import { createRateLimiter, getClientIp } from '$lib/server/rate-limit';
+import { createRateLimit } from '$lib/server/hooks/rate-limit';
+import { createAuthGate } from '$lib/server/hooks/auth-gate';
+import { createPopulateLocals } from '$lib/server/hooks/populate-locals';
+import { createThemeTransform } from '$lib/server/hooks/theme-transform';
 
 if (PUBLIC_SENTRY_DSN) {
 	Sentry.init({
@@ -14,62 +15,16 @@ if (PUBLIC_SENTRY_DSN) {
 	});
 }
 
-const protectedRoutes = ['^/vehicles', '^/settings'];
+const protectedRoutes = ['/vehicles/*?', '/settings/*?'];
 
 const isProtected = (url: string) => {
-	const { pathname } = new URL(url);
-	return protectedRoutes.some((pattern) => new RegExp(pattern, 'i').test(pathname));
+	return protectedRoutes.some((pattern) => new URLPattern({ pathname: pattern }).test(url));
 };
 
-const rateLimiter = createRateLimiter({ limit: 60, windowMs: 60_000 });
-
-// Each handler in the sequence calls `resolve(event, opts)` to continue down
-// the chain and returns the response, matching the canonical pattern from
-// the SvelteKit docs.
-
-const rateLimit: Handle = async ({ event, resolve }) => {
-	const result = rateLimiter.check(getClientIp(event));
-	if (result.limited) {
-		return new Response(null, {
-			status: 429,
-			headers: { 'Retry-After': String(result.retryAfterSec) },
-		});
-	}
-	return resolve(event);
-};
-
-const authGate: Handle = async ({ event, resolve }) => {
-	const session = await getSession(event.cookies);
-	if (!session?.authToken && isProtected(event.request.url)) {
-		throw redirect(307, '/');
-	}
-	if (session?.authToken) {
-		await setSession(event.cookies, session);
-	}
-	event.locals.session = session;
-	return resolve(event);
-};
-
-const populateLocals: Handle = async ({ event, resolve }) => {
-	const session = event.locals.session;
-	event.locals.webUrl = event.url.origin;
-	event.locals.authToken = session?.authToken;
-	event.locals.isMobile = isMobileUserAgent(event.request.headers.get('user-agent') ?? '');
-	return resolve(event);
-};
-
-const themeTransform: Handle = async ({ event, resolve }) => {
-	const prefsCookie = event.cookies.get('prefs');
-	const theme = Object.fromEntries(new URLSearchParams(prefsCookie ?? '')).theme;
-	return resolve(event, {
-		transformPageChunk: ({ html }) => {
-			if (theme && theme !== 'auto') {
-				return html.replace('<html', `<html data-theme="${theme}"`);
-			}
-			return html;
-		},
-	});
-};
+const rateLimit = createRateLimit({ limit: 60, windowMs: 60_000 });
+const authGate = createAuthGate(isProtected);
+const populateLocals = createPopulateLocals();
+const themeTransform = createThemeTransform();
 
 export const handle: Handle = sequence(
 	Sentry.sentryHandle(),

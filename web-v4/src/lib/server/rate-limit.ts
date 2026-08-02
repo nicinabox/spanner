@@ -1,8 +1,6 @@
 // Per-IP in-memory token-bucket rate limiter.
 // Singleton across all requests; safe for SvelteKit's single-process Node adapter.
 
-import type { RequestEvent } from '@sveltejs/kit';
-
 export interface RateLimitOptions {
 	/** Max requests per window. */
 	limit: number;
@@ -59,16 +57,6 @@ const createLimiter = (opts: RateLimitOptions) => {
 	};
 
 	return { check, buckets };
-};
-
-/**
- * Extract the client IP from a SvelteKit RequestEvent. Trusts
- * `X-Forwarded-For` first (first hop), falls back to `event.getClientAddress()`.
- */
-export const getClientIp = (event: RequestEvent): string => {
-	const forwarded = event.request.headers.get('x-forwarded-for');
-	if (forwarded) return forwarded.split(',')[0]!.trim();
-	return event.getClientAddress?.() ?? 'unknown';
 };
 
 /**
