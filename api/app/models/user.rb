@@ -150,7 +150,7 @@ class User < ApplicationRecord
   def reminder_backoff_interval
     return 0.days unless days_since_last_seen
 
-    REMINDER_BACKOFF_TIERS.reverse.find do |tier|
+    REMINDER_BACKOFF_TIERS.rfind do |tier|
       days_since_last_seen >= tier[:after].parts.fetch(:days, 0)
     end.fetch(:interval)
   end
