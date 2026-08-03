@@ -15,7 +15,12 @@ ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
 WORKDIR /app
 
-# Install dependencies
+# Install dependencies. ca-certificates is needed for sentry-cli to verify
+# sentry.io TLS during source map upload.
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y ca-certificates && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
 COPY package.json package-lock.json ./
 RUN npm ci
 
