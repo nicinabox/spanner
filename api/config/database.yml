@@ -17,7 +17,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: nic
+  username: spanner
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -59,7 +59,7 @@ development:
 test:
   <<: *default
   database: <%= ENV.fetch("POSTGRES_DB", "spanner-api_test") %>
-  username: <%= ENV.fetch("POSTGRES_USER", "nic") %>
+  username: <%= ENV.fetch("POSTGRES_USER", "spanner") %>
   password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
   host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
 
