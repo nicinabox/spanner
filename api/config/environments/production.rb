@@ -37,8 +37,8 @@ Rails.application.configure do
   # config.force_ssl = true
 
   # Use the lowest log level to ensure availability of diagnostic information
-  # when problems arise.
-  config.log_level = :debug
+  # when problems arise. Default :debug, override via RAILS_LOG_LEVEL env var.
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'debug').to_sym
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
