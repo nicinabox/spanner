@@ -20,7 +20,12 @@ default: &default
   username: spanner
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  # Pool sized for Puma threads (RAILS_MAX_THREADS, default 5) plus the
+  # Solid Queue supervisor. Solid Queue needs connections for:
+  # worker threads (3 by default), worker polling + heartbeat (2),
+  # dispatcher (1), scheduler (1), supervisor (1) = 8 connections.
+  # We add 10 to RAILS_MAX_THREADS to leave headroom for web + jobs.
+  pool: <%= ENV.fetch("DB_POOL") { ENV.fetch("RAILS_MAX_THREADS", 5).to_i + 10 } %>
 
 development:
   <<: *default
