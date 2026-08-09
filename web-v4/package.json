@@ -18,7 +18,6 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "7.0.1",
 		"@sveltejs/adapter-node": "5.5.7",
-		"@sveltejs/kit": "2.70.2",
 		"@sveltejs/vite-plugin-svelte": "7.2.0",
 		"@types/node": "^26.1.2",
 		"@types/sanitize-html": "^2.16.1",
@@ -26,9 +25,7 @@
 		"playwright": "^1.62.1",
 		"prettier": "^3.9.6",
 		"prettier-plugin-svelte": "^4.1.1",
-		"svelte": "5.56.8",
 		"svelte-check": "4.7.4",
-		"tailwind-merge": "^3.6.0",
 		"typescript": "^6.0.3",
 		"vite": "^8.2.0",
 		"vitest": "^4.1.8",
@@ -36,6 +33,7 @@
 	},
 	"dependencies": {
 		"@sentry/sveltekit": "^10.69.0",
+		"@sveltejs/kit": "2.70.2",
 		"@tailwindcss/typography": "^0.5.20",
 		"@tailwindcss/vite": "^4.3.3",
 		"@zag-js/clipboard": "^1.43.0",
@@ -55,6 +53,8 @@
 		"marked": "^18.0.7",
 		"sanitize-html": "^2.17.6",
 		"snakecase-keys": "^9.0.2",
+		"svelte": "5.56.8",
+		"tailwind-merge": "^3.6.0",
 		"tailwind-variants": "^3.3.0",
 		"tailwindcss": "^4.3.1",
 		"valibot": "1.4.2"
