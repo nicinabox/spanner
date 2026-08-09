@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "puma/plugin/solid_queue"
+require 'puma/plugin/solid_queue'
 
 # Puma can serve each request in a thread from an internal thread pool.
 # The `threads` method setting takes two numbers a minimum and maximum.
