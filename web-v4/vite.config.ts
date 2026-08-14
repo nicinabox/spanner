@@ -21,6 +21,9 @@ export default defineConfig(({ mode }) => {
 			}),
 			tailwindcss(),
 			sveltekit({
+				alias: {
+					$content: '/src/content',
+				},
 				compilerOptions: {
 					experimental: {
 						async: true,

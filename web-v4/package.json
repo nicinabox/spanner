@@ -47,6 +47,7 @@
 		"camelcase-keys": "^10.0.2",
 		"date-fns": "^4.4.0",
 		"fuse.js": "^7.5.0",
+		"gray-matter-es": "^0.2.1",
 		"iron-session": "^8.0.4",
 		"lodash-es": "^4.18.1",
 		"lucide-svelte": "^1.0.1",

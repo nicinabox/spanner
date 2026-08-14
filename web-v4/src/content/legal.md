@@ -1,3 +1,7 @@
+---
+title: Legal
+---
+
 # Privacy Policy
 
 **What information do I collect?**
@@ -20,7 +24,7 @@ You can delete your account anytime. When you do, your email and all your mainte
 
 **How do I contact you about privacy?**
 
-Email me at {{CONTACT_EMAIL}} with any privacy concerns.
+Email me at {{PUBLIC_CONTACT_EMAIL}} with any privacy concerns.
 
 ---
 
@@ -48,4 +52,4 @@ I'm not liable for any damages, data loss, or problems that occur from using thi
 
 **Questions?**
 
-Email me at {{CONTACT_EMAIL}} if you have questions about these terms.
+Email me at {{PUBLIC_CONTACT_EMAIL}} if you have questions about these terms.
