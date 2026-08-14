@@ -7,17 +7,12 @@ const RAW = import.meta.glob('/src/content/docs/**/*.md', {
 	eager: true,
 }) as Record<string, string>;
 
-const possibleFilenames = (slug: string) => {
-	return [`${slug}.md`, `${slug}/index.md`, 'index.md'];
-};
-
 export const prerender = true;
 
 export function load({ params }) {
-	const raw = possibleFilenames(params.slug)
-		.map((filename) => `/src/content/docs/${filename}`)
-		.map((path) => RAW[path])
-		.find((content) => content !== undefined);
+	const candidates = params.slug ? [`${params.slug}.md`, `${params.slug}/index.md`] : ['index.md'];
+
+	const raw = candidates.map((filename) => RAW[`/src/content/docs/${filename}`]).find((v) => v);
 
 	if (!raw) {
 		throw error(404, 'Not found');
