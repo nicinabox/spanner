@@ -11,7 +11,7 @@ export function load({ params }) {
 		throw error(404, 'Not found');
 	}
 
-	const scoped = entries.filter((e) => e.slug === '' || e.slug.startsWith('docs/'));
+	const scoped = entries.filter((e) => e.slug.startsWith('docs'));
 	const scopedSlugs = scoped.map((e) => ({
 		...e,
 		slug: e.slug.replace(/^docs\/?/, ''),

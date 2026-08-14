@@ -23,10 +23,8 @@
 						href={p.slug ? `/docs/${p.slug}` : '/docs'}
 						aria-current={isActive(p.slug) ? 'page' : undefined}
 						class={[
-							'block px-2 py-1 rounded no-underline transition-colors',
-							isActive(p.slug)
-								? 'bg-ink-100 dark:bg-ink-800 font-medium'
-								: 'hover:bg-ink-50 dark:hover:bg-ink-900',
+							'block hover:underline text-inherit',
+							'aria-current-page:font-bold aria-current-page:underline aria-current-page:text-brand-500',
 						]}
 					>
 						{p.title}
