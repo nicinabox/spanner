@@ -159,7 +159,7 @@
 						</Cell>
 					{/if}
 					<Cell class="w-full max-sm:order-2 max-sm:py-1 flex flex-col">
-						<Markdown src={record.notes} />
+						<Markdown src={record.notes} headingLevels={{ offset: 1, min: 3, max: 6 }} />
 						{#if record.classifications?.length}
 							<div class="flex flex-wrap gap-1 mt-1">
 								{#each record.classifications as c}

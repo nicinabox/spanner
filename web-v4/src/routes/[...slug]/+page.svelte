@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { pageTitle } from '$lib/utils/site';
 	import { PageLayout } from '$lib';
+	import Markdown from '$lib/components/Markdown.svelte';
 
 	let { data } = $props();
 </script>
@@ -11,6 +12,6 @@
 
 <PageLayout>
 	<div class="mx-auto py-12 prose dark:prose-invert">
-		{@html data.html}
+		<Markdown src={data.content} linkHeadings />
 	</div>
 </PageLayout>

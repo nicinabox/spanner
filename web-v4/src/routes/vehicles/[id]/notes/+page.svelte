@@ -84,7 +84,11 @@
 				</header>
 
 				{#if view === 'saved'}
-					<Markdown class="prose max-w-none dark:prose-invert" src={vehicle.notes} />
+					<Markdown
+						class="prose max-w-none dark:prose-invert"
+						src={vehicle.notes}
+						headingLevels={{ offset: 1, min: 3, max: 6 }}
+					/>
 				{:else}
 					<form
 						hidden={view === 'preview'}
@@ -112,7 +116,11 @@
 					</form>
 
 					{#if view === 'preview'}
-						<Markdown class="prose max-w-none dark:prose-invert" src={notesDraft} />
+						<Markdown
+							class="prose max-w-none dark:prose-invert"
+							src={notesDraft}
+							headingLevels={{ offset: 1, min: 3, max: 6 }}
+						/>
 					{/if}
 				{/if}
 			</Card>
