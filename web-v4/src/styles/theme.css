@@ -176,7 +176,7 @@
 	pre,
 	kbd,
 	samp {
-		font-family: var(--font-family-mono);
+		font-family: var(--font-mono);
 		font-size: 0.9em;
 	}
 
