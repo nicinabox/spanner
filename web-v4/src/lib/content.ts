@@ -8,7 +8,13 @@ export function md(raw: string, ctx: Record<string, any> = env) {
 		return acc.replaceAll(pattern, v ?? '');
 	}, raw);
 
-	return matter(src);
+	const parsed = matter(src);
+
+	return {
+		data: parsed.data,
+		content: parsed.content,
+		excerpt: parsed.excerpt,
+	};
 }
 
 type InlineToken = Token & { text?: string; tokens?: Token[] };
