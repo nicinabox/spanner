@@ -37,8 +37,9 @@
 	>
 		{#if PUBLIC_CONTACT_EMAIL}
 			<a href="/legal" class="underline">Legal</a>
-			<a href="mailto:{PUBLIC_CONTACT_EMAIL}" class="underline">Help</a>
 		{/if}
+
+		<a href="/docs" class="underline">Docs</a>
 
 		<a href="/colophon" class="underline">Colophon</a>
 
