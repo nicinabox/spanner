@@ -3,15 +3,22 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-# 1. Verify on main with a clean tree
-BRANCH=$(git branch --show-current)
-if [ "$BRANCH" != "main" ]; then
-	echo "Not on main (on $BRANCH). Aborting." >&2
-	exit 1
+DRY_RUN=0
+if [ "${1:-}" = "--dry-run" ]; then
+	DRY_RUN=1
 fi
-if [ -n "$(git status --porcelain)" ]; then
-	echo "Working tree is not clean. Aborting." >&2
-	exit 1
+
+# 1. Verify on main with a clean tree (skipped in dry-run)
+if [ "$DRY_RUN" -eq 0 ]; then
+	BRANCH=$(git branch --show-current)
+	if [ "$BRANCH" != "main" ]; then
+		echo "Not on main (on $BRANCH). Aborting." >&2
+		exit 1
+	fi
+	if [ -n "$(git status --porcelain)" ]; then
+		echo "Working tree is not clean. Aborting." >&2
+		exit 1
+	fi
 fi
 
 # 2. Determine the next version
@@ -40,6 +47,12 @@ echo
 echo "Notes:"
 echo "$NOTES"
 echo
+
+if [ "$DRY_RUN" -eq 1 ]; then
+	echo "(dry run — no tag or release created)"
+	exit 0
+fi
+
 read -r -p "Create tag and GitHub release? [y/N] " CONFIRM
 if [ "$CONFIRM" != "y" ] && [ "$CONFIRM" != "Y" ]; then
 	echo "Aborted."
