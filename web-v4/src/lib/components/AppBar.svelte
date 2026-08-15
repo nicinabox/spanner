@@ -4,6 +4,7 @@
 	import type { Session } from '$lib/data/session';
 	import Menu from './common/Menu.svelte';
 	import ThemeToggle from './ThemeToggle.svelte';
+	import { Button } from '$lib';
 
 	interface Props {
 		start?: Snippet;
@@ -77,6 +78,8 @@
 					</div>
 				{/snippet}
 			</Menu>
+		{:else}
+			<Button variant="solid" color="neutral" theme="dark" size="sm" href="/">Sign In</Button>
 		{/if}
 	</div>
 </header>
