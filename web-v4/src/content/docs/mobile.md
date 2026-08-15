@@ -1,12 +1,12 @@
 ---
-title: Mobile and offline
+title: Mobile
 ---
 
 Spanner works in any browser and installs to a phone or computer for quick access. Previously visited pages remain available when offline.
 
 ## Mobile
 
-The same URL works on phones, tablets, and desktops. The interface reflows for smaller screens - the navigation menu collapses and tables fit the available width.
+The same URL works on phones, tablets, and desktops. The interface reflows for smaller screens to fit the available width.
 
 There's nothing to download from an app store. Open the URL in a browser and continue.
 
@@ -18,7 +18,7 @@ A page that was never opened while online shows a brief offline message and a pr
 
 ## Installing
 
-On a phone or tablet, an **Install** button appears in the top bar. Tap it to add Spanner to the home screen as its own app.
+On a touch device, an **Install** button appears in the top bar. Tap it to add Spanner to the home screen as its own app.
 
 On a desktop browser, use the browser's install option - usually in the address bar or under the browser menu.
 

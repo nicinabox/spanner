@@ -2,8 +2,6 @@
 title: Account and data
 ---
 
-
-
 Account management and the data Spanner stores for you.
 
 ## In the app
@@ -30,4 +28,4 @@ Spanner stores: your email, your vehicles, and your records (including classific
 
 ## Notes
 
-There is no household or shared-account concept; each account is solo. Retiring a vehicle is not deletion; see [Editing and retiring](/docs/vehicles/editing-and-retiring).
+There is no household or shared-account concept; each account is solo. Retiring a vehicle is not deletion; see [Preferences](/docs/vehicles/preferences#retiring-and-restoring).

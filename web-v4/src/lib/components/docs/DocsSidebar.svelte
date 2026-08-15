@@ -12,7 +12,7 @@
 	const currentSlug = $derived(page.params.slug ?? '');
 
 	let flatGroups = $derived([
-		{ slug: '', title: 'Documentation', pages: tree.root },
+		{ slug: '', title: tree.root[0].title, pages: tree.root },
 		...tree.groups,
 	]);
 

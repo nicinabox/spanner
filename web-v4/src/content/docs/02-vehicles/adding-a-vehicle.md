@@ -2,8 +2,6 @@
 title: Adding a vehicle
 ---
 
-
-
 Create a vehicle to start tracking its history. Each vehicle has its own records, reminders, and service schedules.
 
 ## In the app
@@ -37,4 +35,4 @@ To set the current odometer reading, add a record (typically the purchase). To c
 
 ## Notes
 
-Retired vehicles are hidden from the default list but keep all history. See [Editing and retiring](/docs/vehicles/editing-and-retiring).
+Retired vehicles are hidden from the default list but keep all history. See [Preferences](/docs/vehicles/preferences#retiring-and-restoring).

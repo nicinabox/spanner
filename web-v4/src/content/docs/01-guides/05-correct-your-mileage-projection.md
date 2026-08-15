@@ -1,8 +1,6 @@
 ---
-title: Correct your odometer
+title: Correct a mileage projection
 ---
-
-
 
 Goal: bring the vehicle's projected mileage back in line with the real odometer reading without logging a fake service record.
 

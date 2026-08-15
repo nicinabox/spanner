@@ -2,13 +2,13 @@
 title: Logging a record
 ---
 
-
-
 A record is a maintenance event: oil change, tire rotation, brake service. Records drive the [Projection](/docs/concepts#projection) and determine when [Service Schedules](/docs/concepts#service-schedule) reset.
+
+![](/content/images/new-record-page.webp)
 
 ## In the app
 
-Open a vehicle from the [Vehicles page](/vehicles), then go to **History** (Select vehicle > History). The add action opens the record form.
+Open a vehicle from the [Vehicles page](/vehicles), then go to **History**. The add action opens the record form.
 
 ## Fields
 

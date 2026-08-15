@@ -30,7 +30,7 @@ See: [Logging a record](/docs/history/logging-a-record)
 
 ## Reminder
 
-A trigger attached to a vehicle. Reminders can fire on a date, on a mileage threshold, or on whichever comes first. Date reminders fire once on the date. Mileage reminders fire when the projected mileage reaches the threshold.
+A notification attached to a vehicle. Reminders send on a date, on a mileage threshold, or on whichever comes first, subject to the vehicle's [email preferences](/docs/vehicles/preferences). Date reminders send once on the date. Mileage reminders send each time the projected mileage crosses the threshold. Reminders remain in the list until completed.
 
 See: [Reminders](/docs/tasks/reminders)
 

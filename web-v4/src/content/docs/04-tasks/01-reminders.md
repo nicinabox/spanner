@@ -2,26 +2,28 @@
 title: Reminders
 ---
 
+A reminder is a one-shot notification attached to a vehicle. When its condition is met, Spanner sends an email if the [vehicle's email preference](/docs/vehicles/preferences#send-reminder-emails) allows it.
 
-
-A reminder is a one-shot trigger attached to a vehicle. When the trigger condition is met, Spanner sends an email. Reminders remain in the list after they fire.
+![](/content/images/new-task-page.webp)
 
 ## In the app
 
-Open a vehicle from the [Vehicles page](/vehicles), then go to **Reminders** (Select vehicle > Reminders). The list and add action live there.
+Open a vehicle from the [Vehicles page](/vehicles), then go to **Reminders**. The list and add action live there.
 
 ## How it works
 
-A reminder has a trigger, one of:
+A reminder has a condition, one of:
 
-- **Date** - fires on the given calendar date
-- **Mileage** - fires when the vehicle's [Projected](/docs/concepts#projection) mileage reaches the threshold
-- **Date or mileage** - fires when either condition is met (whichever comes first)
+- **Date** - sends on the given calendar date
+- **Mileage** - sends when the vehicle's [Projected](/docs/concepts#projection) mileage reaches the threshold
+- **Date or mileage** - sends when either condition is met (whichever comes first)
 
-A reminder fires when its date arrives. Date reminders fire once on that date and stop. Mileage reminders fire repeatedly as the Projection updates and the mileage threshold is crossed.
+A date reminder sends once on that date and stops. A mileage reminder sends each time the Projection updates and the mileage threshold is crossed.
 
-Reminders remain in the list after firing. To re-arm or remove a reminder, edit it from the Reminders tab and save or delete it.
+Reminders remain in the list until completed. To set one up again or remove it, edit it from the Reminders tab and save it with new values, or delete it.
 
 ## Notes
 
-Mileage triggers depend on the [Projection](/docs/concepts#projection). A vehicle with no record history will not fire mileage reminders.
+Mileage reminders depend on the [Projection](/docs/concepts#projection). A vehicle with no record history will not receive mileage reminders.
+
+Sending is also subject to account-level controls: unsubscribing stops all reminder emails, and Spanner suppresses sends for accounts that haven't signed in for an extended period.

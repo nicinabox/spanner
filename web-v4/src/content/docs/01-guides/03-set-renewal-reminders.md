@@ -17,12 +17,14 @@ Goal: get an email before an insurance, registration, or inspection deadline.
 6. Enter the date or mileage threshold.
 7. Save.
 
-## When each fires
+## When each sends
 
-Spanner sends a heads-up two weeks before a date reminder and on the day of. Mileage reminders fire when the vehicle's projected mileage reaches the threshold.
+Spanner sends a heads-up two weeks before a date reminder and on the day of. Mileage reminders send when the vehicle's projected mileage reaches the threshold.
+
+Sending requires the [Send reminder emails](/docs/vehicles/preferences#send-reminder-emails) preference to be on for that vehicle, and the account to be active and not unsubscribed.
 
 ## Notes
 
 Reminders are tied to the vehicle, not the season. If you renew on a different vehicle, create a separate reminder there.
 
-Reminders remain in the list after firing. To re-arm, edit the reminder and update the date or mileage; or delete it and create a new one.
+Reminders remain in the list until completed. To set one up for a future renewal, edit the reminder and update the date or mileage; or delete it and create a new one.

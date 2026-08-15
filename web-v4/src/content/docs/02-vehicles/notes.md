@@ -2,13 +2,11 @@
 title: Notes
 ---
 
-
-
 Each vehicle has a free-form notes field for things that don't fit records - tire pressures, oil capacity, quirks, or anything worth remembering. Notes support Markdown.
 
 ## In the app
 
-Open a vehicle from the [Vehicles page](/vehicles), then go to **Notes** (Select vehicle > Notes). The notes editor opens with the vehicle's current notes.
+Open a vehicle from the [Vehicles page](/vehicles), then go to **Notes**. The notes editor opens with the vehicle's current notes.
 
 ## How it works
 

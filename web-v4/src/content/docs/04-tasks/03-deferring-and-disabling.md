@@ -8,7 +8,7 @@ Service Schedules can be postponed (deferred) without deleting them. Deferring p
 
 ## In the app
 
-Open a vehicle from the [Vehicles page](/vehicles), then go to **Tasks** (Select vehicle > Tasks). Each schedule row has a **Defer** action.
+Open a vehicle from the [Vehicles page](/vehicles), then go to **Tasks**. Each schedule row has a **Defer** action.
 
 ## How it works
 
@@ -33,4 +33,4 @@ Deleting removes a service schedule permanently. Use this only if the service ty
 
 ## Notes
 
-The schedule's history (when it last fired, deferral state, classifications) is preserved across defers. Deleting is the only operation that removes the schedule and its history.
+The schedule's history (when it last sent, deferral state, classifications) is preserved across defers. Deleting is the only operation that removes the schedule and its history.
