@@ -4,6 +4,7 @@
 	import { AppBar } from '$lib';
 	import DocsSidebar from '$lib/components/docs/DocsSidebar.svelte';
 	import DocsBreadcrumb from '$lib/components/docs/DocsBreadcrumb.svelte';
+	import DocsPrevNext from '$lib/components/docs/DocsPrevNext.svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import { Menu } from 'lucide-svelte';
 	import Heading from '$lib/components/Heading.svelte';
@@ -81,6 +82,7 @@
 					{/each}
 				</ul>
 			{/if}
+			<DocsPrevNext tree={data.tree} />
 		</article>
 	</div>
 </div>
