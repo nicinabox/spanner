@@ -21,3 +21,9 @@ a {
 		text-decoration-color: color-mix(in srgb, currentColor, transparent 50%);
 	}
 }
+
+.prose {
+	img {
+		@apply shadow-lg rounded-md;
+	}
+}

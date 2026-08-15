@@ -46,10 +46,18 @@
 		return marked.lexer(src ?? '');
 	});
 
-	const inline = (tokens: Token[] | undefined) =>
-		sanitizeHtml(marked.Parser.parseInline(tokens ?? [], { async: false }));
+	const sanitizeConfig: sanitizeHtml.IOptions = {
+		allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+		allowedAttributes: {
+			...sanitizeHtml.defaults.allowedAttributes,
+			img: ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding'],
+		},
+	};
 
-	const block = (raw: string) => sanitizeHtml(marked.parse(raw, { async: false }));
+	const inline = (tokens: Token[] | undefined) =>
+		sanitizeHtml(marked.Parser.parseInline(tokens ?? [], { async: false }), sanitizeConfig);
+
+	const block = (raw: string) => sanitizeHtml(marked.parse(raw, { async: false }), sanitizeConfig);
 </script>
 
 <div class={className}>
