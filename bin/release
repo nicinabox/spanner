@@ -4,15 +4,9 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 DRY_RUN=0
-SINCE=""
-while [ $# -gt 0 ]; do
-	case "$1" in
-		--dry-run) DRY_RUN=1 ;;
-		--since) SINCE="$2"; shift ;;
-		*) echo "Unknown option: $1" >&2; exit 1 ;;
-	esac
-	shift
-done
+if [ "${1:-}" = "--dry-run" ]; then
+	DRY_RUN=1
+fi
 
 # 1. Verify on main with a clean tree (skipped in dry-run)
 if [ "$DRY_RUN" -eq 0 ]; then
@@ -41,33 +35,30 @@ else
 	VERSION="v4.$YEAR.$WEEK"
 fi
 
-# 3. Draft release notes from git history since the last tag (or --since)
-if [ -n "$SINCE" ]; then
-	NOTES=$(git log --oneline "$SINCE"..HEAD)
-elif [ -n "$LAST_TAG" ]; then
-	NOTES=$(git log --oneline "$LAST_TAG"..HEAD)
-else
-	NOTES=$(git log --oneline)
-fi
-
 if [ "$DRY_RUN" -eq 1 ]; then
 	echo "Releasing $VERSION"
-	echo
-	echo "Notes:"
-	echo "$NOTES"
 	echo
 	echo "(dry run — no tag or release created)"
 	exit 0
 fi
 
-# 4. Curate the notes in an editor
+# 3. Curate the notes in an editor, starting from a template
 TMPFILE=$(mktemp)
-printf '# %s\n\n%s\n' "$VERSION" "$NOTES" > "$TMPFILE"
+cat > "$TMPFILE" <<EOF
+# $VERSION
+
+## Features
+
+## Fixes
+
+## Upgrade notes
+EOF
+echo "Releasing $VERSION"
+echo "Opening editor to write release notes..."
 ${EDITOR:-vi} "$TMPFILE"
 NOTES=$(cat "$TMPFILE")
 rm -f "$TMPFILE"
 
-echo "Releasing $VERSION"
 echo
 echo "Notes:"
 echo "$NOTES"
@@ -78,9 +69,9 @@ if [ "$CONFIRM" != "y" ] && [ "$CONFIRM" != "Y" ]; then
 	exit 1
 fi
 
-# 5. Tag and push
+# 4. Tag and push
 git tag "$VERSION"
 git push origin "$VERSION"
 
-# 6. Create the GitHub Release
+# 5. Create the GitHub Release
 gh release create "$VERSION" --title "$VERSION" --notes "$NOTES"
