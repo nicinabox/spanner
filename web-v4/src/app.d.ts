@@ -10,6 +10,7 @@ declare global {
 			session: Session | null | undefined;
 			webUrl: string;
 			isMobile: boolean;
+			prerender?: boolean;
 		}
 		// interface PageData {}
 		// interface PageState {}
