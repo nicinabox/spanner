@@ -15,7 +15,7 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 # 2. Determine the next version
-YEAR=$(date +%Y)
+YEAR=$(date +%y) # 2-digit year
 WEEK=$(date +%V) # ISO week
 LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
 

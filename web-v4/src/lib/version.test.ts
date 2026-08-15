@@ -10,7 +10,7 @@ const mockedExecSync = vi.mocked(execSync);
 
 describe('formatVersion', () => {
 	it('formats year, week, and hash', () => {
-		expect(formatVersion(2026, 28, 'abc1234')).toBe('v4.2026.28.abc1234');
+		expect(formatVersion(2026, 28, 'abc1234')).toBe('v4.26.28.abc1234');
 	});
 });
 
@@ -26,7 +26,7 @@ describe('getVersion', () => {
 				throw new Error('no exact tag');
 			})
 			.mockReturnValueOnce('abc1234\n');
-		expect(getVersion()).toMatch(/^v4\.\d{4}\.\d{1,2}\.abc1234$/);
+		expect(getVersion()).toMatch(/^v4\.\d{2}\.\d{1,2}\.abc1234$/);
 	});
 
 	it('falls back to a date when git is unavailable', () => {

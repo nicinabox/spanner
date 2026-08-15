@@ -2,7 +2,7 @@ import { getISOWeek } from 'date-fns';
 import { execSync } from 'node:child_process';
 
 export function formatVersion(year: number, week: number, hash: string): string {
-	return `v4.${year}.${week}.${hash}`;
+	return `v4.${String(year).slice(-2)}.${week}.${hash}`;
 }
 
 export function getVersion(): string {
