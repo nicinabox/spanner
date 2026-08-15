@@ -36,7 +36,9 @@
 
 	{#each tree.groups as group (group.slug)}
 		<div class="group/docs mb-10">
-			<span class="font-semibold text-xl">{group.title}</span>
+			<span class="font-semibold text-xl">
+				{group.title}
+			</span>
 			<ul class="list-none p-0 m-0 mt-2 space-y-2">
 				{#each group.pages as p (p.slug)}
 					<li>
@@ -48,7 +50,11 @@
 								'aria-current-page:font-bold aria-current-page:underline aria-current-page:text-brand-500',
 							]}
 						>
-							{p.title}
+							{#if group.slug === p.slug}
+								Overview
+							{:else}
+								{p.title}
+							{/if}
 						</a>
 					</li>
 				{/each}
