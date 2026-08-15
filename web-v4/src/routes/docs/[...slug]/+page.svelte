@@ -28,7 +28,7 @@
 </script>
 
 <svelte:head>
-	<title>{pageTitle(data.data.title as string)}</title>
+	<title>{pageTitle(data.data.title as string, 'Docs')}</title>
 	<meta name="description" content={data.excerpt} />
 </svelte:head>
 
