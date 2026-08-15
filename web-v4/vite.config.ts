@@ -7,6 +7,7 @@ import adapter from '@sveltejs/adapter-node';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { getVersion } from './src/lib/version.ts';
 
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), '');
@@ -43,7 +44,7 @@ export default defineConfig(({ mode }) => {
 				},
 				adapter: adapter(),
 				version: {
-					name: `v4.${new Date().toISOString().slice(0, 10).replaceAll('-', '.')}`,
+					name: getVersion(),
 				},
 			}),
 		],
