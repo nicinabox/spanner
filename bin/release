@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+DRY_RUN=0
+if [ "${1:-}" = "--dry-run" ]; then
+	DRY_RUN=1
+fi
+
+# 1. Verify on main with a clean tree (skipped in dry-run)
+if [ "$DRY_RUN" -eq 0 ]; then
+	BRANCH=$(git branch --show-current)
+	if [ "$BRANCH" != "main" ]; then
+		echo "Not on main (on $BRANCH). Aborting." >&2
+		exit 1
+	fi
+	if [ -n "$(git status --porcelain)" ]; then
+		echo "Working tree is not clean. Aborting." >&2
+		exit 1
+	fi
+fi
+
+# 2. Determine the next version
+YEAR=$(date +%y) # 2-digit year
+WEEK=$(date +%V) # ISO week
+LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
+
+if [ "$LAST_TAG" = "v4.$YEAR.$WEEK" ]; then
+	VERSION="v4.$YEAR.$WEEK.1"
+elif [[ "$LAST_TAG" == v4.$YEAR.$WEEK.* ]]; then
+	LAST_PATCH=${LAST_TAG##*.}
+	VERSION="v4.$YEAR.$WEEK.$((LAST_PATCH + 1))"
+else
+	VERSION="v4.$YEAR.$WEEK"
+fi
+
+if [ "$DRY_RUN" -eq 1 ]; then
+	echo "Releasing $VERSION"
+	echo
+	echo "(dry run — no tag or release created)"
+	exit 0
+fi
+
+# 3. Curate the notes in an editor, starting from a template
+TMPFILE=$(mktemp)
+cat > "$TMPFILE" <<EOF
+# $VERSION
+
+## Features
+
+## Fixes
+
+## Upgrade notes
+EOF
+echo "Releasing $VERSION"
+echo "Opening editor to write release notes..."
+${EDITOR:-vi} "$TMPFILE"
+NOTES=$(cat "$TMPFILE")
+rm -f "$TMPFILE"
+
+echo
+echo "Notes:"
+echo "$NOTES"
+echo
+read -r -p "Create tag and GitHub release? [y/N] " CONFIRM
+if [ "$CONFIRM" != "y" ] && [ "$CONFIRM" != "Y" ]; then
+	echo "Aborted."
+	exit 1
+fi
+
+# 4. Tag and push
+git tag "$VERSION"
+git push origin "$VERSION"
+
+# 5. Create the GitHub Release
+gh release create "$VERSION" --title "$VERSION" --notes "$NOTES"
