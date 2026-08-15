@@ -1,11 +1,12 @@
 .vscode
 
 # Agents
+.scratch/
 .worktrees/
 .claude/
 .pi/
 .cline/
-docs/
+/docs/
 log/
 
 # Environment
