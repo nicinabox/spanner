@@ -2,12 +2,12 @@ import { describe, it, expect } from 'vitest';
 import { matter } from 'gray-matter-es';
 import { buildTree, lookup, raw, type ContentEntry } from './content';
 
-const e = (slug: string, title: string): ContentEntry => ({ slug, title });
+const e = (slug: string, title: string): ContentEntry => ({ slug, title, excerpt: '' });
 
 describe('buildTree', () => {
 	it('places top-level entries in root', () => {
 		const tree = buildTree([e('', 'Docs')]);
-		expect(tree.root).toEqual([{ slug: '', title: 'Docs' }]);
+		expect(tree.root).toEqual([{ slug: '', title: 'Docs', excerpt: '' }]);
 		expect(tree.groups).toEqual([]);
 	});
 
@@ -137,6 +137,7 @@ describe('number prefix', () => {
 			return {
 				slug: stripNumberPrefix(slugFromPath(path)),
 				title: fm.title ?? '',
+				excerpt: '',
 			};
 		});
 	};
@@ -167,6 +168,36 @@ describe('number prefix', () => {
 		const entries = buildFromFake();
 		const found = entries.find((e) => e.slug === '01');
 		expect(found).toBeDefined();
+	});
+
+	it('numbered index filename resolves to parent slug', () => {
+		// ./02-vehicles/01-index.md on disk → slug 'vehicles' after both
+		// the index-suffix and number-prefix stripping pass.
+		const fakeRaw: Record<string, string> = {
+			'./02-vehicles/01-index.md': '---\ntitle: Vehicles\n---\nbody',
+		};
+		const slugFromPath = (path: string) => {
+			const stripped = path.replace(/^\.\//, '').replace(/\.md$/, '');
+			if (stripped === 'index') return '';
+			return stripped.replace(/(\/|^)\d+-index$/, '').replace(/\/index$/, '');
+		};
+		const stripNumberPrefix = (slug: string) =>
+			slug
+				.split('/')
+				.map((seg) => seg.replace(/^\d+-(.+)$/, '$1'))
+				.join('/');
+		const result = stripNumberPrefix(slugFromPath('./02-vehicles/01-index.md'));
+		expect(result).toBe('vehicles');
+	});
+
+	it('places the group index page first in pages', () => {
+		const tree = buildTree([
+			e('vehicles', 'Vehicles'),
+			e('vehicles/adding-a-vehicle', 'Adding a vehicle'),
+			e('vehicles/editing-and-retiring', 'Editing and retiring'),
+		]);
+		expect(tree.groups[0].pages[0].slug).toBe('vehicles');
+		expect(tree.groups[0].pages[0].title).toBe('Vehicles');
 	});
 
 	it('lookup finds number-prefixed file via stripped slug', () => {

@@ -16,7 +16,7 @@
 
 <nav aria-label="Docs" class={className}>
 	{#if tree.root.length > 0}
-		<ul class="list-none p-0 m-0 mb-4 space-y-1">
+		<ul class="list-none p-0 m-0 mb-10 space-y-2">
 			{#each tree.root as p (p.slug)}
 				<li>
 					<a
@@ -35,7 +35,7 @@
 	{/if}
 
 	{#each tree.groups as group (group.slug)}
-		<div class="group/docs mb-8">
+		<div class="group/docs mb-10">
 			<span class="font-semibold text-xl">{group.title}</span>
 			<ul class="list-none p-0 m-0 mt-2 space-y-2">
 				{#each group.pages as p (p.slug)}

@@ -2,13 +2,26 @@ import { matter } from 'gray-matter-es';
 import type { Token } from 'marked';
 import * as env from '$app/env/public';
 
+export function parse(src: string) {
+	return matter(src, {
+		excerpt: (file) => {
+			const excerpt = file.content
+				.split('\n')
+				.find((line) => line)
+				// First sentence
+				?.match(/(^.+\.)\s?/)?.[1];
+			file.excerpt = excerpt ?? '';
+		},
+	});
+}
+
 export function md(raw: string, ctx: Record<string, any> = env) {
 	const src = Object.entries(ctx).reduce((acc, [k, v]) => {
 		const pattern = new RegExp(`{{\\s?${k}\\s?}}`, 'g');
 		return acc.replaceAll(pattern, v ?? '');
 	}, raw);
 
-	const parsed = matter(src);
+	const parsed = parse(src);
 
 	return {
 		data: parsed.data,

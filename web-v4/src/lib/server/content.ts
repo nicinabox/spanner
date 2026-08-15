@@ -1,3 +1,4 @@
+import { parse } from '$lib/content';
 import { matter } from 'gray-matter-es';
 
 const RAW = import.meta.glob<string>('./**/*.md', {
@@ -10,7 +11,7 @@ const RAW = import.meta.glob<string>('./**/*.md', {
 const slugFromPath = (path: string): string => {
 	const stripped = path.replace(/^\.\//, '').replace(/\.md$/, '');
 	if (stripped === 'index') return '';
-	return stripped.replace(/\/index$/, '');
+	return stripped.replace(/(\/|^)\d+-index$/, '').replace(/\/index$/, '');
 };
 
 /** Strip a leading `NN-` from each path segment so files can declare order. */
@@ -23,23 +24,27 @@ const stripNumberPrefix = (slug: string): string =>
 export type ContentEntry = {
 	slug: string;
 	title: string;
+	excerpt: string;
 };
 
 const slugTitle = (path: string, raw: string): ContentEntry => {
-	const fm = matter(raw).data as { title?: string };
+	const fm = parse(raw);
 	return {
 		slug: stripNumberPrefix(slugFromPath(path)),
-		title: fm.title ?? '',
+		title: (fm.data.title as string) ?? '',
+		excerpt: fm.excerpt,
 	};
 };
 
 // Preserve glob (filesystem) order. Number prefixes are stripped from slugs
 // but otherwise act as visual ordering on disk.
 export const raw = RAW;
-export const entries: ContentEntry[] = Object.entries(RAW).map(([path, raw]) => slugTitle(path, raw));
+export const entries: ContentEntry[] = Object.entries(RAW).map(([path, raw]) =>
+	slugTitle(path, raw),
+);
 
 // Pure tree builder. Group entries by first path segment, preserving glob order.
-export type DocPage = { slug: string; title: string };
+export type DocPage = { slug: string; title: string; excerpt: string };
 export type DocsGroup = { slug: string; title: string; pages: DocPage[] };
 export type DocsTree = { root: DocPage[]; groups: DocsGroup[] };
 
@@ -81,16 +86,19 @@ export function buildTree(entries: ContentEntry[]): DocsTree {
 	const groups: DocsGroup[] = groupOrder.map((groupSlug) => {
 		const pages = buckets.get(groupSlug)!;
 		const title = titles.get(groupSlug) ?? titleCase(groupSlug);
+		// Index page (slug === groupSlug) goes first; others keep glob order.
+		const sorted = [
+			...pages.filter((p) => p.slug === groupSlug),
+			...pages.filter((p) => p.slug !== groupSlug),
+		];
 		return {
 			slug: groupSlug,
 			title,
-			pages: pages.map(({ slug, title }) => ({ slug, title })),
+			pages: sorted,
 		};
 	});
 
-	const rootPages = root.map(({ slug, title }) => ({ slug, title }));
-
-	return { root: rootPages, groups };
+	return { root, groups };
 }
 
 const titleCase = (s: string): string =>
@@ -119,7 +127,11 @@ export function lookup(...parts: string[]): string | undefined {
 	const target = stripNumberPrefix(joined);
 	for (const [key, value] of Object.entries(RAW)) {
 		const keySlug = stripNumberPrefix(
-			key.replace(/^\.\//, '').replace(/\.md$/, '').replace(/\/index$/, ''),
+			key
+				.replace(/^\.\//, '')
+				.replace(/\.md$/, '')
+				.replace(/(\/|^)\d+-index$/, '')
+				.replace(/\/index$/, ''),
 		);
 		if (keySlug === target) return value;
 	}
