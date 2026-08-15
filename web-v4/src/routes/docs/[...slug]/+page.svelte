@@ -58,7 +58,7 @@
 		<DocsSidebar tree={data.tree} />
 	</aside>
 
-	<div class="px-12 py-12 min-w-0 lg:ml-72">
+	<div class="px-(--main-padding) lg:px-12 py-12 min-w-0 lg:ml-72">
 		<div class="lg:hidden mb-6">
 			<details
 				class="group/docs-mobile border border-brand-200 bg-brand-100 rounded"
