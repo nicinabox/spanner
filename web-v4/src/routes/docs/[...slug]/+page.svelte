@@ -6,6 +6,7 @@
 	import DocsBreadcrumb from '$lib/components/docs/DocsBreadcrumb.svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import { Menu } from 'lucide-svelte';
+	import Heading from '$lib/components/Heading.svelte';
 
 	let { data } = $props();
 	const session = $derived(page.data.session);
@@ -66,16 +67,19 @@
 			<Markdown src={data.content} linkHeadings />
 
 			{#if data.data.auto_index}
-				<Markdown
-					src={`
-## Pages
-${pages
-	.map((p) => {
-		return [`- [${p.title}](${p.slug})`, p.excerpt].join(' - ');
-	})
-	.join('\n')}
-`}
-				/>
+				<Heading level={2} link id="pages">Pages</Heading>
+				<ul>
+					{#each pages as p, i (p)}
+						<li>
+							<a href={p.slug}>
+								{p.title}
+							</a>
+							{#if p.excerpt}
+								- {p.excerpt}
+							{/if}
+						</li>
+					{/each}
+				</ul>
 			{/if}
 		</article>
 	</div>
