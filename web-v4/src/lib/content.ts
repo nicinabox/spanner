@@ -5,11 +5,8 @@ import * as env from '$app/env/public';
 export function parse(src: string) {
 	return matter(src, {
 		excerpt: (file) => {
-			const excerpt = file.content
-				.split('\n')
-				.find((line) => line)
-				// First sentence
-				?.match(/(^.+\.)\s?/)?.[1];
+			const firstLine = file.content.split('\n').find((line) => line);
+			const excerpt = firstLine?.match(/^.+?\.(?=\s|$)/)?.[0] ?? '';
 			file.excerpt = excerpt ?? '';
 		},
 	});
