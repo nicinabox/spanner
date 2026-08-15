@@ -10,7 +10,6 @@ export interface RateLimitHandleOptions {
 export const createRateLimit = (opts: RateLimitHandleOptions): Handle => {
 	const limiter = createRateLimiter(opts);
 	return async ({ event, resolve }) => {
-		if (event.locals?.prerender) return resolve(event);
 		const result = limiter.check(getClientIp(event));
 		if (result.limited) {
 			return new Response(null, {

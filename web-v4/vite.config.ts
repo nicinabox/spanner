@@ -11,16 +11,6 @@ import { join } from 'node:path';
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), '');
 
-	const contentDir = join(process.cwd(), 'src/content');
-	const contentEntries: `/${string}`[] = readdirSync(contentDir, { recursive: true }).flatMap((entry) => {
-		if (typeof entry !== 'string' || !entry.endsWith('.md')) return [];
-		if (entry.includes('/')) return [];
-		const full = join(contentDir, entry);
-		if (!statSync(full).isFile()) return [];
-		const slug = entry.replace(/\.md$/, '').replace(/\/index$/, '');
-		return [`/${slug}` as `/${string}`];
-	});
-
 	return {
 		server: {
 			allowedHosts: ['.local', '.ts.net'],
@@ -52,10 +42,6 @@ export default defineConfig(({ mode }) => {
 					remoteFunctions: true,
 				},
 				adapter: adapter(),
-				prerender: {
-					handleUnseenRoutes: 'ignore',
-					entries: contentEntries,
-				},
 				version: {
 					name: `v4.${new Date().toISOString().slice(0, 10).replaceAll('-', '.')}`,
 				},
