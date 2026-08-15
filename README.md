@@ -234,7 +234,7 @@ For detailed information about each application, see their respective README fil
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the GNU AGPLv3.
 
 ## Author
 
