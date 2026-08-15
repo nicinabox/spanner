@@ -50,26 +50,37 @@ else
 	NOTES=$(git log --oneline)
 fi
 
+if [ "$DRY_RUN" -eq 1 ]; then
+	echo "Releasing $VERSION"
+	echo
+	echo "Notes:"
+	echo "$NOTES"
+	echo
+	echo "(dry run — no tag or release created)"
+	exit 0
+fi
+
+# 4. Curate the notes in an editor
+TMPFILE=$(mktemp)
+printf '# %s\n\n%s\n' "$VERSION" "$NOTES" > "$TMPFILE"
+${EDITOR:-vi} "$TMPFILE"
+NOTES=$(cat "$TMPFILE")
+rm -f "$TMPFILE"
+
 echo "Releasing $VERSION"
 echo
 echo "Notes:"
 echo "$NOTES"
 echo
-
-if [ "$DRY_RUN" -eq 1 ]; then
-	echo "(dry run — no tag or release created)"
-	exit 0
-fi
-
 read -r -p "Create tag and GitHub release? [y/N] " CONFIRM
 if [ "$CONFIRM" != "y" ] && [ "$CONFIRM" != "Y" ]; then
 	echo "Aborted."
 	exit 1
 fi
 
-# 4. Tag and push
+# 5. Tag and push
 git tag "$VERSION"
 git push origin "$VERSION"
 
-# 5. Create the GitHub Release
+# 6. Create the GitHub Release
 gh release create "$VERSION" --title "$VERSION" --notes "$NOTES"
