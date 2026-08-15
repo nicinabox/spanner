@@ -1,5 +1,5 @@
 import { parse } from '$lib/content';
-import { matter } from 'gray-matter-es';
+import { startCase, toLower } from 'lodash-es';
 
 const RAW = import.meta.glob<string>('./**/*.md', {
 	query: '?raw',
@@ -43,43 +43,44 @@ export const entries: ContentEntry[] = Object.entries(RAW).map(([path, raw]) =>
 	slugTitle(path, raw),
 );
 
-// Pure tree builder. Group entries by first path segment, preserving glob order.
+// Pure tree builder. Group by FIRST PATH SEGMENT (the folder), preserving glob
+// order. Files at the root of the filesystem (no folder) live at tree.root.
 export type DocPage = { slug: string; title: string; excerpt: string };
 export type DocsGroup = { slug: string; title: string; pages: DocPage[] };
 export type DocsTree = { root: DocPage[]; groups: DocsGroup[] };
 
-export function buildTree(entries: ContentEntry[]): DocsTree {
+export function buildTree(rawPaths: Record<string, string>): DocsTree {
 	const root: ContentEntry[] = [];
 	const buckets = new Map<string, ContentEntry[]>();
 	const titles = new Map<string, string>();
 	const groupOrder: string[] = [];
 
-	for (const entry of entries) {
-		if (!entry.slug.includes('/')) {
-			if (entry.slug === '') {
-				root.push(entry);
-			} else {
-				if (!buckets.has(entry.slug)) {
-					buckets.set(entry.slug, []);
-					groupOrder.push(entry.slug);
-				}
-				buckets.get(entry.slug)!.push(entry);
-				titles.set(entry.slug, entry.title);
-			}
+	for (const [path, raw] of Object.entries(rawPaths)) {
+		// Determine group from the path's first segment. Empty segment means
+		// the file is at the root of the content tree.
+		const stripped = path.replace(/^\.\//, '').replace(/\.md$/, '');
+		const firstSlash = stripped.indexOf('/');
+		const isRoot = firstSlash < 0;
+		// Strip number prefix from the folder segment to match page slugs.
+		const groupRaw = isRoot ? null : stripped.slice(0, firstSlash);
+		const group = groupRaw ? stripNumberPrefix(groupRaw) : null;
+
+		const entry = slugTitle(path, raw);
+
+		if (isRoot) {
+			root.push(entry);
 			continue;
 		}
 
-		const [group, ...rest] = entry.slug.split('/');
-		if (!buckets.has(group)) {
-			buckets.set(group, []);
-			groupOrder.push(group);
+		if (!buckets.has(group!)) {
+			buckets.set(group!, []);
+			groupOrder.push(group!);
 		}
-		buckets.get(group)!.push(entry);
+		buckets.get(group!)!.push(entry);
 
-		if (rest.length === 1 && rest[0] === 'index') {
-			titles.set(group, entry.title);
-		} else if (rest.length === 0) {
-			titles.set(group, entry.title);
+		// Index file provides the group's title.
+		if (/\/\d+-index$|\/index$/.test(stripped) || stripped === `${groupRaw}/index`) {
+			titles.set(group!, entry.title);
 		}
 	}
 
@@ -98,16 +99,17 @@ export function buildTree(entries: ContentEntry[]): DocsTree {
 		};
 	});
 
+	// Root: put the index (slug === '') first so the documentation landing
+	// page sits at the top regardless of filesystem ordering.
+	root.sort((a, b) => (a.slug === '' ? -1 : b.slug === '' ? 1 : 0));
+
 	return { root, groups };
 }
 
-const titleCase = (s: string): string =>
-	s
-		.split(/[-_\s]+/)
-		.map((w) => (w ? w[0].toUpperCase() + w.slice(1) : ''))
-		.join(' ');
+const titleCase = (s: string): string => startCase(toLower(s));
 
-export const tree: DocsTree = buildTree(entries);
+// Build the default tree from all content files.
+export const tree: DocsTree = buildTree(RAW);
 
 export function lookup(...parts: string[]): string | undefined {
 	const joined = parts
