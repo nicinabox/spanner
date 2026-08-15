@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 	import { AppBar } from '$lib';
 	import DocsSidebar from '$lib/components/docs/DocsSidebar.svelte';
+	import DocsBreadcrumb from '$lib/components/docs/DocsBreadcrumb.svelte';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import { Menu } from 'lucide-svelte';
 
@@ -24,24 +25,6 @@
 			.find((g) => g.slug === page.params.slug)
 			?.pages.filter((p) => p.slug !== page.params.slug) ?? [],
 	);
-
-	let breadcrumb = $derived.by(() => {
-		const segments = (page.params.slug ?? '').split('/').filter(Boolean);
-		const trail: { slug: string; title: string }[] = [{ slug: '', title: 'Documentation' }];
-		let accumulated = '';
-		for (let i = 0; i < segments.length - 1; i++) {
-			const seg = segments[i];
-			accumulated = accumulated ? `${accumulated}/${seg}` : seg;
-			const group = data.tree.groups.find((g) => g.slug === seg);
-			const page_ = group?.pages.find((p) => p.slug === accumulated);
-			if (page_) {
-				trail.push({ slug: page_.slug, title: page_.title });
-			} else if (group) {
-				trail.push({ slug: group.slug, title: group.title });
-			}
-		}
-		return trail;
-	});
 </script>
 
 <svelte:head>
@@ -78,22 +61,7 @@
 			</details>
 		</div>
 		<article class="prose dark:prose-invert max-w-3xl min-w-0">
-			{#if page.params.slug}
-				<nav aria-label="Breadcrumb" class="not-prose text-sm text-ink-500 mb-4">
-					<ol class="flex flex-wrap items-center gap-1">
-						{#each breadcrumb as crumb, i (crumb.slug)}
-							<li class="flex items-center gap-1">
-								<a href={crumb.slug ? `/docs/${crumb.slug}` : '/docs'} class="hover:underline">
-									{crumb.title}
-								</a>
-								{#if i < breadcrumb.length - 1}
-									<span aria-hidden="true">/</span>
-								{/if}
-							</li>
-						{/each}
-					</ol>
-				</nav>
-			{/if}
+			<DocsBreadcrumb tree={data.tree} />
 			<h1>{data.data.title}</h1>
 			<Markdown src={data.content} linkHeadings />
 
