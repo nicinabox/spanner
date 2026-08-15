@@ -4,9 +4,15 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 DRY_RUN=0
-if [ "${1:-}" = "--dry-run" ]; then
-	DRY_RUN=1
-fi
+SINCE=""
+while [ $# -gt 0 ]; do
+	case "$1" in
+		--dry-run) DRY_RUN=1 ;;
+		--since) SINCE="$2"; shift ;;
+		*) echo "Unknown option: $1" >&2; exit 1 ;;
+	esac
+	shift
+done
 
 # 1. Verify on main with a clean tree (skipped in dry-run)
 if [ "$DRY_RUN" -eq 0 ]; then
@@ -35,8 +41,10 @@ else
 	VERSION="v4.$YEAR.$WEEK"
 fi
 
-# 3. Draft release notes from git history since the last tag
-if [ -n "$LAST_TAG" ]; then
+# 3. Draft release notes from git history since the last tag (or --since)
+if [ -n "$SINCE" ]; then
+	NOTES=$(git log --oneline "$SINCE"..HEAD)
+elif [ -n "$LAST_TAG" ]; then
 	NOTES=$(git log --oneline "$LAST_TAG"..HEAD)
 else
 	NOTES=$(git log --oneline)
