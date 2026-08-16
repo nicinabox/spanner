@@ -100,6 +100,12 @@ export function trackPageView(url: string | null) {
 	}));
 }
 
+export function trackingUrl(routeId: string | null, pathname: string): string | null {
+	if (!routeId) return pathname;
+	if (routeId.includes('[token]')) return null;
+	return routeId.includes('/(protected)') ? routeId.replace('/(protected)', '') : pathname;
+}
+
 export function umamiEvent(
 	event: string,
 	data: Record<string, string> = {},

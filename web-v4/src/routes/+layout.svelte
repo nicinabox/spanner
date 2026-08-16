@@ -4,7 +4,7 @@
 	import { PUBLIC_CONTACT_EMAIL } from '$app/env/public';
 	import Badge from '$lib/components/common/Badge.svelte';
 	import { getCookieData } from '$lib/utils/cookies';
-	import { initUmami, trackPageView } from '$lib/umami';
+	import { initUmami, trackPageView, trackingUrl } from '$lib/umami';
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
@@ -24,7 +24,8 @@
 	});
 
 	afterNavigate(() => {
-		trackPageView(page.route.id);
+		const url = trackingUrl(page.route.id, page.url.pathname);
+		if (url) trackPageView(url);
 	});
 </script>
 
