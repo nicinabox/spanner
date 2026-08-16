@@ -4,7 +4,7 @@ import { PUBLIC_SENTRY_DSN } from '$app/env/public';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 import { HTTPError } from '$lib/data/client';
 import { createRateLimit } from '$lib/server/hooks/rate-limit';
-import { createAuthGate } from '$lib/server/hooks/auth-gate';
+import { createSessionHandler } from '$lib/server/hooks/session-handler';
 import { createPopulateLocals } from '$lib/server/hooks/populate-locals';
 import { createThemeTransform } from '$lib/server/hooks/theme-transform';
 import { getClientIp } from '$lib/server/get-client-ip';
@@ -16,21 +16,15 @@ if (PUBLIC_SENTRY_DSN) {
 	});
 }
 
-const protectedRoutes = ['/vehicles/*?', '/settings/*?'];
-
-const isProtected = (url: string) => {
-	return protectedRoutes.some((pattern) => new URLPattern({ pathname: pattern }).test(url));
-};
-
 const rateLimit = createRateLimit({ limit: 60, windowMs: 60_000 });
-const authGate = createAuthGate(isProtected);
+const sessionHandler = createSessionHandler();
 const populateLocals = createPopulateLocals();
 const themeTransform = createThemeTransform();
 
 export const handle: Handle = sequence(
 	Sentry.sentryHandle(),
 	rateLimit,
-	authGate,
+	sessionHandler,
 	populateLocals,
 	themeTransform,
 );
