@@ -55,7 +55,7 @@ cat > "$TMPFILE" <<EOF
 EOF
 echo "Releasing $VERSION"
 echo "Opening editor to write release notes..."
-${EDITOR:-vi} "$TMPFILE"
+$(git var GIT_EDITOR) "$TMPFILE"
 NOTES=$(cat "$TMPFILE")
 rm -f "$TMPFILE"
 
