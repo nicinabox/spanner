@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { matter } from 'gray-matter-es';
-import { buildTree, lookup, raw, type ContentEntry } from './content';
+import { buildTree, type ContentEntry } from './content';
 
 /**
  * Build a RAW-shaped map from path entries. A path of `''` (or `index.md`) is
@@ -141,7 +140,10 @@ describe('buildTree', () => {
 
 // Helper: simulates lookup against an arbitrary RAW map.
 function lookupFromFake(fakeRaw: Record<string, string>, ...parts: string[]): string | undefined {
-	const joined = parts.flatMap((p) => p.split('/')).filter(Boolean).join('/');
+	const joined = parts
+		.flatMap((p) => p.split('/'))
+		.filter(Boolean)
+		.join('/');
 	const dir = joined ? `./${joined}` : '.';
 	const direct = [`${dir}.md`, `${dir}/index.md`]
 		.map((filename) => fakeRaw[filename])
@@ -155,7 +157,10 @@ function lookupFromFake(fakeRaw: Record<string, string>, ...parts: string[]): st
 	const target = stripNumberPrefix(joined);
 	for (const [key, value] of Object.entries(fakeRaw)) {
 		const keySlug = stripNumberPrefix(
-			key.replace(/^\.\//, '').replace(/\.md$/, '').replace(/\/index$/, ''),
+			key
+				.replace(/^\.\//, '')
+				.replace(/\.md$/, '')
+				.replace(/\/index$/, ''),
 		);
 		if (keySlug === target) return value;
 	}
