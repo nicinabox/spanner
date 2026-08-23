@@ -23,16 +23,12 @@ RUN npm run prepare
 COPY . .
 RUN npm run build
 
-# Production image
-FROM node:lts-bookworm-slim
+FROM oven/bun:1.4-slim
 
 ENV NODE_ENV=production
 
 WORKDIR /app
 
-# Install only production dependencies. Excludes devDependencies like
-# vitest, playwright, prettier, svelte-check, typescript, @types/* —
-# all unused at runtime. Cuts ~150-200 MB from the runtime image.
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
@@ -40,4 +36,4 @@ COPY --from=build /app/build ./build
 
 EXPOSE 3000
 
-CMD ["node", "build/index.js"]
+CMD ["bun", "build/index.js"]
