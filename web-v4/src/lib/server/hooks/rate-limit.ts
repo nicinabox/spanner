@@ -35,6 +35,11 @@ export const createRateLimit = (opts: RateLimitHandleOptions): Handle => {
 	return async ({ event, resolve }) => {
 		const key = getClientIp(event);
 
+		// No real client (e.g. build-time prerendering) — never rate-limit.
+		if (!key) {
+			return resolve(event);
+		}
+
 		if (limiter.isLimited(key)) {
 			return limited(limitMs);
 		}

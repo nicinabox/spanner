@@ -114,8 +114,8 @@ describe('getClientIp', () => {
 		expect(getClientIp(event)).toBe('9.9.9.9');
 	});
 
-	it('returns "unknown" when no address is available', () => {
+	it('returns undefined when no address is available', () => {
 		const event = makeEvent({});
-		expect(getClientIp(event)).toBe('unknown');
+		expect(getClientIp(event)).toBeUndefined();
 	});
 });
