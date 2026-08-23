@@ -9,7 +9,8 @@ import { getClientIp } from '$lib/server/get-client-ip';
 import { logger } from '$lib/server/logger';
 
 export const handle: Handle = sequence(
-    createRateLimit({ limit: 60, windowMs: 60_000 }),
+    createRateLimit({ limit: 5, windowMs: 60_000, limitMs: 10 * 60_000, mode: 'error' }),
+    createRateLimit({ limit: 30, windowMs: 60_000 }),
     createSessionHandler(),
     createPopulateLocals(),
     createThemeTransform()
