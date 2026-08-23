@@ -14,33 +14,33 @@ const minLevel = resolveLevel();
 
 type Field = Record<string, unknown> & { error?: unknown };
 
-const serialize = (value: unknown): unknown =>
-	value instanceof Error
-		? { name: value.name, message: value.message, stack: value.stack }
-		: value;
+const serializeError = (value: any) => {
+	if (value instanceof Error) {
+		return { name: value.name, message: value.message };
+	}
+	return value;
+};
 
-const emit = (level: Level, message: string, fields?: Field) => {
+const emit = (level: Level, value: unknown, fields?: Field) => {
 	if (levelIndex(level) > minLevel) return;
+
+	const messageFields = value instanceof Error ? serializeError(value) : { message: value };
+	const errorFields = fields?.error ? { error: serializeError(fields?.error) } : {};
 
 	const entry: Record<string, unknown> = {
 		ts: new Date().toISOString(),
 		level,
-		message,
+		...messageFields,
+		...fields,
+		...errorFields,
 	};
-	for (const [key, value] of Object.entries(fields ?? {})) {
-		entry[key] = serialize(value);
-    }
-
-    if (entry.error && typeof entry.error === 'object' && 'message' in entry.error) {
-        entry.message ??= entry.error.message;
-    }
 
 	console[level](JSON.stringify(entry));
 };
 
 export const logger = {
-	error: (msg: string, fields?: Field) => emit('error', msg, fields),
-	warn: (msg: string, fields?: Field) => emit('warn', msg, fields),
-	info: (msg: string, fields?: Field) => emit('info', msg, fields),
-	debug: (msg: string, fields?: Field) => emit('debug', msg, fields),
+	error: (val: unknown, fields?: Field) => emit('error', val, fields),
+	warn: (val: unknown, fields?: Field) => emit('warn', val, fields),
+	info: (val: unknown, fields?: Field) => emit('info', val, fields),
+	debug: (val: unknown, fields?: Field) => emit('debug', val, fields),
 };

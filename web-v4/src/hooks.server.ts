@@ -8,19 +8,18 @@ import { getClientIp } from '$lib/server/get-client-ip';
 import { logger } from '$lib/server/logger';
 
 export const handle: Handle = sequence(
-    createSessionHandler(),
-    createPopulateLocals(),
-    createThemeTransform()
+	createSessionHandler(),
+	createPopulateLocals(),
+	createThemeTransform(),
 );
 
 export const handleError: HandleServerError = ({ error, event, status, message }) => {
-	logger[status >= 500 ? 'error' : 'warn'](message, {
+	logger[status >= 500 ? 'error' : 'warn'](error, {
 		ip: getClientIp(event),
 		method: event.request.method,
 		path: event.url.pathname,
 		status,
-		error,
-    });
+	});
 
 	if (error instanceof HTTPError && error.status === 401) {
 		throw redirect(307, '/');

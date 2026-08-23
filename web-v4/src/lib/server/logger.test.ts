@@ -45,8 +45,13 @@ describe('logger', () => {
 		expect(entry.error).toEqual({
 			name: 'Error',
 			message: 'kaboom',
-			stack: expect.any(String),
 		});
+	});
+
+	it('uses error.message as message when passed an Error', () => {
+		logger.error(new Error('kaboom'));
+		const entry = JSON.parse(writtenVia('error')[0] as string);
+		expect(entry.message).toBe('kaboom');
 	});
 
 	it('routes error and warn through the console stderr methods', () => {
