@@ -1,6 +1,6 @@
 # web-v4/Dockerfile
 # check=skip=SecretsUsedInArgOrEnv
-FROM node:lts-bookworm-slim AS build
+FROM oven/bun:1.4-slim AS build
 
 # SvelteKit validates env vars at build time via defineEnvVars. ARG values
 # are scoped to this build stage; ENV values persist into the final image.
@@ -13,15 +13,15 @@ ENV CLIENT_SECRET=$CLIENT_SECRET
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json bun.lock* ./
+RUN bun install --frozen-lockfile
 
-# Generate SvelteKit types (npm ci skips prepare script)
-RUN npm run prepare
+# Generate SvelteKit types
+RUN bun run prepare
 
 # Copy source and build
 COPY . .
-RUN npm run build
+RUN bun run build
 
 FROM oven/bun:1.4-slim
 
@@ -29,8 +29,9 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+# Install production-only dependencies for the runtime image.
+COPY package.json bun.lock* ./
+RUN bun install --production --frozen-lockfile
 
 COPY --from=build /app/build ./build
 

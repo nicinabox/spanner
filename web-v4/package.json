@@ -13,7 +13,7 @@
 		"lint": "prettier --check .",
 		"format": "prettier --write .",
 		"test:unit": "vitest",
-		"test": "npm run test:unit -- --run"
+		"test": "bun run test:unit -- --run"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "7.0.1",
