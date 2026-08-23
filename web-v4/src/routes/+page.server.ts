@@ -26,7 +26,7 @@ const tokenSchema = v.object({
 });
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const [user] = await safeAsync(getCurrentUser(locals));
+	const [user] = locals.session?.authToken ? await safeAsync(getCurrentUser(locals)) : [];
 
 	if (user) {
 		return redirect(307, '/vehicles');
