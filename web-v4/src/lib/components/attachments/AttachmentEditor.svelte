@@ -6,6 +6,7 @@
 	import type { Attachment } from '$lib/data/attachments';
 	import { ATTACHMENT_SIZE_LIMIT } from '$lib/data/attachments';
 	import { formatBytes } from '$lib/utils/bytes';
+	import { track } from '$lib/umami';
 
 	interface Props {
 		existing: Attachment[];
@@ -57,12 +58,14 @@
 		selectedFiles = next;
 		onSelectedFilesChange?.(next);
 		input.value = '';
+		track('add_attachment', { count: String(additions.length) });
 	}
 
 	function removeNewFile(index: number) {
 		const next = selectedFiles.filter((_, i) => i !== index);
 		selectedFiles = next;
 		onSelectedFilesChange?.(next);
+		track('remove_attachment', { count: String(next.length) });
 	}
 </script>
 

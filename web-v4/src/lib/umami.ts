@@ -75,6 +75,10 @@ function handleClick(e: MouseEvent) {
 	window.umami.track(eventName, data);
 }
 
+export function track(event: string, data?: Record<string, string>) {
+	window.umami?.track(event, data);
+}
+
 export function initUmami() {
 	if (!config) return;
 
