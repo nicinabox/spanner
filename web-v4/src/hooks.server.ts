@@ -6,6 +6,7 @@ import { createSessionHandler } from '$lib/server/hooks/session-handler';
 import { createPopulateLocals } from '$lib/server/hooks/populate-locals';
 import { createThemeTransform } from '$lib/server/hooks/theme-transform';
 import { getClientIp } from '$lib/server/get-client-ip';
+import { logger } from '$lib/server/logger';
 
 export const handle: Handle = sequence(
     createRateLimit({ limit: 60, windowMs: 60_000 }),
@@ -15,19 +16,15 @@ export const handle: Handle = sequence(
 );
 
 export const handleError: HandleServerError = ({ error, event, status, message }) => {
-	if (error instanceof HTTPError && error.status === 401) {
-		throw redirect(307, '/');
-	}
-	const level = status >= 500 ? 'error' : 'warn';
-	const entry = {
-		ts: new Date().toISOString(),
-		level,
-		msg: error instanceof Error ? error.message : String(error),
+	logger[status >= 500 ? 'error' : 'warn'](message, {
 		ip: getClientIp(event),
 		method: event.request.method,
 		path: event.url.pathname,
 		status,
 		error,
-	};
-	console[level === 'error' ? 'error' : 'warn'](JSON.stringify(entry));
+    });
+
+	if (error instanceof HTTPError && error.status === 401) {
+		throw redirect(307, '/');
+	}
 };
