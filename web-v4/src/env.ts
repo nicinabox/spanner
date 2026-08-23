@@ -30,12 +30,6 @@ export const variables = defineEnvVars({
 		schema: boolean(true),
 	},
 
-	PUBLIC_SENTRY_DSN: {
-		public: true,
-		description: 'Sentry DSN for error tracking',
-		schema: v.optional(v.string(), ''),
-	},
-
 	PUBLIC_UMAMI_CONFIG: {
 		public: true,
 		description:

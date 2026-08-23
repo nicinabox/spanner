@@ -1,6 +1,4 @@
 import { sequence } from '@sveltejs/kit/hooks';
-import * as Sentry from '@sentry/sveltekit';
-import { PUBLIC_SENTRY_DSN } from '$app/env/public';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 import { HTTPError } from '$lib/data/client';
 import { createRateLimit } from '$lib/server/hooks/rate-limit';
@@ -9,25 +7,12 @@ import { createPopulateLocals } from '$lib/server/hooks/populate-locals';
 import { createThemeTransform } from '$lib/server/hooks/theme-transform';
 import { getClientIp } from '$lib/server/get-client-ip';
 
-if (PUBLIC_SENTRY_DSN) {
-	Sentry.init({
-		dsn: PUBLIC_SENTRY_DSN,
-		tracesSampleRate: 1.0,
-	});
-}
-
 const rateLimit = createRateLimit({ limit: 60, windowMs: 60_000 });
 const sessionHandler = createSessionHandler();
 const populateLocals = createPopulateLocals();
 const themeTransform = createThemeTransform();
 
-export const handle: Handle = sequence(
-	Sentry.sentryHandle(),
-	rateLimit,
-	sessionHandler,
-	populateLocals,
-	themeTransform,
-);
+export const handle: Handle = sequence(rateLimit, sessionHandler, populateLocals, themeTransform);
 
 export const handleError: HandleServerError = ({ error, event, status, message }) => {
 	if (error instanceof HTTPError && error.status === 401) {
@@ -45,7 +30,4 @@ export const handleError: HandleServerError = ({ error, event, status, message }
 		error,
 	};
 	console[level === 'error' ? 'error' : 'warn'](JSON.stringify(entry));
-	if (status >= 500) {
-		return Sentry.handleErrorWithSentry()({ error, event, status, message });
-	}
 };

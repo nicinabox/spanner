@@ -1,6 +1,4 @@
-import { sentrySvelteKit } from '@sentry/sveltekit';
 import tailwindcss from '@tailwindcss/vite';
-import { loadEnv } from 'vite';
 import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
 import adapter from '@sveltejs/adapter-node';
@@ -10,18 +8,11 @@ import { join } from 'node:path';
 import { getVersion } from './src/lib/version.ts';
 
 export default defineConfig(({ mode }) => {
-	const env = loadEnv(mode, process.cwd(), '');
-
 	return {
 		server: {
 			allowedHosts: ['.local', '.ts.net'],
 		},
 		plugins: [
-			sentrySvelteKit({
-				org: 'nicinabox-bx',
-				project: 'spanner-web',
-				authToken: env.SENTRY_AUTH_TOKEN,
-			}),
 			tailwindcss(),
 			sveltekit({
 				alias: {
