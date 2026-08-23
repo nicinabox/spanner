@@ -33,6 +33,6 @@ describe('getVersion', () => {
 		mockedExecSync.mockImplementation(() => {
 			throw new Error('not a git repo');
 		});
-		expect(getVersion()).toMatch(/^v4\.\d{4}\.\d{2}\.\d{2}$/);
+		expect(getVersion()).toMatch(/^v4\.\d{2}\.\d{1,2}$/);
 	});
 });
