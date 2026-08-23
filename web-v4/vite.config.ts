@@ -3,8 +3,6 @@ import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
 import adapter from '@sveltejs/adapter-node';
 import { sveltekit } from '@sveltejs/kit/vite';
-import { readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
 import { getVersion } from './src/lib/version.ts';
 
 export default defineConfig(({ mode }) => {
@@ -28,9 +26,6 @@ export default defineConfig(({ mode }) => {
 				},
 				experimental: {
 					explicitEnvironmentVariables: true,
-					instrumentation: {
-						server: true,
-					},
 					remoteFunctions: true,
 				},
 				adapter: adapter(),
