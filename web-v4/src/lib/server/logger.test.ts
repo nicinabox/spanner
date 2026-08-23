@@ -28,7 +28,7 @@ describe('logger', () => {
 		logger.info('hello');
 		const entry = JSON.parse(written()[0] as string);
 		expect(entry.level).toBe('info');
-		expect(entry.msg).toBe('hello');
+		expect(entry.message).toBe('hello');
 		expect(typeof entry.ts).toBe('string');
 	});
 
@@ -69,6 +69,6 @@ describe('logger', () => {
 		logger.error('boom');
 		const entry = JSON.parse(writtenVia('error')[0] as string);
 		expect(entry.level).toBe('error');
-		expect(entry.msg).toBe('boom');
+		expect(entry.message).toBe('boom');
 	});
 });

@@ -12,28 +12,28 @@ const resolveLevel = (): number => {
 
 const minLevel = resolveLevel();
 
-type Field = Record<string, unknown>;
+type Field = Record<string, unknown> & { error?: unknown };
 
-/**
- * Errors can't be JSON.stringify'd into anything useful, so normalize any
- * `Error` value into a plain object here rather than in every caller.
- */
 const serialize = (value: unknown): unknown =>
 	value instanceof Error
 		? { name: value.name, message: value.message, stack: value.stack }
 		: value;
 
-const emit = (level: Level, msg: string, fields?: Field) => {
+const emit = (level: Level, message: string, fields?: Field) => {
 	if (levelIndex(level) > minLevel) return;
 
 	const entry: Record<string, unknown> = {
 		ts: new Date().toISOString(),
 		level,
-		msg,
+		message,
 	};
 	for (const [key, value] of Object.entries(fields ?? {})) {
 		entry[key] = serialize(value);
-	}
+    }
+
+    if (entry.error && typeof entry.error === 'object' && 'message' in entry.error) {
+        entry.message ??= entry.error.message;
+    }
 
 	console[level](JSON.stringify(entry));
 };
