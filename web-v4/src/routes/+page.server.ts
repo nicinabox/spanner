@@ -1,13 +1,13 @@
 import { PUBLIC_EMAIL_ENABLED } from '$app/env/private';
-import * as session from '$lib/data/session';
+import * as session from '#lib/data/session.ts';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { setSession } from '$lib/utils/session';
-import { getCurrentUser } from '$lib/data/user';
-import { safeAsync } from '$lib/utils/async';
-import { withActionErrors } from '$lib/utils/actions';
-import { decode, validate } from '$lib/utils/formData';
-import { emailSchema } from '$lib/schemas/auth';
+import { setSession } from '#lib/utils/session.ts';
+import { getCurrentUser } from '#lib/data/user.ts';
+import { safeAsync } from '#lib/utils/async.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
+import { decode, validate } from '#lib/utils/formData.ts';
+import { emailSchema } from '#lib/schemas/auth.ts';
 import * as v from 'valibot';
 
 const loginSchema = v.object({

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { Button } from '$lib';
+	import { Button } from '#lib';
 </script>
 
 <div class="flex min-h-screen items-center justify-center p-4">

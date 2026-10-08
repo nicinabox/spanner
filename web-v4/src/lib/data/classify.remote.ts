@@ -1,6 +1,6 @@
 import { command } from '$app/server';
 import { getRequestEvent } from '$app/server';
-import { getAuthToken } from '$lib/utils/session';
+import { getAuthToken } from '#lib/utils/session.ts';
 import { request } from './server';
 import * as v from 'valibot';
 

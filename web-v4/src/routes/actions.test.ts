@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
-import { mockFetch, mockFetchError, formDataFrom, fakeEvent } from '$lib/utils/test';
+import { mockFetch, mockFetchError, formDataFrom, fakeEvent } from '#lib/utils/test.ts';
 import { actions } from './+page.server';
 
 vi.mock('$app/env/private', () => ({ API_URL: 'http://test.api', PUBLIC_EMAIL_ENABLED: true }));
 vi.mock('$app/env', () => ({ browser: false }));
-vi.mock('$lib/utils/session', () => ({ setSession: vi.fn() }));
+vi.mock('#lib/utils/session.js', () => ({ setSession: vi.fn() }));
 
 const route = { url: 'http://test.com' };
 
@@ -56,7 +56,7 @@ describe('actions.signinWithPassword', () => {
 
 	it('sets the session cookie on success', async () => {
 		mockFetch({ authToken: 'abc' });
-		const { setSession } = await import('$lib/utils/session');
+		const { setSession } = await import('#lib/utils/session.js');
 
 		await actions
 			.signinWithPassword(fakeEvent(formDataFrom({ email: 'a@b.com', password: 'secret' }), route))
@@ -141,7 +141,7 @@ describe('actions.signinWithToken', () => {
 
 	it('sets the session cookie on success', async () => {
 		mockFetch({ authToken: 'abc' });
-		const { setSession } = await import('$lib/utils/session');
+		const { setSession } = await import('#lib/utils/session.js');
 
 		await actions
 			.signinWithToken(fakeEvent(formDataFrom({ token: 'my-token' }), route))

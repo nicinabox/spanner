@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Input } from '$lib';
+	import { Input } from '#lib';
 	import Group from '../components/Group.svelte';
 	import Section from '../components/Section.svelte';
 </script>

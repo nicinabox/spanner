@@ -1,8 +1,9 @@
 /// <reference lib="webworker" />
 
-import { build, files, version } from '$service-worker';
+import { version } from '$app/env';
+import { assets, immutable, prerendered } from '$app/manifest';
 
-const ASSETS = [...build, ...files];
+const ASSETS = [...assets, ...immutable, ...prerendered].map((a) => a.path);
 const CACHE = `spanner-${version}`;
 
 // Precache app shell on install

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { mockFetch, mockFetchError, formDataFrom, fakeEvent } from '$lib/utils/test';
+import { mockFetch, mockFetchError, formDataFrom, fakeEvent } from '#lib/utils/test.ts';
 import { actions } from './+page.server';
 
 vi.mock('$app/env/private', () => ({ API_URL: 'http://test.api' }));

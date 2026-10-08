@@ -1,12 +1,12 @@
-import { deleteVehicle, getVehicle, updateVehicle } from '$lib/data/vehicles';
-import { withActionErrors } from '$lib/utils/actions';
-import { decode, validate } from '$lib/utils/formData';
+import { deleteVehicle, getVehicle, updateVehicle } from '#lib/data/vehicles.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
+import { decode, validate } from '#lib/utils/formData.ts';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { vehicleFormSchema } from '../../schemas';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
-import { vehiclePath } from '$lib/routes';
-import { booleanSchema } from '$lib/schemas';
+import { vehiclePath } from '#lib/routes.ts';
+import { booleanSchema } from '#lib/schemas/index.ts';
 
 const editVehicleFormSchema = v.object({
 	...vehicleFormSchema.entries,

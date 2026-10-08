@@ -1,7 +1,7 @@
 import type { Cookies } from '@sveltejs/kit';
 import { sealData, unsealData, type SessionOptions } from 'iron-session';
 import { CLIENT_SECRET, USE_SECURE_COOKIE } from '$app/env/private';
-import type { Session } from '$lib/data/session';
+import type { Session } from '#lib/data/session.ts';
 
 export const sessionOptions: SessionOptions = {
 	password: CLIENT_SECRET,

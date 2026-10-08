@@ -1,4 +1,4 @@
-import { parse } from '$lib/content';
+import { parse } from '#lib/content.ts';
 import { startCase, toLower } from 'lodash-es';
 
 export const RAW_CONTENT = import.meta.glob<string>('./**/*.md', {

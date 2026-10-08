@@ -1,4 +1,4 @@
-import type { DistanceUnit } from '$lib/data/vehicles';
+import type { DistanceUnit } from '#lib/data/vehicles.ts';
 
 export default {
 	mileageLong: {

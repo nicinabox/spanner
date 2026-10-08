@@ -1,8 +1,8 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { signin } from '$lib/data/session';
-import { setSession } from '$lib/utils/session';
-import { safeAsync } from '$lib/utils/async';
+import { signin } from '#lib/data/session.ts';
+import { setSession } from '#lib/utils/session.ts';
+import { safeAsync } from '#lib/utils/async.ts';
 
 export const load: PageServerLoad = async ({ params, cookies, locals }) => {
 	if (locals.authToken) {

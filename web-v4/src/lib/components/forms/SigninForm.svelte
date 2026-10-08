@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button } from '$lib';
+	import { Button } from '#lib';
 	import { hydratable } from 'svelte';
 	import { type ActionData } from '../../../routes/$types';
 	import Field from '../common/Field.svelte';
 	import Input from '../common/Input.svelte';
 	import Alert from '../common/Alert.svelte';
-	import type { FormError } from '$lib/utils/form';
-	import { getTimeZoneOffset } from '$lib/data/client';
+	import type { FormError } from '#lib/utils/form.ts';
+	import { getTimeZoneOffset } from '#lib/data/client.ts';
 	import ErrorSummary from '../ErrorSummary.svelte';
 
 	interface Props {

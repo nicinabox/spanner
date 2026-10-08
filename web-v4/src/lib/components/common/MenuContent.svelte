@@ -53,7 +53,7 @@
 							<a
 								href={item.href}
 								tabindex="-1"
-								data-sveltekit-preload-data={preload ? 'hover' : 'off'}
+								data-sveltekit-preload-data={preload ? 'hover' : 'false'}
 								class="text-inherit no-underline block w-full"
 							>
 								{item.label ?? item.value}

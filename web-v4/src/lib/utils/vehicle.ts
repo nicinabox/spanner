@@ -1,4 +1,4 @@
-import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
+import type { DistanceUnit, Vehicle } from '#lib/data/vehicles.ts';
 import { formatNumber } from './number';
 import lang from './lang';
 

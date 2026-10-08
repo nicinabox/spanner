@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { pageTitle } from '$lib/utils/site';
+	import { pageTitle } from '#lib/utils/site.ts';
 	import { page } from '$app/state';
-	import { PageLayout } from '$lib';
-	import DocsSidebar from '$lib/components/docs/DocsSidebar.svelte';
-	import DocsBreadcrumb from '$lib/components/docs/DocsBreadcrumb.svelte';
-	import DocsPrevNext from '$lib/components/docs/DocsPrevNext.svelte';
-	import Markdown from '$lib/components/Markdown.svelte';
+	import { PageLayout } from '#lib';
+	import DocsSidebar from '#lib/components/docs/DocsSidebar.svelte';
+	import DocsBreadcrumb from '#lib/components/docs/DocsBreadcrumb.svelte';
+	import DocsPrevNext from '#lib/components/docs/DocsPrevNext.svelte';
+	import Markdown from '#lib/components/Markdown.svelte';
 	import { Menu } from 'lucide-svelte';
-	import Heading from '$lib/components/Heading.svelte';
+	import Heading from '#lib/components/Heading.svelte';
 
 	let { data } = $props();
 	const session = $derived(page.data.session);

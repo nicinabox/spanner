@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
-import { mockFetch, mockFetchError, formDataFrom, fakeEvent } from '$lib/utils/test';
+import { mockFetch, mockFetchError, formDataFrom, fakeEvent } from '#lib/utils/test.ts';
 import { actions } from './+page.server';
 
 vi.mock('$app/env/private', () => ({ API_URL: 'http://test.api' }));
 vi.mock('$app/env', () => ({ browser: false }));
-vi.mock('$lib/utils/session', () => ({ setSession: vi.fn() }));
+vi.mock('#lib/utils/session.js', () => ({ setSession: vi.fn() }));
 
 const route = { params: { token: 'my-token' }, url: 'http://test.com/reset-password/my-token' };
 
@@ -40,7 +40,7 @@ describe('actions.resetPassword', () => {
 
 	it('sets the session cookie on success', async () => {
 		mockFetch({ authToken: 'abc' });
-		const { setSession } = await import('$lib/utils/session');
+		const { setSession } = await import('#lib/utils/session.js');
 
 		await actions
 			.resetPassword(

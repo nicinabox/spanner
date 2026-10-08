@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { Button, Card } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import { getIntervalSummary, isScheduleOverdue } from '$lib/utils/tasks';
+	import { Button, Card } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import { getIntervalSummary, isScheduleOverdue } from '#lib/utils/tasks.ts';
 	import { Calendar, RefreshCw, ChevronRight } from 'lucide-svelte';
-	import RecordForm from '$lib/components/forms/RecordForm.svelte';
-	import DeferForm from '$lib/components/forms/DeferForm.svelte';
-	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import { intlFormatDateUTC } from '$lib/utils/date';
-	import { formatMileage } from '$lib/utils/vehicle';
+	import RecordForm from '#lib/components/forms/RecordForm.svelte';
+	import DeferForm from '#lib/components/forms/DeferForm.svelte';
+	import type { ServiceSchedule } from '#lib/data/serviceSchedules.ts';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import { intlFormatDateUTC } from '#lib/utils/date.ts';
+	import { formatMileage } from '#lib/utils/vehicle.ts';
 	import DueIndicator from './DueIndicator.svelte';
 
 	interface Props {

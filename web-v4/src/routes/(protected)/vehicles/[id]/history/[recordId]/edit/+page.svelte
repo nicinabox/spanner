@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { Button, Card, Confirm } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
-	import RecordForm from '$lib/components/forms/RecordForm.svelte';
+	import { Button, Card, Confirm } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import VehiclePageLayout from '#lib/components/vehicles/VehiclePageLayout.svelte';
+	import RecordForm from '#lib/components/forms/RecordForm.svelte';
 	import { enhance } from '$app/forms';
 	import { invalidate, goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
+	import { pageTitle } from '#lib/utils/site.ts';
 
 	let { data }: PageProps = $props();
 
@@ -59,7 +59,7 @@
 									return async ({ result }) => {
 										if (result.type === 'redirect') {
 											await invalidate(() => true);
-											goto(result.location, { invalidateAll: true });
+											goto(result.location, { refreshAll: true });
 										}
 									};
 								}}

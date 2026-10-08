@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import type { SubmitFunction } from '@sveltejs/kit';
-	import { Button, Card, Switch, ErrorSummary, Alert } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import FileInput from '$lib/components/common/FileInput.svelte';
-	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
+	import { enhance, type SubmitFunction } from '$app/forms';
+	import { Button, Card, Switch, ErrorSummary, Alert } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import FileInput from '#lib/components/common/FileInput.svelte';
+	import VehiclePageLayout from '#lib/components/vehicles/VehiclePageLayout.svelte';
 	import { page } from '$app/state';
 	import { Download, TriangleAlert } from 'lucide-svelte';
 	import type { PageProps } from './$types';
-	import { vehiclePath } from '$lib/routes';
-	import { pageTitle } from '$lib/utils/site';
+	import { vehiclePath } from '#lib/routes.ts';
+	import { pageTitle } from '#lib/utils/site.ts';
 
 	let { data, form }: PageProps = $props();
 
@@ -45,10 +44,7 @@
 <VehiclePageLayout
 	{vehicle}
 	{activeTab}
-	backAction={{
-		href: vehiclePath(vehicle.id),
-		label: 'Back',
-	}}
+	backAction={{ href: vehiclePath(vehicle.id), label: 'Back' }}
 >
 	<div class="max-w-2xl mx-auto space-y-6">
 		<Card bleed variant="outline">

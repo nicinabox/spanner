@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css';
-	import { getCookieData } from '$lib/utils/cookies';
-	import { initUmami, trackPageView, trackingUrl } from '$lib/umami';
+import { getCookieData } from '#lib/utils/cookies.ts';
+	import { initUmami, trackPageView, trackingUrl } from '#lib/umami.ts';
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';

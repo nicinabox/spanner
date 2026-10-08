@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { Button, Card, Confirm } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
-	import ReminderForm from '$lib/components/forms/ReminderForm.svelte';
+	import { Button, Card, Confirm } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import VehiclePageLayout from '#lib/components/vehicles/VehiclePageLayout.svelte';
+	import ReminderForm from '#lib/components/forms/ReminderForm.svelte';
 	import { page } from '$app/state';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
+	import { pageTitle } from '#lib/utils/site.ts';
 
 	let { data, form }: PageProps = $props();
 

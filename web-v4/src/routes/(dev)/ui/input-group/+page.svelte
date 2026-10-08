@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Input, InputGroup, InputAddon, Textarea, Badge } from '$lib';
+	import { Button, Input, InputGroup, InputAddon, Textarea, Badge } from '#lib';
 	import Group from '../components/Group.svelte';
 	import Section from '../components/Section.svelte';
 	import { Search, Mail, X, RefreshCw } from 'lucide-svelte';

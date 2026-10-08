@@ -26,7 +26,7 @@ export const login = async (
 		password?: string;
 		timeZoneOffset?: string;
 	},
-	opts?: RequestOpts
+	opts?: RequestOpts,
 ) => {
 	const { timeZoneOffset, ...body } = data;
 	return request<Session>('/login', {
@@ -41,7 +41,11 @@ export const requestReset = async (data: { email: string }, opts?: RequestOpts) 
 	return request('/password/reset', { ...opts, method: 'POST', json: data });
 };
 
-export const resetPassword = async (token: string, data: { password: string }, opts?: RequestOpts) => {
+export const resetPassword = async (
+	token: string,
+	data: { password: string },
+	opts?: RequestOpts,
+) => {
 	return request<Session>(`/password/reset/${token}`, { ...opts, method: 'POST', json: data });
 };
 

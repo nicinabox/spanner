@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { Button, SplitButton } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import { sortUnifiedByDue } from '$lib/utils/tasks';
+	import { Button, SplitButton } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import { sortUnifiedByDue } from '#lib/utils/tasks.ts';
 	import { Bell, Wrench, PlusIcon } from 'lucide-svelte';
 	import ReminderCard from './ReminderCard.svelte';
 	import TaskCard from './TaskCard.svelte';
-	import SuggestTasksDialog from '$lib/components/dialogs/SuggestTasksDialog.svelte';
-	import EmptyState from '$lib/components/EmptyState.svelte';
-	import type { Reminder } from '$lib/data/reminders';
-	import type { PresetGroup, ServiceSchedule } from '$lib/data/serviceSchedules';
-	import type { Classification } from '$lib/data/classifications';
-	import type { Vehicle } from '$lib/data/vehicles';
+	import SuggestTasksDialog from '#lib/components/dialogs/SuggestTasksDialog.svelte';
+	import EmptyState from '#lib/components/EmptyState.svelte';
+	import type { Reminder } from '#lib/data/reminders.ts';
+	import type { PresetGroup, ServiceSchedule } from '#lib/data/serviceSchedules.ts';
+	import type { Classification } from '#lib/data/classifications.ts';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
 
 	interface Props {
 		reminders: Reminder[];

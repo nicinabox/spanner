@@ -1,6 +1,6 @@
-import { getVehicle } from '$lib/data/vehicles';
-import { withActionErrors } from '$lib/utils/actions';
-import { request } from '$lib/data/server';
+import { getVehicle } from '#lib/data/vehicles.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
+import { request } from '#lib/data/server.ts';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {

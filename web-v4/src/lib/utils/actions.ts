@@ -1,5 +1,5 @@
 import { fail, isRedirect, redirect } from '@sveltejs/kit';
-import { HTTPError } from '$lib/data/client';
+import { HTTPError } from '#lib/data/client.ts';
 import type { FormError } from './form';
 import type { RequestEvent } from '@sveltejs/kit';
 

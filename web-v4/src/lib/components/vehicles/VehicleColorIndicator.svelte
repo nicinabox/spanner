@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from 'tailwind-variants';
-	import { getColorPalette } from '$lib/utils/colors';
+	import { getColorPalette } from '#lib/utils/colors.ts';
 	import type { ClassValue } from 'svelte/elements';
 
 	interface Props {

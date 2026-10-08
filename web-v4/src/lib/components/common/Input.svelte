@@ -7,7 +7,8 @@
 			variant: {
 				outline: '',
 				filled: 'border-0 bg-ink-200/60',
-				plain: 'border-0 bg-transparent shadow-none rounded-none focus:bg-transparent focus-visible:border-transparent focus-visible:outline-none',
+				plain:
+					'border-0 bg-transparent shadow-none rounded-none focus:bg-transparent focus-visible:border-transparent focus-visible:outline-none',
 			},
 			size: {
 				sm: 'h-8 px-2 rounded-sm text-base',
@@ -49,8 +50,8 @@
 	let inputGroup = getContext<{ variant: string; size: string } | undefined>('input-group');
 
 	let {
-		variant = inputGroup?.variant as InputVariant | undefined ?? 'outline',
-		size = inputGroup?.size as InputSize | undefined ?? 'md',
+		variant = (inputGroup?.variant as InputVariant | undefined) ?? 'outline',
+		size = (inputGroup?.size as InputSize | undefined) ?? 'md',
 		name,
 		value = $bindable(),
 		required,
@@ -71,7 +72,7 @@
 	bind:this={ref}
 	id={resolvedId}
 	name={resolvedName}
-	bind:value={value}
+	bind:value
 	required={resolvedRequired}
 	class={classes}
 	aria-describedby={ariaDescribedBy}

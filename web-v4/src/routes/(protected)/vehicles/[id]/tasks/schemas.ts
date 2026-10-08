@@ -1,4 +1,4 @@
-import { numberSchema } from '$lib/schemas';
+import { numberSchema } from '#lib/schemas/index.ts';
 import * as v from 'valibot';
 
 export const serviceScheduleFormSchema = v.object({

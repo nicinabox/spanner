@@ -1,6 +1,6 @@
-import { createVehicle } from '$lib/data/vehicles';
-import { withActionErrors } from '$lib/utils/actions';
-import { decode, validate } from '$lib/utils/formData';
+import { createVehicle } from '#lib/data/vehicles.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
+import { decode, validate } from '#lib/utils/formData.ts';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { vehicleFormSchema } from '../schemas';
 

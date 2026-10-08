@@ -1,11 +1,11 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import type { RequestEvent } from '@sveltejs/kit';
 
-vi.mock('$lib/utils/device', () => ({
+vi.mock('#lib/utils/device.js', () => ({
 	isMobileUserAgent: vi.fn(),
 }));
 
-import { isMobileUserAgent } from '$lib/utils/device';
+import { isMobileUserAgent } from '#lib/utils/device.ts';
 import { createPopulateLocals } from './populate-locals';
 
 const mockedIsMobile = vi.mocked(isMobileUserAgent);

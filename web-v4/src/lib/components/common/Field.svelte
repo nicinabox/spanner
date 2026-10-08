@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import camelcase from 'camelcase';
-	import type { FormError } from '$lib/utils/form';
+	import type { FormError } from '#lib/utils/form.ts';
 	import type { Snippet } from 'svelte';
 	import { cn } from 'tailwind-variants';
 

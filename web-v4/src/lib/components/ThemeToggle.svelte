@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { Button, SegmentedControl } from '$lib';
-	import Tooltip from '$lib/components/common/Tooltip.svelte';
-	import type { ButtonSize } from '$lib/components/common/Button.svelte';
+	import { Button, SegmentedControl } from '#lib';
+	import Tooltip from '#lib/components/common/Tooltip.svelte';
+	import type { ButtonSize } from '#lib/components/common/Button.svelte';
 	import { Sun, Moon, Monitor } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { getCookieData, setCookieData } from '$lib/utils/cookies';
+	import { getCookieData, setCookieData } from '#lib/utils/cookies.ts';
 
 	type Theme = 'light' | 'dark' | 'auto';
 

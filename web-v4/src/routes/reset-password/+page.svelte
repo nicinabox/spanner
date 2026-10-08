@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Card, Field, Input } from '$lib';
-	import { pageTitle } from '$lib/utils/site';
+	import { Button, Card, Field, Input } from '#lib';
+	import { pageTitle } from '#lib/utils/site.ts';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();

@@ -1,6 +1,6 @@
-import { numberSchema } from '$lib/schemas';
+import { numberSchema } from '#lib/schemas/index.ts';
 import * as v from 'valibot';
-import type { ReminderType } from '$lib/data/reminders';
+import type { ReminderType } from '#lib/data/reminders.ts';
 
 export const reminderFormSchema = v.object({
 	notes: v.pipe(v.string('Note is required'), v.minLength(1, 'Note is required')),

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Card from '$lib/components/common/Card.svelte';
-	import SigninForm from '$lib/components/forms/SigninForm.svelte';
+	import Card from '#lib/components/common/Card.svelte';
+	import SigninForm from '#lib/components/forms/SigninForm.svelte';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
-	import AppIcon from '$lib/components/common/AppIcon.svelte';
+	import { pageTitle } from '#lib/utils/site.ts';
+	import AppIcon from '#lib/components/common/AppIcon.svelte';
 
 	let { data, form }: PageProps = $props();
 </script>

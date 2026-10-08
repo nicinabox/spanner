@@ -1,5 +1,5 @@
-import type { Handle } from '@sveltejs/kit';
-import { getSession, setSession } from '$lib/utils/session';
+import type { Handle } from '@sveltejs/kit/hooks';
+import { getSession, setSession } from '#lib/utils/session';
 
 export const createSessionHandler =
 	(): Handle =>

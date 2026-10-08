@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { Button, Card, SegmentedControl, Textarea } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
-	import Markdown from '$lib/components/Markdown.svelte';
-	import EmptyState from '$lib/components/EmptyState.svelte';
+	import { Button, Card, SegmentedControl, Textarea } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import VehiclePageLayout from '#lib/components/vehicles/VehiclePageLayout.svelte';
+	import Markdown from '#lib/components/Markdown.svelte';
+	import EmptyState from '#lib/components/EmptyState.svelte';
 	import { page } from '$app/state';
 	import { enhance } from '$app/forms';
 	import { NotepadText, Pencil } from 'lucide-svelte';
 	import type { PageProps } from './$types';
-	import { createInlineEnhance } from '$lib/utils/form';
-	import { pageTitle } from '$lib/utils/site';
-	import Badge from '$lib/components/common/Badge.svelte';
-	import { loadDraft, saveDraft, clearDraft } from '$lib/utils/draft';
+	import { createInlineEnhance } from '#lib/utils/form.ts';
+	import { pageTitle } from '#lib/utils/site.ts';
+	import Badge from '#lib/components/common/Badge.svelte';
+	import { loadDraft, saveDraft, clearDraft } from '#lib/utils/draft.ts';
 
 	let { data, form }: PageProps = $props();
 

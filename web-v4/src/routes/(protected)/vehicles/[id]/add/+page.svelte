@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { Card, SegmentedControl } from '$lib';
-	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
-	import MileageAdjustmentForm from '$lib/components/forms/MileageAdjustmentForm.svelte';
-	import RecordForm from '$lib/components/forms/RecordForm.svelte';
-	import ReminderForm from '$lib/components/forms/ReminderForm.svelte';
-	import TaskForm from '$lib/components/forms/TaskForm.svelte';
+	import { Card, SegmentedControl } from '#lib';
+	import VehiclePageLayout from '#lib/components/vehicles/VehiclePageLayout.svelte';
+	import MileageAdjustmentForm from '#lib/components/forms/MileageAdjustmentForm.svelte';
+	import RecordForm from '#lib/components/forms/RecordForm.svelte';
+	import ReminderForm from '#lib/components/forms/ReminderForm.svelte';
+	import TaskForm from '#lib/components/forms/TaskForm.svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { PlusIcon, Gauge, Wrench } from 'lucide-svelte';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
-	import { mileageLabel } from '$lib/utils/vehicle';
+	import { pageTitle } from '#lib/utils/site.ts';
+	import { mileageLabel } from '#lib/utils/vehicle.ts';
 
 	let { data, form }: PageProps = $props();
 
@@ -77,7 +77,7 @@
 							if (details.value) {
 								goto(`/vehicles/${vehicle.id}/add?view=tasks&type=${details.value}`, {
 									replaceState: true,
-									noScroll: true,
+									reset: false,
 								});
 							}
 						}}

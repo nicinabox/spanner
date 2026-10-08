@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Button from '$lib/components/common/Button.svelte';
-	import ErrorSummary from '$lib/components/ErrorSummary.svelte';
-	import Field from '$lib/components/common/Field.svelte';
-	import Input from '$lib/components/common/Input.svelte';
-	import { formatMileage, mileageLabel, MileageLabel } from '$lib/utils/vehicle';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import type { FormError } from '$lib/utils/form';
+	import Button from '#lib/components/common/Button.svelte';
+	import ErrorSummary from '#lib/components/ErrorSummary.svelte';
+	import Field from '#lib/components/common/Field.svelte';
+	import Input from '#lib/components/common/Input.svelte';
+	import { formatMileage, mileageLabel, MileageLabel } from '#lib/utils/vehicle.ts';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import type { FormError } from '#lib/utils/form.ts';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -24,7 +24,7 @@
 <form
 	method="POST"
 	action={action ?? `/vehicles/${vehicle.id}/records`}
-	use:enhance
+	use:enhance={() => ({ update }) => update({ navigate: false })}
 	class="flex flex-col gap-6"
 >
 	<ErrorSummary {formErrors} />

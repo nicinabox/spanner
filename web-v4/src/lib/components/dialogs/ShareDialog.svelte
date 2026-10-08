@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { Button, Clipboard, Dialog } from '$lib';
+	import { Button, Clipboard, Dialog } from '#lib';
 	import { page } from '$app/state';
 	import { enhance } from '$app/forms';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import { enhanceInline } from '$lib/utils/form';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import { enhanceInline } from '#lib/utils/form.ts';
 
 	interface Props {
 		vehicle: Vehicle;

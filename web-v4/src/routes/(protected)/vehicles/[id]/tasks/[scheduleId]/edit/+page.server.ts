@@ -1,14 +1,14 @@
-import { getVehicle } from '$lib/data/vehicles';
+import { getVehicle } from '#lib/data/vehicles.ts';
 import {
 	getServiceSchedule,
 	updateServiceSchedule,
 	deleteServiceSchedule,
 	deferServiceSchedule,
 	clearDeferServiceSchedule,
-} from '$lib/data/serviceSchedules';
-import { updateClassification } from '$lib/data/classifications';
-import { withActionErrors } from '$lib/utils/actions';
-import { decode, validate } from '$lib/utils/formData';
+} from '#lib/data/serviceSchedules.ts';
+import { updateClassification } from '#lib/data/classifications.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
+import { decode, validate } from '#lib/utils/formData.ts';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { serviceScheduleFormSchema, scheduleDeferFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';

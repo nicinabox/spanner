@@ -1,4 +1,4 @@
-import type { HistoryEntry } from '$lib/data/history';
+import type { HistoryEntry } from '#lib/data/history.ts';
 
 export const getNextRecordWithMileage = (
 	record: HistoryEntry,

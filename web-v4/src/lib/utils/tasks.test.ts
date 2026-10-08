@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import type { ServiceSchedule } from '$lib/data/serviceSchedules';
+import type { ServiceSchedule } from '#lib/data/serviceSchedules.ts';
 import { isScheduleOverdue } from './tasks';
 
 const schedule = (overrides: Partial<ServiceSchedule>): ServiceSchedule => ({

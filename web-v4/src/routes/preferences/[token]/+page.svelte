@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { umamiEvent } from '$lib/umami';
-	import Alert from '$lib/components/common/Alert.svelte';
-	import AppIcon from '$lib/components/common/AppIcon.svelte';
-	import Button from '$lib/components/common/Button.svelte';
-	import Card from '$lib/components/common/Card.svelte';
-	import Switch from '$lib/components/common/Switch.svelte';
-	import { pageTitle } from '$lib/utils/site';
+	import { umamiEvent } from '#lib/umami.ts';
+	import Alert from '#lib/components/common/Alert.svelte';
+	import AppIcon from '#lib/components/common/AppIcon.svelte';
+	import Button from '#lib/components/common/Button.svelte';
+	import Card from '#lib/components/common/Card.svelte';
+	import Switch from '#lib/components/common/Switch.svelte';
+	import { pageTitle } from '#lib/utils/site.ts';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();

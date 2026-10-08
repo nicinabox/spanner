@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { addMonths } from 'date-fns';
-	import Button from '$lib/components/common/Button.svelte';
-	import Field from '$lib/components/common/Field.svelte';
-	import Input from '$lib/components/common/Input.svelte';
-	import InputGroup from '$lib/components/common/InputGroup.svelte';
-	import InputAddon from '$lib/components/common/InputAddon.svelte';
-	import NativeSelect from '$lib/components/common/NativeSelect.svelte';
-	import { formatDateISO, intlFormatDate, parseDateUTC } from '$lib/utils/date';
-	import { formatMileage, mileageLabel, MileageLabel } from '$lib/utils/vehicle';
-	import { estimateReminderDate } from '$lib/data/reminders.remote';
-	import type { Reminder, ReminderType } from '$lib/data/reminders';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import type { FormError } from '$lib/utils/form';
-	import { Alert, ErrorSummary } from '$lib';
+	import Button from '#lib/components/common/Button.svelte';
+	import Field from '#lib/components/common/Field.svelte';
+	import Input from '#lib/components/common/Input.svelte';
+	import InputGroup from '#lib/components/common/InputGroup.svelte';
+	import InputAddon from '#lib/components/common/InputAddon.svelte';
+	import NativeSelect from '#lib/components/common/NativeSelect.svelte';
+	import { formatDateISO, intlFormatDate, parseDateUTC } from '#lib/utils/date.ts';
+	import { formatMileage, mileageLabel, MileageLabel } from '#lib/utils/vehicle.ts';
+	import { estimateReminderDate } from '#lib/data/reminders.remote.ts';
+	import type { Reminder, ReminderType } from '#lib/data/reminders.ts';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import type { FormError } from '#lib/utils/form.ts';
+	import { Alert, ErrorSummary } from '#lib';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -69,7 +69,7 @@
 <form
 	method="POST"
 	action={action ?? `/vehicles/${vehicle.id}/reminders${reminder ? `/${reminder.id}` : ''}`}
-	use:enhance
+	use:enhance={() => ({ update }) => update({ navigate: false })}
 	class="flex flex-col gap-6"
 >
 	<ErrorSummary {formErrors} />

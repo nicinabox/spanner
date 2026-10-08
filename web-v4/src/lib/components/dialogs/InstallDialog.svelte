@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { Button, Dialog } from '$lib';
+	import { Button, Dialog } from '#lib';
 	import { Download, Plus, Share } from 'lucide-svelte';
-	import { isIOS } from '$lib/utils/install';
+	import { isIOS } from '#lib/utils/install.ts';
 	import { browser } from '$app/env';
-	import { triggerInstallPrompt } from '$lib/utils/install.svelte';
+	import { triggerInstallPrompt } from '#lib/utils/install.svelte.ts';
 
 	interface Props {
 		open?: boolean;

@@ -1,6 +1,6 @@
-import { md } from '$lib/content';
+import { md } from '#lib/content.ts';
 import { error } from '@sveltejs/kit';
-import { lookup, entries as contentEntries, RAW_CONTENT, buildTree } from '$lib/server/content';
+import { lookup, entries as contentEntries, RAW_CONTENT, buildTree } from '#lib/server/content.ts';
 import type { EntryGenerator } from './$types';
 
 export const entries: EntryGenerator = () =>

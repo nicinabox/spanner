@@ -1,11 +1,11 @@
-import { requestEmailChange, deleteAccount, updateWebhookUrl } from '$lib/data/settings';
-import { setPassword } from '$lib/data/session';
-import { getCurrentUser } from '$lib/data/user';
-import { withActionErrors } from '$lib/utils/actions';
-import { decode, validate } from '$lib/utils/formData';
-import { safeAsync } from '$lib/utils/async';
+import { requestEmailChange, deleteAccount, updateWebhookUrl } from '#lib/data/settings.ts';
+import { setPassword } from '#lib/data/session.ts';
+import { getCurrentUser } from '#lib/data/user.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
+import { decode, validate } from '#lib/utils/formData.ts';
+import { safeAsync } from '#lib/utils/async.ts';
 import { fail, redirect } from '@sveltejs/kit';
-import { emailSchema, passwordSchema } from '$lib/schemas/auth';
+import { emailSchema, passwordSchema } from '#lib/schemas/auth.ts';
 import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
 

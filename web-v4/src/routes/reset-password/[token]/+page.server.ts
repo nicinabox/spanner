@@ -1,10 +1,10 @@
-import { resetPassword } from '$lib/data/session';
-import { setSession } from '$lib/utils/session';
-import { HTTPError } from '$lib/data/client';
-import { withActionErrors } from '$lib/utils/actions';
-import { decode, validate } from '$lib/utils/formData';
+import { resetPassword } from '#lib/data/session.ts';
+import { setSession } from '#lib/utils/session.ts';
+import { HTTPError } from '#lib/data/client.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
+import { decode, validate } from '#lib/utils/formData.ts';
 import { fail, redirect } from '@sveltejs/kit';
-import { passwordSchema } from '$lib/schemas/auth';
+import { passwordSchema } from '#lib/schemas/auth.ts';
 import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
 

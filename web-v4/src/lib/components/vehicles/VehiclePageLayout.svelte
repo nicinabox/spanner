@@ -1,20 +1,20 @@
 <script lang="ts">
-	import { Button } from '$lib';
-	import Menu from '$lib/components/common/Menu.svelte';
-	import PageLayout from '$lib/components/PageLayout.svelte';
-	import ShareDialog from '$lib/components/dialogs/ShareDialog.svelte';
-	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import { getOverdueRemindersCount } from '$lib/utils/reminders';
-	import { getOverdueSchedulesCount } from '$lib/utils/tasks';
+	import { Button } from '#lib';
+	import Menu from '#lib/components/common/Menu.svelte';
+	import PageLayout from '#lib/components/PageLayout.svelte';
+	import ShareDialog from '#lib/components/dialogs/ShareDialog.svelte';
+	import VehicleColorIndicator from '#lib/components/vehicles/VehicleColorIndicator.svelte';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import { getOverdueRemindersCount } from '#lib/utils/reminders.ts';
+	import { getOverdueSchedulesCount } from '#lib/utils/tasks.ts';
 	import { enhance } from '$app/forms';
 	import { ArrowLeft, BookOpenText, Check, FileText, Wrench } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 	import { tick } from 'svelte';
 	import Badge from '../common/Badge.svelte';
-	import { vehiclePath } from '$lib/routes';
-	import { enhanceInline } from '$lib/utils/form';
+	import { vehiclePath } from '#lib/routes.ts';
+	import { enhanceInline } from '#lib/utils/form.ts';
 	import { page } from '$app/state';
 
 	interface Props {

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import AppBar from '$lib/components/AppBar.svelte';
-	import HistoryTable from '$lib/components/HistoryTable.svelte';
-	import EmptyState from '$lib/components/EmptyState.svelte';
-	import Stat from '$lib/components/common/Stat.svelte';
+	import AppBar from '#lib/components/AppBar.svelte';
+	import HistoryTable from '#lib/components/HistoryTable.svelte';
+	import EmptyState from '#lib/components/EmptyState.svelte';
+	import Stat from '#lib/components/common/Stat.svelte';
 	import { BookOpenText } from 'lucide-svelte';
-	import { intlFormatDateUTC } from '$lib/utils/date';
+	import { intlFormatDateUTC } from '#lib/utils/date.ts';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
+	import { pageTitle } from '#lib/utils/site.ts';
 
 	let { data }: PageProps = $props();
 

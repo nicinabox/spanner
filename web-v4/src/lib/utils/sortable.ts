@@ -1,5 +1,5 @@
 import { orderBy } from 'lodash-es';
-import type { Order, Sortable, Vehicle, VehicleSortStrategy } from '$lib/data/vehicles';
+import type { Order, Sortable, Vehicle, VehicleSortStrategy } from '#lib/data/vehicles.ts';
 import { getOverdueRemindersCount } from './reminders';
 import { getUnifiedOverdueCount } from './tasks';
 

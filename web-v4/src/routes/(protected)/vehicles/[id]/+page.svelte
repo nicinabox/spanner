@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { Button } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import Input from '$lib/components/common/Input.svelte';
-	import InputGroup from '$lib/components/common/InputGroup.svelte';
-	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
-	import Stat from '$lib/components/common/Stat.svelte';
-	import HistoryTable from '$lib/components/HistoryTable.svelte';
-	import EmptyState from '$lib/components/EmptyState.svelte';
+	import { Button } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import Input from '#lib/components/common/Input.svelte';
+	import InputGroup from '#lib/components/common/InputGroup.svelte';
+	import VehiclePageLayout from '#lib/components/vehicles/VehiclePageLayout.svelte';
+	import Stat from '#lib/components/common/Stat.svelte';
+	import HistoryTable from '#lib/components/HistoryTable.svelte';
+	import EmptyState from '#lib/components/EmptyState.svelte';
 	import { page } from '$app/state';
 	import { BookOpenText, PlusIcon, Search, X } from 'lucide-svelte';
-	import { intlFormatDateUTC } from '$lib/utils/date';
-	import NextOverdueTask from '$lib/components/vehicles/NextOverdueTask.svelte';
+	import { intlFormatDateUTC } from '#lib/utils/date.ts';
+	import NextOverdueTask from '#lib/components/vehicles/NextOverdueTask.svelte';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
-	import { createHistorySearch } from '$lib/utils/historySearch.svelte';
+	import { pageTitle } from '#lib/utils/site.ts';
+	import { createHistorySearch } from '#lib/utils/historySearch.svelte.ts';
 
 	let { data }: PageProps = $props();
 
@@ -30,9 +30,7 @@
 		searchInputEl?.scrollIntoView({ block: 'center' });
 	}
 
-	let activeTab = $derived(
-		page.url.pathname === `/vehicles/${vehicle.id}` ? 'history' : 'history',
-	);
+	let activeTab = $derived(page.url.pathname === `/vehicles/${vehicle.id}` ? 'history' : 'history');
 </script>
 
 <svelte:head>

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import type { HistoryEntry } from '$lib/data/history';
-import type { Classification } from '$lib/data/classifications';
+import type { HistoryEntry } from '#lib/data/history.ts';
+import type { Classification } from '#lib/data/classifications.ts';
 import { buildHistoryFuse } from './historySearch.svelte';
 
 const classification = (overrides: Partial<Classification>): Classification => ({

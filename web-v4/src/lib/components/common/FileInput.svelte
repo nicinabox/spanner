@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Paperclip } from 'lucide-svelte';
-	import Button from '$lib/components/common/Button.svelte';
-	import type { ButtonVariant, ButtonSize } from '$lib/components/common/Button.svelte';
+	import Button from '#lib/components/common/Button.svelte';
+	import type { ButtonVariant, ButtonSize } from '#lib/components/common/Button.svelte';
 	import type { ClassValue } from 'svelte/elements';
 
 	interface Props {

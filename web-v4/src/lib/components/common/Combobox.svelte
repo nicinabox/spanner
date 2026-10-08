@@ -7,7 +7,7 @@
 	import Badge from './Badge.svelte';
 	import Button from './Button.svelte';
 	import type { KeyboardEventHandler } from 'svelte/elements';
-	import { InputAddon } from '$lib';
+	import { InputAddon } from '#lib';
 
 	interface Props {
 		multiple?: boolean;

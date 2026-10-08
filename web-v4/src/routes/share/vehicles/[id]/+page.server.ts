@@ -1,4 +1,4 @@
-import { getSharedVehicle, getSharedVehicleHistory } from '$lib/data/share';
+import { getSharedVehicle, getSharedVehicleHistory } from '#lib/data/share.ts';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 

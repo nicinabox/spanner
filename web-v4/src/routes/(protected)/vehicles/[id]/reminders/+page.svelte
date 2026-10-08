@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { Button, Card } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import RecordForm from '$lib/components/forms/RecordForm.svelte';
-	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
-	import EmptyState from '$lib/components/EmptyState.svelte';
+	import { Button, Card } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import RecordForm from '#lib/components/forms/RecordForm.svelte';
+	import VehiclePageLayout from '#lib/components/vehicles/VehiclePageLayout.svelte';
+	import EmptyState from '#lib/components/EmptyState.svelte';
 	import { page } from '$app/state';
-	import { intlFormatDateUTC } from '$lib/utils/date';
-	import { formatMileage } from '$lib/utils/vehicle';
+	import { intlFormatDateUTC } from '#lib/utils/date.ts';
+	import { formatMileage } from '#lib/utils/vehicle.ts';
 	import { Bell, ChevronRight, PlusIcon } from 'lucide-svelte';
-	import { isReminderOverdue, sortRemindersByDue } from '$lib/utils/reminders';
+	import { isReminderOverdue, sortRemindersByDue } from '#lib/utils/reminders.ts';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
-	import ReminderCard from '$lib/components/schedules/ReminderCard.svelte';
+	import { pageTitle } from '#lib/utils/site.ts';
+	import ReminderCard from '#lib/components/schedules/ReminderCard.svelte';
 
 	let { data }: PageProps = $props();
 

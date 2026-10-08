@@ -84,7 +84,8 @@ describe('withActionErrors', () => {
 	});
 
 	it('propagates fail(400) responses returned by the handler (no error conversion)', async () => {
-		const handler = async () => fail(400, { errors: [{ id: 'email', title: 'Email is required' }] });
+		const handler = async () =>
+			fail(400, { errors: [{ id: 'email', title: 'Email is required' }] });
 		const wrapped = withActionErrors(handler);
 
 		const result = await wrapped(fakeEvent(formDataFrom({})));

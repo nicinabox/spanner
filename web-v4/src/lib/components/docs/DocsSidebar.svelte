@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import type { DocsGroup, DocsTree } from '$lib/server/content';
+	import type { DocsGroup, DocsTree } from '#lib/server/content.ts';
 
 	interface Props {
 		tree: DocsTree;

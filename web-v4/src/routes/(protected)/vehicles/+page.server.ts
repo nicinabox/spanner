@@ -1,8 +1,13 @@
-import { getCurrentUser } from '$lib/data/user';
-import { getAllVehicles, type Sortable, type VehicleSortStrategy, type Order } from '$lib/data/vehicles';
-import { updateUser } from '$lib/data/user';
-import { withActionErrors } from '$lib/utils/actions';
-import { decode, validate } from '$lib/utils/formData';
+import { getCurrentUser } from '#lib/data/user.ts';
+import {
+	getAllVehicles,
+	type Sortable,
+	type VehicleSortStrategy,
+	type Order,
+} from '#lib/data/vehicles.ts';
+import { updateUser } from '#lib/data/user.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
+import { decode, validate } from '#lib/utils/formData.ts';
 import { fail } from '@sveltejs/kit';
 import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';

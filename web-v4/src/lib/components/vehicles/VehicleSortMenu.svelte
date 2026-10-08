@@ -1,13 +1,13 @@
 <script lang="ts">
-	import Menu, { type OptionItem } from '$lib/components/common/Menu.svelte';
-	import type { ButtonSize } from '$lib/components/common/Button.svelte';
-	import type { Order, Sortable, VehicleSortStrategy } from '$lib/data/vehicles';
+	import Menu, { type OptionItem } from '#lib/components/common/Menu.svelte';
+	import type { ButtonSize } from '#lib/components/common/Button.svelte';
+	import type { Order, Sortable, VehicleSortStrategy } from '#lib/data/vehicles.ts';
 	import {
 		orderToHuman,
 		vehicleSortOrderToHuman,
 		vehicleSortStrategy,
 		vehicleSortStrategyToHuman,
-	} from '$lib/utils/sortable';
+	} from '#lib/utils/sortable.ts';
 
 	interface Props {
 		sortable?: Sortable;
@@ -46,5 +46,6 @@
 </script>
 
 <Menu {optionItems} {size}>
-	Order By: {orderToHuman(sortable)} {vehicleSortStrategyToHuman[sortStrategy]}
+	Order By: {orderToHuman(sortable)}
+	{vehicleSortStrategyToHuman[sortStrategy]}
 </Menu>

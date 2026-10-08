@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Clipboard } from '$lib';
+	import { Clipboard } from '#lib';
 	import Group from '../components/Group.svelte';
 	import Section from '../components/Section.svelte';
 </script>

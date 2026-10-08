@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, ButtonGroup, SplitButton, Menu } from '$lib';
+	import { Button, ButtonGroup, SplitButton, Menu } from '#lib';
 	import Group from '../components/Group.svelte';
 	import Section from '../components/Section.svelte';
 	import { ChevronDown } from 'lucide-svelte';
@@ -195,32 +195,16 @@
 
 	<Group title="SplitButton sizes">
 		<div>
-			<SplitButton
-				items={[{ value: 'edit', label: 'Edit' }]}
-				onAction={() => {}}
-				size="xs"
-			>
+			<SplitButton items={[{ value: 'edit', label: 'Edit' }]} onAction={() => {}} size="xs">
 				XS
 			</SplitButton>
-			<SplitButton
-				items={[{ value: 'edit', label: 'Edit' }]}
-				onAction={() => {}}
-				size="sm"
-			>
+			<SplitButton items={[{ value: 'edit', label: 'Edit' }]} onAction={() => {}} size="sm">
 				SM
 			</SplitButton>
-			<SplitButton
-				items={[{ value: 'edit', label: 'Edit' }]}
-				onAction={() => {}}
-				size="md"
-			>
+			<SplitButton items={[{ value: 'edit', label: 'Edit' }]} onAction={() => {}} size="md">
 				MD
 			</SplitButton>
-			<SplitButton
-				items={[{ value: 'edit', label: 'Edit' }]}
-				onAction={() => {}}
-				size="lg"
-			>
+			<SplitButton items={[{ value: 'edit', label: 'Edit' }]} onAction={() => {}} size="lg">
 				LG
 			</SplitButton>
 		</div>

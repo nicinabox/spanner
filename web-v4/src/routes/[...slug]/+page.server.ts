@@ -1,7 +1,7 @@
 import type { EntryGenerator } from './$types';
-import { md } from '$lib/content';
+import { md } from '#lib/content.ts';
 import { error } from '@sveltejs/kit';
-import { lookup, entries as contentEntries } from '$lib/server/content';
+import { lookup, entries as contentEntries } from '#lib/server/content.ts';
 
 export const entries: EntryGenerator = () =>
 	contentEntries.filter((entry) => !entry.slug.startsWith('docs'));

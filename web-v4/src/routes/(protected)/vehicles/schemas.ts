@@ -1,4 +1,4 @@
-import { booleanSchema } from '$lib/schemas';
+import { booleanSchema } from '#lib/schemas/index.ts';
 import * as v from 'valibot';
 
 const distanceUnitSchema = v.picklist(['mi', 'km', 'hr', 'nmi']);

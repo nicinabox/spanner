@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Combobox } from '$lib';
+	import { Combobox } from '#lib';
 	import Group from '../components/Group.svelte';
 	import Section from '../components/Section.svelte';
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { pageTitle } from '$lib/utils/site';
-	import { PageLayout } from '$lib';
-	import Markdown from '$lib/components/Markdown.svelte';
+	import { pageTitle } from '#lib/utils/site.ts';
+	import { PageLayout } from '#lib';
+	import Markdown from '#lib/components/Markdown.svelte';
 
 	let { data } = $props();
 </script>

@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { Button, ErrorSummary } from '$lib';
-	import Dialog from '$lib/components/common/Dialog.svelte';
-	import { enhance } from '$app/forms';
-	import type { SubmitFunction } from '@sveltejs/kit';
+	import { Button, ErrorSummary } from '#lib';
+	import Dialog from '#lib/components/common/Dialog.svelte';
+	import { enhance, type SubmitFunction } from '$app/forms';
 	import { Check, Plus, RefreshCw } from 'lucide-svelte';
-	import { getIntervalSummary } from '$lib/utils/tasks';
-	import type { DistanceUnit } from '$lib/data/vehicles';
-	import type { PresetItem, PresetGroup } from '$lib/data/serviceSchedules';
-	import type { FormError } from '$lib/utils/form';
-	import { pluralize } from '$lib/utils/text';
+	import { getIntervalSummary } from '#lib/utils/tasks.ts';
+	import type { DistanceUnit } from '#lib/data/vehicles.ts';
+	import type { PresetItem, PresetGroup } from '#lib/data/serviceSchedules.ts';
+	import type { FormError } from '#lib/utils/form.ts';
+	import { pluralize } from '#lib/utils/text.ts';
 	import { cn } from 'tailwind-variants';
 
 	interface Props {
@@ -60,7 +59,7 @@
 			if (result.type === 'success') {
 				errors = [];
 				onOpenChange(false);
-				await update({ invalidateAll: true });
+				await update({ refreshAll: true });
 			} else if (result.type === 'failure' && result.data?.errors) {
 				errors = result.data.errors;
 			}
@@ -74,7 +73,9 @@
 <Dialog {open} {onOpenChange} {title}>
 	<form id={formId} method="POST" action="?/suggest" use:enhance={submit}>
 		<input type="hidden" name="distanceUnit" value={distanceUnit} />
+
 		<input type="hidden" name="presetData" value={JSON.stringify(selectedPresets)} />
+
 		<ErrorSummary formErrors={errors} />
 		<p class="mb-4">Add then edit to fit your needs.</p>
 		<ul class="space-y-2">
@@ -123,6 +124,7 @@
 		<Button type="button" variant="ghost" form={formId} onclick={() => onOpenChange(false)}
 			>Cancel</Button
 		>
+
 		<Button type="submit" form={formId} disabled={checked.size === 0}>
 			<Plus size={16} />
 			Add {checked.size || undefined}

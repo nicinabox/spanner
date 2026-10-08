@@ -1,25 +1,24 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { enhance, type SubmitFunction } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import type { SubmitFunction } from '@sveltejs/kit';
-	import Button from '$lib/components/common/Button.svelte';
-	import ErrorSummary from '$lib/components/ErrorSummary.svelte';
-	import Field from '$lib/components/common/Field.svelte';
-	import Input from '$lib/components/common/Input.svelte';
-	import InputGroup from '$lib/components/common/InputGroup.svelte';
-	import InputAddon from '$lib/components/common/InputAddon.svelte';
-	import Textarea from '$lib/components/common/Textarea.svelte';
-	import AttachmentEditor from '$lib/components/attachments/AttachmentEditor.svelte';
-	import { formatDateISO } from '$lib/utils/date';
-	import { getCurrencySymbol } from '$lib/utils/number';
-	import { MileageLabel } from '$lib/utils/vehicle';
-	import type { HistoryEntry } from '$lib/data/history';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import type { FormError } from '$lib/utils/form';
-	import type { Classification } from '$lib/data/classifications';
-	import { classifyNotes } from '$lib/data/classify.remote';
-	import Badge from '$lib/components/common/Badge.svelte';
-	import Menu from '$lib/components/common/Menu.svelte';
+	import Button from '#lib/components/common/Button.svelte';
+	import ErrorSummary from '#lib/components/ErrorSummary.svelte';
+	import Field from '#lib/components/common/Field.svelte';
+	import Input from '#lib/components/common/Input.svelte';
+	import InputGroup from '#lib/components/common/InputGroup.svelte';
+	import InputAddon from '#lib/components/common/InputAddon.svelte';
+	import Textarea from '#lib/components/common/Textarea.svelte';
+	import AttachmentEditor from '#lib/components/attachments/AttachmentEditor.svelte';
+	import { formatDateISO } from '#lib/utils/date.ts';
+	import { getCurrencySymbol } from '#lib/utils/number.ts';
+	import { MileageLabel } from '#lib/utils/vehicle.ts';
+	import type { HistoryEntry } from '#lib/data/history.ts';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import type { FormError } from '#lib/utils/form.ts';
+	import type { Classification } from '#lib/data/classifications.ts';
+	import { classifyNotes } from '#lib/data/classify.remote.ts';
+	import Badge from '#lib/components/common/Badge.svelte';
+	import Menu from '#lib/components/common/Menu.svelte';
 	import { RotateCw } from 'lucide-svelte';
 	import Tooltip from '../common/Tooltip.svelte';
 
@@ -151,12 +150,12 @@
 		return async ({ result }) => {
 			if (result.type === 'redirect') {
 				onsuccess?.();
-				await goto(result.location, { invalidateAll: true });
+				await goto(result.location, { refreshAll: true });
 			} else if (result.type === 'failure' && result.data?.errors) {
 				actionErrors = result.data.errors;
 			} else if (result.type !== 'success') {
 				// Unexpected response — navigate to vehicle page as fallback.
-				await goto(`/vehicles/${vehicle.id}`, { invalidateAll: true });
+				await goto(`/vehicles/${vehicle.id}`, { refreshAll: true });
 			}
 			submitting = false;
 		};

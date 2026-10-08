@@ -1,4 +1,4 @@
-import type { HistoryEntry } from '$lib/data/history';
+import type { HistoryEntry } from '#lib/data/history.ts';
 import Fuse from 'fuse.js';
 
 const MIN_QUERY_LENGTH = 2;
@@ -44,8 +44,7 @@ const buildHistoryFuse = (history: HistoryEntry[]) =>
 			{ name: 'date', getFn: (item: HistoryEntry) => dateTokens(item.date) },
 			{
 				name: 'classifications',
-				getFn: (item: HistoryEntry) =>
-					item.classifications.flatMap((c) => [c.name, ...c.keywords]),
+				getFn: (item: HistoryEntry) => item.classifications.flatMap((c) => [c.name, ...c.keywords]),
 			},
 		],
 		threshold: 0.3,

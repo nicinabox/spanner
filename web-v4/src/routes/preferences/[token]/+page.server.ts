@@ -1,12 +1,12 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { HTTPError } from '$lib/data/client';
+import { HTTPError } from '#lib/data/client.ts';
 import {
 	getUnsubscribeContext,
 	saveVehiclePreferences,
 	unsubscribeAction,
-} from '$lib/data/settings';
-import { decode, validate } from '$lib/utils/formData';
-import { booleanSchema } from '$lib/schemas';
+} from '#lib/data/settings.ts';
+import { decode, validate } from '#lib/utils/formData.ts';
+import { booleanSchema } from '#lib/schemas/index.ts';
 import * as v from 'valibot';
 import type { Actions, PageServerLoad } from './$types';
 

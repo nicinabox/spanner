@@ -6,7 +6,7 @@
 	import { Check, Copy } from 'lucide-svelte';
 	import Button from './Button.svelte';
 	import Tooltip from './Tooltip.svelte';
-	import { InputAddon } from '$lib';
+	import { InputAddon } from '#lib';
 
 	interface Props {
 		value: string;

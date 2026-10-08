@@ -1,8 +1,8 @@
-import { getVehicle } from '$lib/data/vehicles';
-import { getHistoryEntry, deleteHistoryEntry, updateHistoryEntry } from '$lib/data/history';
-import { getClassifications } from '$lib/data/classifications';
-import { decode, validate, encode } from '$lib/utils/formData';
-import { withActionErrors } from '$lib/utils/actions';
+import { getVehicle } from '#lib/data/vehicles.ts';
+import { getHistoryEntry, deleteHistoryEntry, updateHistoryEntry } from '#lib/data/history.ts';
+import { getClassifications } from '#lib/data/classifications.ts';
+import { decode, validate, encode } from '#lib/utils/formData.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { recordFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';

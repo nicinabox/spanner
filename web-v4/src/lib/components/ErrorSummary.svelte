@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Alert, { type AlertProps } from '$lib/components/common/Alert.svelte';
-	import type { FormError } from '$lib/utils/form';
+	import Alert, { type AlertProps } from '#lib/components/common/Alert.svelte';
+	import type { FormError } from '#lib/utils/form.ts';
 
 	interface Props extends Omit<AlertProps, 'children'> {
 		formErrors: FormError[];

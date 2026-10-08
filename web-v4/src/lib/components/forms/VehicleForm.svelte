@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { enhance, applyAction } from '$app/forms';
-	import Button from '$lib/components/common/Button.svelte';
-	import ErrorSummary from '$lib/components/ErrorSummary.svelte';
-	import Field from '$lib/components/common/Field.svelte';
-	import Input from '$lib/components/common/Input.svelte';
-	import NativeSelect from '$lib/components/common/NativeSelect.svelte';
-	import Switch from '$lib/components/common/Switch.svelte';
-	import VehicleColorIndicator from '$lib/components/vehicles/VehicleColorIndicator.svelte';
-	import { getColorPalette } from '$lib/utils/colors';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import type { FormError } from '$lib/utils/form';
+	import Button from '#lib/components/common/Button.svelte';
+	import ErrorSummary from '#lib/components/ErrorSummary.svelte';
+	import Field from '#lib/components/common/Field.svelte';
+	import Input from '#lib/components/common/Input.svelte';
+	import NativeSelect from '#lib/components/common/NativeSelect.svelte';
+	import Switch from '#lib/components/common/Switch.svelte';
+	import VehicleColorIndicator from '#lib/components/vehicles/VehicleColorIndicator.svelte';
+	import { getColorPalette } from '#lib/utils/colors.ts';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import type { FormError } from '#lib/utils/form.ts';
 
 	interface Props {
 		errors?: FormError[];

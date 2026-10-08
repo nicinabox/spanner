@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { umamiEvent } from '$lib/umami';
+	import { umamiEvent } from '#lib/umami.ts';
 	import { ArrowLeft, Check } from 'lucide-svelte';
 	import {
 		Button,
@@ -12,9 +12,9 @@
 		Alert,
 		InputGroup,
 		InputAddon,
-	} from '$lib';
+	} from '#lib';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
+	import { pageTitle } from '#lib/utils/site.ts';
 
 	let { data, form }: PageProps = $props();
 

@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { enhance, applyAction } from '$app/forms';
-	import Button from '$lib/components/common/Button.svelte';
-	import ErrorSummary from '$lib/components/ErrorSummary.svelte';
-	import Field from '$lib/components/common/Field.svelte';
-	import Input from '$lib/components/common/Input.svelte';
-	import InputGroup from '$lib/components/common/InputGroup.svelte';
-	import InputAddon from '$lib/components/common/InputAddon.svelte';
-	import Stepper from '$lib/components/common/Stepper.svelte';
-	import { MileageLabel } from '$lib/utils/vehicle';
-	import type { ServiceSchedule } from '$lib/data/serviceSchedules';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import type { FormError } from '$lib/utils/form';
-	import { Confirm } from '$lib';
+	import Button from '#lib/components/common/Button.svelte';
+	import ErrorSummary from '#lib/components/ErrorSummary.svelte';
+	import Field from '#lib/components/common/Field.svelte';
+	import Input from '#lib/components/common/Input.svelte';
+	import InputGroup from '#lib/components/common/InputGroup.svelte';
+	import InputAddon from '#lib/components/common/InputAddon.svelte';
+	import Stepper from '#lib/components/common/Stepper.svelte';
+	import { MileageLabel } from '#lib/utils/vehicle.ts';
+	import type { ServiceSchedule } from '#lib/data/serviceSchedules.ts';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import type { FormError } from '#lib/utils/form.ts';
+	import { Confirm } from '#lib';
 
 	interface Props {
 		vehicle: Vehicle;

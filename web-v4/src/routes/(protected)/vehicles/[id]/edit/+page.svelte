@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { Button, Confirm } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import Card from '$lib/components/common/Card.svelte';
-	import VehicleForm from '$lib/components/forms/VehicleForm.svelte';
+	import { Button, Confirm } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import Card from '#lib/components/common/Card.svelte';
+	import VehicleForm from '#lib/components/forms/VehicleForm.svelte';
 	import type { PageProps } from './$types';
-	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
-	import { vehiclePath } from '$lib/routes';
-	import { pageTitle } from '$lib/utils/site';
+	import VehiclePageLayout from '#lib/components/vehicles/VehiclePageLayout.svelte';
+	import { vehiclePath } from '#lib/routes.ts';
+	import { pageTitle } from '#lib/utils/site.ts';
 
 	let { form, data }: PageProps = $props();
 </script>

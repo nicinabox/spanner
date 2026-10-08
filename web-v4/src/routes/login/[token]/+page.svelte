@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Button } from '$lib';
-	import Card from '$lib/components/common/Card.svelte';
+	import { Button } from '#lib';
+	import Card from '#lib/components/common/Card.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();

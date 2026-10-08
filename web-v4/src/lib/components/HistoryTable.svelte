@@ -1,20 +1,20 @@
 <script lang="ts">
 	import { intlFormat } from 'date-fns';
-	import { type HistoryEntry } from '$lib/data/history';
-	import { parseDateUTC } from '$lib/utils/date';
-	import { formatMileage } from '$lib/utils/vehicle';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import FlexTable from '$lib/components/FlexTable/Table.svelte';
-	import Row from '$lib/components/FlexTable/Row.svelte';
-	import Cell from '$lib/components/FlexTable/Cell.svelte';
-	import Markdown from '$lib/components/Markdown.svelte';
-	import Tooltip from '$lib/components/common/Tooltip.svelte';
-	import { formatCurrency } from '$lib/utils/number';
-	import { calculateDeltaMileage, sortNewestDateFirst } from '$lib/utils/records';
+	import { type HistoryEntry } from '#lib/data/history.ts';
+	import { parseDateUTC } from '#lib/utils/date.ts';
+	import { formatMileage } from '#lib/utils/vehicle.ts';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import FlexTable from '#lib/components/FlexTable/Table.svelte';
+	import Row from '#lib/components/FlexTable/Row.svelte';
+	import Cell from '#lib/components/FlexTable/Cell.svelte';
+	import Markdown from '#lib/components/Markdown.svelte';
+	import Tooltip from '#lib/components/common/Tooltip.svelte';
+	import { formatCurrency } from '#lib/utils/number.ts';
+	import { calculateDeltaMileage, sortNewestDateFirst } from '#lib/utils/records.ts';
 	import { Eye, EyeClosed } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import Button from './common/Button.svelte';
-	import { pluralize } from '$lib/utils/text';
+	import { pluralize } from '#lib/utils/text.ts';
 	import AttachmentList from './attachments/AttachmentList.svelte';
 	import Badge from './common/Badge.svelte';
 

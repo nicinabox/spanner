@@ -1,4 +1,4 @@
-import { getVehicle } from '$lib/data/vehicles';
+import { getVehicle } from '#lib/data/vehicles.ts';
 import {
 	getServiceSchedules,
 	completeServiceSchedule,
@@ -6,17 +6,17 @@ import {
 	deferServiceSchedule,
 	clearDeferServiceSchedule,
 	getServiceSchedulePresets,
-} from '$lib/data/serviceSchedules';
-import { getVehicleReminders } from '$lib/data/reminders';
-import { getClassifications } from '$lib/data/classifications';
-import { decode, validate, encode } from '$lib/utils/formData';
+} from '#lib/data/serviceSchedules.ts';
+import { getVehicleReminders } from '#lib/data/reminders.ts';
+import { getClassifications } from '#lib/data/classifications.ts';
+import { decode, validate, encode } from '#lib/utils/formData.ts';
 import { fail, redirect } from '@sveltejs/kit';
 import * as v from 'valibot';
 import type { PageServerLoad, Actions } from './$types';
-import { numberSchema } from '$lib/schemas';
-import { withActionErrors } from '$lib/utils/actions';
+import { numberSchema } from '#lib/schemas/index.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
 import { attachmentsSchema } from '../history/schemas';
-import { createHistoryEntry } from '$lib/data/history';
+import { createHistoryEntry } from '#lib/data/history.ts';
 
 const completeFormSchema = v.object({
 	id: v.string(),

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import VehiclePageLayout from '$lib/components/vehicles/VehiclePageLayout.svelte';
+	import VehiclePageLayout from '#lib/components/vehicles/VehiclePageLayout.svelte';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
-	import UnifiedTasks from '$lib/components/schedules/UnifiedTasks.svelte';
+	import { pageTitle } from '#lib/utils/site.ts';
+	import UnifiedTasks from '#lib/components/schedules/UnifiedTasks.svelte';
 
 	let { data }: PageProps = $props();
 	let vehicle = $derived(data.vehicle);

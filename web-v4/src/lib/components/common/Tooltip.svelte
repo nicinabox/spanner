@@ -5,14 +5,7 @@
 	import type { Snippet } from 'svelte';
 
 	type Placement =
-		| 'top'
-		| 'bottom'
-		| 'left'
-		| 'right'
-		| 'top-start'
-		| 'top-end'
-		| 'bottom-start'
-		| 'bottom-end';
+		'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end';
 
 	interface Props {
 		content: string;

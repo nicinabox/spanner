@@ -49,8 +49,8 @@
 	let inputGroup = getContext<{ variant: string; size: string } | undefined>('input-group');
 
 	let {
-		variant = inputGroup?.variant as TextareaVariant | undefined ?? 'outline',
-		size = inputGroup?.size as TextareaSize | undefined ?? 'md',
+		variant = (inputGroup?.variant as TextareaVariant | undefined) ?? 'outline',
+		size = (inputGroup?.size as TextareaSize | undefined) ?? 'md',
 		name,
 		value = $bindable(),
 		placeholder,

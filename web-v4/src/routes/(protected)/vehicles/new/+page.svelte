@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { Button } from '$lib';
-	import Card from '$lib/components/common/Card.svelte';
-	import PageLayout from '$lib/components/PageLayout.svelte';
-	import VehicleForm from '$lib/components/forms/VehicleForm.svelte';
+	import { Button } from '#lib';
+	import Card from '#lib/components/common/Card.svelte';
+	import PageLayout from '#lib/components/PageLayout.svelte';
+	import VehicleForm from '#lib/components/forms/VehicleForm.svelte';
 	import { ArrowLeft } from 'lucide-svelte';
 	import type { PageProps } from './$types';
-	import { pageTitle } from '$lib/utils/site';
+	import { pageTitle } from '#lib/utils/site.ts';
 
 	let { form }: PageProps = $props();
 </script>

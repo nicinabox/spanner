@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Wrench } from 'lucide-svelte';
-	import Badge from '$lib/components/common/Badge.svelte';
+	import Badge from '#lib/components/common/Badge.svelte';
 	import VehicleColorIndicator from './VehicleColorIndicator.svelte';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import { getUnifiedOverdueCount } from '$lib/utils/tasks';
-	import { formatMileage } from '$lib/utils/vehicle';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import { getUnifiedOverdueCount } from '#lib/utils/tasks.ts';
+	import { formatMileage } from '#lib/utils/vehicle.ts';
 
 	interface Props {
 		vehicle: Vehicle;

@@ -1,6 +1,6 @@
-import type { HistoryEntry } from '$lib/data/history';
-import type { Reminder } from '$lib/data/reminders';
-import type { Vehicle } from '$lib/data/vehicles';
+import type { HistoryEntry } from '#lib/data/history.ts';
+import type { Reminder } from '#lib/data/reminders.ts';
+import type { Vehicle } from '#lib/data/vehicles.ts';
 import { parseDateUTC } from './date';
 import { sortNewestDateFirst } from './records';
 

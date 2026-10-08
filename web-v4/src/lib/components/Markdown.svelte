@@ -3,7 +3,7 @@
 	import type { Token } from 'marked';
 	import sanitizeHtml from 'sanitize-html';
 	import Heading from './Heading.svelte';
-	import { asTextOnly, parameterize } from '$lib/content';
+	import { asTextOnly, parameterize } from '#lib/content.ts';
 
 	interface HeadingLevels {
 		/** Lowest rendered heading level (default 1). */

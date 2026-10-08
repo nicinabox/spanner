@@ -1,9 +1,9 @@
-import type { ServiceSchedule } from '$lib/data/serviceSchedules';
-import type { DistanceUnit, Vehicle } from '$lib/data/vehicles';
+import type { ServiceSchedule } from '#lib/data/serviceSchedules.ts';
+import type { DistanceUnit, Vehicle } from '#lib/data/vehicles.ts';
 import { parseDateUTC } from './date';
 import { formatMileage } from './vehicle';
 import { getOverdueRemindersCount, isReminderOverdue } from './reminders';
-import type { Reminder } from '$lib/data/reminders';
+import type { Reminder } from '#lib/data/reminders.ts';
 
 export function getUnifiedOverdueCount(vehicle: Vehicle) {
 	const r = getOverdueRemindersCount(vehicle) ?? 0;
@@ -58,8 +58,7 @@ export const getIntervalSummary = (
 // --- new unified sort ---
 
 export type UnifiedItem =
-	| { kind: 'reminder'; data: Reminder }
-	| { kind: 'schedule'; data: ServiceSchedule };
+	{ kind: 'reminder'; data: Reminder } | { kind: 'schedule'; data: ServiceSchedule };
 
 export function sortUnifiedByDue(
 	reminders: Reminder[],

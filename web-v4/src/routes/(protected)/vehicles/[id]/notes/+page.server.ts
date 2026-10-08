@@ -1,4 +1,4 @@
-import { getVehicle } from '$lib/data/vehicles';
+import { getVehicle } from '#lib/data/vehicles.ts';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {

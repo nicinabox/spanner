@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Paperclip } from 'lucide-svelte';
-	import type { Attachment } from '$lib/data/attachments';
+	import type { Attachment } from '#lib/data/attachments.ts';
 
 	interface Props {
 		attachments: Attachment[];

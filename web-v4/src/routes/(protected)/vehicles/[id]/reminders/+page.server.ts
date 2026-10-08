@@ -1,6 +1,6 @@
-import { getVehicle } from '$lib/data/vehicles';
-import { getVehicleReminders } from '$lib/data/reminders';
-import { getClassifications } from '$lib/data/classifications';
+import { getVehicle } from '#lib/data/vehicles.ts';
+import { getVehicleReminders } from '#lib/data/reminders.ts';
+import { getClassifications } from '#lib/data/classifications.ts';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {

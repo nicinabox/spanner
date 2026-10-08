@@ -1,6 +1,6 @@
 import { command, getRequestEvent } from '$app/server';
-import { getAuthToken } from '$lib/utils/session';
-import { request } from '$lib/data/server';
+import { getAuthToken } from '#lib/utils/session.ts';
+import { request } from '#lib/data/server.ts';
 
 export const testWebhook = command(async () => {
 	const event = getRequestEvent();

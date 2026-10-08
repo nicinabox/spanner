@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Stepper, InputGroup, InputAddon, Input } from '$lib';
+	import { Stepper, InputGroup, InputAddon, Input } from '#lib';
 	import Group from '../components/Group.svelte';
 	import Section from '../components/Section.svelte';
 

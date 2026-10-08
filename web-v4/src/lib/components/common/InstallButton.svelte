@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { Button } from '$lib';
-	import InstallDialog from '$lib/components/dialogs/InstallDialog.svelte';
+	import { Button } from '#lib';
+	import InstallDialog from '#lib/components/dialogs/InstallDialog.svelte';
 	import { Download } from 'lucide-svelte';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { initInstallPrompt, triggerInstallPrompt } from '$lib/utils/install.svelte';
+	import { initInstallPrompt, triggerInstallPrompt } from '#lib/utils/install.svelte.ts';
 
 	let open = $state(false);
 

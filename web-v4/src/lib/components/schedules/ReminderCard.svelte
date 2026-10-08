@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { Button, Card } from '$lib';
-	import { umamiEvent } from '$lib/umami';
-	import { isReminderOverdue } from '$lib/utils/reminders';
+	import { Button, Card } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
+	import { isReminderOverdue } from '#lib/utils/reminders.ts';
 	import { Calendar, ChevronRight, RefreshCwOffIcon } from 'lucide-svelte';
 	import DueIndicator from './DueIndicator.svelte';
-	import RecordForm from '$lib/components/forms/RecordForm.svelte';
-	import type { Reminder } from '$lib/data/reminders';
-	import type { Vehicle } from '$lib/data/vehicles';
-	import { intlFormatDateUTC } from '$lib/utils/date';
-	import { formatMileage } from '$lib/utils/vehicle';
+	import RecordForm from '#lib/components/forms/RecordForm.svelte';
+	import type { Reminder } from '#lib/data/reminders.ts';
+	import type { Vehicle } from '#lib/data/vehicles.ts';
+	import { intlFormatDateUTC } from '#lib/utils/date.ts';
+	import { formatMileage } from '#lib/utils/vehicle.ts';
 
 	interface Props {
 		reminder: Reminder;

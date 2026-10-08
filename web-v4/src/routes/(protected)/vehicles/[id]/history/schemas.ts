@@ -1,5 +1,5 @@
-import { ATTACHMENT_SIZE_LIMIT, MAX_ATTACHMENTS } from '$lib/data/attachments';
-import { numberSchema } from '$lib/schemas';
+import { ATTACHMENT_SIZE_LIMIT, MAX_ATTACHMENTS } from '#lib/data/attachments.ts';
+import { numberSchema } from '#lib/schemas/index.ts';
 import * as v from 'valibot';
 
 export const attachmentFileSchema = v.pipe(

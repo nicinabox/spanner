@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { ChevronRight, PlusIcon, Car } from 'lucide-svelte';
-	import { umamiEvent } from '$lib/umami';
-	import VehicleLink from '$lib/components/vehicles/VehicleLink.svelte';
-	import Stat from '$lib/components/common/Stat.svelte';
-	import Button from '$lib/components/common/Button.svelte';
-	import EmptyState from '$lib/components/EmptyState.svelte';
-	import InstallButton from '$lib/components/common/InstallButton.svelte';
-	import PageLayout from '$lib/components/PageLayout.svelte';
-	import VehicleSortMenu from '$lib/components/vehicles/VehicleSortMenu.svelte';
-	import { sortVehiclesBy } from '$lib/utils/sortable';
-	import { formatMileage } from '$lib/utils/vehicle';
-	import type { DistanceUnit, Sortable, Vehicle } from '$lib/data/vehicles';
+	import { umamiEvent } from '#lib/umami.ts';
+	import VehicleLink from '#lib/components/vehicles/VehicleLink.svelte';
+	import Stat from '#lib/components/common/Stat.svelte';
+	import Button from '#lib/components/common/Button.svelte';
+	import EmptyState from '#lib/components/EmptyState.svelte';
+	import InstallButton from '#lib/components/common/InstallButton.svelte';
+	import PageLayout from '#lib/components/PageLayout.svelte';
+	import VehicleSortMenu from '#lib/components/vehicles/VehicleSortMenu.svelte';
+	import { sortVehiclesBy } from '#lib/utils/sortable.ts';
+	import { formatMileage } from '#lib/utils/vehicle.ts';
+	import type { DistanceUnit, Sortable, Vehicle } from '#lib/data/vehicles.ts';
 	import type { PageProps } from './$types';
 	import { enhance } from '$app/forms';
-	import { pageTitle } from '$lib/utils/site';
+	import { pageTitle } from '#lib/utils/site.ts';
 
 	let { data, form }: PageProps = $props();
 

@@ -1,6 +1,6 @@
-import { getVehicle, updateVehicle } from '$lib/data/vehicles';
-import { getVehicleHistory } from '$lib/data/history';
-import { getVehicleReminders } from '$lib/data/reminders';
+import { getVehicle, updateVehicle } from '#lib/data/vehicles.ts';
+import { getVehicleHistory } from '#lib/data/history.ts';
+import { getVehicleReminders } from '#lib/data/reminders.ts';
 import { type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 

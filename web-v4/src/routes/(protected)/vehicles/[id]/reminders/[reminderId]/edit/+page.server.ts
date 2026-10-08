@@ -1,7 +1,7 @@
-import { getVehicle } from '$lib/data/vehicles';
-import { getReminder, updateReminder, deleteReminder } from '$lib/data/reminders';
-import { withActionErrors } from '$lib/utils/actions';
-import { decode, validate } from '$lib/utils/formData';
+import { getVehicle } from '#lib/data/vehicles.ts';
+import { getReminder, updateReminder, deleteReminder } from '#lib/data/reminders.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
+import { decode, validate } from '#lib/utils/formData.ts';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { reminderFormSchema } from '../../schemas';
 import type { PageServerLoad } from './$types';

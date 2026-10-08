@@ -1,12 +1,12 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import type { RequestEvent } from '@sveltejs/kit';
 
-vi.mock('$lib/utils/session', () => ({
+vi.mock('#lib/utils/session', () => ({
 	getSession: vi.fn(),
 	setSession: vi.fn(),
 }));
 
-import { getSession, setSession } from '$lib/utils/session';
+import { getSession, setSession } from '#lib/utils/session';
 import { createSessionHandler } from './session-handler';
 
 const mockedGetSession = vi.mocked(getSession);

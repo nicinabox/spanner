@@ -1,5 +1,5 @@
-import type { Handle } from '@sveltejs/kit';
-import { isMobileUserAgent } from '$lib/utils/device';
+import type { Handle } from '@sveltejs/kit/hooks';
+import { isMobileUserAgent } from '#lib/utils/device.ts';
 
 export const createPopulateLocals =
 	(): Handle =>

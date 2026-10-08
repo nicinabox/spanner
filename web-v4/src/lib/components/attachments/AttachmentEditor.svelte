@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { Paperclip, Trash2, RotateCcw } from 'lucide-svelte';
-	import Button from '$lib/components/common/Button.svelte';
-	import FileInput from '$lib/components/common/FileInput.svelte';
-	import Tooltip from '$lib/components/common/Tooltip.svelte';
-	import type { Attachment } from '$lib/data/attachments';
-	import { ATTACHMENT_SIZE_LIMIT } from '$lib/data/attachments';
-	import { formatBytes } from '$lib/utils/bytes';
-	import { track } from '$lib/umami';
+	import Button from '#lib/components/common/Button.svelte';
+	import FileInput from '#lib/components/common/FileInput.svelte';
+	import Tooltip from '#lib/components/common/Tooltip.svelte';
+	import type { Attachment } from '#lib/data/attachments.ts';
+	import { ATTACHMENT_SIZE_LIMIT } from '#lib/data/attachments.ts';
+	import { formatBytes } from '#lib/utils/bytes.ts';
+	import { track } from '#lib/umami.ts';
 
 	interface Props {
 		existing: Attachment[];
@@ -143,12 +143,7 @@
 	{/if}
 
 	<div>
-		<FileInput
-			name="attachments[]"
-			multiple
-			buttonLabel="Add files"
-			onChange={handleFileInput}
-		/>
+		<FileInput name="attachments[]" multiple buttonLabel="Add files" onChange={handleFileInput} />
 		{#if fileError}
 			<p class="text-sm text-negative mt-1">{fileError}</p>
 		{/if}

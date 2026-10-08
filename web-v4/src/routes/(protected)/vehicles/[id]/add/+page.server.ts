@@ -1,16 +1,19 @@
-import { getVehicle, updateVehicle } from '$lib/data/vehicles';
-import { createHistoryEntry } from '$lib/data/history';
-import { createVehicleReminder, deleteReminder } from '$lib/data/reminders';
-import { getClassifications } from '$lib/data/classifications';
-import { createServiceSchedule, type ServiceScheduleCreateData } from '$lib/data/serviceSchedules';
-import { withActionErrors } from '$lib/utils/actions';
+import { getVehicle, updateVehicle } from '#lib/data/vehicles.ts';
+import { createHistoryEntry } from '#lib/data/history.ts';
+import { createVehicleReminder, deleteReminder } from '#lib/data/reminders.ts';
+import { getClassifications } from '#lib/data/classifications.ts';
+import {
+	createServiceSchedule,
+	type ServiceScheduleCreateData,
+} from '#lib/data/serviceSchedules.ts';
+import { withActionErrors } from '#lib/utils/actions.ts';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { reminderFormSchema } from '../reminders/schemas';
 import { recordFormSchema } from '../history/schemas';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
-import { numberSchema } from '$lib/schemas';
-import { decode, encode, validate } from '$lib/utils/formData';
+import { numberSchema } from '#lib/schemas/index.ts';
+import { decode, encode, validate } from '#lib/utils/formData.ts';
 
 const mileageAdjustmentSchema = v.object({
 	mileage: v.optional(numberSchema),

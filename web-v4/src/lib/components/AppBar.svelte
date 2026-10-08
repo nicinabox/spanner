@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { cn } from 'tailwind-variants';
 	import type { Snippet } from 'svelte';
-	import type { Session } from '$lib/data/session';
+	import type { Session } from '#lib/data/session.ts';
 	import Menu from './common/Menu.svelte';
 	import ThemeToggle from './ThemeToggle.svelte';
-	import { Button } from '$lib';
+	import { Button } from '#lib';
 
 	interface Props {
 		start?: Snippet;

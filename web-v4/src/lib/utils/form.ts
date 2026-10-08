@@ -1,5 +1,5 @@
-import { invalidateAll } from '$app/navigation';
-import type { SubmitFunction } from '@sveltejs/kit';
+import type { SubmitFunction } from '$app/forms';
+import { refreshAll } from '$app/navigation';
 
 export interface FormError {
 	id: string;
@@ -13,10 +13,10 @@ export const createInlineEnhance = ({
 	return () =>
 		async ({ result, update }) => {
 			if (result.type === 'success' || result.type === 'redirect') {
-				await invalidateAll();
+				await refreshAll();
 				onSuccess?.();
 			} else {
-				update();
+				update({ navigate: false });
 				onError?.();
 			}
 		};
