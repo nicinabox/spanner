@@ -1,6 +1,6 @@
 # web-v4/Dockerfile
 # check=skip=SecretsUsedInArgOrEnv
-FROM oven/bun:1.4-slim AS build
+FROM oven/bun:1.4.4-slim AS build
 
 # SvelteKit validates env vars at build time via defineEnvVars. ARG values
 # are scoped to this build stage; ENV values persist into the final image.
@@ -23,7 +23,7 @@ RUN bun run prepare
 COPY . .
 RUN bun run build
 
-FROM oven/bun:1.4-slim
+FROM oven/bun:1.4.4-slim
 
 ENV NODE_ENV=production
 
