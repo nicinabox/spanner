@@ -69,6 +69,7 @@
 							suggestOpen = true;
 						}}
 						class="w-full sm:w-auto [&>*:first-child]:flex-1"
+						{...umamiEvent('add_task')}
 					>
 						{#snippet start()}
 							<span class="text-ink-500 text-sm font-medium inline-block px-3"

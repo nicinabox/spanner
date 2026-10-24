@@ -12,6 +12,7 @@
 	import type { Vehicle } from '#lib/data/vehicles.ts';
 	import type { FormError } from '#lib/utils/form.ts';
 	import { Confirm } from '#lib';
+	import { umamiEvent } from '#lib/umami.ts';
 
 	interface Props {
 		vehicle: Vehicle;
@@ -117,6 +118,7 @@
 							form={`defer-form-${formId}`}
 							formaction="?/clearDefer"
 							onclick={() => onOpenChange(false)}
+							{...umamiEvent('clear_defer')}
 						>
 							Confirm Clear
 						</Button>

@@ -20,6 +20,7 @@
 		id?: string;
 		start?: Snippet;
 		end?: Snippet;
+		[key: string]: unknown;
 	}
 
 	let {
@@ -35,11 +36,12 @@
 		id,
 		start,
 		end,
+		...rest
 	}: Props = $props();
 </script>
 
 <ButtonGroup class={className}>
-	<Button {variant} {color} {size} {disabled} onclick={onAction}>
+	<Button {variant} {color} {size} {disabled} onclick={onAction} {...rest}>
 		{@render children()}
 	</Button>
 	<Menu
