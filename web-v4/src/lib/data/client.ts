@@ -50,7 +50,17 @@ export function createAPIRequest(initialConfig: FetcherConfig) {
 	};
 
 	return async function fetcher<T>(endpoint: string, options: RequestOpts = {}): Promise<T> {
-		const { authToken, webUrl, params, ...init } = options;
+		// Callers pass SvelteKit `locals` straight through; its `session` is not valid
+		// fetch init and Bun rejects a non-FetchSession value.
+		const {
+			authToken,
+			webUrl,
+			params,
+			session: _session,
+			...init
+		} = options as RequestOpts & {
+			session?: unknown;
+		};
 
 		const url = new URL(
 			config.baseURI + endpoint,
