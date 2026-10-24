@@ -1,4 +1,4 @@
-import { type Session } from '#lib/session';
+import { type Session } from '#lib/data/session.ts';
 
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
