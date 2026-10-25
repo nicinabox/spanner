@@ -55,11 +55,10 @@ class ServiceSchedule < ApplicationRecord
     defer_delta_months.present? || defer_delta_miles.present?
   end
 
-  # rubocop:disable Naming/PredicateMethod
+  # rubocop:disable-next Naming/PredicateMethod
   def deferred
     deferred?
   end
-  # rubocop:enable Naming/PredicateMethod
 
   def clear_defer!
     update!(defer_delta_months: nil, defer_delta_miles: nil)
