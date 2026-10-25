@@ -1,5 +1,6 @@
 import type { Cookies } from '@sveltejs/kit';
 import { sealData, unsealData, type SessionOptions } from 'iron-session';
+import { logger } from '#lib/server/logger.ts';
 import { CLIENT_SECRET, USE_SECURE_COOKIE } from '$app/env/private';
 import type { Session } from '#lib/data/session.ts';
 
@@ -7,6 +8,10 @@ export const sessionOptions: SessionOptions = {
 	password: CLIENT_SECRET,
 	cookieName: 'session',
 	ttl: 7_776_000, // 90 days
+	onUnsealError: (reason, error) => {
+		// expired is normal session end
+		if (reason !== 'expired') logger.warn('session cookie rejected', { reason, error });
+	},
 	cookieOptions: {
 		secure: USE_SECURE_COOKIE,
 		httpOnly: true,
