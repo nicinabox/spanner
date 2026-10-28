@@ -339,10 +339,10 @@ GEM
     schema2type (0.4.0)
       activesupport
     securerandom (0.4.1)
-    sentry-rails (6.7.0)
+    sentry-rails (7.2.0)
       railties (>= 5.2.0)
-      sentry-ruby (~> 6.7.0)
-    sentry-ruby (6.7.0)
+      sentry-ruby (~> 7.2.0)
+    sentry-ruby (7.2.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
       logger
@@ -425,8 +425,8 @@ DEPENDENCIES
   rubocop-rails
   rufus-scheduler (~> 3.9)
   schema2type
-  sentry-rails
-  sentry-ruby
+  sentry-rails (~> 7.2)
+  sentry-ruby (~> 7.2)
   solid_queue (~> 1.0)
   spring
   spring-watcher-listen (~> 2.1.0)
