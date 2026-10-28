@@ -1,6 +1,7 @@
 <script lang="ts">
 	import AppBar from '#lib/components/AppBar.svelte';
 	import HistoryTable from '#lib/components/HistoryTable.svelte';
+	import VehiclePrintout from '#lib/components/vehicles/VehiclePrintout.svelte';
 	import EmptyState from '#lib/components/EmptyState.svelte';
 	import Stat from '#lib/components/common/Stat.svelte';
 	import { BookOpenText } from 'lucide-svelte';
@@ -18,28 +19,37 @@
 	<title>{pageTitle(vehicle.name)}</title>
 </svelte:head>
 
-<AppBar />
+<div class="print:hidden">
+	<AppBar />
 
-<div class="max-w-6xl mx-auto px-(--main-padding) py-6">
-	<header class="mb-6">
-		<h1 class="text-2xl font-semibold">{vehicle.name}</h1>
-	</header>
+	<div class="max-w-6xl mx-auto px-(--main-padding) py-6">
+		<header class="mb-6">
+			<h1 class="text-2xl font-semibold">{vehicle.name}</h1>
+		</header>
 
-	{#if history.length}
-		<div class="mb-6 flex gap-12 overflow-auto pointer-coarse:no-scrollbar">
-			<Stat title="Since" value={intlFormatDateUTC(history[0].date)} />
-			<Stat
-				title="Mileage"
-				value={`${vehicle.estimatedMileage?.toLocaleString()} ${vehicle.distanceUnit}`}
-			/>
-		</div>
+		{#if history.length}
+			<div class="mb-6 flex gap-12 overflow-auto pointer-coarse:no-scrollbar">
+				<Stat title="Since" value={intlFormatDateUTC(history[0].date)} />
+				<Stat
+					title="Mileage"
+					value={`${vehicle.estimatedMileage?.toLocaleString()} ${vehicle.distanceUnit}`}
+				/>
+			</div>
 
-		<HistoryTable {history} {vehicle} editable={false} />
-	{:else}
-		<EmptyState heading="No history yet" details="The owner hasn't added any service records yet.">
-			{#snippet media()}
-				<BookOpenText size={48} class="text-ink-300" />
-			{/snippet}
-		</EmptyState>
-	{/if}
+			<HistoryTable {history} {vehicle} editable={false} />
+		{:else}
+			<EmptyState
+				heading="No history yet"
+				details="The owner hasn't added any service records yet."
+			>
+				{#snippet media()}
+					<BookOpenText size={48} class="text-ink-300" />
+				{/snippet}
+			</EmptyState>
+		{/if}
+	</div>
+</div>
+
+<div class="hidden print:block">
+	<VehiclePrintout {vehicle} {history} />
 </div>
