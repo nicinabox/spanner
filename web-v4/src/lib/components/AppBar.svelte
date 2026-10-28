@@ -73,7 +73,7 @@
 							{session.email}
 						</span>
 						<div class="mb-2">
-							<ThemeToggle variant="segmented" />
+							<ThemeToggle />
 						</div>
 					</div>
 				{/snippet}
