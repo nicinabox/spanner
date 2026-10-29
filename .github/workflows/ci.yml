@@ -85,7 +85,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Run svelte-check
-        run: npm run check
+        run: bun run check
 
       - name: Build SvelteKit application
-        run: npm run build
+        run: bun run build

@@ -35,10 +35,9 @@ This is a monorepo containing two main applications:
 
 ### Prerequisites
 
-- Node.js 22.19.0+
+- Bun 1.4+
 - Ruby 4.0.9
 - PostgreSQL
-- Yarn package manager
 
 ### Development Setup
 
@@ -62,8 +61,8 @@ This is a monorepo containing two main applications:
 
     ```bash
     cd web-v4
-    npm install
-    npm run dev
+    bun install
+    bun run dev
     ```
 
 4. **Access the applications**
@@ -118,13 +117,13 @@ Migrations run automatically on container start.
 
 ```bash
 cd web-v4
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run check        # Type check
-npm run lint         # Prettier check
-npm run format       # Prettier format
-npm run test         # Run tests
+bun run dev          # Start development server
+bun run build        # Build for production
+bun run preview      # Preview production build
+bun run check        # Type check
+bun run lint         # Prettier check
+bun run format       # Prettier format
+bun run test         # Run tests
 ```
 
 ### API Application
@@ -197,8 +196,8 @@ Variables are declared in [`web-v4/src/env.ts`](web-v4/src/env.ts) using SvelteK
 
 ```bash
 cd web-v4
-npm run test        # Run all tests
-npm run test:unit -- --run  # Run once (CI)
+bun run test        # Run all tests
+bun run test:unit -- --run  # Run once (CI)
 ```
 
 ### API Application

@@ -14,18 +14,17 @@ Next-generation frontend for Spanner — a vehicle tracking and maintenance appl
 
 ## Prerequisites
 
-- Node.js 22.19.0+
-- npm
+- Bun 1.4+
 - Spanner API running on port 3001 (see `/api` in the repo root)
 
 ## Getting Started
 
 ```bash
 # Install dependencies
-npm install
+bun install
 
 # Start development server
-npm run dev
+bun run dev
 ```
 
 The app runs at `http://localhost:5173` and proxies API requests to `http://localhost:3001`.
@@ -134,13 +133,13 @@ const protectedRoutes = ['^/vehicles'];
 ## Development
 
 ```bash
-npm run dev              # Start dev server
-npm run build            # Build for production
-npm run preview          # Preview production build
-npm run check            # Type check
-npm run lint             # Prettier check
-npm run format           # Prettier format
-npm run test             # Run tests
+bun run dev              # Start dev server
+bun run build            # Build for production
+bun run preview          # Preview production build
+bun run check            # Type check
+bun run lint             # Prettier check
+bun run format           # Prettier format
+bun run test             # Run tests
 ```
 
 ## Testing
@@ -148,8 +147,8 @@ npm run test             # Run tests
 Tests use Vitest with Playwright for browser component testing:
 
 ```bash
-npm run test             # Run all tests
-npm run test:unit -- --run  # Run once (CI)
+bun run test             # Run all tests
+bun run test:unit -- --run  # Run once (CI)
 ```
 
 Test files are co-located with their components:
